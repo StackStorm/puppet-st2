@@ -8,7 +8,19 @@
   "project_page": "https://github.com/StackStorm/puppet-stackstorm",
   "issues_url": "https://github.com/StackStorm/puppet-stackstorm/issues",
   "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
+    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
+    {"name":"nanliu-staging","version_requirement":">= 1.0.2"},
+    {"name":"puppetlabs-apt","version_requirement":">= 1.7.0"},
+    {"name":"maestrodev-git","version_requirement":">= 1.0.6"},
+    {"name":"maestrodev-wget","version_requirement":">= 1.5.6"},
+    {"name":"saz-sudo","version_requirement":">= 3.0.9"},
+    {"name":"stankevich-python","version_requirement":">= 1.7.15"},
+    {"name":"puppetlabs-gcc","version_requirement":">= 0.2.0"},
+    {"name":"puppetlabs-inifile","version_requirement":">= 1.2.0"},
+    {"name":"puppetlabs-mongodb","version_requirement":">= 0.8.0"},
+    {"name":"puppetlabs-mysql","version_requirement":">= 3.0.0"},
+    {"name":"puppetlabs-rabbitmq","version_requirement":">= 4.1.0"},
+    {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.2.0"}
   ]
 }
 

@@ -44,6 +44,22 @@ class st2::role::server (
     refreshonly => true,
   }
 
+  ini_setting { 'api_allow_origin':
+    ensure  => 'present',
+    path    => '/etc/st2/st2.conf',
+    section => 'api',
+    setting => 'allow_origin',
+    value   => '*',
+  }
+
+  ini_setting { 'ssh_key_stanley':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'system_user',
+    setting => 'ssh_key_file',
+    value   => '/home/stanley/.ssh/st2_stanley_key',
+  }
+
   ## Needs to have real init scripts
   exec { 'start st2':
     command => 'st2ctl start',
@@ -52,5 +68,7 @@ class st2::role::server (
     require => Exec['register st2 content'],
   }
 
-  St2::Package::Install<| tag == 'st2::role::server' |> -> Exec['start st2']
+  St2::Package::Install<| tag == 'st2::role::server' |>
+  -> Ini_setting<| tag == 'st2::role::server' |>
+  -> Exec['start st2']
 }

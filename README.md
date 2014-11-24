@@ -1,5 +1,10 @@
 # stackstorm
 
+Note about this module. Dependencies should not be shared in the modulefile. Only documentation
+detailing where we got all the information from, such that we don't pollute up their module
+space assuming they use all the same components. We should have standard disclaimers and
+notes in the documentation on how to submit a PR or submit an issues to have support added.
+
 #### Table of Contents
 
 1. [Overview](#overview)

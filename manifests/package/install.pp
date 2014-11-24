@@ -3,21 +3,25 @@ define st2::package::install(
   $revision    = undef,
 ) {
 
-  if $revision {
-    $_revision = $revision
-  } else {
-    $_revision = st2_current_revision($version, $_type)
-  }
-
   case $::osfamily {
     'Debian': {
       $_type     = 'debs'
       $_provider = 'dpkg'
+      if $revision {
+        $_revision = $revision
+      } else {
+        $_revision = st2_current_revision($version, $_type)
+      }
       $_suffix   = "_${version}-${_revision}_amd64.deb"
     }
     'RedHat': {
       $_type     = 'rpm'
       $_provider = 'rpm'
+      if $revision {
+        $_revision = $revision
+      } else {
+        $_revision = st2_current_revision($version, $_type)
+      }
       $_suffix   = "-${version}-${_revision}.noarch.rpm"
     }
     default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }

@@ -1,9 +1,12 @@
 define st2::dependencies::install(
-  $package = $name,
+  $package  = $name,
+  $version  = present,
+  $provider = undef,
 ) {
   if !defined(Package[$package]) {
     package { $package:
-      ensure => present,
+      ensure   => $version,
+      provider => $provider,
     }
   }
 }
