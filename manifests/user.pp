@@ -1,17 +1,16 @@
 define st2::user(
-  $client              = true,
-  $server              = false,
-  $create_sudo_entry   = false,
-  $generate_keypair    = false,
-  $ssh_key_type        = undef,
-  $ssh_public_key      = undef,
-  $ssh_ssh_private_key = undef,
-  $uid                 = '800',
+  $client            = true,
+  $server            = false,
+  $create_sudo_entry = false,
+  $ssh_key_type      = undef,
+  $ssh_public_key    = undef,
+  $ssh_private_key   = undef,
+  $uid               = '800',
 ) {
   include ::st2::params
 
-  $_robot_group_name = $st2::params::robot_group_name
-  $_robot_group_gid  = $st2::params::robot_group_gid
+  $_robots_group_name = $st2::params::robots_group_name
+  $_robots_group_gid  = $st2::params::robots_group_gid
 
   ensure_resource('group', $_robots_group_name, {
     'ensure' => present,
@@ -45,28 +44,25 @@ define st2::user(
 
   if $client {
     if !$ssh_key_type or !$ssh_public_key {
-      fail("St2::User[${name}]: Unable to create user ${name} to be used by StackStorm for remote access. Please supply both a \$ssh_key_type and \$ssh_public_key for this resource.")
+      fail("St2::User[${name}]: ${st2::notices::user_missing_client_keys}")
     }
-    ssh_authorized_keys { "st2_${name}_key":
-      type => $ssh_key_type,
-      user => $name,
-      key  => $ssh_public_key,
+    ssh_authorized_key { "st2_${name}_key":
+      type    => $ssh_key_type,
+      user    => $name,
+      key     => $ssh_public_key,
+      require => File["/home/${name}/.ssh"],
     }
   }
   if $server {
-    if $generate_keypair {
-      exec { "Generate keypair for st2robot: ${name}":
-        command => "ssh-keygen -f /home/${name}/.ssh/st2_${name}_key -P ''",
-        creates => "/home/${name}/.ssh/st2_${name}_key",
-      }
-    } else {
-      file { "/home/${name}/.ssh/st2_${name}_key":
-        ensure  => file,
-        owner   => $name,
-        group   => 'root',
-        mode    => '0400',
-        content => $ssh_private_key,
-      }
+    if !$ssh_private_key {
+      fail("St2::User[${name}]:: ${st2::notices::user_missing_private_key}")
+    }
+    file { "/home/${name}/.ssh/st2_${name}_key":
+      ensure  => file,
+      owner   => $name,
+      group   => 'root',
+      mode    => '0400',
+      content => $ssh_private_key,
     }
   }
   ### END Setup SSH Keys ###
