@@ -1,11 +1,10 @@
 class st2::role::mistral(
   $manage_mysql        = false,
+  $github_branch       = "st2-${::st2::version}"
   $db_root_password    = 'StackStorm',
   $db_mistral_password = 'StackStorm',
-) {
-  include '::st2'
+) inherits st2 {
   include '::st2::dependencies'
-  $_version = $st2::version
 
   # This needs a bit more modeling... need to understand
   # what current mistral code ships with st2 - jdf
@@ -50,7 +49,7 @@ class st2::role::mistral(
   vcsrepo { '/etc/mistral/actions/st2mistral':
     ensure => present,
     source => 'https://github.com/StackStorm/st2mistral.git',
-    revision => "st2-${_version}",
+    revision => $github_branch,
     provider => 'git',
     require  => File['/etc/mistral/actions'],
     before   => [
