@@ -37,7 +37,7 @@ class st2::role::mistral(
   vcsrepo { '/opt/openstack/mistral':
     ensure   => present,
     source   => 'https://github.com/StackStorm/mistral.git',
-    revision => "st2-${_version}",
+    revision => $github_branch,
     provider => 'git',
     require  => File['/opt/openstack'],
     before   => [
