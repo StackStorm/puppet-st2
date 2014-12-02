@@ -1,6 +1,6 @@
 class st2::role::mistral(
   $manage_mysql        = false,
-  $github_branch       = "st2-${::st2::version}"
+  $github_branch       = "st2-${::st2::version}",
   $db_root_password    = 'StackStorm',
   $db_mistral_password = 'StackStorm',
 ) inherits st2 {
