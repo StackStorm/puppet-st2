@@ -1,5 +1,6 @@
 class st2::role::web(
   $github_oauth_token = undef,
+  $st2_api_server     = $::ipaddress,
 ) {
   if !$github_oauth_token {
     fail("Class['st2::profile::web']: ${st2::notices::web_no_oauth_token}")
@@ -20,6 +21,17 @@ class st2::role::web(
       Exec['npm-install-st2repo'],
       Exec['bower-install-st2repo'],
     ],
+  }
+
+  # This is crude... get some augeas on
+  ## Manage connection list currently
+  file { '/opt/st2web/config.js':
+    ensure  => present,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => template('st2/opt/st2web/config.js.erb'),
+    require => Vcsrepo['/opt/st2web'],
   }
 
   exec { 'npm-install-st2repo':
