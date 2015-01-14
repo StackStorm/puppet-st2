@@ -1,3 +1,18 @@
+# == Class: st2::dependencies
+#
+# Private class used to install any and all system dependencies
+# prior to installation
+#
+# Please do not call directly
+#
+# === Parameters
+#
+# This class takes no parameters
+#
+# === Variables
+#
+# This class takes no variables
+#
 class st2::dependencies {
   include '::st2::params'
 

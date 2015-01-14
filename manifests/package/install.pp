@@ -1,3 +1,18 @@
+# == Define: st2::package::install
+#
+#  Defined type to manage download of st2 while package repo is being built
+#
+# === Parameters
+#  [*title*] - Name of st2 package to install
+#  [*version*] - Version of st2 package to install
+#  [*revision*] - Revision of st2 package to install
+#
+# === Examples
+#  st2::package::install { 'st2api':
+#    version  => '0.6.0',
+#    revision => '11',
+#  }
+#
 define st2::package::install(
   $version     = undef,
   $revision    = undef,

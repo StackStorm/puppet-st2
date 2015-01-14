@@ -1,3 +1,22 @@
+# == Class: st2::profile::fullinstall
+#
+# This class performs a default install of StackStorm on a single node
+# including all st2 components and full installs of all components.
+#
+#  * RabbitMQ
+#  * Python
+#  * MongoDB
+#  * NodeJS
+#  * Mistral/MySQL
+#
+# === Parameters
+#
+#  [*web*] - Include `st2web` in install (requires early access, contact support@stackstorm.com for access)
+#
+# === Examples
+#
+#  include st2::profile::fullinstall
+#
 class st2::profile::fullinstall(
   $web = false,
 ) {

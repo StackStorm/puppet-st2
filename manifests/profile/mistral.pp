@@ -1,3 +1,24 @@
+# == Class: st2::profile::mistral
+#
+# This class installs OpenStack Mistral, a workflow engine that integrates with
+# StackStorm. Has the option to manage a companion MySQL Server
+#
+# === Parameters
+#  [*manage_mysql*] - Flag used to have MySQL installed/managed via this profile (Default: false)
+#  [*github_branch*] - Tagged branch of Mistral to download/install
+#  [*db_root_password*] - Root MySQL Password
+#  [*db_mistral_password*] - Mistral user MySQL Password
+#
+# === Examples
+#
+#  include st2::profile::mistral
+#
+#  class { '::st2::profile::mistral':
+#    manage_mysql        => true,
+#    db_root_password    => 'datsupersecretpassword',
+#    db_mistral_password => 'mistralpassword',
+#  }
+#
 class st2::profile::mistral(
   $manage_mysql        = false,
   $github_branch       = "st2-${::st2::version}",

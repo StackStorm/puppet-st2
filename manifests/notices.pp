@@ -1,3 +1,16 @@
+# == Class: st2::notices
+#
+# This is a private class used to store long strings to limit down on lint problems.
+# Please do not call directly
+#
+# === Parameters
+#
+# This class takes no parameters
+#
+# === Variables
+#
+# This class takes no variables
+#
 class st2::notices {
   include '::st2::params'
 

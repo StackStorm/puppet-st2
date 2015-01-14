@@ -1,12 +1,12 @@
 {
-  "name": "StackStorm-stackstorm",
-  "version": "0.0.1",
-  "author": "StackStorm",
+  "name": "stackstorm-st2",
+  "version": "0.1.0",
+  "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache 2.0",
-  "source": "https://github.com/StackStorm/puppet-stackstorm",
-  "project_page": "https://github.com/StackStorm/puppet-stackstorm",
-  "issues_url": "https://github.com/StackStorm/puppet-stackstorm/issues",
+  "source": "https://github.com/StackStorm/puppet-st2",
+  "project_page": "https://github.com/StackStorm/puppet-st2",
+  "issues_url": "https://github.com/StackStorm/puppet-st2/issues",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"},
     {"name":"nanliu-staging","version_requirement":">= 1.0.2"},

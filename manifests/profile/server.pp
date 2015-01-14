@@ -1,3 +1,24 @@
+# == Class: st2::profile::server
+#
+#  Profile to install all server components for st2
+#
+# === Parameters
+#
+#  [*version*] - Version of StackStorm to install
+#  [*revision*] - Revision of StackStorm to install
+#
+# === Variables
+#
+#  [*_server_packages*] - Local scoped variable to store st2 server packages.
+#                         Sources from st2::params
+#  [*_conf_dir*]        - Local scoped variable config directory for st2.
+#                         Sources from st2::params
+#  [*_python_pack*]     - Local scoped variable directory where system python lives
+#
+# === Examples
+#
+#  include st2::profile::client
+#
 class st2::profile::server (
   $version     = $::st2::version,
   $revision    = $::st2::revision,

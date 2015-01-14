@@ -1,3 +1,26 @@
+# == Class: st2::stanley
+#
+#  Installs the default admin user for st2 (stanley). Will install
+#  insecure keys by default to allow testing, but also allows override of
+#  values.
+#
+# === Parameters
+#  [*ssh_public_key*]  - SSH Public Key without leading key-type and end email
+#  [*ssh_key_type*]    - Type of SSH Key (ssh-dsa/ssh-rsa)
+#  [*ssh_private_key*] - Private key
+#
+# === Variables
+#  [*default_ssh_public_key*]  - Default SSH Public Key without leading key-type and end email
+#  [*default_ssh_key_type*]    - Default SSH Key (ssh-dsa/ssh-rsa)
+#  [*default_ssh_private_key*] - Default Private Key
+#  [*_ssh_public_key*]         - Local variable holding the real value of `ssh_public_key` (set or default)
+#  [*_ssh_key_type*]           - Local variable holding the real value of `ssh_key_type` (set or default)
+#  [*_ssh_private_key*]        - Local variable holding the real value of `ssh_private_key` (set or default)
+#
+# === Examples
+#
+#  include ::st2::stanley
+#
 class st2::stanley (
   $ssh_public_key  = undef,
   $ssh_key_type    = undef,
