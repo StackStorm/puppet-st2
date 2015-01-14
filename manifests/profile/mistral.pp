@@ -4,9 +4,9 @@
 # StackStorm. Has the option to manage a companion MySQL Server
 #
 # === Parameters
-#  [*manage_mysql*] - Flag used to have MySQL installed/managed via this profile (Default: false)
-#  [*github_branch*] - Tagged branch of Mistral to download/install
-#  [*db_root_password*] - Root MySQL Password
+#  [*manage_mysql*]        - Flag used to have MySQL installed/managed via this profile (Default: false)
+#  [*git_branch*]          - Tagged branch of Mistral to download/install
+#  [*db_root_password*]    - Root MySQL Password
 #  [*db_mistral_password*] - Mistral user MySQL Password
 #
 # === Examples
@@ -21,7 +21,7 @@
 #
 class st2::profile::mistral(
   $manage_mysql        = false,
-  $github_branch       = "st2-${::st2::version}",
+  $git_branch          = $::st2::mistral_git_branch,
   $db_root_password    = 'StackStorm',
   $db_mistral_password = 'StackStorm',
 ) inherits st2 {
@@ -58,7 +58,7 @@ class st2::profile::mistral(
   vcsrepo { '/opt/openstack/mistral':
     ensure   => present,
     source   => 'https://github.com/StackStorm/mistral.git',
-    revision => $github_branch,
+    revision => $git_branch,
     provider => 'git',
     require  => File['/opt/openstack'],
     before   => [
@@ -70,7 +70,7 @@ class st2::profile::mistral(
   vcsrepo { '/etc/mistral/actions/st2mistral':
     ensure => present,
     source => 'https://github.com/StackStorm/st2mistral.git',
-    revision => $github_branch,
+    revision => $git_branch,
     provider => 'git',
     require  => File['/etc/mistral/actions'],
     before   => [
@@ -101,7 +101,7 @@ class st2::profile::mistral(
 
   python::pip { 'python-mistralclient':
     ensure => present,
-    url    => "git+https://github.com/StackStorm/python-mistralclient.git@${github_branch}",
+    url    => "git+https://github.com/StackStorm/python-mistralclient.git@${git_branch}",
   }
   ### END Bootstrap Python ###
 
