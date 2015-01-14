@@ -1,3 +1,20 @@
+# == Class: st2::profile::nodejs
+#
+# st2 compatable installation of NodeJS and dependencies for use with
+# StackStorm
+#
+# === Parameters
+#
+#  This module contains no parameters
+#
+# === Variables
+#
+#  This module contains no variables
+#
+# === Examples
+#
+#  include st2::profile::nodejs
+#
 class st2::profile::nodejs {
   class { '::nodejs':
     proxy       => false,

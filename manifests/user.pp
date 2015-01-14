@@ -1,3 +1,28 @@
+# == Define: st2::user
+#
+#  Creates an admin user for use with st2
+#
+# === Parameters
+#  [*client*]            - Allow incoming connections from the defined user (default: true)
+#  [*server*]            - Server where connection requests originate (usually st2 server) (default: false)
+#  [*create_sudo_entry*] - Manage the sudoers entry (default: false)
+#  [*ssh_public_key*]    - SSH Public Key without leading key-type and end email
+#  [*ssh_key_type*]      - Type of SSH Key (ssh-dsa/ssh-rsa)
+#  [*ssh_private_key*]   - Private key
+#  [*uid*]               - UID of admin user (default: 800)
+#
+# === Variables
+#  [*_robots_group_name*] - Local variable to grab the global robot group name
+#  [*_robots_group_gid*]  - Local variable to grab the global robot group GID
+#
+# === Examples
+#
+#  st2::user { 'stanley':
+#    ssh_key_type => 'ssh-rsa',
+#    ssh_public_key => 'AAAAAWESOMEKEY==',
+#    ssh_private_key => '----- BEGIN RSA PRIVATE KEY -----\nDEADBEEF\n----- END RSA PRIVATE KEY -----',
+#  }
+#
 define st2::user(
   $client            = true,
   $server            = false,

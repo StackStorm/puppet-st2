@@ -1,3 +1,25 @@
+# == Class: st2::profile::web
+#
+#  Profile to install StackStorm web client (st2web). This feature is
+#  currently under active development, and limited to early access users.
+#  If you would like to try this out, please send an email to support@stackstorm.com
+#  and let us know!
+#
+# === Parameters
+#
+#  [*github_oauth_token*] - Version of StackStorm to install
+#  [*st2_api_server*]     - Revision of StackStorm to install
+#
+# === Variables
+#
+#  This class has no variables
+#
+# === Examples
+#
+#  class { '::st2::profile::web':
+#    github_oauth_token = 'abcd0011222333',
+#  }
+#
 class st2::profile::web(
   $github_oauth_token = undef,
   $st2_api_server     = $::ipaddress,
