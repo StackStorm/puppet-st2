@@ -8,6 +8,8 @@
 #  [*ssh_public_key*]  - SSH Public Key without leading key-type and end email
 #  [*ssh_key_type*]    - Type of SSH Key (ssh-dsa/ssh-rsa)
 #  [*ssh_private_key*] - Private key
+#  [*client*]          - Allow incoming connections from the defined user (default: true)
+#  [*server*]          - Server where connection requests originate (usually st2 server) (default: false)
 #
 # === Variables
 #  [*default_ssh_public_key*]  - Default SSH Public Key without leading key-type and end email
@@ -25,6 +27,8 @@ class st2::stanley (
   $ssh_public_key  = undef,
   $ssh_key_type    = undef,
   $ssh_private_key = undef,
+  $client          = true,
+  $server          = true,
 ) {
   ### Defaults ###
   $default_ssh_public_key  = "AAAAB3NzaC1yc2EAAAADAQABAAABAQC4kFg0ZNmdrSqFvP+kZbVDlOdxzKgkcg3tKT19JTAKljpQCqUcZAEIthp8KsesXmAErZ8ykOEuYRCjug4Wd9uyXeewg5SgJy2gz/0biCAToJ71XxrPMM5SgVk/0sWxRIbmkU7+gNga6OIcimNxH5flESRAQx+C1kD1sBMfPeJzMa48kZWKBpaScguWka1N1rVn7nDza7srqPn+7NmQDVF/+VkMOxCEJcbIXdc0hYzebatWklYIcoSuF0WETYJxmKCoL8stTFucCxDXzbPvwGL5WctdZKcu7MeAaodH8V3x7aCujXzsSILtU7mc7uewuM2iT3nukLqYOk6W4UFRBk8n"
@@ -44,8 +48,8 @@ class st2::stanley (
   }
 
   st2::user { 'stanley':
-    client            => true,
-    server            => true,
+    client            => $client,
+    server            => $server,
     create_sudo_entry => true,
     ssh_public_key    => $_ssh_public_key,
     ssh_key_type      => $_ssh_key_type,
