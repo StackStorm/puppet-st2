@@ -27,7 +27,6 @@ define st2::pack (
     command => "st2 action execute packs.install packs=${pack} ${_repo_url}",
     creates => "/opt/stackstorm/packs/${pack}",
     path    => '/usr/sbin:/usr/bin:/sbin:/bin',
-    require => Class['::st2::profile::server'],
     notify  => Exec['restart-st2'],
   }
 

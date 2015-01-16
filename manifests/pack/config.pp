@@ -16,4 +16,6 @@ define st2::pack::config (
     mode    => 0440,
     content => $_config,
   }
+
+  Exec<| tag == 'st2::pack' |> -> File["/opt/stackstorm/packs/${pack}/config.yaml"]
 }
