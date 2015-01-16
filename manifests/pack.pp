@@ -11,7 +11,7 @@
 #  st2::pack { 'puppet': }
 #
 #  st2::pack { ['linux', 'cicd']:
-#    repo_url => 'http://github.com/StackStorm/st2incubator',
+#    repo_url => 'http://github.com/StackStorm/st2incubator.git',
 #  }
 #
 define st2::pack (
@@ -27,6 +27,7 @@ define st2::pack (
     command => "st2 action execute packs.install packs=${pack} ${_repo_url}",
     creates => "/opt/stackstorm/packs/${pack}",
     path    => '/usr/sbin:/usr/bin:/sbin:/bin',
+    require => Class['::st2::profile::server'],
     notify  => Exec['restart-st2'],
   }
 
