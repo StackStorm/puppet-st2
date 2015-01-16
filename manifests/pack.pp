@@ -15,6 +15,7 @@
 #  }
 #
 define st2::pack (
+  $ensure   = present,
   $pack     = $name,
   $repo_url = undef,
 ) {
