@@ -19,7 +19,6 @@ class st2::profile::nodejs {
   class { '::nodejs':
     proxy       => false,
     manage_repo => true,
-    notify      => Exec['upgrade npm'],
   }
 
   package { 'bower':
