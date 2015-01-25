@@ -61,6 +61,8 @@ class st2::params(
   ]
   $debian_client_dependencies = [
     'python-prettytable',
+    'python-jsonpath-rw',
+    'python-dateutil',
   ]
   $debian_mongodb_dependencies = [
     'mongodb-dev',
