@@ -4,18 +4,17 @@ define st2::pack::config (
 ) {
   if $config {
     validate_hash($config)
-    $_config = to_yaml($config)
+    $_config = $config
   } else {
     $_hiera_lookup = hiera("st2::pack::${pack}", {})
     validate_hash($_hiera_lookup)
-    $_config = to_yaml($_hiera_lookup)
+    $_config = $_hiera_lookup
   }
 
   file { "/opt/stackstorm/packs/${pack}/config.yaml":
     ensure  => file,
     mode    => 0440,
-    content => $_config,
+    content => template('st2/config.yaml.erb'),
+    before  => Exec["install-st2-pack-${pack}"],
   }
-
-  Exec<| tag == 'st2::pack' |> -> File["/opt/stackstorm/packs/${pack}/config.yaml"]
 }
