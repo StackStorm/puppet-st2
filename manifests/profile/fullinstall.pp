@@ -18,8 +18,8 @@
 #  include st2::profile::fullinstall
 #
 class st2::profile::fullinstall(
-  $web = false,
-) {
+  $web = $::st2::web,
+) inherits st2 {
   class { '::st2::profile::python':
     before => Anchor['st2::pre_reqs'],
   }

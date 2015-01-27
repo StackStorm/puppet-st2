@@ -19,4 +19,5 @@ class st2(
   $version            = '0.7',
   $revision           = undef,
   $mistral_git_branch = 'st2-0.5.1',
+  $web                = false,
 ) { }
