@@ -13,8 +13,8 @@ define st2::pack::config (
 
   file { "/opt/stackstorm/packs/${pack}/config.yaml":
     ensure  => file,
-    mode    => 0440,
+    mode    => '0440',
     content => template('st2/config.yaml.erb'),
-    before  => Exec["install-st2-pack-${pack}"],
+    require => Exec["install-st2-pack-${pack}"],
   }
 }
