@@ -92,4 +92,6 @@ class st2::profile::server (
   St2::Package::Install<| tag == 'st2::profile::server' |>
   -> Ini_setting<| tag == 'st2::profile::server' |>
   -> Exec['start st2']
+
+  Exec['start st2'] -> St2::Pack<||>
 }

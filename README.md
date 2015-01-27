@@ -53,6 +53,43 @@ classes for use and configuration.
 * `st2::proflle::server` - st2 server components
 * `st2::profile::web` - st2 web components
 
+### Installing and configuring Packs
+
+StackStorm packs can be installed and configured directly from Puppet. This
+can be done via the `st2::pack` and `st2::pack::config` defined types.
+
+Installation/Configuration via modules:
+```ruby
+  st2::pack { 'linux': }
+  st2::pack { ['librato', 'consul']:
+    repo_url => 'https://github.com/StackStorm/st2incubator.git',
+  }
+  st2::pack { 'slack':
+    repo_url => 'https://github.com/StackStorm/st2incubator.git',
+    config   => {
+      'post_message_action' => {
+        'webhook_url' => 'XXX',
+      },
+    },
+  }
+```
+
+Installation/Configuration via Hiera:
+```yaml
+st2::packs:
+  linux:
+    ensure: present
+  cicd:
+    ensure: present
+    repo_url: https://github.com/StackStorm/st2incubator.git
+  slack:
+    ensure: present
+    repo_url: https://github.com/StackStorm/st2incubator.git
+    config:
+      post_message_action:
+        webhook_url: XXX
+```
+
 ### st2web
 
 Please note, `st2web` is currently under active development. In order to use

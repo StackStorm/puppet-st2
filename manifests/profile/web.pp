@@ -23,6 +23,7 @@
 class st2::profile::web(
   $github_oauth_token = undef,
   $st2_api_server     = $::ipaddress,
+  $revision           = 'v0.6.0',
 ) {
   if !$github_oauth_token {
     fail("Class['st2::profile::web']: ${st2::notices::web_no_oauth_token}")
@@ -39,6 +40,7 @@ class st2::profile::web(
     ensure   => present,
     provider => git,
     source   => "https://${github_oauth_token}@github.com/StackStorm/st2web.git",
+    revision => $revision,
     notify   => [
       Exec['npm-install-st2repo'],
       Exec['bower-install-st2repo'],
