@@ -18,6 +18,7 @@ define st2::pack (
   $ensure   = present,
   $pack     = $name,
   $repo_url = undef,
+  $config   = undef,
 ) {
 
   if $repo_url { $_repo_url = "repo_url=${repo_url}" }
@@ -36,4 +37,15 @@ define st2::pack (
     'path'        => '/usr/sbin:/usr/bin:/sbin:/bin',
     'refreshonly' => true,
   })
+
+  if $config {
+    validate_hash($config)
+    file { "/opt/stackstorm/packs/${pack}/config.yaml":
+      ensure  => file,
+      mode    => '0440',
+      content => template('st2/config.yaml.erb'),
+      require => Exec["install-st2-pack-${pack}"],
+      notify  => Exec["restart-st2"],
+    }
+  }
 }

@@ -94,12 +94,5 @@ class st2::profile::server (
   -> Ini_setting<| tag == 'st2::profile::server' |>
   -> Exec['start st2']
 
-  # Load up Hiera resources
-  $_hiera_packs = hiera_hash('st2::packs', {})
-  $_hiera_pack_configs = hiera_hash('st2::pack::configs', {})
-
-  create_resources('st2::pack', $_hiera_packs)
-  create_resources('st2::pack::config', $_hiera_pack_configs)
-
   Exec['start st2'] -> St2::Pack<||>
 }

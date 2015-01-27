@@ -14,7 +14,5 @@
 #
 class st2::packs {
   $_packs = hiera_hash('st2::packs', {})
-  $_configs = hiera_hash('st2::packs::config', {})
   create_resources('st2::pack', $_packs)
-  create_resources('st2::pack::config', $_configs)
 }
