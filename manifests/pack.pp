@@ -24,7 +24,7 @@ define st2::pack (
   else { $_repo_url = '' }
 
   exec { "install-st2-pack-${pack}":
-    command => "st2 action run packs.install packs=${pack} ${_repo_url}",
+    command => "st2 run packs.install packs=${pack} ${_repo_url}",
     creates => "/opt/stackstorm/packs/${pack}",
     path    => '/usr/sbin:/usr/bin:/sbin:/bin',
     require => Exec['start st2'],
