@@ -82,6 +82,9 @@ st2::packs:
   cicd:
     ensure: present
     repo_url: https://github.com/StackStorm/st2incubator.git
+  slack:
+    ensure: present
+    repo_url: https://github.com/StackStorm/st2incubator.git
     config:
       post_message_action:
         webhook_url: XXX
