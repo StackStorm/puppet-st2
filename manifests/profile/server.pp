@@ -60,7 +60,7 @@ class st2::profile::server (
   }
 
   exec { 'register st2 content':
-    command     => "python ${_python_pack}/st2common/bin/registercontent.py --config-file ${_conf_dir}/st2.conf",
+    command     => "python ${_python_pack}/st2common/bin/registercontent.py --register-sensors --register-actions --config-file ${_conf_dir}/st2.conf",
     path        => '/usr/bin:/usr/sbin:/bin:/sbin',
     refreshonly => true,
   }
@@ -84,6 +84,7 @@ class st2::profile::server (
   ## Needs to have real init scripts
   exec { 'start st2':
     command => 'st2ctl start',
+    unless  => 'ps ax | grep -v grep | grep actionrunner',
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
     require => Exec['register st2 content'],
   }
