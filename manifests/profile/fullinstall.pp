@@ -54,4 +54,6 @@ class st2::profile::fullinstall(
       require => Anchor['st2::pre_reqs'],
     }
   }
+
+  include ::st2::packs
 }
