@@ -14,6 +14,8 @@
 #    repo_url => 'http://github.com/StackStorm/st2incubator.git',
 #  }
 #
+#  st2::pack { 'linux, cicd': }
+#
 define st2::pack (
   $ensure   = present,
   $pack     = $name,
@@ -23,6 +25,14 @@ define st2::pack (
 
   if $repo_url { $_repo_url = "repo_url=${repo_url}" }
   else { $_repo_url = '' }
+
+  # To support many packs in a single action, SHA it out!
+  $_sha = sha1($pack)
+  file { "/opt/stackstorm/packs/.${_sha}":
+    ensure  => file,
+    content => "This file was installed when Puppet installed the st2 pack(s): ${pack}\nDelete it to reinstall via Puppet.",
+    notify  => Exec["install-st2-pack-${pack}"],
+  }
 
   exec { "install-st2-pack-${pack}":
     command => "st2 run packs.install packs=${pack} ${_repo_url}",

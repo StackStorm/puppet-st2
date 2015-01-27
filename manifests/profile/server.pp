@@ -89,7 +89,6 @@ class st2::profile::server (
     require => Exec['register st2 content'],
   }
 
-
   St2::Package::Install<| tag == 'st2::profile::server' |>
   -> Ini_setting<| tag == 'st2::profile::server' |>
   -> Exec['start st2']
