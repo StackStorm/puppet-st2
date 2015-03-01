@@ -8,6 +8,11 @@
 #  [*git_branch*]          - Tagged branch of Mistral to download/install
 #  [*db_root_password*]    - Root MySQL Password
 #  [*db_mistral_password*] - Mistral user MySQL Password
+#  [*db_server*]           - Server hosting Mistral DB
+#  [*db_database*]         - Database storing Mistral Data
+#  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
+#  [*db_max_overflow*]     - Max DB overload for Mistral Connections
+#  [*db_pool_recycle*]     - DB Pool recycle time
 #
 # === Examples
 #
@@ -24,6 +29,11 @@ class st2::profile::mistral(
   $git_branch          = $::st2::mistral_git_branch,
   $db_root_password    = 'StackStorm',
   $db_mistral_password = 'StackStorm',
+  $db_server           = 'localhost'
+  $db_database         = 'mistral',
+  $db_max_pool_size    = '100',
+  $db_max_overflow     = '400',
+  $db_pool_recycle     = '3600',
 ) inherits st2 {
   include '::st2::dependencies'
 
@@ -144,7 +154,28 @@ class st2::profile::mistral(
     path    => '/etc/mistral/mistral.conf',
     section => 'database',
     setting => 'connection',
-    value   => "mysql://mistral:${db_mistral_password}@localhost/mistral",
+    value   => "mysql://mistral:${db_mistral_password}@${db_server}/${db_database}",
+  }
+  ini_setting { 'connection pool config':
+    ensure  => present,
+    path    => '/etc/mistral/mistral.conf',
+    section => 'database',
+    setting => 'max_pool_size',
+    value   => $db_max_pool_size,
+  }
+  ini_setting { 'connection overflow config':
+    ensure  => present,
+    path    => '/etc/mistral/mistral.conf',
+    section => 'database',
+    setting => 'max_overflow',
+    value   => $db_max_overflow,
+  }
+  ini_setting { 'connection pool config':
+    ensure  => present,
+    path    => '/etc/mistral/mistral.conf',
+    section => 'database',
+    setting => 'pool_recycle',
+    value   => $db_pool_recycle,
   }
 
   ini_setting { 'pecan settings':
@@ -154,6 +185,7 @@ class st2::profile::mistral(
     setting => 'auth_enable',
     value   => 'false',
   }
+
 
   File<| tag == 'mistral' |> -> Ini_setting <| tag == 'mistral' |> -> Exec['setup mistral database']
   ### End Mistral Config Modeling ###
