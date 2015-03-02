@@ -87,6 +87,13 @@ class st2::profile::server (
     unless  => 'ps ax | grep -v grep | grep actionrunner',
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
     require => Exec['register st2 content'],
+    notify  => Exec['warmup'],
+  }
+
+  exec { 'warmup':
+    command     => 'sleep 20',
+    path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+    refreshonly => true,
   }
 
   St2::Package::Install<| tag == 'st2::profile::server' |>

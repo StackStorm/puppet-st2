@@ -92,10 +92,7 @@ st2::packs:
 
 ### st2web
 
-Please note, `st2web` is currently under active development. In order to use
-this module currently, you must have a user account with access to the repository
-https://github.com/StackStorm/st2web. If you would like access, please drop
-us a line at <support@stackstorm.com>
-
+`st2web` is now included! To access the WebUI, simply point your browser at
+http://(ipaddress):9101/webui.
 
 

@@ -3,14 +3,7 @@ angular.module('main')
   .constant('st2Config', {
 
     hosts: [{
-      name: 'Dev Env',
-      url: '//172.168.50.50:9101'
-    }, {
-      name: 'Express',
-      url: '//172.168.90.50:9101'
-    }, {
-      name: 'ST2Web (Puppet)',
+      name: 'StackStorm',
       url: '//<%= @st2_api_server %>:9101'
     }]
-
   });

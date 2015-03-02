@@ -9,26 +9,16 @@
 #  * NodeJS
 #  * Mistral/MySQL
 #
-# === Parameters
-#
-#  [*web*] - Include `st2web` in install (requires early access, contact support@stackstorm.com for access)
-#
 # === Examples
 #
 #  include st2::profile::fullinstall
 #
-class st2::profile::fullinstall(
-  $web = $::st2::web,
-) inherits st2 {
+class st2::profile::fullinstall inherits st2 {
   class { '::st2::profile::python':
     before => Anchor['st2::pre_reqs'],
   }
 
   class { '::st2::profile::rabbitmq':
-    before => Anchor['st2::pre_reqs'],
-  }
-
-  class { '::st2::profile::nodejs':
     before => Anchor['st2::pre_reqs'],
   }
 
@@ -41,19 +31,13 @@ class st2::profile::fullinstall(
     before => Anchor['st2::pre_reqs'],
   }
 
-
   anchor { 'st2::pre_reqs': }
 
   Anchor['st2::pre_reqs']
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
+  -> class { '::st2::profile::web': }
   -> class { '::st2::stanley': }
-
-  if $web {
-    class { '::st2::profile::web':
-      require => Anchor['st2::pre_reqs'],
-    }
-  }
 
   include ::st2::packs
 }
