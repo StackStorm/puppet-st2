@@ -29,7 +29,7 @@ class st2::profile::mistral(
   $git_branch          = $::st2::mistral_git_branch,
   $db_root_password    = 'StackStorm',
   $db_mistral_password = 'StackStorm',
-  $db_server           = 'localhost'
+  $db_server           = 'localhost',
   $db_database         = 'mistral',
   $db_max_pool_size    = '100',
   $db_max_overflow     = '400',
@@ -94,24 +94,42 @@ class st2::profile::mistral(
   python::virtualenv { '/opt/openstack/mistral':
     ensure       => present,
     version      => 'system',
-    requirements => '/opt/openstack/mistral/requirements.txt',
     systempkgs   => false,
     venv_dir     => '/opt/openstack/mistral/.venv',
     cwd          => '/opt/openstack/mistral',
     require      => Vcsrepo['/opt/openstack/mistral'],
-    notify       => Exec['setup mistral', 'setup st2mistral plugin'],
+    notify       => [
+      Exec['setup mistral', 'setup st2mistral plugin'],
+      Exec['python_requirementsmistral'],
+    ],
     before       => File['/etc/mistral/database_setup.lock'],
+  }
+
+  # Not using virtualenv requirements attribute because oslo has bad wheel, and fails
+  python::requirements { 'mistral':
+    requirements => '/opt/openstack/mistral/requirements.txt',
+    virtualenv   => '/opt/openstack/mistral/.venv',
   }
 
   python::pip { 'mysql-python':
     ensure     => present,
     virtualenv => '/opt/openstack/mistral/.venv',
     require    => Vcsrepo['/opt/openstack/mistral'],
+    before   => [
+      Exec['setup mistral'],
+      Exec['setup st2mistral plugin'],
+      Exec['setup mistral database'],
+    ],
   }
 
   python::pip { 'python-mistralclient':
     ensure => present,
     url    => "git+https://github.com/StackStorm/python-mistralclient.git@${git_branch}",
+    before   => [
+      Exec['setup mistral'],
+      Exec['setup st2mistral plugin'],
+      Exec['setup mistral database'],
+    ],
   }
   ### END Bootstrap Python ###
 
@@ -170,7 +188,7 @@ class st2::profile::mistral(
     setting => 'max_overflow',
     value   => $db_max_overflow,
   }
-  ini_setting { 'connection pool config':
+  ini_setting { 'db pool recycle config':
     ensure  => present,
     path    => '/etc/mistral/mistral.conf',
     section => 'database',
@@ -222,7 +240,9 @@ class st2::profile::mistral(
       '/bin',
       '/sbin',
     ],
-    require     => Vcsrepo['/opt/openstack/mistral'],
+    require     => [
+      Vcsrepo['/opt/openstack/mistral'],
+    ],
   }
 
   ### Mistral Init Scripts ###

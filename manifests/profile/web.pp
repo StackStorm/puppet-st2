@@ -16,83 +16,44 @@
 #
 # === Examples
 #
-#  class { '::st2::profile::web':
-#    github_oauth_token = 'abcd0011222333',
-#  }
+#  include ::nginx
 #
 class st2::profile::web(
-  $github_oauth_token = undef,
-  $st2_api_server     = $::ipaddress,
-  $revision           = 'v0.6.0',
+  $st2_api_server = $::ipaddress,
+  $version        = '0.8dev',
 ) {
-  if !$github_oauth_token {
-    fail("Class['st2::profile::web']: ${st2::notices::web_no_oauth_token}")
-  }
-
-  file { '/opt/st2web':
+  file { [
+      '/opt/stackstorm/static',
+      '/opt/stackstorm/static/webui',
+    ]:
     ensure => directory,
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
   }
 
-  vcsrepo { '/opt/st2web':
-    ensure   => present,
-    provider => git,
-    source   => "https://${github_oauth_token}@github.com/StackStorm/st2web.git",
-    revision => $revision,
-    notify   => [
-      Exec['npm-install-st2repo'],
-      Exec['bower-install-st2repo'],
-    ],
+  wget::fetch { 'st2web':
+    source      => "http://ops.stackstorm.net/releases/st2/${version}/webui/webui-${version}.tar.gz",
+    cache_dir   => '/var/cache/wget',
+    destination => '/tmp/st2web.tar.gz',
+    before      => Exec['extract webui'],
+  }
+
+  exec { 'extract webui':
+    command => 'tar -xzvf /tmp/st2web.tar.gz -C /opt/stackstorm/static/webui --strip-components=1 --owner root --group root --no-same-owner',
+    creates => '/opt/stackstorm/static/webui/index.html',
+    path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+    require => File['/opt/stackstorm/static/webui'],
   }
 
   # This is crude... get some augeas on
   ## Manage connection list currently
-  file { '/opt/st2web/config.js':
+  file { '/opt/stackstorm/static/webui/config.js':
     ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
     content => template('st2/opt/st2web/config.js.erb'),
-    require => Vcsrepo['/opt/st2web'],
-  }
-
-  exec { 'npm-install-st2repo':
-    command     => 'npm install',
-    cwd         => '/opt/st2web',
-    path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-    refreshonly => true,
-    require     => Class['::nodejs'],
-  }
-
-  exec { 'bower-install-st2repo':
-    command     => 'bower --allow-root install',
-    cwd         => '/opt/st2web',
-    path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-    refreshonly => true,
-    require     => [
-      Exec['npm-install-st2repo'],
-      Class['::nodejs'],
-    ],
-  }
-
-  # Needs a SystemD init script too!
-  file { '/etc/init/st2web.conf':
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0444',
-    source => 'puppet:///modules/st2/etc/init/st2web.conf',
-  }
-
-  service { 'st2web':
-    ensure  => running,
-    enable  => true,
-    require => [
-      Exec['bower-install-st2repo'],
-      Class['::nodejs'],
-      File['/etc/init/st2web.conf'],
-    ],
+    require => Exec['extract webui'],
   }
 }

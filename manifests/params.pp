@@ -41,6 +41,7 @@ class st2::params(
     'st2actions',
     'st2api',
     'st2auth',
+    'st2debug',
   ]
   $st2_client_packages = [
     'st2client',
