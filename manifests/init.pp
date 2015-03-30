@@ -16,8 +16,8 @@
 #    st2::revison: 11
 #
 class st2(
-  $version            = '0.8',
+  $version            = '0.8.2',
   $revision           = undef,
-  $mistral_git_branch = 'st2-0.8.0',
+  $mistral_git_branch = 'st2-0.8.1',
   $web                = false,
 ) { }
