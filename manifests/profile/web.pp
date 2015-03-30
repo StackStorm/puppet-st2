@@ -20,8 +20,8 @@
 #
 class st2::profile::web(
   $st2_api_server = $::ipaddress,
-  $version        = '0.8dev',
-) {
+  $version        = $::st2::version,
+) inherits st2 {
   file { [
       '/opt/stackstorm/static',
       '/opt/stackstorm/static/webui',
