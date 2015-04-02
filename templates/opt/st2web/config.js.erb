@@ -4,6 +4,6 @@ angular.module('main')
 
     hosts: [{
       name: 'StackStorm',
-      url: '//<%= @st2_api_server %>:9101'
+      <% if @st2_api_url %>url: '<%= @st2_api_url %>',<% end %>
     }]
   });
