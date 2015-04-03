@@ -18,6 +18,7 @@
 class st2(
   $version            = '0.8.2',
   $revision           = undef,
+  $st2_api_url        = undef,
   $mistral_git_branch = 'st2-0.8.1',
   $web                = false,
 ) { }

@@ -7,8 +7,8 @@
 #
 # === Parameters
 #
-#  [*github_oauth_token*] - Version of StackStorm to install
-#  [*st2_api_server*]     - Revision of StackStorm to install
+#  [*st2_api_url*]  - URL of st2_api service -- ex: http://127.0.0.1:9101
+#  [*version*]      - Version of StackStorm WebUI to install
 #
 # === Variables
 #
@@ -19,7 +19,7 @@
 #  include ::nginx
 #
 class st2::profile::web(
-  $st2_api_server = $::ipaddress,
+  $st2_api_url    = $::st2::st2_api_url,
   $version        = $::st2::version,
 ) inherits st2 {
   file { [
