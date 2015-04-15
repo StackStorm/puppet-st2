@@ -5,7 +5,6 @@
 # === Parameters
 #
 #  [*version*] - Version of StackStorm to install
-#  [*revision*] - Revision of StackStorm to install
 #
 # === Variables
 #
@@ -18,7 +17,6 @@
 #
 class st2::profile::client (
   $version  = $::st2::version,
-  $revision = $::st2::revision,
 ) inherits ::st2 {
 
   include '::st2::notices'
@@ -30,8 +28,8 @@ class st2::profile::client (
   st2::dependencies::install { $_client_dependencies: }
 
   st2::package::install { $_client_packages:
-    version     => $version,
-    revision    => $revision,
+    version  => $version,
+    revision => '1',
   }
 
   ### This should be a versioned download too... currently on master
