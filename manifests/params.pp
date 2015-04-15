@@ -44,7 +44,7 @@ class st2::params(
     'st2debug',
   ]
   $st2_client_packages = [
-    'st2client',
+    'python-st2client',
   ]
 
   ### Debian Specific Information ###

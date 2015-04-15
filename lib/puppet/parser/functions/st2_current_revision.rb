@@ -13,7 +13,7 @@ module Puppet::Parser::Functions
     }
 
     if auto_update
-      revision = open("https://ops.stackstorm.net/releases/st2/#{version}/#{type}/current/VERSION.txt").read.chomp
+      revision = open("https://downloads.stackstorm.net/releases/st2/#{version}/#{type}/current/VERSION.txt").read.chomp
     else
       revision = sticki_versions[version]
     end

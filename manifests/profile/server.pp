@@ -33,6 +33,10 @@ class st2::profile::server (
     'Debian' => '/usr/lib/python2.7/dist-packages',
     'RedHat' => '/usr/lib/python2.7/site-packages',
   }
+  $_register_command = $version ? {
+    /^0.8/  => "${_python_pack}/st2common/bin/registercontent.py",
+    default => "${_python_pack}/st2common/bin/st2-register-content",
+  }
 
   file { $_conf_dir:
     ensure => directory,
@@ -60,7 +64,7 @@ class st2::profile::server (
   }
 
   exec { 'register st2 content':
-    command     => "python ${_python_pack}/st2common/bin/registercontent.py --register-sensors --register-actions --config-file ${_conf_dir}/st2.conf",
+    command     => "python ${_register_command} --register-all --config-file ${_conf_dir}/st2.conf",
     path        => '/usr/bin:/usr/sbin:/bin:/sbin',
     refreshonly => true,
   }
