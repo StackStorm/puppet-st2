@@ -37,6 +37,10 @@ class st2::profile::server (
     /^0.8/  => "${_python_pack}/st2common/bin/registercontent.py",
     default => "${_python_pack}/st2common/bin/st2-register-content",
   }
+  $_enable_auth = $::st2::auth ? {
+    true    => 'True',
+    default => 'False',
+  }
 
   file { $_conf_dir:
     ensure => directory,
@@ -83,6 +87,14 @@ class st2::profile::server (
     section => 'system_user',
     setting => 'ssh_key_file',
     value   => '/home/stanley/.ssh/st2_stanley_key',
+  }
+
+  ini_setting { 'auth':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'enable',
+    value   => $_enable_auth,
   }
 
   ## Needs to have real init scripts
