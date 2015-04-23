@@ -4,18 +4,20 @@
 # StackStorm. Has the option to manage a companion MySQL Server
 #
 # === Parameters
-#  [*manage_mysql*]        - Flag used to have MySQL installed/managed via this profile (Default: false)
-#  [*git_branch*]          - Tagged branch of Mistral to download/install
-#  [*db_root_password*]    - Root MySQL Password
-#  [*db_mistral_password*] - Mistral user MySQL Password
-#  [*db_server*]           - Server hosting Mistral DB
-#  [*db_database*]         - Database storing Mistral Data
-#  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
-#  [*db_max_overflow*]     - Max DB overload for Mistral Connections
-#  [*db_pool_recycle*]     - DB Pool recycle time
-#  [*uwsgi*]               - Flag to setup uWSGI (default: false)
-#  [*uwsgi_listen_ip*]     - Listen address for uWSGI (default: $::ipaddress)
-#  [*uwsgi_listen_port*]   - Listen port for uWSGI (default: 8989)
+#  [*manage_mysql*]            - Flag used to have MySQL installed/managed via this profile (Default: false)
+#  [*git_branch*]              - Tagged branch of Mistral to download/install
+#  [*db_root_password*]        - Root MySQL Password
+#  [*db_mistral_password*]     - Mistral user MySQL Password
+#  [*db_server*]               - Server hosting Mistral DB
+#  [*db_database*]             - Database storing Mistral Data
+#  [*db_max_pool_size*]        - Max DB Pool size for Mistral Connections
+#  [*db_max_overflow*]         - Max DB overload for Mistral Connections
+#  [*db_pool_recycle*]         - DB Pool recycle time
+#  [*uwsgi*]                   - Flag to setup uWSGI (default: false)
+#  [*uwsgi_listen_ip*]         - Listen address for uWSGI (default: $::ipaddress)
+#  [*uwsgi_listen_port*]       - Listen port for uWSGI (default: 8989)
+#  [*uwsgi_processes*]         - spawn the specified number of workers/processes (default: 25)
+#  [*uwsgi_listen_queue_size*] - set the socket listen queue size (default: 128)
 #
 # === Examples
 #
@@ -294,6 +296,7 @@ class st2::profile::mistral(
     file { '/opt/stackstorm/mistral_api.sock':
       ensure => present,
       owner  => $_sock_user,
+      group  => $_sock_user,
     }
 
     class { 'uwsgi':
@@ -301,7 +304,20 @@ class st2::profile::mistral(
       install_python_dev => false,
     }
 
+    uwsgi::app { 'mistral':
+      unsure              => present,
+      uid                 => $_sock_user,
+      gid                 => $_sock_user,
+      application_options => {
+        'socket'    => '/opt/stackstorm/mistral_api.sock',
+        'home'      => '/opt/openstack/mistral/.venv/',
+        'processes' => $uwsgi_processes,
+        'listen'    => $uwsgi_listen_queue_size,
+      }
+    }
+
     include ::nginx
+
     nginx::resource::upstream { 'mistral-uwsgi':
       ensure  => present,
       members => [ 'unix://opt/stackstorm/mistral_api.sock' ],
