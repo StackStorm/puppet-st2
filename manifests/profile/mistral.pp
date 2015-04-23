@@ -34,6 +34,9 @@ class st2::profile::mistral(
   $db_max_pool_size    = '100',
   $db_max_overflow     = '400',
   $db_pool_recycle     = '3600',
+  $uwsgi               = false,
+  $uwsgi_listen_ip     = $::ipaddress,
+  $uwsgi_listen_port   = '8989',
 ) inherits st2 {
   include '::st2::dependencies'
 
@@ -246,6 +249,15 @@ class st2::profile::mistral(
   }
 
   ### Mistral Init Scripts ###
+  $_upstart_init_script = $uwsgi ? {
+    true    => 'puppet:///modules/st2/etc/init/mistral.uwsgi.conf',
+    default => 'puppet:///modules/st2/etc/init/mistral.conf',
+  }
+  $_systemd_init_script = $uwsgi ? {
+    true    => 'puppet:///modules/st2/etc/systemd/system/mistral.uwsgi.service',
+    default => 'puppet:///modules/st2/etc/systemd/system/mistral.service',
+  }
+
   case $::osfamily {
     'Debian': {
       # A bit sloppy, but this only covers Ubuntu right now. Fix this
@@ -254,7 +266,7 @@ class st2::profile::mistral(
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/st2/etc/init/mistral.conf',
+        source => $_upstart_init_script,
       }
     }
     'RedHat': {
@@ -263,9 +275,47 @@ class st2::profile::mistral(
         owner  => 'root',
         group  => 'root',
         mode   => '0444',
-        source => 'puppet:///modules/st2/etc/systemd/system/mistral.service',
+        source => $_systemd_init_script,
       }
     }
   }
   ### END Mistral Init Scripts ###
+
+  ### START uWSGI Specific Items ###
+  if $uwsgi {
+    $_sock_user = $::operatingfamily ? {
+      'Debian' => 'www-data',
+      'RedHat' => 'nginx',
+    }
+
+    file { '/opt/stackstorm/mistral_api.sock':
+      ensure => present,
+      owner  => $_sock_user,
+    }
+
+    class { 'uwsgi':
+      install_pip        => false,
+      install_python_dev => false,
+    }
+
+    include ::nginx
+    nginx::resource::upstream { 'mistral-uwsgi':
+      ensure  => present,
+      members => [ 'unix://opt/stackstorm/mistral_api.sock' ],
+    }
+
+    nginx::resource::vhost { 'mistral-uwsgi':
+      ensure            => present,
+      listen_ip         => $uwsgi_ip,
+      listen_port       => $uwsgi_port,
+      vhost_cfg_prepend => {
+        'charset' => 'utf-8',
+      }
+      location_raw_prepend => [
+        'uwsgi_pass  mistral;',
+        'include     /etc/nginx/mistral_params;',
+        'uwsgi_param UWSGI_PYHOME /opt/openstack/mistral/.venv;',
+      ],
+    }
+  }
 }
