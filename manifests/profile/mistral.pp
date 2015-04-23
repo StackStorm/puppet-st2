@@ -13,6 +13,9 @@
 #  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
 #  [*db_max_overflow*]     - Max DB overload for Mistral Connections
 #  [*db_pool_recycle*]     - DB Pool recycle time
+#  [*uwsgi*]               - Flag to setup uWSGI (default: false)
+#  [*uwsgi_listen_ip*]     - Listen address for uWSGI (default: $::ipaddress)
+#  [*uwsgi_listen_port*]   - Listen port for uWSGI (default: 8989)
 #
 # === Examples
 #
@@ -312,9 +315,20 @@ class st2::profile::mistral(
         'charset' => 'utf-8',
       }
       location_raw_prepend => [
-        'uwsgi_pass  mistral;',
-        'include     /etc/nginx/mistral_params;',
-        'uwsgi_param UWSGI_PYHOME /opt/openstack/mistral/.venv;',
+        'uwsgi_pass   mistral;',
+        'uwsgi_param  UWSGI_PYHOME       /opt/openstack/mistral/.venv;',
+        'uwsgi_param  QUERY_STRING       $query_string;',
+        'uwsgi_param  REQUEST_METHOD     $request_method;',
+        'uwsgi_param  CONTENT_TYPE       $content_type;',
+        'uwsgi_param  CONTENT_LENGTH     $content_length;',
+        'uwsgi_param  REQUEST_URI        $request_uri;',
+        'uwsgi_param  PATH_INFO          $document_uri;',
+        'uwsgi_param  DOCUMENT_ROOT      $document_root;',
+        'uwsgi_param  SERVER_PROTOCOL    $server_protocol;',
+        'uwsgi_param  REMOTE_ADDR        $remote_addr;',
+        'uwsgi_param  REMOTE_PORT        $remote_port;',
+        'uwsgi_param  SERVER_PORT        $server_port;',
+        'uwsgi_param  SERVER_NAME        $server_name;',
       ],
     }
   }
