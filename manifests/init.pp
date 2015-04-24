@@ -22,4 +22,11 @@ class st2(
   $mistral_git_branch = 'st2-0.8.1',
   $web                = false,
   $auth               = false,
-) { }
+  $rabbit_user        = $::st2::params::rabbit_user,
+  $rabbit_pass        = $::st2::params::rabbit_pass,
+  $rabbit_host        = $::st2::params::rabbit_host,
+  $rabbit_port        = $::st2::params::rabbit_port,
+  $st2_api_url        = $::st2::params::st2_api_url,
+  $mistral_api_url    = $::st2::params::mistral_api_url,
+  $mistral_api_port   = $::st2::params::mistral_api_port,
+) inherits ::st2::params { }

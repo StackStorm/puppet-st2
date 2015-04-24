@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache 2.0",
@@ -20,7 +20,10 @@
     {"name":"puppetlabs-mongodb","version_requirement":">= 0.8.0"},
     {"name":"puppetlabs-mysql","version_requirement":">= 3.0.0"},
     {"name":"puppetlabs-rabbitmq","version_requirement":">= 4.1.0"},
-    {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.2.0"}
+    {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.2.0"},
+    {"name":"jfryman-nginx","version_requirement":">= 0.2.6"},
+    {"name":"ajcrowe-supervisord","version_requirement":">= 0.5.2"},
+    {"name":"engage-uwsgi","version_requirement":">= 1.2.0"}
   ]
 }
 

@@ -1,0 +1,9 @@
+[Unit]
+Description=Mistral Workflow Service
+
+[Service]
+ExecStart=/opt/openstack/mistral/.venv/bin/python /opt/openstack/mistral/mistral/cmd/launch.py --server engine,executor --config-file /etc/mistral/mistral.conf --log-file /var/log/mistral_api.log &> /dev/null &
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

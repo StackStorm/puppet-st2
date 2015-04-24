@@ -43,9 +43,53 @@ class st2::params(
     'st2auth',
     'st2debug',
   ]
-  $st2_client_packages = [
-    'python-st2client',
-  ]
+  $st2_client_packages = $::osfamily ? {
+    'RedHat' => 'st2client',
+    'Debian' => 'python-st2client',
+  }
+
+  $db_host             = 'localhost'
+  $db_port             = '27017'
+  $db_name             = 'st2'
+  $db_user             = ''
+  $db_pass             = ''
+  $db_mistral_host     = 'localhost'
+  $db_mistral_user     = 'mistral'
+  $db_mistral_password = 'StackStorm'
+  $rabbit_user         = 'guest'
+  $rabbit_pass         = 'guest'
+  $rabbit_host         = 'localhost'
+  $rabbit_port         = 5672
+  $st2_api_url         = '0.0.0.0'
+  $mistral_api_url     = $st2_api_url
+  $mistral_api_port    = 8989
+  $mistral_v2_base_url = "http://${mistral_api_url}:${mistral_api_port}/v2/"
+  $workflow_url        = "http://${mistral_api_url}:${mistral_api_port}"
+  $rabbit_connection_string = "amqp://${rabbit_user}:${rabbit_port}@${rabbit_host}:${rabbit_port}/"
+
+  $rules_engine      = false
+  $sensor_container  = false
+  $st2api            = false
+  $history           = false
+  $resultstracker    = false
+  $mistral           = false
+  $mistral_executors = 10
+  $actionrunners     = 10
+
+  $github_oauth_token = ''
+  $install_profile   = 'fullinstall'
+
+  $syslog            = false
+  $syslog_host       = 'localhost'
+
+  # One off for RHEL 6. Custom built Python 2.7 should live in /usr/local
+  # so, let's favor that one. Any OS with a custom python should change
+  # this value to '/usr/local' for proper bootstrapping.
+  if $::osfamily == 'RedHat' and $::operatingsystemmajrelease == '6' {
+    $system_python = '/usr/local'
+  } else {
+    $system_python = undef
+  }
 
   ### Debian Specific Information ###
   $debian_dependencies = [
@@ -83,4 +127,5 @@ class st2::params(
     'python-prettytable',
   ]
   ### END RedHat Specific Information ###
+
 }
