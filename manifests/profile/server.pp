@@ -29,6 +29,7 @@ class st2::profile::server (
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
+  $_system_python = $::st2::params::system_python
   $_python_pack = $::osfamily ? {
     'Debian' => '/usr/lib/python2.7/dist-packages',
     'RedHat' => '/usr/lib/python2.7/site-packages',
@@ -57,8 +58,9 @@ class st2::profile::server (
   }
 
   python::requirements { '/tmp/st2server-requirements.txt':
-    require => Wget::Fetch['Download st2server requirements.txt'],
-    before  => Exec['register st2 content'],
+    virtualenv => $_system_python,
+    require    => Wget::Fetch['Download st2server requirements.txt'],
+    before     => Exec['register st2 content'],
   }
 
   st2::package::install { $_server_packages:
@@ -69,7 +71,7 @@ class st2::profile::server (
 
   exec { 'register st2 content':
     command     => "python ${_register_command} --register-all --config-file ${_conf_dir}/st2.conf",
-    path        => '/usr/bin:/usr/sbin:/bin:/sbin',
+    path        => '/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin',
     refreshonly => true,
   }
 

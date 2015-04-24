@@ -24,11 +24,18 @@ class st2::profile::client (
 
   $_client_packages = $st2::params::st2_client_packages
   $_client_dependencies = $st2::params::debian_client_dependencies
+  $_revision = st2_current_revision($version, 'rpms')
+  $_system_python = $::st2::params::system_python
 
   st2::dependencies::install { $_client_dependencies: }
 
+  $_version = $::osfamily ? {
+    'RedHat' => "${version}.${_revision}",
+    default  => $version,
+  }
+
   st2::package::install { $_client_packages:
-    version  => $version,
+    version  => $_version,
     revision => '1',
   }
 
@@ -40,6 +47,7 @@ class st2::profile::client (
   }
 
   python::requirements { '/tmp/st2client-requirements.txt':
-    require => Wget::Fetch['Download st2client requirements.txt'],
+    virtualenv => $_system_python,
+    require    => Wget::Fetch['Download st2client requirements.txt'],
   }
 }
