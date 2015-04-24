@@ -27,11 +27,13 @@ define st2::pack (
   else { $_repo_url = '' }
 
   exec { "install-st2-pack-${pack}":
-    command => "st2 run packs.install packs=${pack} ${_repo_url}",
-    creates => "/opt/stackstorm/packs/${pack}",
-    path    => '/usr/sbin:/usr/bin:/sbin:/bin',
-    require => Exec['start st2'],
-    notify  => Exec['restart-st2'],
+    command   => "st2 run packs.install packs=${pack} ${_repo_url}",
+    creates   => "/opt/stackstorm/packs/${pack}",
+    path      => '/usr/sbin:/usr/bin:/sbin:/bin',
+    tries     => '5',
+    try_sleep => '10',
+    require   => Exec['start st2'],
+    notify    => Exec['restart-st2'],
   }
 
   ensure_resource('exec', 'restart-st2', {
