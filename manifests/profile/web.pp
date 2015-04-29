@@ -19,8 +19,10 @@
 #  include ::nginx
 #
 class st2::profile::web(
-  $st2_api_url    = $::st2::st2_api_url,
-  $version        = $::st2::version,
+  $api_url  = $::st2::api_url,
+  $auth     = $::st2::auth,
+  $auth_url = $::st2::auth_url,
+  $version  = $::st2::version,
 ) inherits st2 {
   file { [
       '/opt/stackstorm/static',

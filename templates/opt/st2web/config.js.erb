@@ -4,6 +4,15 @@ angular.module('main')
 
     hosts: [{
       name: 'StackStorm',
-      <% if @st2_api_url %>url: '<%= @st2_api_url %>',<% end %>
+      <%- if @api_url %>
+      url: '<%= @api_url %>',
+      <%- else -%>
+      url: '//:9101',
+      <%- end -%>
+      <%- if @auth and @auth_url %>
+      auth: '<%= @auth_url %>',
+      <%- elsif @auth and not @auth_url -%>
+      auth: '//:9100',
+      <%- end -%>
     }]
   });
