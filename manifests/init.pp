@@ -19,9 +19,9 @@
 #    st2::revison: 11
 #
 class st2(
-  $version            = '0.8.3',
+  $version            = '0.9.0',
   $revision           = undef,
-  $mistral_git_branch = 'st2-0.8.1',
+  $mistral_git_branch = 'st2-0.9.0',
   $api_url            = undef,
   $auth               = false,
   $auth_url           = undef,
