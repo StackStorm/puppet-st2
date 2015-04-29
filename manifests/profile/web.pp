@@ -33,7 +33,7 @@ class st2::profile::web(
   }
 
   wget::fetch { 'st2web':
-    source      => "http://ops.stackstorm.net/releases/st2/${version}/webui/webui-${version}.tar.gz",
+    source      => "http://downloads.stackstorm.net/releases/st2/${version}/webui/webui-${version}.tar.gz",
     cache_dir   => '/var/cache/wget',
     destination => '/tmp/st2web.tar.gz',
     before      => Exec['extract webui'],
