@@ -29,6 +29,13 @@ define st2::package::install(
       } else {
         $_revision = st2_current_revision($version, $_type)
       }
+
+      # Temporary Hack while fixing build pipeline
+      if $name =~ /client/ {
+        $_version = "${version}.${_revision}-1"
+      } else {
+        $_version = "${version}-${_revision}"
+      }
     }
     'RedHat': {
       include ::st2::package::redhat
@@ -40,11 +47,13 @@ define st2::package::install(
       } else {
         $_revision = st2_current_revision($version, $_type)
       }
+
+      $_version = "${version}-${_revision}"
     }
     default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }
   }
 
   package { $name:
-    ensure => "${version}-${_revision}",
+    ensure => $_version,
   }
 }
