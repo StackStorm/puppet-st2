@@ -26,6 +26,12 @@ class st2::profile::client (
   $_client_packages = $st2::params::st2_client_packages
   $_client_dependencies = $st2::params::debian_client_dependencies
 
+  $_auth = $::st2::auth
+  $_api_url = $::st2::api_url
+  $_auth_url = $::st2::auth_url
+  $_cli_username = $::st2::cli_username
+  $_cli_password = $::st2::cli_password
+
   st2::dependencies::install { $_client_dependencies: }
 
   st2::package::install { $_client_packages:
@@ -42,4 +48,50 @@ class st2::profile::client (
   python::requirements { '/tmp/st2client-requirements.txt':
     require => Wget::Fetch['Download st2client requirements.txt'],
   }
+
+  file { '/root/.st2':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
+  if $_api_url {
+    ini_setting { 'api_url':
+      ensure  => 'present',
+      path    => '/root/.st2/config',
+      section => 'api',
+      setting => 'url',
+      value   => "${_api_url}/v1,
+    }
+  }
+
+  if $_auth_url {
+    ini_setting { 'auth_url':
+      ensure  => 'present',
+      path    => '/root/.st2/config',
+      section => 'auth',
+      setting => 'url',
+      value   => $_auth_url,
+    }
+  }
+
+  if $auth {
+    ini_setting { 'credentials_username':
+      ensure  => 'present',
+      path    => '/root/.st2/config',
+      section => 'credentials',
+      setting => 'username',
+      value   => $_cli_username,
+    }
+    ini_setting { 'credentials_password':
+      ensure  => 'present',
+      path    => '/root/.st2/config',
+      section => 'credentials',
+      setting => 'password',
+      value   => $_cli_password,
+    }
+  }
+
+  File['/root/.st2'] -> Ini_setting <| tag == 'st2::profile::client' |>
 }

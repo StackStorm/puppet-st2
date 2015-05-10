@@ -22,7 +22,10 @@ class st2(
   $version            = '0.9.0',
   $revision           = undef,
   $mistral_git_branch = 'st2-0.9.0',
-  $api_url            = undef,
-  $auth               = false,
-  $auth_url           = undef,
+  $api_url            = "http://${::fqdn}:9101",
+  $auth               = true,
+  $auth_url           = "http://${::fqdn}:9100",
+  $auth_mode          = 'standalone',
+  $cli_username       = 'puppet',
+  $cli_password       = fqdn_rand_string(32),
 ) { }

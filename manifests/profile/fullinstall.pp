@@ -36,6 +36,7 @@ class st2::profile::fullinstall inherits st2 {
   Anchor['st2::pre_reqs']
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
+  -> class { '::st2::auth::standalone': }
   -> class { '::st2::profile::web': }
   -> class { '::st2::stanley': }
 
