@@ -62,7 +62,7 @@ class st2::profile::client (
       path    => '/root/.st2/config',
       section => 'api',
       setting => 'url',
-      value   => "${_api_url}/v1,
+      value   => "${_api_url}/v1",
     }
   }
 
