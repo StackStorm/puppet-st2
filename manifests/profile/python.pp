@@ -24,5 +24,4 @@ class st2::profile::python {
       virtualenv => true,
     }
   }
-
 }
