@@ -22,7 +22,6 @@ class st2::profile::dependencies {
 
   python::requirements { '/tmp/st2server-requirements.txt':
     require => Wget::Fetch['Download st2server requirements.txt'],
-    before  => Exec['register st2 content'],
   }
 
   ### This should be a versioned download too... currently on master
