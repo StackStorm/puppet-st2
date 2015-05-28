@@ -30,6 +30,21 @@ class st2::params(
   $robots_group_name = 'st2robots',
   $robots_group_gid  = 800,
 ) {
+  $subsystems = [
+    'actionrunner', 'api', 'sensorcontainer',
+    'rulesengine', 'resultstracker', 'notifier',
+    'auth'
+  ]
+
+  $component_map = {
+    actionrunner    => 'st2actions',
+    api             => 'st2api',
+    auth            => 'st2auth',
+    notifier        => 'st2actions',
+    resultstracker  => 'st2actions',
+    rulesengine     => 'st2reactor',
+    sensorcontainer => 'st2reactor',
+  }
 
   # Non-user configurable parameters
   $repo_url = 'https://github.com/StackStorm/st2'
