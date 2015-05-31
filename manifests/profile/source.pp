@@ -3,11 +3,13 @@
 #  Profile to install all requirements to run st2
 #
 # === Parameters
+#  [*branch*] - Branch of st2 to bootstrap against
 #
 # === Variables
 #
+# [*_repo_root*] - Root directory where source code is download/setup
+#
 # === Examples
-
 #  include st2::profile::source
 #
 class st2::profile::source(

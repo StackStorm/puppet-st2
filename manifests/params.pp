@@ -9,6 +9,8 @@
 # === Variables
 #  [*repo_url*] - The URL where the StackStorm project is hosted on GitHub
 #  [*conf_dir*] - The local directory where st2 config is stored
+#  [*subsystems*] - Different executable subsystems within StackStorm
+#  [*component_map*] - Hash table of mappings of Subsystems -> Components
 #  [*st2_server_packages*] - A list of all upstream server packages to grab from upstream package server
 #  [*st2_client_packages*] - A list of all upstream client packages to grab from upstream package server
 #  [*debian_dependencies*] - Any dependencies needed to successfully run st2 server on the Debian OS Family

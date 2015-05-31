@@ -1,3 +1,27 @@
+# Class: st2::container
+#
+#  Class used to assemble containers using tiller
+#
+# Description
+#
+#  This class downloads all the necessary bits for
+#  StackStorm in source format, and sets up Tiller
+#  to be a single entry point for deployment.
+#
+#  Configuration is set by an erb template compiled at
+#  runtime and populated by environment variables. File
+#  is located at st2/files/etc/st2/st2.conf.erb
+#
+# Parameters:
+#
+# [*subsystem*] - Which container to build based on subsystem
+#                 See st2::params::subsystems for known types
+# [*code_dir*]  - Location to put source code run on the system.
+#
+# Usage:
+#  class { '::st2::container':
+#    subsystem => 'actionrunner',
+#  }
 class st2::container (
   $subsystem = undef,
   $code_dir  = '/opt/stackstorm/src',
