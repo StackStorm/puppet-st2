@@ -2,26 +2,20 @@
 <%- api_url = env_st2_api_url || 'http://localhost:9101' -%>
 <%- conf_root = env_st2_conf_root || '/etc' -%>
 <%- debug = env_st2_debug || 'False' -%>
-
 <%- rmq_host = env_st2_rmq_port || 'localhost' -%>
 <%- rmq_vhost = env_st2_rmq_port || nil -%>
 <%- rmq_username = env_st2_rmq_username || 'guest' -%>
 <%- rmq_password = env_st2_rmq_password || 'guest' -%>
 <%- rmq_port = env_st2_rmq_port || '5672' -%>
 <%- rmq_url = "amqp://#{rmq_username}:#{rmq_password}@#{rmq_host}:#{rmq_port}/#{rmq_vhost}" -%>
-
 <%- allow_origin = env_st2_api_allow_origin || '*' -%>
-
 <%- standalone_file_path = env_st2_auth_standalone_file || '/etc/st2/htpasswd' -%>
-
 <%- syslog_host = env_st2_syslog_host || 'localhost' -%>
 <%- syslog_port = env_st2_syslog_port || 514 -%>
 <%- syslog_facility = env_st2_syslog_facility || 'local7' -%>
 <%- syslog_protocol = env_st2_syslog_protocol || 'udp' -%>
-
 <%- system_user = env_st2_system_user || 'stanley' -%>
 <%- ssh_key_file = env_st2_ssh_key_file || '/home/stanley/.ssh/st2_stanley_key' -%>
-
 <%- db_host = env_st2_db_host || 'localhost' -%>
 <%- db_port = env_st2_db_port || 27017 -%>
 <%- db_name = env_st2_db_name || 'st2' -%>
