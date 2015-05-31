@@ -9,6 +9,8 @@
 # === Variables
 #  [*repo_url*] - The URL where the StackStorm project is hosted on GitHub
 #  [*conf_dir*] - The local directory where st2 config is stored
+#  [*subsystems*] - Different executable subsystems within StackStorm
+#  [*component_map*] - Hash table of mappings of Subsystems -> Components
 #  [*st2_server_packages*] - A list of all upstream server packages to grab from upstream package server
 #  [*st2_client_packages*] - A list of all upstream client packages to grab from upstream package server
 #  [*debian_dependencies*] - Any dependencies needed to successfully run st2 server on the Debian OS Family
@@ -30,6 +32,21 @@ class st2::params(
   $robots_group_name = 'st2robots',
   $robots_group_gid  = 800,
 ) {
+  $subsystems = [
+    'actionrunner', 'api', 'sensorcontainer',
+    'rulesengine', 'resultstracker', 'notifier',
+    'auth'
+  ]
+
+  $component_map = {
+    actionrunner    => 'st2actions',
+    api             => 'st2api',
+    auth            => 'st2auth',
+    notifier        => 'st2actions',
+    resultstracker  => 'st2actions',
+    rulesengine     => 'st2reactor',
+    sensorcontainer => 'st2reactor',
+  }
 
   # Non-user configurable parameters
   $repo_url = 'https://github.com/StackStorm/st2'
