@@ -3,6 +3,31 @@
 <%- conf_root = env_st2_conf_root || '/etc' -%>
 <%- debug = env_st2_debug || 'False' -%>
 
+<%- rmq_host = env_st2_rmq_port || 'localhost' -%>
+<%- rmq_vhost = env_st2_rmq_port || nil -%>
+<%- rmq_username = env_st2_rmq_username || 'guest' -%>
+<%- rmq_password = env_st2_rmq_password || 'guest' -%>
+<%- rmq_port = env_st2_rmq_port || '5672' -%>
+<%- rmq_url = "amqp://#{rmq_username}:#{rmq_password}@#{rmq_host}:#{rmq_port}/#{rmq_vhost}" -%>
+
+<%- allow_origin = env_st2_api_allow_origin || '*' -%>
+
+<%- standalone_file_path = env_st2_auth_standalone_file || '/etc/st2/htpasswd' -%>
+
+<%- syslog_host = env_st2_syslog_host || 'localhost' -%>
+<%- syslog_port = env_st2_syslog_port || 514 -%>
+<%- syslog_facility = env_st2_syslog_facility || 'local7' -%>
+<%- syslog_protocol = env_st2_syslog_protocol || 'udp' -%>
+
+<%- system_user = env_st2_system_user || 'stanley' -%>
+<%- ssh_key_file = env_st2_ssh_key_file || '/home/stanley/.ssh/st2_stanley_key' -%>
+
+<%- db_host = env_st2_db_host || 'localhost' -%>
+<%- db_port = env_st2_db_port || 27017 -%>
+<%- db_name = env_st2_db_name || 'st2' -%>
+<%- db_username = env_st2_db_username || nil -%>
+<%- db_password = env_st2_db_password || nil -%>
+
 [api]
 # Host and port to bind the API server.
 host = 0.0.0.0
@@ -10,7 +35,7 @@ port = 9101
 logging = <%= conf_root %>/st2api/conf/console.conf
 # allow_origin is required for handling CORS in st2 web UI.
 # allow_origin = http://myhost1.example.com:3000,http://myhost2.example.com:3000
-allow_origin = <%= env_st2_api_allow_origin || '*' %>
+allow_origin = <%= allow_origin %>
 
 [sensorcontainer]
 logging = <%= conf_root %>/st2reactor/conf/console.conf
@@ -21,6 +46,7 @@ logging = <%= conf_root %>/st2reactor/conf/console.conf
 [actionrunner]
 logging = <%= conf_root %>/st2actions/conf/console.conf
 
+<%- if env_st2_auth -%>
 [auth]
 host = 0.0.0.0
 port = 9100
@@ -28,12 +54,12 @@ use_ssl = False
 debug = <%= debug.include?('rue') ? 'True' : debug %>
 enable = False
 logging = <%= conf_root %>/st2api/conf/console.conf
+<%- end -%>
 
 mode = standalone
-
 # Note: Settings bellow are only used in "standalone" mode
 backend = flat_file
-backend_kwargs ={"file_path": "<%= conf_root %>/st2/htpasswd"}
+backend_kwargs ={"file_path": "<%= standalone_file_path %>"}
 
 # Base URL to the API endpoint excluding the version (e.g. http://myhost.net:9101/)
 api_url =<%= api_url %>
@@ -41,22 +67,24 @@ api_url =<%= api_url %>
 [system]
 base_path = /opt/stackstorm
 
+<%- if env_st2_syslog -%>
 [syslog]
-host = <%= env_st2_syslog_host || 'localhost' %>
-port = <%= env_st2_syslog_port || 514 %>
-facility = <%= env_st2_syslog_facility || 'local7' %>
-protocol = <%= env_st2_syslog_protocol || 'udp' %>
+host = <%= syslog_host %>
+port = <%= syslog_port %>
+facility = <%= syslog_facility %>
+protocol = <%= syslog_protocol %>
+<%- end -%>
 
 [log]
 excludes = requests,paramiko
 redirect_stderr = False
 
 [system_user]
-user = <%= env_st2_system_user || 'stanley' %>
-ssh_key_file = <%= env_st2_ssh_key_file || '/home/stanley/.ssh/st2_stanley_key' %>
+user = <%= system_user %>
+ssh_key_file = <%= ssh_key_file %>
 
 [messaging]
-url = <%= env_st2_messaging_url || 'amqp://guest:guest@localhost:5672/' %>
+url = <%= rmq_url %>
 
 [ssh_runner]
 remote_dir = /tmp
@@ -79,3 +107,12 @@ logging = <%= conf_root %>/st2actions/conf/console.conf
 
 [notifier]
 logging = <%= conf_root %>/st2actions/conf/console.conf
+
+[database]
+host = <%= db_host %>
+port = <%= db_port %>
+db_name = <%= db_name %>
+<%- if db_username and db_password -%>
+username = <%= db_username %>
+password = <%= db_password %>
+<%- end -%>
