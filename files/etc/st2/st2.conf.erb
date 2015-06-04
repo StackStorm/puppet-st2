@@ -53,10 +53,10 @@ logging = <%= conf_root %>/st2api/conf/console.conf
 mode = standalone
 # Note: Settings bellow are only used in "standalone" mode
 backend = flat_file
-backend_kwargs ={"file_path": "<%= standalone_file_path %>"}
+backend_kwargs = {"file_path": "<%= standalone_file_path %>"}
 
 # Base URL to the API endpoint excluding the version (e.g. http://myhost.net:9101/)
-api_url =<%= api_url %>
+api_url = <%= api_url %>
 
 [system]
 base_path = /opt/stackstorm
