@@ -4,7 +4,15 @@
 #
 # === Parameters
 #
-#  [*version*] - Version of StackStorm to install
+#  [*version*]     - Version of StackStorm to install
+#  [*base_url*]    - CLI config - Base URL lives
+#  [*api_version*] - CLI config - API Version
+#  [*debug*]       - CLI config - Enable/Disable Debug
+#  [*cache_token*] - CLI config - True to cache auth token until expries
+#  [*username*]    - CLI config - Auth Username
+#  [*password*]    - CLI config - Auth Password
+#  [*api_url*]     - CLI config - API URL
+#  [*auth_url*]    - CLI config - Auth URL
 #
 # === Variables
 #
@@ -16,8 +24,17 @@
 #  include st2::profile::client
 #
 class st2::profile::client (
-  $version  = $::st2::version,
-  $revision = $::st2::revision,
+  $version     = $::st2::version,
+  $revision    = $::st2::revision,
+  $api_url     = $::st2::cli_api_url,
+  $auth_url    = $::st2::cli_auth_url,
+  $base_url    = $::st2::cli_base_url,
+  $username    = $::st2::cli_username,
+  $password    = $::st2::cli_password,
+  $api_version = $::st2::cli_api_version,
+  $cacert      = $::st2::cli_cacert,
+  $debug       = $::st2::cli_debug,
+  $cache_token = $::st2::cli_cache_token,
 ) inherits ::st2 {
 
   include '::st2::notices'
@@ -41,5 +58,72 @@ class st2::profile::client (
 
   python::requirements { '/tmp/st2client-requirements.txt':
     require => Wget::Fetch['Download st2client requirements.txt'],
+  }
+
+  file { '/root/.st2':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0500',
+  }
+  Ini_setting {
+    ensure  => present,
+    path    => '/root/.st2/config',
+    require => File['/root/.st2'],
+  }
+
+  ini_setting { 'st2_cli_general_base_url':
+    section => 'general',
+    setting => 'base_url',
+    value   => $base_url,
+  }
+  ini_setting { 'st2_cli_general_api_version':
+    section => 'general',
+    setting => 'api_version',
+    value   => $api_version,
+  }
+  ini_setting { 'st2_cli_general_cacert':
+    section => 'general',
+    setting => 'cacert',
+    value   => $cacert,
+  }
+
+  $_cli_debug = $debug ? {
+    true    => 'True',
+    default => 'False',
+  }
+  ini_setting { 'st2_cli_cli_debug':
+    section => 'cli',
+    setting => 'debug',
+    value   => $_cli_debug,
+  }
+  $_cache_token = $cache_token ? {
+    true    => 'True',
+    default => 'False',
+  }
+  ini_setting { 'st2_cli_cache_token':
+    section => 'cli',
+    setting => 'cache_token',
+    value   => $_cache_token,
+  }
+  ini_setting { 'st2_cli_credentials_username':
+    section => 'credentials',
+    setting => 'username',
+    value   => $username,
+  }
+  ini_setting { 'st2_cli_credentials_password':
+    section => 'credentials',
+    setting => 'password',
+    value   => $password,
+  }
+  ini_setting { 'st2_cli_api_url':
+    section => 'api',
+    setting => 'url',
+    value   => $api_url,
+  }
+  ini_setting { 'st2_cli_auth_url':
+    section => 'auth',
+    setting => 'url',
+    value   => $auth_url,
   }
 }
