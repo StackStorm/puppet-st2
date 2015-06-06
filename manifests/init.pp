@@ -25,4 +25,12 @@ class st2(
   $api_url            = undef,
   $auth               = false,
   $auth_url           = undef,
+  $cli_base_url       = 'http://localhost',
+  $cli_api_version    = 'v1',
+  $cli_debug          = false,
+  $cli_cache_token    = true,
+  $cli_username       = undef,
+  $cli_password       = undef,
+  $cli_api_url        = 'http://localhost:9101/v1',
+  $cli_auth_url       = 'http://localhost:9100/'
 ) { }
