@@ -29,6 +29,7 @@ class st2::profile::server (
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
+
   $_python_pack = $::osfamily ? {
     'Debian' => '/usr/lib/python2.7/dist-packages',
     'RedHat' => '/usr/lib/python2.7/site-packages',

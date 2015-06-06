@@ -43,6 +43,12 @@ class st2::profile::client (
   $_client_packages = $st2::params::st2_client_packages
   $_client_dependencies = $st2::params::debian_client_dependencies
 
+  $_auth = $::st2::auth
+  $_api_url = $::st2::api_url
+  $_auth_url = $::st2::auth_url
+  $_cli_username = $::st2::cli_username
+  $_cli_password = $::st2::cli_password
+
   st2::dependencies::install { $_client_dependencies: }
 
   st2::package::install { $_client_packages:
@@ -64,8 +70,9 @@ class st2::profile::client (
     ensure => directory,
     owner  => 'root',
     group  => 'root',
-    mode   => '0500',
+    mode   => '0700',
   }
+
   Ini_setting {
     ensure  => present,
     path    => '/root/.st2/config',
