@@ -38,8 +38,8 @@ class st2(
   $cli_api_version    = 'v1',
   $cli_debug          = false,
   $cli_cache_token    = true,
-  $cli_username       = undef,
-  $cli_password       = undef,
+  $cli_username       = 'puppet',
+  $cli_password       = fqdn_rand_string(32),
   $cli_api_url        = $api_url,
   $cli_auth_url       = $auth_url,
 ) { }
