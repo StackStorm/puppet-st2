@@ -30,7 +30,7 @@ class st2(
   $version            = '0.11.0',
   $revision           = undef,
   $mistral_git_branch = 'st2-0.9.0',
-  $api_url            = undef
+  $api_url            = undef,
   $auth               = true,
   $auth_url           = undef,
   $auth_mode          = 'standalone',
