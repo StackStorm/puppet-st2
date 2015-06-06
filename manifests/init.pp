@@ -11,6 +11,14 @@
 #  [*api_url*]            - URL where the StackStorm API lives (default: undef)
 #  [*auth*]               - Toggle to enable/disable auth (Default: false)
 #  [*auth_url*]           - URL where the StackStorm WebUI lives (default: undef)
+#  [*cli_base_url*]       - CLI config - Base URL lives
+#  [*cli_api_version*]    - CLI config - API Version
+#  [*cli_debug*]          - CLI config - Enable/Disable Debug
+#  [*cli_cache_token*]    - CLI config - True to cache auth token until expries
+#  [*cli_username*]       - CLI config - Auth Username
+#  [*cli_password*]       - CLI config - Auth Password
+#  [*cli_api_url*]        - CLI config - API URL
+#  [*cli_auth_url*]       - CLI config - Auth URL
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #

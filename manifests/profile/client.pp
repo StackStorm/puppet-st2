@@ -4,7 +4,15 @@
 #
 # === Parameters
 #
-#  [*version*] - Version of StackStorm to install
+#  [*version*]     - Version of StackStorm to install
+#  [*base_url*]    - CLI config - Base URL lives
+#  [*api_version*] - CLI config - API Version
+#  [*debug*]       - CLI config - Enable/Disable Debug
+#  [*cache_token*] - CLI config - True to cache auth token until expries
+#  [*username*]    - CLI config - Auth Username
+#  [*password*]    - CLI config - Auth Password
+#  [*api_url*]     - CLI config - API URL
+#  [*auth_url*]    - CLI config - Auth URL
 #
 # === Variables
 #
