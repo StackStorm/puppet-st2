@@ -60,7 +60,8 @@ class st2::profile::client (
   }
   Ini_setting {
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => '/root/.st2/config',
+    require => File['/root/.st2'],
   }
 
   ini_setting { 'st2_cli_general_base_url':
@@ -117,5 +118,4 @@ class st2::profile::client (
     setting => 'url',
     value   => $auth_url,
   }
-  Ini_setting<| tag == 'st2::profile::client' |> -> File['/root/.st2']
 }
