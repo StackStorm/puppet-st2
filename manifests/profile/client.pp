@@ -79,6 +79,11 @@ class st2::profile::client (
     require => File['/root/.st2'],
   }
 
+  ini_setting { 'st2_cli_api_url':
+    section => 'api',
+    setting => 'url',
+    value   => $api_url,
+  }
   ini_setting { 'st2_cli_general_base_url':
     section => 'general',
     setting => 'base_url',
@@ -113,24 +118,22 @@ class st2::profile::client (
     setting => 'cache_token',
     value   => $_cache_token,
   }
-  ini_setting { 'st2_cli_credentials_username':
-    section => 'credentials',
-    setting => 'username',
-    value   => $username,
-  }
-  ini_setting { 'st2_cli_credentials_password':
-    section => 'credentials',
-    setting => 'password',
-    value   => $password,
-  }
-  ini_setting { 'st2_cli_api_url':
-    section => 'api',
-    setting => 'url',
-    value   => $api_url,
-  }
-  ini_setting { 'st2_cli_auth_url':
-    section => 'auth',
-    setting => 'url',
-    value   => $auth_url,
+
+  if $_auth {
+    ini_setting { 'st2_cli_credentials_username':
+      section => 'credentials',
+      setting => 'username',
+      value   => $username,
+    }
+    ini_setting { 'st2_cli_credentials_password':
+      section => 'credentials',
+      setting => 'password',
+      value   => $password,
+    }
+    ini_setting { 'st2_cli_auth_url':
+      section => 'auth',
+      setting => 'url',
+      value   => $auth_url,
+    }
   }
 }
