@@ -20,6 +20,7 @@ define st2::pack (
   $ensure   = present,
   $pack     = $name,
   $repo_url = undef,
+  $register = undef,
   $config   = undef,
 ) {
   include ::st2
@@ -28,10 +29,11 @@ define st2::pack (
   $_auth = $::st2::auth
 
   if $repo_url { $_repo_url = "repo_url=${repo_url}" }
+  if $register { $_register = "register=${register}" }
   else { $_repo_url = '' }
 
   exec { "install-st2-pack-${pack}":
-    command     => "st2 run packs.install packs=${pack} ${_repo_url}",
+    command     => "st2 run packs.install packs=${pack} ${_repo_url} ${_register}",
     creates     => "/opt/stackstorm/packs/${pack}",
     path        => '/usr/sbin:/usr/bin:/sbin:/bin',
     tries       => '5',
