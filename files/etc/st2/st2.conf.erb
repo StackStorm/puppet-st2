@@ -2,6 +2,8 @@
 <%- api_url = env_st2_api_url || 'http://localhost:9101' -%>
 <%- conf_root = env_st2_conf_root || '/etc' -%>
 <%- debug = env_st2_debug || 'False' -%>
+<%- auth_use_ssl = env_st2_auth_use_ssl || 'False' %>
+<%- auth_enable = ['false', 'no', 'n', '0'].include?(env_st2_auth_enable.to_s.downcase) ? 'False' : 'True' -%>
 <%- rmq_host = env_st2_rmq_host || 'localhost' -%>
 <%- rmq_vhost = env_st2_rmq_vhost || nil -%>
 <%- rmq_username = env_st2_rmq_username || 'guest' -%>
@@ -40,15 +42,13 @@ logging = <%= conf_root %>/st2reactor/conf/console.conf
 [actionrunner]
 logging = <%= conf_root %>/st2actions/conf/console.conf
 
-<%- if env_st2_auth -%>
 [auth]
 host = 0.0.0.0
 port = 9100
-use_ssl = False
+use_ssl = <%= auth_use_ssl %>
 debug = <%= debug.include?('rue') ? 'True' : debug %>
-enable = False
+enable = <%= auth_enable %>
 logging = <%= conf_root %>/st2api/conf/console.conf
-<%- end -%>
 
 mode = standalone
 # Note: Settings bellow are only used in "standalone" mode
