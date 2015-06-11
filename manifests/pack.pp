@@ -29,11 +29,18 @@ define st2::pack (
   $_cli_password = $::st2::cli_password
   $_auth = $::st2::auth
 
-  if $repo_url { $_repo_url = "repo_url=${repo_url}" }
-  if $register { $_register = "register=${register}" }
-  if $subtree { $_subtree = "subtree=${subtree}" }
-
-  else { $_repo_url = '' }
+  $_repo_url = $repo_url ? {
+    undef   => '',
+    default => "repo_url=${repo_url}",
+  }
+  $_register = $register ? {
+    undef   => '',
+    default => "register=${register}",
+  }
+  $_subtree = $subtree ? {
+    undef   => '',
+    default => "subtree=${subtree}",
+  }
 
   exec { "install-st2-pack-${pack}":
     command     => "st2 run packs.install packs=${pack} ${_repo_url} ${_register} ${_subtree}",
