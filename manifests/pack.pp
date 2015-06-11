@@ -21,6 +21,7 @@ define st2::pack (
   $pack     = $name,
   $repo_url = undef,
   $register = undef,
+  $subtree  = undef,
   $config   = undef,
 ) {
   include ::st2
@@ -30,10 +31,12 @@ define st2::pack (
 
   if $repo_url { $_repo_url = "repo_url=${repo_url}" }
   if $register { $_register = "register=${register}" }
+  if $subtree { $_subtree = "subtree=${subtree}" }
+
   else { $_repo_url = '' }
 
   exec { "install-st2-pack-${pack}":
-    command     => "st2 run packs.install packs=${pack} ${_repo_url} ${_register}",
+    command     => "st2 run packs.install packs=${pack} ${_repo_url} ${_register} ${_subtree}",
     creates     => "/opt/stackstorm/packs/${pack}",
     path        => '/usr/sbin:/usr/bin:/sbin:/bin',
     tries       => '5',
