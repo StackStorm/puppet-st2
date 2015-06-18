@@ -45,7 +45,7 @@ define st2::user(
   if $create_sudo_entry {
     ensure_resource('sudo::conf', $_robots_group_name, {
       'priority' => '10',
-      'content'  => "%${_robots_group_name} ALL=(ALL) NOPASSWD: ALL",
+      'content'  => "%${_robots_group_name} ALL=(ALL) NOPASSWD: SETENV: ALL",
     })
   }
 
