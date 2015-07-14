@@ -29,6 +29,7 @@ class st2::profile::server (
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
+  $_ng_init = $::st2::ng_init
 
   $_python_pack = $::osfamily ? {
     'Debian' => '/usr/lib/python2.7/dist-packages',
@@ -98,17 +99,142 @@ class st2::profile::server (
     value   => $_enable_auth,
   }
 
-  ## Needs to have real init scripts
-  exec { 'start st2':
-    command => 'st2ctl start',
-    unless  => 'ps ax | grep -v grep | grep actionrunner',
-    path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-    require => Exec['register st2 content'],
+  if $_ng_init {
+    file { '/etc/init/st2actionrunner.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
+    }
+
+    service { 'st2actionrunner':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
+    file { '/etc/init/st2auth.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2auth.conf',
+    }
+
+    service { 'st2auth':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
+    file { '/etc/init/st2api.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2api.conf',
+    }
+
+    service { 'st2api':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
+    file { '/etc/init/st2resultstracker.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2resultstracker.conf',
+    }
+
+    service { 'st2resultstracker':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
+    file { '/etc/init/st2sensorcontainer.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2sensorcontainer.conf',
+    }
+
+    service { 'st2sensorcontainer':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
+    file { '/etc/init/st2notifier.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2notifier.conf',
+    }
+
+    service { 'st2notifier':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
+    file { '/etc/init/st2rulesengine.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2rulesengine.conf',
+    }
+
+    service { 'st2rulesengine':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
+    file_line { 'st2 ng_init enable':
+      path => '/etc/environment',
+      line => 'NG_INIT=true',
+    }
+
+    St2::Package::Install<| tag == 'st2::profile::server' |>
+    -> Ini_setting<| tag == 'st2::profile::server' |>
+    -> Service<| tag == 'st2::profile::server' |>
+
+    Service<| tag == 'st2::profile::server' |> -> St2::Pack<||>
+  } else {
+    ## Needs to have real init scripts
+    exec { 'start st2':
+      command => 'st2ctl start',
+      unless  => 'ps ax | grep -v grep | grep actionrunner',
+      path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+      require => Exec['register st2 content'],
+    }
+
+    St2::Package::Install<| tag == 'st2::profile::server' |>
+    -> Ini_setting<| tag == 'st2::profile::server' |>
+    -> Exec['start st2']
+
+    Exec['start st2'] -> St2::Pack<||>
   }
-
-  St2::Package::Install<| tag == 'st2::profile::server' |>
-  -> Ini_setting<| tag == 'st2::profile::server' |>
-  -> Exec['start st2']
-
-  Exec['start st2'] -> St2::Pack<||>
 }
