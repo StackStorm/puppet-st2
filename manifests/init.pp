@@ -27,7 +27,7 @@
 #    st2::revison: 11
 #
 class st2(
-  $version            = '0.11.1',
+  $version            = st2_latest_stable(),
   $revision           = undef,
   $mistral_git_branch = 'st2-0.9.0',
   $api_url            = undef,

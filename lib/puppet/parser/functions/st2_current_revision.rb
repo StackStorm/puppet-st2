@@ -1,5 +1,4 @@
 require 'open-uri'
-OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 module Puppet::Parser::Functions
   newfunction(:st2_current_revision, :type => :rvalue) do |args|
