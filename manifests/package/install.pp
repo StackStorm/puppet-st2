@@ -36,6 +36,7 @@ define st2::package::install(
       } else {
         $_version = "${version}-${_revision}"
       }
+      Class["apt::update"] -> Package<| title == $name |>
     }
     'RedHat': {
       include ::st2::package::redhat
