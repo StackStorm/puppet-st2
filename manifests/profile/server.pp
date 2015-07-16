@@ -108,6 +108,14 @@ class st2::profile::server (
       source => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
     }
 
+    file { '/etc/init/st2actionrunner-worker.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2actionrunner-worker.conf',
+    }
+
     service { 'st2actionrunner':
       ensure     => running,
       enable     => true,
