@@ -95,7 +95,7 @@ class st2::profile::server (
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'api',
-    setting => 'host',
+    setting => 'port',
     value   => $st2api_listen_port,
   }
 
@@ -111,7 +111,7 @@ class st2::profile::server (
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'auth',
-    setting => 'host',
+    setting => 'port',
     value   => $st2auth_listen_port,
   }
 
