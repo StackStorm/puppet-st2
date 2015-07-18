@@ -6,6 +6,10 @@
 #
 #  [*version*] - Version of StackStorm to install
 #  [*revision*] - Revision of StackStorm to install
+#  [*st2api_listen_ip*] - Listen IP for st2api process
+#  [*st2api_listen_port*] - Listen port for st2api process
+#  [*st2auth_listen_ip*] - Listen IP for st2auth process
+#  [*st2auth_listen_port*] - Listen port for st2auth process
 #
 # === Variables
 #
@@ -20,8 +24,12 @@
 #  include st2::profile::client
 #
 class st2::profile::server (
-  $version     = $::st2::version,
-  $revision    = $::st2::revision,
+  $version             = $::st2::version,
+  $revision            = $::st2::revision,
+  $st2api_listen_ip    = '0.0.0.0',
+  $st2api_listen_port  = '9101',
+  $st2auth_listen_ip   = '0.0.0.0',
+  $st2auth_listen_port = '9100',
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
@@ -73,6 +81,38 @@ class st2::profile::server (
     command     => "python ${_register_command} --register-all --config-file ${_conf_dir}/st2.conf",
     path        => '/usr/bin:/usr/sbin:/bin:/sbin',
     refreshonly => true,
+  }
+
+  ini_setting { 'api_listen_ip':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'api',
+    setting => 'host',
+    value   => $st2api_listen_ip,
+  }
+
+  ini_setting { 'api_listen_port':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'api',
+    setting => 'port',
+    value   => $st2api_listen_port,
+  }
+
+  ini_setting { 'auth_listen_ip':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'host',
+    value   => $st2auth_listen_ip,
+  }
+
+  ini_setting { 'auth_listen_port':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'port',
+    value   => $st2auth_listen_port,
   }
 
   ini_setting { 'api_allow_origin':
