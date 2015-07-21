@@ -82,8 +82,7 @@ class st2::profile::mistral(
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    source  => '/opt/openstack/mistral/etc/wf_trace_logging.conf.sample',
-    require => Vcsrepo['/opt/openstack/mistral'],
+    source  => 'puppet:///modules/st2/etc/mistral/wf_trace_logging.conf',
   }
 
   vcsrepo { '/etc/mistral/actions/st2mistral':
