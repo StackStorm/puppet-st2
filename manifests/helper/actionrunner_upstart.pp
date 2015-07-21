@@ -14,6 +14,6 @@ define st2::helper::actionrunner_upstart (
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
-    content => template('st2/etc/init/actionrunner-worker.conf.erb'),
+    content => template('st2/etc/init/st2actionrunner-worker.conf.erb'),
   }
 }
