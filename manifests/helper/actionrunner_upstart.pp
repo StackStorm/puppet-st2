@@ -9,7 +9,7 @@
 define st2::helper::actionrunner_upstart (
   $worker_id = $name,
 ) {
-  file { "/etc/init/st2actionrunner-worker-${worker_id}.conf":
+  file { "/etc/init/st2actionrunner-${worker_id}.conf":
     ensure  => present,
     owner   => 'root',
     group   => 'root',

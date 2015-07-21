@@ -153,7 +153,7 @@ class st2::profile::server (
     }
 
     # Spin up any number of workers as needed
-    $_workers = inline_template('<%= (0..@workers).to_a.collect { |x| x.to_s } %>')
+    $_workers = prefix(range("0", "${workers}"), "worker")
     ::st2::helper::actionrunner_upstart { $_workers: }
 
     service { 'st2actionrunner':
