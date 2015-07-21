@@ -77,6 +77,15 @@ class st2::profile::mistral(
     ],
   }
 
+  file { '/etc/mistral/wf_trace_logging.conf':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    source  => '/opt/openstack/mistral/etc/wf_trace_logging.conf.sample',
+    require => Vcsrepo['/opt/openstack/mistral'],
+  }
+
   vcsrepo { '/etc/mistral/actions/st2mistral':
     ensure => present,
     source => 'https://github.com/StackStorm/st2mistral.git',
