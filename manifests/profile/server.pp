@@ -6,6 +6,7 @@
 #
 #  [*version*] - Version of StackStorm to install
 #  [*revision*] - Revision of StackStorm to install
+#  [*auth*] - Toggle Auth
 #  [*st2api_listen_ip*] - Listen IP for st2api process
 #  [*st2api_listen_port*] - Listen port for st2api process
 #  [*st2auth_listen_ip*] - Listen IP for st2auth process
@@ -26,6 +27,7 @@
 class st2::profile::server (
   $version             = $::st2::version,
   $revision            = $::st2::revision,
+  $auth                = $::st2::auth,
   $st2api_listen_ip    = '0.0.0.0',
   $st2api_listen_port  = '9101',
   $st2auth_listen_ip   = '0.0.0.0',
@@ -47,7 +49,7 @@ class st2::profile::server (
     /^0.8/  => "${_python_pack}/st2common/bin/registercontent.py",
     default => "${_python_pack}/st2common/bin/st2-register-content",
   }
-  $_enable_auth = $::st2::auth ? {
+  $_enable_auth = $auth ? {
     true    => 'True',
     default => 'False',
   }
@@ -164,20 +166,22 @@ class st2::profile::server (
       provider   => 'upstart',
     }
 
-    file { '/etc/init/st2auth.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2auth.conf',
-    }
+    if $auth {
+      file { '/etc/init/st2auth.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/st2/etc/init/st2auth.conf',
+      }
 
-    service { 'st2auth':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
+      service { 'st2auth':
+        ensure     => running,
+        enable     => true,
+        hasstatus  => true,
+        hasrestart => true,
+        provider   => 'upstart',
+      }
     }
 
     file { '/etc/init/st2api.conf':
