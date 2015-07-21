@@ -7,6 +7,7 @@
 #  [*version*] - Version of StackStorm to install
 #  [*revision*] - Revision of StackStorm to install
 #  [*auth*] - Toggle Auth
+#  [*workers*] - Set the number of actionrunner processes to start
 #  [*st2api_listen_ip*] - Listen IP for st2api process
 #  [*st2api_listen_port*] - Listen port for st2api process
 #  [*st2auth_listen_ip*] - Listen IP for st2auth process
@@ -28,6 +29,7 @@ class st2::profile::server (
   $version             = $::st2::version,
   $revision            = $::st2::revision,
   $auth                = $::st2::auth,
+  $workers             = $::st2::workers,
   $st2api_listen_ip    = '0.0.0.0',
   $st2api_listen_port  = '9101',
   $st2auth_listen_ip   = '0.0.0.0',
@@ -150,13 +152,9 @@ class st2::profile::server (
       source => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
     }
 
-    file { '/etc/init/st2actionrunner-worker.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2actionrunner-worker.conf',
-    }
+    # Spin up any number of workers as needed
+    $_workers = inline_template('<%= (0..@workers).to_a.collect { |x| x.to_s } %>')
+    ::st2::helper::actionrunner_upstart { $_workers: }
 
     service { 'st2actionrunner':
       ensure     => running,

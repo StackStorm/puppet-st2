@@ -1,15 +1,17 @@
 # StackStorm actionrunner worker task. Spawns st2actionrunner worker.
 #
 
-description     "StackStorm actionrunner worker task"
+description     "StackStorm actionrunner worker task <%= @worker_id %>"
+author          "StackStorm Engineering <opsadmin@stackstorm.com>"
+
+start on starting st2actionrunner
+stop on stopping st2actionrunner
 
 respawn
 respawn limit 2 5
 
 umask 007
 kill timeout 60
-
-instance $WORKERID
 
 script
   NAME=st2actionrunner

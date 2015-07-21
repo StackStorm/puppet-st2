@@ -19,6 +19,7 @@
 #  [*cli_password*]       - CLI config - Auth Password
 #  [*cli_api_url*]        - CLI config - API URL
 #  [*cli_auth_url*]       - CLI config - Auth URL
+#  [*workers*]            - Set the number of actionrunner processes to start
 #  [*ng_init*]            - [Experimental] Init scripts for services. Upstart ONLY
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
@@ -43,5 +44,6 @@ class st2(
   $cli_password       = fqdn_rand_string(32),
   $cli_api_url        = 'http://localhost:9101',
   $cli_auth_url       = 'http://localhost:9100',
+  $workers            = 8,
   $ng_init            = false,
 ) { }
