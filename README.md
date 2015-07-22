@@ -41,6 +41,25 @@ Hiera data bindings. A few notable parameters to take note of:
 All other classes are documented with Puppetdoc. Please refer to specific
 classes for use and configuration.
 
+## NG-Init
+
+As of StackStorm v0.12.0, the transition to init scripts has begun. To enable
+init scripts (Upstart only, currently. SystemD in progress), add the following flag
+to hiera or via code composition.
+
+* `st2::ng_init` - Boolean
+
+This will apply init scripts to be managed by the OS.
+
+Each of the network services has an environment variable that can be passed
+that will disable the spawning of the stand-alone service. This is useful
+when setting up uWSGI or other services. This is necessary to remain
+compatability with `st2ctl` during the transition period to init scripts.
+
+* `ST2_DISABLE_HTTP` - Disable SimpleHTTPServer for WebUI
+* `ST2_DISABLE_API` - Disable StandAlone API Server
+* `ST2_DISABLE_AUTH` - Disable StandAlone Auth Server
+
 ### Profiles:
 
 * `st2::profile::client` - Profile to install all client libraries for st2
