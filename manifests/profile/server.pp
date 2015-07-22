@@ -262,6 +262,22 @@ class st2::profile::server (
       provider   => 'upstart',
     }
 
+    file { '/etc/init/st2web.conf':
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0444',
+      source => 'puppet:///modules/st2/etc/init/st2web.conf',
+    }
+
+    service { 'st2web':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
+      provider   => 'upstart',
+    }
+
     file_line { 'st2 ng_init enable':
       path => '/etc/environment',
       line => 'NG_INIT=true',
