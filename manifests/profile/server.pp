@@ -12,6 +12,15 @@
 #  [*st2api_listen_port*] - Listen port for st2api process
 #  [*st2auth_listen_ip*] - Listen IP for st2auth process
 #  [*st2auth_listen_port*] - Listen port for st2auth process
+#  [*manage_st2api_service*] - Toggle whether this module creates an init script for st2api.
+#                              If you disable this, it is your responsibility to create a service
+#                              named `st2api` for `st2ctl` to continue to work.
+#  [*manage_st2auth_service*] - Toggle whether this module creates an init script for st2auth.
+#                              If you disable this, it is your responsibility to create a service
+#                              named `st2auth` for `st2ctl` to continue to work.
+#  [*manage_st2web_service*] - Toggle whether this module creates an init script for st2web.
+#                              If you disable this, it is your responsibility to create a service
+#                              named `st2web` for `st2ctl` to continue to work.
 #
 # === Variables
 #
@@ -26,14 +35,17 @@
 #  include st2::profile::client
 #
 class st2::profile::server (
-  $version             = $::st2::version,
-  $revision            = $::st2::revision,
-  $auth                = $::st2::auth,
-  $workers             = $::st2::workers,
-  $st2api_listen_ip    = '0.0.0.0',
-  $st2api_listen_port  = '9101',
-  $st2auth_listen_ip   = '0.0.0.0',
-  $st2auth_listen_port = '9100',
+  $version                = $::st2::version,
+  $revision               = $::st2::revision,
+  $auth                   = $::st2::auth,
+  $workers                = $::st2::workers,
+  $st2api_listen_ip       = '0.0.0.0',
+  $st2api_listen_port     = '9101',
+  $st2auth_listen_ip      = '0.0.0.0',
+  $st2auth_listen_port    = '9100',
+  $manage_st2api_service  = true,
+  $manage_st2auth_service = true,
+  $manage_st2web_service  = true,
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
@@ -164,7 +176,7 @@ class st2::profile::server (
       provider   => 'upstart',
     }
 
-    if $auth {
+    if $auth and $manage_st2auth_service {
       file { '/etc/init/st2auth.conf':
         ensure => present,
         owner  => 'root',
@@ -182,20 +194,22 @@ class st2::profile::server (
       }
     }
 
-    file { '/etc/init/st2api.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2api.conf',
-    }
+    if $manage_st2api_service {
+      file { '/etc/init/st2api.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/st2/etc/init/st2api.conf',
+      }
 
-    service { 'st2api':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
+      service { 'st2api':
+        ensure     => running,
+        enable     => true,
+        hasstatus  => true,
+        hasrestart => true,
+        provider   => 'upstart',
+      }
     }
 
     file { '/etc/init/st2resultstracker.conf':
@@ -262,20 +276,22 @@ class st2::profile::server (
       provider   => 'upstart',
     }
 
-    file { '/etc/init/st2web.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2web.conf',
-    }
+    if $manage_st2web_service {
+      file { '/etc/init/st2web.conf':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/st2/etc/init/st2web.conf',
+      }
 
-    service { 'st2web':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
+      service { 'st2web':
+        ensure     => running,
+        enable     => true,
+        hasstatus  => true,
+        hasrestart => true,
+        provider   => 'upstart',
+      }
     }
 
     file_line { 'st2 ng_init enable':
