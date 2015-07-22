@@ -16,4 +16,11 @@ define st2::helper::actionrunner_upstart (
     mode    => '0444',
     content => template('st2/etc/init/st2actionrunner-worker.conf.erb'),
   }
+
+  service { "st2actionrunner-${worker_id}":
+    ensure     => running,
+    enable     => true,
+    hasstatus  => true,
+    hasrestart => true,
+  }
 }
