@@ -56,7 +56,7 @@ that will disable the spawning of the stand-alone service. This is useful
 when setting up uWSGI or other services. This is necessary to remain
 compatability with `st2ctl` during the transition period to init scripts.
 
-* `ST2_DISABLE_HTTP` - Disable SimpleHTTPServer for WebUI
+* `ST2_DISABLE_HTTPSERVER` - Disable SimpleHTTPServer for WebUI
 * `ST2_DISABLE_API` - Disable StandAlone API Server
 * `ST2_DISABLE_AUTH` - Disable StandAlone Auth Server
 
