@@ -16,7 +16,7 @@
 #  include st2::profile::postgresql
 #
 class st2::profile::postgresql {
-  if !defined(Class['::postgresql::server']) {
-    class { '::postgresql::server': }
+  if !defined(Class['postgresql::server']) {
+    class { 'postgresql::server': }
   }
 }
