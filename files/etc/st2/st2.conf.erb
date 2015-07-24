@@ -23,12 +23,14 @@
 <%- db_name = env_st2_db_name || 'st2' -%>
 <%- db_username = env_st2_db_username || nil -%>
 <%- db_password = env_st2_db_password || nil -%>
+<%- mask_secrets = env_mask_secrets || 'True' -%>
 
 [api]
 # Host and port to bind the API server.
 host = 0.0.0.0
 port = 9101
 logging = <%= conf_root %>/st2api/conf/console.conf
+mask_secrets = <%= mask_secrets %>
 # allow_origin is required for handling CORS in st2 web UI.
 # allow_origin = http://myhost1.example.com:3000,http://myhost2.example.com:3000
 allow_origin = <%= allow_origin %>
@@ -72,6 +74,7 @@ protocol = <%= syslog_protocol %>
 [log]
 excludes = requests,paramiko
 redirect_stderr = False
+mask_secrets = <%= mask_secrets %>
 
 [system_user]
 user = <%= system_user %>
