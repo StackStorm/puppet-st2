@@ -13,6 +13,8 @@
 #  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
 #  [*db_max_overflow*]     - Max DB overload for Mistral Connections
 #  [*db_pool_recycle*]     - DB Pool recycle time
+#  [*api_url*]             - URI of Mistral backend (e.x.: http://localhost)
+#  [*api_port*]            - Port of Mistral backend. (Default: 8989)
 #
 # === Examples
 #
@@ -34,11 +36,16 @@ class st2::profile::mistral(
   $db_max_pool_size    = '100',
   $db_max_overflow     = '400',
   $db_pool_recycle     = '3600',
+  $api_url             = $::st2::mistral_api_url,
+  $api_port            = $::st2::mistral_api_port,
+  $manage_service      = true,
 ) inherits st2 {
   include '::st2::dependencies'
 
   # This needs a bit more modeling... need to understand
   # what current mistral code ships with st2 - jdf
+
+  $_mistral_root = '/opt/openstack/mistral'
 
   ### Dependencies ###
   if !defined(Class['::mysql::bindings']) {
@@ -65,7 +72,7 @@ class st2::profile::mistral(
     mode   => '0755',
   }
 
-  vcsrepo { '/opt/openstack/mistral':
+  vcsrepo { $_mistral_root:
     ensure   => present,
     source   => 'https://github.com/StackStorm/mistral.git',
     revision => $git_branch,
@@ -99,13 +106,13 @@ class st2::profile::mistral(
   ### END Mistral Downloads ###
 
   ### Bootstrap Python ###
-  python::virtualenv { '/opt/openstack/mistral':
+  python::virtualenv { $_mistral_root:
     ensure       => present,
     version      => 'system',
     systempkgs   => false,
-    venv_dir     => '/opt/openstack/mistral/.venv',
-    cwd          => '/opt/openstack/mistral',
-    require      => Vcsrepo['/opt/openstack/mistral'],
+    venv_dir     => "${_mistral_root}/.venv",
+    cwd          => $_mistral_root,
+    require      => Vcsrepo[$_mistral_root],
     notify       => [
       Exec['setup mistral', 'setup st2mistral plugin'],
       Exec['python_requirementsmistral'],
@@ -115,14 +122,14 @@ class st2::profile::mistral(
 
   # Not using virtualenv requirements attribute because oslo has bad wheel, and fails
   python::requirements { 'mistral':
-    requirements => '/opt/openstack/mistral/requirements.txt',
-    virtualenv   => '/opt/openstack/mistral/.venv',
+    requirements => "${_mistral_root}/requirements.txt",
+    virtualenv   => "${_mistral_root}/.venv",
   }
 
   python::pip { 'mysql-python':
     ensure     => present,
-    virtualenv => '/opt/openstack/mistral/.venv',
-    require    => Vcsrepo['/opt/openstack/mistral'],
+    virtualenv => "${_mistral_root}/.venv",
+    require    => Vcsrepo[$_mistral_root],
     before   => [
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
@@ -144,9 +151,9 @@ class st2::profile::mistral(
   ### Bootstrap Mistral ###
   exec { 'setup mistral':
     command     => 'python setup.py develop',
-    cwd         => '/opt/openstack/mistral',
+    cwd         => $_mistral_root,
     path        => [
-      '/opt/openstack/mistral/.venv/bin',
+      "${_mistral_root}/.venv/bin",
       '/usr/local/bin',
       '/usr/local/sbin',
       '/usr/bin',
@@ -161,7 +168,7 @@ class st2::profile::mistral(
     command     => 'python setup.py develop',
     cwd         => '/etc/mistral/actions/st2mistral',
     path        => [
-      '/opt/openstack/mistral/.venv/bin',
+      "${_mistral_root}/.venv/bin",
       '/usr/local/bin',
       '/usr/local/sbin',
       '/usr/bin',
@@ -238,9 +245,9 @@ class st2::profile::mistral(
   exec { 'setup mistral database':
     command     => 'python ./tools/sync_db.py --config-file /etc/mistral/mistral.conf',
     refreshonly => true,
-    cwd         => '/opt/openstack/mistral',
+    cwd         => $_mistral_root,
     path        => [
-      '/opt/openstack/mistral/.venv/bin',
+      "${_mistral_root}/.venv/bin",
       '/usr/local/bin',
       '/usr/local/sbin',
       '/usr/bin',
@@ -249,31 +256,61 @@ class st2::profile::mistral(
       '/sbin',
     ],
     require     => [
-      Vcsrepo['/opt/openstack/mistral'],
+      Vcsrepo[$_mistral_root],
     ],
   }
 
+  ### Set Mistral API Settings. Useful when setting up uWSGI or other server
+  if $api_url {
+    ini_setting { 'mistral_api_host':
+      ensure  => present,
+      path    => '/etc/mistral/mistral.conf',
+      section => 'api',
+      setting => 'host',
+      value   => $api_url,
+    }
+
+    ini_setting { 'mistral_api_port':
+      ensure  => present,
+      path    => '/etc/mistral/mistral.conf',
+      section => 'api',
+      setting => 'port',
+      value   => $api_port,
+    }
+  }
+
   ### Mistral Init Scripts ###
-  case $::osfamily {
-    'Debian': {
-      # A bit sloppy, but this only covers Ubuntu right now. Fix this
-      file { '/etc/init/mistral.conf':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/init/mistral.conf',
+  if $manage_service {
+    case $::osfamily {
+      'Debian': {
+        file { '/etc/init/mistral.conf':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => 'puppet:///modules/st2/etc/init/mistral.conf',
+        }
+      }
+      'RedHat': {
+        file { '/etc/systemd/system/mistral.service':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => 'puppet:///modules/st2/etc/systemd/system/mistral.service',
+        }
       }
     }
-    'RedHat': {
-      file { '/etc/systemd/system/mistral.service':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/systemd/system/mistral.service',
-      }
+
+    service { 'mistral':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
     }
+
+    # Setup refresh events on config change for mistral
+    Ini_setting<| tag == 'mistral' |> ~> Service['mistral']
   }
   ### END Mistral Init Scripts ###
 }
