@@ -72,7 +72,7 @@ class st2::profile::mistral(
     mode   => '0755',
   }
 
-  vcsrepo { $_git_root:
+  vcsrepo { $_mistral_root:
     ensure   => present,
     source   => 'https://github.com/StackStorm/mistral.git',
     revision => $git_branch,
