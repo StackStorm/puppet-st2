@@ -13,6 +13,8 @@
 #  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
 #  [*db_max_overflow*]     - Max DB overload for Mistral Connections
 #  [*db_pool_recycle*]     - DB Pool recycle time
+#  [*api_url*]             -
+#  [*api_port*]            -
 #
 # === Examples
 #
@@ -34,6 +36,8 @@ class st2::profile::mistral(
   $db_max_pool_size    = '100',
   $db_max_overflow     = '400',
   $db_pool_recycle     = '3600',
+  $api_url             = $::st2::mistral_api_url,
+  $api_port            = $::st2::mistral_api_port,
 ) inherits st2 {
   include '::st2::dependencies'
 
@@ -253,6 +257,25 @@ class st2::profile::mistral(
     require     => [
       Vcsrepo[$_mistral_root],
     ],
+  }
+
+  ### Set Mistral API Settings. Useful when setting up uWSGI or other server
+  if $api_url and $api_port {
+    ini_setting { 'mistral_api_host':
+      ensure  => present,
+      path    => '/etc/mistral/mistral.conf',
+      section => 'api',
+      setting => 'host',
+      value   => $::st2::mistral_api_url,
+    }
+
+    ini_setting { 'mistral_api_port':
+      ensure  => present,
+      path    => '/etc/mistral/mistral.conf',
+      section => 'api',
+      setting => 'port',
+      value   => $::st2::mistral_api_port,
+    }
   }
 
   ### Mistral Init Scripts ###
