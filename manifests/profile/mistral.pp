@@ -13,8 +13,8 @@
 #  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
 #  [*db_max_overflow*]     - Max DB overload for Mistral Connections
 #  [*db_pool_recycle*]     - DB Pool recycle time
-#  [*api_url*]             -
-#  [*api_port*]            -
+#  [*api_url*]             - URI of Mistral backend (e.x.: http://localhost)
+#  [*api_port*]            - Port of Mistral backend. (Default: 8989)
 #
 # === Examples
 #
