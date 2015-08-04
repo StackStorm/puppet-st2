@@ -38,6 +38,7 @@ class st2::profile::mistral(
   $db_pool_recycle     = '3600',
   $api_url             = $::st2::mistral_api_url,
   $api_port            = $::st2::mistral_api_port,
+  $manage_service      = true,
 ) inherits st2 {
   include '::st2::dependencies'
 
@@ -150,7 +151,7 @@ class st2::profile::mistral(
   ### Bootstrap Mistral ###
   exec { 'setup mistral':
     command     => 'python setup.py develop',
-    cwd         => $_mistral_root
+    cwd         => $_mistral_root,
     path        => [
       "${_mistral_root}/.venv/bin",
       '/usr/local/bin',
@@ -260,13 +261,13 @@ class st2::profile::mistral(
   }
 
   ### Set Mistral API Settings. Useful when setting up uWSGI or other server
-  if $api_url and $api_port {
+  if $api_url {
     ini_setting { 'mistral_api_host':
       ensure  => present,
       path    => '/etc/mistral/mistral.conf',
       section => 'api',
       setting => 'host',
-      value   => $::st2::mistral_api_url,
+      value   => $api_url,
     }
 
     ini_setting { 'mistral_api_port':
@@ -274,31 +275,42 @@ class st2::profile::mistral(
       path    => '/etc/mistral/mistral.conf',
       section => 'api',
       setting => 'port',
-      value   => $::st2::mistral_api_port,
+      value   => $api_port,
     }
   }
 
   ### Mistral Init Scripts ###
-  case $::osfamily {
-    'Debian': {
-      # A bit sloppy, but this only covers Ubuntu right now. Fix this
-      file { '/etc/init/mistral.conf':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/init/mistral.conf',
+  if $manage_service {
+    case $::osfamily {
+      'Debian': {
+        file { '/etc/init/mistral.conf':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => 'puppet:///modules/st2/etc/init/mistral.conf',
+        }
+      }
+      'RedHat': {
+        file { '/etc/systemd/system/mistral.service':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => 'puppet:///modules/st2/etc/systemd/system/mistral.service',
+        }
       }
     }
-    'RedHat': {
-      file { '/etc/systemd/system/mistral.service':
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/systemd/system/mistral.service',
-      }
+
+    service { 'mistral':
+      ensure     => running,
+      enable     => true,
+      hasstatus  => true,
+      hasrestart => true,
     }
+
+    # Setup refresh events on config change for mistral
+    Ini_setting<| tag == 'mistral' |> ~> Service['mistral']
   }
   ### END Mistral Init Scripts ###
 }
