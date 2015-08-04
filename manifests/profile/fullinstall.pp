@@ -41,4 +41,5 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::stanley': }
 
   include ::st2::packs
+  include ::st2::kvs
 }
