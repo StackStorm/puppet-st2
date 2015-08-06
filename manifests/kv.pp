@@ -13,7 +13,7 @@
 #  }
 #
 #
-define st2::kv {
+define st2::kv (
   $ensure   = present,
   $key      = $name,
   $value,
@@ -23,7 +23,7 @@ define st2::kv {
 
   exec { "set-st2-key-${key}":
     command     => "st2 key set ${key} ${value}",
-    unless      => "st2 key get ${key}",
+    unless      => "st2 key get ${key} | grep ${key}",
     path        => '/usr/sbin:/usr/bin:/sbin:/bin',
     tries       => '5',
     try_sleep   => '10',
