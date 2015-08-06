@@ -46,4 +46,6 @@ class st2(
   $cli_auth_url       = 'http://localhost:9100',
   $workers            = 8,
   $ng_init            = false,
+  $mistral_api_url    = undef,
+  $mistral_api_port   = '8989',
 ) { }
