@@ -108,10 +108,3 @@ st2::packs:
       post_message_action:
         webhook_url: XXX
 ```
-
-### st2web
-
-`st2web` is now included! To access the WebUI, simply point your browser at
-http://(ipaddress):9101/webui.
-
-
