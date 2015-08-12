@@ -1,5 +1,7 @@
 # st2
 
+[![Build Status](https://travis-ci.org/StackStorm/puppet-st2.svg)](https://travis-ci.org/StackStorm/puppet-st2)
+
 Module to manage [StackStorm](http://stackstorm.com)
 
 Currently tested with:
