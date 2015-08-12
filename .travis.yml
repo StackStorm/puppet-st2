@@ -1,0 +1,21 @@
+---
+branches:
+  except:
+  - gh-pages
+sudo: false
+language: ruby
+script: "script/cibuild"
+bundler_args: --without rake
+matrix:
+  fast_finish: true
+  include:
+    - rvm: 1.9.3
+      env: PUPPET_VERSION="~> 3.0"
+    - rvm: 2.0.0
+      env: PUPPET_VERSION="~> 3.0"
+    - rvm: 2.1.0
+      env: PUPPET_VERSION="~> 3.0"
+    - rvm: 2.1.0
+      env: PUPPET_VERSION="~> 4.0"
+notifications:
+  email: false

@@ -1,5 +1,7 @@
 # st2
 
+[![Build Status](https://travis-ci.org/StackStorm/puppet-st2.svg)](https://travis-ci.org/StackStorm/puppet-st2)
+
 Module to manage [StackStorm](http://stackstorm.com)
 
 Currently tested with:
@@ -108,10 +110,3 @@ st2::packs:
       post_message_action:
         webhook_url: XXX
 ```
-
-### st2web
-
-`st2web` is now included! To access the WebUI, simply point your browser at
-http://(ipaddress):9101/webui.
-
-
