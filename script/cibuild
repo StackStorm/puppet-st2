@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
+bundle exec librarian-puppet --path spec/fixtures
 bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'

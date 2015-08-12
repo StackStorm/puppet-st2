@@ -1,0 +1,20 @@
+fixtures:
+  symlinks:
+    st2: "#{source_dir}"
+  forge_modules:
+    apt: "puppetlabs/apt"
+    concat: "puppetlabs/concat"
+    stdlib: "puppetlabs/stdlib"
+    httpauth: "jamtur01/httpauth"
+    staging: "nanliu/staging"
+    git: "maestrodev/git"
+    wget: "maestrodev/wget"
+    sudo: "saz/sudo"
+    python: "stankevich/python"
+    gcc: "puppetlabs/gcc"
+    inifile: "puppetlabs/inifile"
+    mongodb: "puppetlabs/mongodb"
+    mysql: "puppetlabs/mysql"
+    rabbitmq: "puppetlabs/rabbitmq"
+    vcsrepo: "puppetlabs/vcsrepo"
+    tiller: "jfryman/tiller"
