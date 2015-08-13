@@ -27,6 +27,7 @@
 #  }
 #
 class st2::profile::mistral(
+  $autoupdate          = $::st2::autoupdate,
   $manage_mysql        = false,
   $git_branch          = $::st2::mistral_git_branch,
   $db_root_password    = 'StackStorm',
@@ -46,6 +47,14 @@ class st2::profile::mistral(
   # what current mistral code ships with st2 - jdf
 
   $_mistral_root = '/opt/openstack/mistral'
+  $_bootstrapped = $::mistral_bootstrapped ? {
+    undef   => false,
+    default => true,
+  }
+  $_update_vcsroot = $autoupdate ? {
+    true    => 'latest',
+    default => 'present',
+  }
 
   ### Dependencies ###
   if !defined(Class['::mysql::bindings']) {
@@ -72,16 +81,44 @@ class st2::profile::mistral(
     mode   => '0755',
   }
 
+  # Currently, this resource will break in the event that a node is offline,
+  # causing a cascading failure in the rest of catalog compilation. The
+  # correct answer is to build well-created packages, and this is in fact
+  # underway. For now, if $autoupdate is false, detach all of the various
+  # downstream dependencies so that compliation continues when git update
+  # attempts to run
+  if $autoupdate or ! $_bootstrapped {
+    $_mistral_root_before = [
+      Exec['setup mistral'],
+      Exec['setup st2mistral plugin'],
+      Python::Virtualenv[$_mistral_root],
+      Python::Pip['mysql-python'],
+      Exec['setup mistral database'],
+    ]
+    $_st2mistral_before = [
+      Exec['setup mistral'],
+      Exec['setup st2mistral plugin'],
+    ]
+  } else {
+    $_mistral_root_before = undef
+    $_st2mistral_before = undef
+  }
+
   vcsrepo { $_mistral_root:
-    ensure   => present,
+    ensure   => $_update_vcsroot,
     source   => 'https://github.com/StackStorm/mistral.git',
     revision => $git_branch,
     provider => 'git',
     require  => File['/opt/openstack'],
-    before   => [
-      Exec['setup mistral'],
-      Exec['setup st2mistral plugin'],
-    ],
+    before   => $_mistral_root_before,
+  }
+  vcsrepo { '/etc/mistral/actions/st2mistral':
+    ensure => $_update_vcsroot,
+    source => 'https://github.com/StackStorm/st2mistral.git',
+    revision => $git_branch,
+    provider => 'git',
+    require  => File['/etc/mistral/actions'],
+    before   => $_st2mistral_before,
   }
 
   file { '/etc/mistral/wf_trace_logging.conf':
@@ -92,17 +129,6 @@ class st2::profile::mistral(
     source  => 'puppet:///modules/st2/etc/mistral/wf_trace_logging.conf',
   }
 
-  vcsrepo { '/etc/mistral/actions/st2mistral':
-    ensure => present,
-    source => 'https://github.com/StackStorm/st2mistral.git',
-    revision => $git_branch,
-    provider => 'git',
-    require  => File['/etc/mistral/actions'],
-    before   => [
-      Exec['setup mistral'],
-      Exec['setup st2mistral plugin'],
-    ],
-  }
   ### END Mistral Downloads ###
 
   ### Bootstrap Python ###
@@ -112,7 +138,6 @@ class st2::profile::mistral(
     systempkgs   => false,
     venv_dir     => "${_mistral_root}/.venv",
     cwd          => $_mistral_root,
-    require      => Vcsrepo[$_mistral_root],
     notify       => [
       Exec['setup mistral', 'setup st2mistral plugin'],
       Exec['python_requirementsmistral'],
@@ -129,7 +154,6 @@ class st2::profile::mistral(
   python::pip { 'mysql-python':
     ensure     => present,
     virtualenv => "${_mistral_root}/.venv",
-    require    => Vcsrepo[$_mistral_root],
     before   => [
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
@@ -255,9 +279,15 @@ class st2::profile::mistral(
       '/bin',
       '/sbin',
     ],
-    require     => [
-      Vcsrepo[$_mistral_root],
-    ],
+  }
+
+  # Once everything is done, let the system know so we can avoid some future processing
+  file { '/etc/facter/facts.d/mistral_bootstrapped.txt':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0444',
+    content => 'mistral_bootstrapped=true'
   }
 
   ### Set Mistral API Settings. Useful when setting up uWSGI or other server
