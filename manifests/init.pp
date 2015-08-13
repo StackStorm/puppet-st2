@@ -30,8 +30,8 @@
 #    st2::revison: 11
 #
 class st2(
-  $version            = '0.12.2',
-  $revision           = '6',
+  $version            = '0.12.1',
+  $revision           = '5',
   $autoupdate         = false,
   $mistral_git_branch = 'st2-0.9.0',
   $api_url            = undef,
