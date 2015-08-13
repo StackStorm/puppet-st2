@@ -97,6 +97,17 @@ class st2::profile::mistral(
         Exec['setup mistral database'],
       ],
     }
+    vcsrepo { '/etc/mistral/actions/st2mistral':
+      ensure => $_update_vcsroot,
+      source => 'https://github.com/StackStorm/st2mistral.git',
+      revision => $git_branch,
+      provider => 'git',
+      require  => File['/etc/mistral/actions'],
+      before   => [
+        Exec['setup mistral'],
+        Exec['setup st2mistral plugin'],
+      ],
+    }
   }
 
   file { '/etc/mistral/wf_trace_logging.conf':
@@ -107,17 +118,6 @@ class st2::profile::mistral(
     source  => 'puppet:///modules/st2/etc/mistral/wf_trace_logging.conf',
   }
 
-  vcsrepo { '/etc/mistral/actions/st2mistral':
-    ensure => $_update_vcsroot,
-    source => 'https://github.com/StackStorm/st2mistral.git',
-    revision => $git_branch,
-    provider => 'git',
-    require  => File['/etc/mistral/actions'],
-    before   => [
-      Exec['setup mistral'],
-      Exec['setup st2mistral plugin'],
-    ],
-  }
   ### END Mistral Downloads ###
 
   ### Bootstrap Python ###
