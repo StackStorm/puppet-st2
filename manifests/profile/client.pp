@@ -41,6 +41,10 @@ class st2::profile::client (
     true    => st2_latest_stable(),
     default => $version,
   }
+  $_bootstrapped = $::st2client_bootstrapped ? {
+    undef   => false,
+    default => str2bool($::st2client_bootstrapped),
+  }
 
   include '::st2::notices'
   include '::st2::params'
@@ -62,14 +66,27 @@ class st2::profile::client (
   }
 
   ### This should be a versioned download too... currently on master
-  wget::fetch { 'Download st2client requirements.txt':
-    source      => 'https://raw.githubusercontent.com/StackStorm/st2/master/st2client/requirements.txt',
-    cache_dir   => '/var/cache/wget',
-    destination => '/tmp/st2client-requirements.txt',
+  ## Only attempt to download this if the server has been appropriately bootstrapped.
+  if $autoupdate or ! $_bootstrapped {
+    wget::fetch { 'Download st2client requirements.txt':
+      source      => 'https://raw.githubusercontent.com/StackStorm/st2/master/st2client/requirements.txt',
+      cache_dir   => '/var/cache/wget',
+      destination => '/tmp/st2client-requirements.txt',
+      before      => Python::Requirements['/tmp/st2client-requirements.txt'],
+    }
   }
 
   python::requirements { '/tmp/st2client-requirements.txt':
-    require => Wget::Fetch['Download st2client requirements.txt'],
+    notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
+  }
+
+  # Once the system is properly bootstrapped, leave a breadcrumb for future runs
+  file { '/etc/facter/facts.d/st2client_bootstrapped.txt':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => 'st2client_bootstrapped=true',
   }
 
   file { '/root/.st2':

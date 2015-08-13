@@ -47,6 +47,10 @@ class st2::profile::mistral(
   # what current mistral code ships with st2 - jdf
 
   $_mistral_root = '/opt/openstack/mistral'
+  $_bootstrapped = $::mistral_bootstrapped ? {
+    undef   => false,
+    default => str2bool($::mistral_bootstrapped)
+  }
   $_update_vcsroot = $autoupdate ? {
     true    => 'latest',
     default => 'present',
@@ -83,22 +87,21 @@ class st2::profile::mistral(
   # underway. For now, if $autoupdate is false, detach all of the various
   # downstream dependencies so that compliation continues when git update
   # attempts to run
-  $_mistral_root_before = $autoupdate ? {
-    true    => [
+  if $autoupdate or ! $_bootstrapped {
+    $_mistral_root_before = [
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
       Python::Virtualenv[$_mistral_root],
       Python::Pip['mysql-python'],
       Exec['setup mistral database'],
-    ],
-    default => undef,
-  }
-  $_st2mistral_before = $autoupdate ? {
-    true    => [
+    ]
+    $_st2mistral_before = [
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
-    ],
-    default => undef,
+    ]
+  } else {
+    $_mistral_root_before = undef
+    $_st2mistral_before = undef
   }
 
   vcsrepo { $_mistral_root:
@@ -276,6 +279,16 @@ class st2::profile::mistral(
       '/bin',
       '/sbin',
     ],
+    notify      => File['/etc/facter/facts.d/mistral_bootstrapped.txt'],
+  }
+
+  # Once everything is done, let the system know so we can avoid some future processing
+  file { '/etc/facter/facts.d/mistral_bootstrapped.txt':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0444',
+    content => 'mistral_bootstrapped=true'
   }
 
   ### Set Mistral API Settings. Useful when setting up uWSGI or other server

@@ -29,6 +29,10 @@ class st2::profile::web(
     true    => st2_latest_stable(),
     default => $version,
   }
+  $_bootstrapped = $::st2web_bootstrapped ? {
+    undef   => false,
+    default => str2bool($::st2web_bootstrapped),
+  }
 
   file { [
       '/opt/stackstorm/static',
@@ -40,11 +44,13 @@ class st2::profile::web(
     mode   => '0755',
   }
 
-  wget::fetch { 'st2web':
-    source      => "http://downloads.stackstorm.net/releases/st2/${_version}/webui/webui-${_version}.tar.gz",
-    cache_dir   => '/var/cache/wget',
-    destination => '/tmp/st2web.tar.gz',
-    before      => Exec['extract webui'],
+  if $autoupdate or ! $_bootstrapped {
+    wget::fetch { 'st2web':
+      source      => "http://downloads.stackstorm.net/releases/st2/${_version}/webui/webui-${_version}.tar.gz",
+      cache_dir   => '/var/cache/wget',
+      destination => '/tmp/st2web.tar.gz',
+      before      => Exec['extract webui'],
+    }
   }
 
   exec { 'extract webui':
@@ -52,6 +58,7 @@ class st2::profile::web(
     creates => '/opt/stackstorm/static/webui/index.html',
     path    => '/usr/bin:/usr/sbin:/bin:/sbin',
     require => File['/opt/stackstorm/static/webui'],
+    before  => File['/etc/facter/facts.d/st2web_bootstrapped.txt'],
   }
 
   # This is crude... get some augeas on
@@ -63,5 +70,13 @@ class st2::profile::web(
     mode    => '0444',
     content => template('st2/opt/st2web/config.js.erb'),
     require => Exec['extract webui'],
+  }
+
+  file { '/etc/facter/facts.d/st2web_bootstrapped.txt':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => 'st2web_bootstrapped=true',
   }
 }
