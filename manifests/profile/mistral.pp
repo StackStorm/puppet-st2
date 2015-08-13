@@ -279,7 +279,6 @@ class st2::profile::mistral(
       '/bin',
       '/sbin',
     ],
-    notify      => File['/etc/facter/facts.d/mistral_bootstrapped.txt'],
   }
 
   # Once everything is done, let the system know so we can avoid some future processing
