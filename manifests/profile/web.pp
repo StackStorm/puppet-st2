@@ -25,8 +25,8 @@ class st2::profile::web(
   $version    = $::st2::version,
   $autoupdate = $::st2::autoupdate,
 ) inherits st2 {
-  $_version = $autoupdate {
-    true    => st2_latest_version(),
+  $_version = $autoupdate ? {
+    true    => st2_latest_stable(),
     default => $version,
   }
 
