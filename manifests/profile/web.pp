@@ -19,11 +19,17 @@
 #  include ::nginx
 #
 class st2::profile::web(
-  $api_url  = $::st2::api_url,
-  $auth     = $::st2::auth,
-  $auth_url = $::st2::auth_url,
-  $version  = $::st2::version,
+  $api_url    = $::st2::api_url,
+  $auth       = $::st2::auth,
+  $auth_url   = $::st2::auth_url,
+  $version    = $::st2::version,
+  $autoupdate = $::st2::autoupdate,
 ) inherits st2 {
+  $_version = $autoupdate {
+    true    => st2_latest_version(),
+    default => $version,
+  }
+
   file { [
       '/opt/stackstorm/static',
       '/opt/stackstorm/static/webui',
@@ -35,7 +41,7 @@ class st2::profile::web(
   }
 
   wget::fetch { 'st2web':
-    source      => "http://downloads.stackstorm.net/releases/st2/${version}/webui/webui-${version}.tar.gz",
+    source      => "http://downloads.stackstorm.net/releases/st2/${_version}/webui/webui-${_version}.tar.gz",
     cache_dir   => '/var/cache/wget',
     destination => '/tmp/st2web.tar.gz',
     before      => Exec['extract webui'],

@@ -25,6 +25,7 @@
 #
 class st2::profile::client (
   $version     = $::st2::version,
+  $autoupdate  = $::st2::autoupdate,
   $revision    = $::st2::revision,
   $api_url     = $::st2::cli_api_url,
   $auth_url    = $::st2::cli_auth_url,
@@ -36,6 +37,10 @@ class st2::profile::client (
   $debug       = $::st2::cli_debug,
   $cache_token = $::st2::cli_cache_token,
 ) inherits ::st2 {
+  $_version = $autoupdate ? {
+    true    => st2_latest_stable(),
+    default => $version,
+  }
 
   include '::st2::notices'
   include '::st2::params'
@@ -52,7 +57,7 @@ class st2::profile::client (
   st2::dependencies::install { $_client_dependencies: }
 
   st2::package::install { $_client_packages:
-    version  => $version,
+    version  => $_version,
   }
 
   ### This should be a versioned download too... currently on master

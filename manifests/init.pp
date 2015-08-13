@@ -6,6 +6,7 @@
 # === Parameters
 #
 #  [*version*]            - Version of StackStorm to install
+#  [*autoupdate*]         - Automatically update to latest stable. (default: false)
 #  [*revision*]           - Revision of StackStorm to install
 #  [*mistral_git_branch*] - Tagged branch of Mistral to download/install
 #  [*api_url*]            - URL where the StackStorm API lives (default: undef)
@@ -29,7 +30,8 @@
 #    st2::revison: 11
 #
 class st2(
-  $version            = st2_latest_stable(),
+  $version            = '0.12.2',
+  $autoupdate         = false,
   $revision           = undef,
   $mistral_git_branch = 'st2-0.9.0',
   $api_url            = undef,

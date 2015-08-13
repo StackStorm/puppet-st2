@@ -36,6 +36,7 @@
 #
 class st2::profile::server (
   $version                = $::st2::version,
+  $autoupdate             = $::st2::autoupdate,
   $revision               = $::st2::revision,
   $auth                   = $::st2::auth,
   $workers                = $::st2::workers,
@@ -51,6 +52,11 @@ class st2::profile::server (
   include '::st2::params'
   include '::st2::dependencies'
 
+  $_version = $autoupdate ? {
+    true    => st2_latest_stable(),
+    default => $version,
+  }
+
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
   $_ng_init = $::st2::ng_init
@@ -59,7 +65,7 @@ class st2::profile::server (
     'Debian' => '/usr/lib/python2.7/dist-packages',
     'RedHat' => '/usr/lib/python2.7/site-packages',
   }
-  $_register_command = $version ? {
+  $_register_command = $_version ? {
     /^0.8/  => "${_python_pack}/st2common/bin/registercontent.py",
     default => "${_python_pack}/st2common/bin/st2-register-content",
   }
@@ -88,7 +94,7 @@ class st2::profile::server (
   }
 
   st2::package::install { $_server_packages:
-    version     => $version,
+    version     => $_version,
     revision    => $revision,
     notify      => Exec['register st2 content'],
   }

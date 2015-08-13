@@ -27,6 +27,7 @@
 #  }
 #
 class st2::profile::mistral(
+  $autoupdate          = $::st2::autoupdate,
   $manage_mysql        = false,
   $git_branch          = $::st2::mistral_git_branch,
   $db_root_password    = 'StackStorm',
@@ -46,6 +47,10 @@ class st2::profile::mistral(
   # what current mistral code ships with st2 - jdf
 
   $_mistral_root = '/opt/openstack/mistral'
+  $_update_vcsroot = $autoupdate ? {
+    true    => 'latest',
+    default => 'present',
+  }
 
   ### Dependencies ###
   if !defined(Class['::mysql::bindings']) {
@@ -73,7 +78,7 @@ class st2::profile::mistral(
   }
 
   vcsrepo { $_mistral_root:
-    ensure   => present,
+    ensure   => $_update_vcsroot,
     source   => 'https://github.com/StackStorm/mistral.git',
     revision => $git_branch,
     provider => 'git',
@@ -93,7 +98,7 @@ class st2::profile::mistral(
   }
 
   vcsrepo { '/etc/mistral/actions/st2mistral':
-    ensure => present,
+    ensure => $_update_vcsroot,
     source => 'https://github.com/StackStorm/st2mistral.git',
     revision => $git_branch,
     provider => 'git',
