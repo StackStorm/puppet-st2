@@ -77,16 +77,26 @@ class st2::profile::mistral(
     mode   => '0755',
   }
 
-  vcsrepo { $_mistral_root:
-    ensure   => $_update_vcsroot,
-    source   => 'https://github.com/StackStorm/mistral.git',
-    revision => $git_branch,
-    provider => 'git',
-    require  => File['/opt/openstack'],
-    before   => [
-      Exec['setup mistral'],
-      Exec['setup st2mistral plugin'],
-    ],
+  # Currently, this resource will break in the event that a node is offline,
+  # causing a cascading failure in the rest of catalog compilation. The
+  # correct answer is to build well-created packages, and this is in fact
+  # underway. For now, if $autoupdate is false, this resource is bypassed
+  # completely
+  if $autoupdate {
+    vcsrepo { $_mistral_root:
+      ensure   => $_update_vcsroot,
+      source   => 'https://github.com/StackStorm/mistral.git',
+      revision => $git_branch,
+      provider => 'git',
+      require  => File['/opt/openstack'],
+      before   => [
+        Exec['setup mistral'],
+        Exec['setup st2mistral plugin'],
+        Python::Virtualenv[$_mistral_root],
+        Python::Pip['mysql-python'],
+        Exec['setup mistral database'],
+      ],
+    }
   }
 
   file { '/etc/mistral/wf_trace_logging.conf':
@@ -117,7 +127,6 @@ class st2::profile::mistral(
     systempkgs   => false,
     venv_dir     => "${_mistral_root}/.venv",
     cwd          => $_mistral_root,
-    require      => Vcsrepo[$_mistral_root],
     notify       => [
       Exec['setup mistral', 'setup st2mistral plugin'],
       Exec['python_requirementsmistral'],
@@ -134,7 +143,6 @@ class st2::profile::mistral(
   python::pip { 'mysql-python':
     ensure     => present,
     virtualenv => "${_mistral_root}/.venv",
-    require    => Vcsrepo[$_mistral_root],
     before   => [
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
@@ -259,9 +267,6 @@ class st2::profile::mistral(
       '/usr/sbin',
       '/bin',
       '/sbin',
-    ],
-    require     => [
-      Vcsrepo[$_mistral_root],
     ],
   }
 
