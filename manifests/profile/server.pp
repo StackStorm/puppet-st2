@@ -58,7 +58,7 @@ class st2::profile::server (
   }
   $_bootstrapped = $::st2server_bootstrapped ? {
     undef   => false,
-    default => str2bool($::st2server_bootstrapped),
+    default => true,
   }
 
   $_server_packages = $::st2::params::st2_server_packages

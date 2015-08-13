@@ -43,7 +43,7 @@ class st2::profile::client (
   }
   $_bootstrapped = $::st2client_bootstrapped ? {
     undef   => false,
-    default => str2bool($::st2client_bootstrapped),
+    default => true,
   }
 
   include '::st2::notices'
