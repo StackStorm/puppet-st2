@@ -109,6 +109,15 @@ class st2::profile::server (
     command     => "python ${_register_command} --register-all --config-file ${_conf_dir}/st2.conf",
     path        => '/usr/bin:/usr/sbin:/bin:/sbin',
     refreshonly => true,
+    notify      => File['/etc/facter/facts.d/st2server_bootstrapped.txt'],
+  }
+
+  file { '/etc/facter/facts.d/st2server_bootstrapped.txt':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0444',
+    content => 'st2server_bootstrapped=true',
   }
 
   ini_setting { 'api_listen_ip':
