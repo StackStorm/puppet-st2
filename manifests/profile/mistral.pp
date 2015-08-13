@@ -80,34 +80,42 @@ class st2::profile::mistral(
   # Currently, this resource will break in the event that a node is offline,
   # causing a cascading failure in the rest of catalog compilation. The
   # correct answer is to build well-created packages, and this is in fact
-  # underway. For now, if $autoupdate is false, this resource is bypassed
-  # completely
-  if $autoupdate {
-    vcsrepo { $_mistral_root:
-      ensure   => $_update_vcsroot,
-      source   => 'https://github.com/StackStorm/mistral.git',
-      revision => $git_branch,
-      provider => 'git',
-      require  => File['/opt/openstack'],
-      before   => [
-        Exec['setup mistral'],
-        Exec['setup st2mistral plugin'],
-        Python::Virtualenv[$_mistral_root],
-        Python::Pip['mysql-python'],
-        Exec['setup mistral database'],
-      ],
-    }
-    vcsrepo { '/etc/mistral/actions/st2mistral':
-      ensure => $_update_vcsroot,
-      source => 'https://github.com/StackStorm/st2mistral.git',
-      revision => $git_branch,
-      provider => 'git',
-      require  => File['/etc/mistral/actions'],
-      before   => [
-        Exec['setup mistral'],
-        Exec['setup st2mistral plugin'],
-      ],
-    }
+  # underway. For now, if $autoupdate is false, detach all of the various
+  # downstream dependencies so that compliation continues when git update
+  # attempts to run
+  $_mistral_root_before = $autoupdate ? {
+    true    => [
+      Exec['setup mistral'],
+      Exec['setup st2mistral plugin'],
+      Python::Virtualenv[$_mistral_root],
+      Python::Pip['mysql-python'],
+      Exec['setup mistral database'],
+    ],
+    default => undef,
+  }
+  $_st2mistral_before = $autoupdate ? {
+    true    => [
+      Exec['setup mistral'],
+      Exec['setup st2mistral plugin'],
+    ],
+    default => undef,
+  }
+
+  vcsrepo { $_mistral_root:
+    ensure   => $_update_vcsroot,
+    source   => 'https://github.com/StackStorm/mistral.git',
+    revision => $git_branch,
+    provider => 'git',
+    require  => File['/opt/openstack'],
+    before   => $_mistral_root_before,
+  }
+  vcsrepo { '/etc/mistral/actions/st2mistral':
+    ensure => $_update_vcsroot,
+    source => 'https://github.com/StackStorm/st2mistral.git',
+    revision => $git_branch,
+    provider => 'git',
+    require  => File['/etc/mistral/actions'],
+    before   => $_st2mistral_before,
   }
 
   file { '/etc/mistral/wf_trace_logging.conf':
