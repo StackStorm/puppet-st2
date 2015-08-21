@@ -311,16 +311,16 @@ class st2::profile::mistral(
     # weed out any undefined subsystems, and expose `$subsystems` to the
     # underlying template
     $_api_flag = $disable_api ? {
-      false => undef,
-      true  => 'api',
+      true    => undef,
+      default => 'api',
     }
     $_executor_flag = $disable_executor ? {
-      false => undef,
-      true  => 'executor',
+      true    => undef,
+      default => 'executor',
     }
     $engine_flag = $disable_engine ? {
-      false => undef,
-      true  => 'engine',
+      true    => undef,
+      default => 'engine',
     }
 
     $_flags = [$_api_flag, $_executor_flag, $_engine_flag]
