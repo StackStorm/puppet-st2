@@ -318,7 +318,7 @@ class st2::profile::mistral(
       true    => undef,
       default => 'executor',
     }
-    $engine_flag = $disable_engine ? {
+    $_engine_flag = $disable_engine ? {
       true    => undef,
       default => 'engine',
     }
