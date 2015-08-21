@@ -260,7 +260,7 @@ class st2::profile::mistral(
 
   postgresql::server::db { 'mistral':
     user     => 'mistral',
-    password => postgresql_password('mistral', $db_mistral_password),
+    password => postgresql_password('mistral', "${db_mistral_password}"),
     before   => Exec['setup mistral database'],
   }
 
