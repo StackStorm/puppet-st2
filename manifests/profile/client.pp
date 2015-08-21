@@ -38,11 +38,11 @@ class st2::profile::client (
   $cache_token = $::st2::cli_cache_token,
 ) inherits ::st2 {
   $_version = $autoupdate ? {
-    true    => st2_latest_stable(),
+    true    => undef,
     default => $version,
   }
   $_revision = $autoupdate ? {
-    true    => st2_latest_revision(),
+    true    => undef,
     default => $revision,
   }
   $_bootstrapped = $::st2client_bootstrapped ? {

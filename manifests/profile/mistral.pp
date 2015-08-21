@@ -4,7 +4,8 @@
 # StackStorm. Has the option to manage a companion MySQL Server
 #
 # === Parameters
-#  [*manage_mysql*]        - Flag used to have MySQL installed/managed via this profile (Default: false)
+#  [*manage_postgresql*]   - Flag used to have PostgreSQL installed/managed
+#                            via this profile (Default: false)
 #  [*git_branch*]          - Tagged branch of Mistral to download/install
 #  [*db_root_password*]    - Root MySQL Password
 #  [*db_mistral_password*] - Mistral user MySQL Password
@@ -15,23 +16,27 @@
 #  [*db_pool_recycle*]     - DB Pool recycle time
 #  [*api_url*]             - URI of Mistral backend (e.x.: http://localhost)
 #  [*api_port*]            - Port of Mistral backend. (Default: 8989)
+#  [*manage_service*]      - Manage the Mistral service. Default: true
+#  [*disable_api*]         - Disables the API subsystem. Default: false
+#  [*disable_executor*]    - Disables the executor subsystem. Default: false
+#  [*disable_engine*]      - Disables the engine subsystem. Default: false
 #
 # === Examples
 #
 #  include st2::profile::mistral
 #
 #  class { '::st2::profile::mistral':
-#    manage_mysql        => true,
+#    manage_postgresql   => true,
 #    db_root_password    => 'datsupersecretpassword',
 #    db_mistral_password => 'mistralpassword',
 #  }
 #
 class st2::profile::mistral(
   $autoupdate          = $::st2::autoupdate,
-  $manage_mysql        = false,
+  $manage_postgresql   = false,
   $git_branch          = $::st2::mistral_git_branch,
-  $db_root_password    = 'StackStorm',
-  $db_mistral_password = 'StackStorm',
+  $db_root_password    = fqdn_rand(32),
+  $db_mistral_password = fqdn_rand(31),
   $db_server           = 'localhost',
   $db_database         = 'mistral',
   $db_max_pool_size    = '100',
@@ -40,6 +45,9 @@ class st2::profile::mistral(
   $api_url             = $::st2::mistral_api_url,
   $api_port            = $::st2::mistral_api_port,
   $manage_service      = true,
+  $disable_api         = false,
+  $disable_executor    = false,
+  $disable_engine      = false,
 ) inherits st2 {
   include '::st2::dependencies'
 
@@ -54,14 +62,6 @@ class st2::profile::mistral(
   $_update_vcsroot = $autoupdate ? {
     true    => 'latest',
     default => 'present',
-  }
-
-  ### Dependencies ###
-  if !defined(Class['::mysql::bindings']) {
-    class { '::mysql::bindings':
-      client_dev => true,
-      daemon_dev => true,
-    }
   }
 
   ### Mistral Downloads ###
@@ -92,7 +92,6 @@ class st2::profile::mistral(
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
       Python::Virtualenv[$_mistral_root],
-      Python::Pip['mysql-python'],
       Exec['setup mistral database'],
     ]
     $_st2mistral_before = [
@@ -151,16 +150,6 @@ class st2::profile::mistral(
     virtualenv   => "${_mistral_root}/.venv",
   }
 
-  python::pip { 'mysql-python':
-    ensure     => present,
-    virtualenv => "${_mistral_root}/.venv",
-    before   => [
-      Exec['setup mistral'],
-      Exec['setup st2mistral plugin'],
-      Exec['setup mistral database'],
-    ],
-  }
-
   python::pip { 'python-mistralclient':
     ensure => present,
     url    => "git+https://github.com/StackStorm/python-mistralclient.git@${git_branch}",
@@ -211,7 +200,7 @@ class st2::profile::mistral(
     path    => '/etc/mistral/mistral.conf',
     section => 'database',
     setting => 'connection',
-    value   => "mysql://mistral:${db_mistral_password}@${db_server}/${db_database}",
+    value   => "postgresql://mistral:${db_mistral_password}@${db_server}/${db_database}",
   }
   ini_setting { 'connection pool config':
     ensure  => present,
@@ -248,15 +237,18 @@ class st2::profile::mistral(
   ### End Mistral Config Modeling ###
 
   ### Setup Mistral Database ###
-  if $manage_mysql {
-    class { '::mysql::server':
-      root_password => $db_root_password,
+  if $manage_postgresql {
+    class { '::postgresql::server':
+      postgres_password => $db_root_password,
     }
+    ### Dependencies ###
+    include ::postgresql::lib::devel
+    include ::postgresql::lib::python
   }
 
-  mysql::db { 'mistral':
+  postgresql::server::db { 'mistral':
     user     => 'mistral',
-    password => $db_mistral_password,
+    password => postgresql_password('mistral', "${db_mistral_password}"),
     before   => Exec['setup mistral database'],
   }
 
@@ -311,6 +303,30 @@ class st2::profile::mistral(
 
   ### Mistral Init Scripts ###
   if $manage_service {
+
+    # Mistral has three modes by which it can be launched:
+    # api, engine, and executor, all via the same entry point (launcher.py)
+    #
+    # We take all of these toggles as flags, drop them into an array
+    # weed out any undefined subsystems, and expose `$subsystems` to the
+    # underlying template
+    $_api_flag = $disable_api ? {
+      true    => undef,
+      default => 'api',
+    }
+    $_executor_flag = $disable_executor ? {
+      true    => undef,
+      default => 'executor',
+    }
+    $_engine_flag = $disable_engine ? {
+      true    => undef,
+      default => 'engine',
+    }
+
+    $_flags = [$_api_flag, $_executor_flag, $_engine_flag]
+    $_enabled_subsystems = delete_undef_values($_flags)
+    $subsystems = join($_enabled_subsystems, ',')
+
     case $::osfamily {
       'Debian': {
         file { '/etc/init/mistral.conf':
@@ -318,7 +334,7 @@ class st2::profile::mistral(
           owner  => 'root',
           group  => 'root',
           mode   => '0444',
-          source => 'puppet:///modules/st2/etc/init/mistral.conf',
+          content => template('st2/etc/init/mistral.conf.erb'),
         }
       }
       'RedHat': {
@@ -327,7 +343,7 @@ class st2::profile::mistral(
           owner  => 'root',
           group  => 'root',
           mode   => '0444',
-          source => 'puppet:///modules/st2/etc/systemd/system/mistral.service',
+          content => template('st2/etc/systemd/mistral.service.erb'),
         }
       }
     }

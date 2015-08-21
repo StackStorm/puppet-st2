@@ -14,47 +14,46 @@
 #  }
 #
 define st2::package::install(
-  $version     = undef,
-  $revision    = undef,
+  $version  = undef,
+  $revision = undef,
 ) {
-
   case $::osfamily {
     'Debian': {
       include ::st2::package::debian
-
       $_type = 'debs'
-
-      if $revision {
-        $_revision = $revision
-      } else {
-        $_revision = st2_current_revision($version, $_type)
+      $_version = $version ? {
+        undef   => st2_latest_stable(),
+        default => $version,
       }
-
+      $_revision = $revision ? {
+        undef   => st2_latest_stable_revision($_version, $_type),
+        default => $revision,
+      }
       # Temporary Hack while fixing build pipeline
       if $name =~ /client/ {
-        $_version = "${version}.${_revision}-1"
+        $_package_version = "${_version}.${_revision}-1"
       } else {
-        $_version = "${version}-${_revision}"
+        $_package_version = "${_version}-${_revision}"
       }
       Class["apt::update"] -> Package<| title == $name |>
     }
     'RedHat': {
       include ::st2::package::redhat
-
       $_type = 'rpms'
-
-      if $revision {
-        $_revision = $revision
-      } else {
-        $_revision = st2_current_revision($version, $_type)
+      $_version = $version ? {
+        undef   => st2_latest_stable(),
+        default => $version,
       }
-
-      $_version = "${version}-${_revision}"
+      $_revision = $revision ? {
+        undef   => st2_latest_stable_revision($_version, $_type),
+        default => $revision,
+      }
+      $_package_version = "${_version}-${_revision}"
     }
     default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }
   }
 
   package { $name:
-    ensure => $_version,
+    ensure => $_package_version,
   }
 }
