@@ -22,11 +22,11 @@ define st2::package::install(
       include ::st2::package::debian
       $_type = 'debs'
       $_version = $version ? {
-        undef   => st2_latest_stable()
+        undef   => st2_latest_stable(),
         default => $version,
       }
       $_revision = $revision ? {
-        undef   => st2_latest_stable_revision($_version, $_type)
+        undef   => st2_latest_stable_revision($_version, $_type),
         default => $revision,
       }
       # Temporary Hack while fixing build pipeline
@@ -41,11 +41,11 @@ define st2::package::install(
       include ::st2::package::redhat
       $_type = 'rpms'
       $_version = $version ? {
-        undef   => st2_latest_stable()
+        undef   => st2_latest_stable(),
         default => $version,
       }
       $_revision = $revision ? {
-        undef   => st2_latest_stable_revision($_version, $_type)
+        undef   => st2_latest_stable_revision($_version, $_type),
         default => $revision,
       }
       $_package_version = "${_version}-${_revision}"
