@@ -14,8 +14,8 @@
 #  }
 #
 define st2::package::install(
-  $version     = undef,
-  $revision    = undef,
+  $version  = undef,
+  $revision = undef,
 ) {
 
   case $::osfamily {
@@ -24,17 +24,11 @@ define st2::package::install(
 
       $_type = 'debs'
 
-      if $revision {
-        $_revision = $revision
-      } else {
-        $_revision = st2_current_revision($version, $_type)
-      }
-
       # Temporary Hack while fixing build pipeline
       if $name =~ /client/ {
-        $_version = "${version}.${_revision}-1"
+        $_version = "${version}.${revision}-1"
       } else {
-        $_version = "${version}-${_revision}"
+        $_version = "${version}-${revision}"
       }
       Class["apt::update"] -> Package<| title == $name |>
     }
@@ -42,14 +36,7 @@ define st2::package::install(
       include ::st2::package::redhat
 
       $_type = 'rpms'
-
-      if $revision {
-        $_revision = $revision
-      } else {
-        $_revision = st2_current_revision($version, $_type)
-      }
-
-      $_version = "${version}-${_revision}"
+      $_version = "${version}-${revision}"
     }
     default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }
   }

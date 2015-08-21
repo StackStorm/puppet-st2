@@ -61,7 +61,7 @@ class st2::profile::server (
     default => true,
   }
   $_revision = $autoupdate ? {
-    true    => st2_latest_revision(),
+    true    => st2_latest_stable_revision(),
     default => $revision,
   }
 
