@@ -174,7 +174,7 @@ class st2::profile::mistral(
 
   ### Bootstrap Mistral ###
   exec { 'setup mistral':
-    command     => 'python setup.py develop',
+    command     => 'python setup.py install',
     cwd         => $_mistral_root,
     path        => [
       "${_mistral_root}/.venv/bin",

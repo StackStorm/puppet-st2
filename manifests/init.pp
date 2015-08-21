@@ -33,7 +33,7 @@ class st2(
   $version            = '0.12.1',
   $revision           = '5',
   $autoupdate         = false,
-  $mistral_git_branch = 'st2-0.9.0',
+  $mistral_git_branch = 'st2-0.13.0',
   $api_url            = undef,
   $auth               = true,
   $auth_url           = undef,
