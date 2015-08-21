@@ -60,6 +60,10 @@ class st2::profile::server (
     undef   => false,
     default => true,
   }
+  $_revision = $autoupdate ? {
+    true    => st2_latest_revision(),
+    default => $revision,
+  }
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
@@ -101,7 +105,7 @@ class st2::profile::server (
 
   st2::package::install { $_server_packages:
     version     => $_version,
-    revision    => $revision,
+    revision    => $_revision,
     notify      => Exec['register st2 content'],
   }
 

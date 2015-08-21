@@ -41,6 +41,10 @@ class st2::profile::client (
     true    => st2_latest_stable(),
     default => $version,
   }
+  $_revision = $autoupdate ? {
+    true    => st2_latest_revision(),
+    default => $revision,
+  }
   $_bootstrapped = $::st2client_bootstrapped ? {
     undef   => false,
     default => true,
@@ -62,7 +66,7 @@ class st2::profile::client (
 
   st2::package::install { $_client_packages:
     version  => $_version,
-    revision => $revision,
+    revision => $_revision,
   }
 
   ### This should be a versioned download too... currently on master
