@@ -26,14 +26,14 @@
 #  include st2::profile::mistral
 #
 #  class { '::st2::profile::mistral':
-#    manage_mysql        => true,
+#    manage_postgresql   => true,
 #    db_root_password    => 'datsupersecretpassword',
 #    db_mistral_password => 'mistralpassword',
 #  }
 #
 class st2::profile::mistral(
   $autoupdate          = $::st2::autoupdate,
-  $manage_mysql        = false,
+  $manage_postgresql   = false,
   $git_branch          = $::st2::mistral_git_branch,
   $db_root_password    = fqdn_rand(32),
   $db_mistral_password = fqdn_rand(31),
@@ -64,10 +64,6 @@ class st2::profile::mistral(
     default => 'present',
   }
 
-  ### Dependencies ###
-  include ::postgresql::lib::devel
-  include ::postgresql::lib::python
-
   ### Mistral Downloads ###
   if !defined(File['/opt/openstack']) {
     file { '/opt/openstack':
@@ -96,7 +92,6 @@ class st2::profile::mistral(
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
       Python::Virtualenv[$_mistral_root],
-      Python::Pip['mysql-python'],
       Exec['setup mistral database'],
     ]
     $_st2mistral_before = [
@@ -153,16 +148,6 @@ class st2::profile::mistral(
   python::requirements { 'mistral':
     requirements => "${_mistral_root}/requirements.txt",
     virtualenv   => "${_mistral_root}/.venv",
-  }
-
-  python::pip { 'mysql-python':
-    ensure     => present,
-    virtualenv => "${_mistral_root}/.venv",
-    before   => [
-      Exec['setup mistral'],
-      Exec['setup st2mistral plugin'],
-      Exec['setup mistral database'],
-    ],
   }
 
   python::pip { 'python-mistralclient':
@@ -256,6 +241,9 @@ class st2::profile::mistral(
     class { '::postgresql::server':
       postgres_password => $db_root_password,
     }
+    ### Dependencies ###
+    include ::postgresql::lib::devel
+    include ::postgresql::lib::python
   }
 
   postgresql::server::db { 'mistral':
