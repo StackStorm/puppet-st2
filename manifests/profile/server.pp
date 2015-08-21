@@ -53,7 +53,7 @@ class st2::profile::server (
   include '::st2::dependencies'
 
   $_version = $autoupdate ? {
-    true    => st2_latest_stable(),
+    true    => undef,
     default => $version,
   }
   $_bootstrapped = $::st2server_bootstrapped ? {
@@ -61,7 +61,7 @@ class st2::profile::server (
     default => true,
   }
   $_revision = $autoupdate ? {
-    true    => st2_latest_stable_revision(),
+    true    => undef,
     default => $revision,
   }
 
