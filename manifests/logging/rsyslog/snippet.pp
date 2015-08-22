@@ -10,7 +10,7 @@
 # Usage
 #
 #  st2::logging::rsyslog::snippet { 'st2api': }
-define ::st2::logging::rsyslog::snippet(
+define st2::logging::rsyslog::snippet(
   $subsystem = $name,
 ) {
   include ::st2::params
