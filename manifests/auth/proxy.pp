@@ -13,7 +13,6 @@
 #
 class st2::auth::proxy (
   $debug         = false,
-  $logging_file  = '/etc/st2api/logging.conf',
 ) {
   $_debug = $debug ? {
     true    => 'True',
@@ -41,12 +40,5 @@ class st2::auth::proxy (
     section => 'auth',
     setting => 'api_url',
     value   => $_api_url,
-  }
-  ini_setting { 'auth_logging_file':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'logging',
-    value   => $logging_file,
   }
 }
