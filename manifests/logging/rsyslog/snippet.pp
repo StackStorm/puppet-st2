@@ -16,7 +16,9 @@ define st2::logging::rsyslog::snippet(
   include ::st2::params
   $_route = $::st2::params::component_map[$subsystem]
 
-  ::rsyslog::snippet { $_route:
-    content => template('st2/etc/rsyslog/snippet.erb'),
+  if ! defined(Rsyslog::Snippet[$_route]) {
+   ::rsyslog::snippet { $_route:
+      content => template('st2/etc/rsyslog/snippet.erb'),
+    }
   }
 }
