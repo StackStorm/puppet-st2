@@ -151,7 +151,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'actionrunner',
     setting => 'logging',
-    value   => "conf/${_logger_config}.conf",
+    value   => "/etc/st2actions/${_logger_config}.conf",
   }
 
   ## API Settings
@@ -181,7 +181,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'api',
     setting => 'logging',
-    value   => "conf/${_logger_config}.conf",
+    value   => "/etc/st2api/${_logger_config}.conf",
   }
 
   ## Authentication Settings
@@ -211,7 +211,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'logging',
-    value   => "conf/${_logger_config}.conf",
+    value   => "/etc/st2api/${_logger_config}.conf",
   }
 
   ## Notifier Settings
@@ -220,7 +220,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'notifier',
     setting => 'logging',
-    value   => "conf/${_logger_config}.notifier.conf",
+    value   => "/etc/st2actions/${_logger_config}.notifier.conf",
   }
 
   ## Resultstracker Settings
@@ -229,7 +229,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'resultstracker',
     setting => 'logging',
-    value   => "conf/${_logger_config}.resultstracker.conf",
+    value   => "/etc/st2actions/${_logger_config}.resultstracker.conf",
   }
 
   ## Rules Engine Settings
@@ -238,7 +238,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'rulesengine',
     setting => 'logging',
-    value   => "conf/${_logger_config}.rulesengine.conf",
+    value   => "/etc/st2reactor/${_logger_config}.rulesengine.conf",
   }
 
   ## Sensor container Settings
@@ -247,7 +247,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'sensorcontainer',
     setting => 'logging',
-    value   => "conf/${_logger_config}.sensorcontainer.conf",
+    value   => "/etc/st2reactor/${_logger_config}.sensorcontainer.conf",
   }
 
   ## Syslog Settings
