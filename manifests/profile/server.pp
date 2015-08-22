@@ -4,23 +4,28 @@
 #
 # === Parameters
 #
-#  [*version*] - Version of StackStorm to install
-#  [*revision*] - Revision of StackStorm to install
-#  [*auth*] - Toggle Auth
-#  [*workers*] - Set the number of actionrunner processes to start
-#  [*st2api_listen_ip*] - Listen IP for st2api process
-#  [*st2api_listen_port*] - Listen port for st2api process
-#  [*st2auth_listen_ip*] - Listen IP for st2auth process
-#  [*st2auth_listen_port*] - Listen port for st2auth process
-#  [*manage_st2api_service*] - Toggle whether this module creates an init script for st2api.
-#                              If you disable this, it is your responsibility to create a service
-#                              named `st2api` for `st2ctl` to continue to work.
+#  [*version*]                - Version of StackStorm to install
+#  [*revision*]               - Revision of StackStorm to install
+#  [*auth*]                   - Toggle Auth
+#  [*workers*]                - Set the number of actionrunner processes to start
+#  [*st2api_listen_ip*]       - Listen IP for st2api process
+#  [*st2api_listen_port*]     - Listen port for st2api process
+#  [*st2auth_listen_ip*]      - Listen IP for st2auth process
+#  [*st2auth_listen_port*]    - Listen port for st2auth process
+#  [*manage_st2api_service*]  - Toggle whether this module creates an init script for st2api.
+#                               If you disable this, it is your responsibility to create a service
+#                               named `st2api` for `st2ctl` to continue to work.
 #  [*manage_st2auth_service*] - Toggle whether this module creates an init script for st2auth.
-#                              If you disable this, it is your responsibility to create a service
-#                              named `st2auth` for `st2ctl` to continue to work.
-#  [*manage_st2web_service*] - Toggle whether this module creates an init script for st2web.
-#                              If you disable this, it is your responsibility to create a service
-#                              named `st2web` for `st2ctl` to continue to work.
+#                               If you disable this, it is your responsibility to create a service
+#                               named `st2auth` for `st2ctl` to continue to work.
+#  [*manage_st2web_service*]  - Toggle whether this module creates an init script for st2web.
+#                               If you disable this, it is your responsibility to create a service
+#                               named `st2web` for `st2ctl` to continue to work.
+#  [*syslog*]                 - Routes all log messages to syslog
+#  [*syslog_host*]            - Syslog host.
+#  [*syslog_protocol*]        - Syslog protocol.
+#  [*syslog_port*]            - Syslog port.
+#  [*syslog_facility*]        - Syslog facility.
 #
 # === Variables
 #
@@ -40,6 +45,10 @@ class st2::profile::server (
   $revision               = $::st2::revision,
   $auth                   = $::st2::auth,
   $workers                = $::st2::workers,
+  $syslog                 = $::st2::syslog,
+  $syslog_host            = $::st2::syslog_host,
+  $syslog_port            = $::st2::syslog_port,
+  $syslog_facility        = $::st2::syslog_facitily,
   $st2api_listen_ip       = '0.0.0.0',
   $st2api_listen_port     = '9101',
   $st2auth_listen_ip      = '0.0.0.0',
@@ -80,6 +89,10 @@ class st2::profile::server (
   $_enable_auth = $auth ? {
     true    => 'True',
     default => 'False',
+  }
+  $_logger_config = $syslog ? {
+    true    => 'syslog',
+    default => 'logging',
   }
 
   file { $_conf_dir:
@@ -124,46 +137,6 @@ class st2::profile::server (
     content => 'st2server_bootstrapped=true',
   }
 
-  ini_setting { 'api_listen_ip':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'api',
-    setting => 'host',
-    value   => $st2api_listen_ip,
-  }
-
-  ini_setting { 'api_listen_port':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'api',
-    setting => 'port',
-    value   => $st2api_listen_port,
-  }
-
-  ini_setting { 'auth_listen_ip':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'host',
-    value   => $st2auth_listen_ip,
-  }
-
-  ini_setting { 'auth_listen_port':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'port',
-    value   => $st2auth_listen_port,
-  }
-
-  ini_setting { 'api_allow_origin':
-    ensure  => 'present',
-    path    => '/etc/st2/st2.conf',
-    section => 'api',
-    setting => 'allow_origin',
-    value   => '*',
-  }
-
   ini_setting { 'ssh_key_stanley':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
@@ -172,12 +145,139 @@ class st2::profile::server (
     value   => '/home/stanley/.ssh/st2_stanley_key',
   }
 
+  ## ActionRunner settings
+  ini_setting { 'actionrunner_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'actionrunner',
+    setting => 'logging',
+    value   => "conf/${_logger_config}.conf",
+  }
+
+  ## API Settings
+  ini_setting { 'api_listen_ip':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'api',
+    setting => 'host',
+    value   => $st2api_listen_ip,
+  }
+  ini_setting { 'api_listen_port':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'api',
+    setting => 'port',
+    value   => $st2api_listen_port,
+  }
+  ini_setting { 'api_allow_origin':
+    ensure  => 'present',
+    path    => '/etc/st2/st2.conf',
+    section => 'api',
+    setting => 'allow_origin',
+    value   => '*',
+  }
+  ini_setting { 'api_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'api',
+    setting => 'logging',
+    value   => "conf/${_logger_config}.conf",
+  }
+
+  ## Authentication Settings
   ini_setting { 'auth':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'enable',
     value   => $_enable_auth,
+  }
+  ini_setting { 'auth_listen_port':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'port',
+    value   => $st2auth_listen_port,
+  }
+  ini_setting { 'auth_listen_ip':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'host',
+    value   => $st2auth_listen_ip,
+  }
+  ini_setting { 'auth_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'logging',
+    value   => "conf/${_logger_config}.conf",
+  }
+
+  ## Notifier Settings
+  ini_setting { 'notifier_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'notifier',
+    setting => 'logging',
+    value   => "conf/${_logger_config}.notifier.conf",
+  }
+
+  ## Resultstracker Settings
+  ini_setting { 'resultstracker_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'resultstracker',
+    setting => 'logging',
+    value   => "conf/${_logger_config}.resultstracker.conf",
+  }
+
+  ## Rules Engine Settings
+  ini_setting { 'rulesengine_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'rulesengine',
+    setting => 'logging',
+    value   => "conf/${_logger_config}.rulesengine.conf",
+  }
+
+  ## Sensor container Settings
+  ini_setting { 'sensorcontainer_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'sensorcontainer',
+    setting => 'logging',
+    value   => "conf/${_logger_config}.sensorcontainer.conf",
+  }
+
+  ## Syslog Settings
+  ini_setting { 'syslog_host':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'syslog',
+    setting => 'host',
+    value   => $syslog_host,
+  }
+  ini_setting { 'syslog_protocol':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'syslog',
+    setting => 'protocol',
+    value   => $syslog_protocol,
+  }
+  ini_setting { 'syslog_port':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'syslog',
+    setting => 'port',
+    value   => $syslog_port,
+  }
+  ini_setting { 'syslog_facility':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'syslog',
+    setting => 'facility',
+    value   => $syslog_facility,
   }
 
   if $_ng_init {

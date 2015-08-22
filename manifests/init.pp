@@ -22,6 +22,11 @@
 #  [*cli_auth_url*]       - CLI config - Auth URL
 #  [*workers*]            - Set the number of actionrunner processes to start
 #  [*ng_init*]            - [Experimental] Init scripts for services. Upstart ONLY
+#  [*syslog*]             - Routes all log messages to syslog
+#  [*syslog_host*]        - Syslog host. Default: localhost
+#  [*syslog_protocol*]    - Syslog protocol. Default: udp
+#  [*syslog_port*]        - Syslog port. Default: 514
+#  [*syslog_facility*]    - Syslog facility. Default: local7
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
@@ -50,4 +55,9 @@ class st2(
   $ng_init            = false,
   $mistral_api_url    = undef,
   $mistral_api_port   = '8989',
+  $syslog             = false,
+  $syslog_host        = 'localhost',
+  $syslog_protocol    = 'udp',
+  $syslog_port        = 514,
+  $syslog_facility    = 'local7',
 ) { }
