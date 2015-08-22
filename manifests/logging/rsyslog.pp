@@ -8,10 +8,6 @@
 #  and st2::syslog enabled to route messages to all the right
 #  places.
 #
-#  The loop structure still uses old-school defined type
-#  until we can assert that all systems are using Puppet 4 or
-#  future-parser.
-#
 # Parameters
 #
 #  This class contains no parameters
@@ -19,7 +15,12 @@
 # Usage
 #
 #  include ::st2::logging::rsyslog
-class st2::logging::rsyslog inherits st2::params {
-  $_subsystems = $::st2::params::subsystems
-  ::st2::logging::rsyslog::snippet { $_subsystems: }
+class st2::logging::rsyslog {
+  file { '/etc/rsyslog.d/10-st2.conf':
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0640',
+    source => 'puppet:///modules/st2/etc/rsyslog.d/10-st2.conf',
+  }
 }
