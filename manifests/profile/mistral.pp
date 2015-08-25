@@ -35,8 +35,8 @@ class st2::profile::mistral(
   $autoupdate          = $::st2::autoupdate,
   $manage_postgresql   = false,
   $git_branch          = $::st2::mistral_git_branch,
-  $db_root_password    = fqdn_rand(32),
-  $db_mistral_password = fqdn_rand(31),
+  $db_root_password    = fqdn_rand_string(32),
+  $db_mistral_password = fqdn_rand_string(31),
   $db_server           = 'localhost',
   $db_database         = 'mistral',
   $db_max_pool_size    = '100',
@@ -241,6 +241,9 @@ class st2::profile::mistral(
     class { '::postgresql::server':
       postgres_password => $db_root_password,
     }
+
+    
+
     ### Dependencies ###
     include ::postgresql::lib::devel
     include ::postgresql::lib::python
