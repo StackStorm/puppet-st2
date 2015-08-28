@@ -38,7 +38,7 @@ class st2::profile::client (
   $cache_token = $::st2::cli_cache_token,
 ) inherits ::st2 {
   $_version = $autoupdate ? {
-    true    => undef,
+    true    => st2_latest_stable(),
     default => $version,
   }
   $_revision = $autoupdate ? {
