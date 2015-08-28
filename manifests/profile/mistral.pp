@@ -54,7 +54,7 @@ class st2::profile::mistral(
 
   $_st2_version = $autoupdate ? {
     undef   => st2_latest_stable(),
-    default => $st2_version
+    default => $st2_version,
   }
   $_git_branch = $autoupdate ? {
     undef   => "v${_st2_version}",
