@@ -33,6 +33,7 @@
 #
 class st2::profile::mistral(
   $autoupdate          = $::st2::autoupdate,
+  $st2_version         = $::st2::version,
   $manage_postgresql   = false,
   $git_branch          = $::st2::mistral_git_branch,
   $db_root_password    = fqdn_rand_string(32),
@@ -50,6 +51,15 @@ class st2::profile::mistral(
   $disable_engine      = false,
 ) inherits st2 {
   include '::st2::dependencies'
+
+  $_st2_version = $autoupdate ? {
+    undef   => st2_latest_stable(),
+    default => $st2_version,
+  }
+  $_git_branch = $autoupdate ? {
+    undef   => "v${_st2_version}",
+    default => $git_branch,
+  }
 
   # This needs a bit more modeling... need to understand
   # what current mistral code ships with st2 - jdf
@@ -106,7 +116,7 @@ class st2::profile::mistral(
   vcsrepo { $_mistral_root:
     ensure   => $_update_vcsroot,
     source   => 'https://github.com/StackStorm/mistral.git',
-    revision => $git_branch,
+    revision => $_git_branch,
     provider => 'git',
     require  => File['/opt/openstack'],
     before   => $_mistral_root_before,
@@ -114,7 +124,7 @@ class st2::profile::mistral(
   vcsrepo { '/etc/mistral/actions/st2mistral':
     ensure => $_update_vcsroot,
     source => 'https://github.com/StackStorm/st2mistral.git',
-    revision => $git_branch,
+    revision => $_git_branch,
     provider => 'git',
     require  => File['/etc/mistral/actions'],
     before   => $_st2mistral_before,
@@ -152,7 +162,7 @@ class st2::profile::mistral(
 
   python::pip { 'python-mistralclient':
     ensure => present,
-    url    => "git+https://github.com/StackStorm/python-mistralclient.git@${git_branch}",
+    url    => "git+https://github.com/StackStorm/python-mistralclient.git@${_git_branch}",
     before   => [
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],

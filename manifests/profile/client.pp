@@ -49,6 +49,10 @@ class st2::profile::client (
     undef   => false,
     default => true,
   }
+  $_git_tag = $_version ? {
+    /dev/   => 'master',
+    default => "v${_version}",
+  }
 
   include '::st2::notices'
   include '::st2::params'
@@ -73,7 +77,7 @@ class st2::profile::client (
   ## Only attempt to download this if the server has been appropriately bootstrapped.
   if $autoupdate or ! $_bootstrapped {
     wget::fetch { 'Download st2client requirements.txt':
-      source      => 'https://raw.githubusercontent.com/StackStorm/st2/master/st2client/requirements.txt',
+      source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/st2client/requirements.txt",
       cache_dir   => '/var/cache/wget',
       destination => '/tmp/st2client-requirements.txt',
       before      => Python::Requirements['/tmp/st2client-requirements.txt'],

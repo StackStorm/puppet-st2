@@ -73,6 +73,10 @@ class st2::profile::server (
     true    => undef,
     default => $revision,
   }
+  $_git_tag = $_version ? {
+    /dev/   => "master",
+    default => "v${_version}",
+  }
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
@@ -105,7 +109,7 @@ class st2::profile::server (
   ### This should be a versioned download too... currently on master
   if $autoupdate or ! $_bootstrapped {
     wget::fetch { 'Download st2server requirements.txt':
-      source      => 'https://raw.githubusercontent.com/StackStorm/st2/master/requirements.txt',
+      source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/requirements.txt",
       cache_dir   => '/var/cache/wget',
       destination => '/tmp/st2server-requirements.txt',
       before      => Python::Requirements['/tmp/st2server-requirements.txt'],
