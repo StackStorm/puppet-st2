@@ -24,6 +24,7 @@
 #  include ::st2::stanley
 #
 class st2::stanley (
+  $username        = 'stanley',
   $ssh_public_key  = undef,
   $ssh_key_type    = undef,
   $ssh_private_key = undef,
@@ -47,7 +48,7 @@ class st2::stanley (
     notify { '[st2::stanley] WARNING: this class has been setup with insecure default keys for testing purposes. Please refer to Class[st2] to learn more on configuring this for production use': }
   }
 
-  st2::user { 'stanley':
+  st2::user { $username:
     client            => $client,
     server            => $server,
     create_sudo_entry => true,
