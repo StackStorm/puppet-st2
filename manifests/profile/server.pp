@@ -215,7 +215,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'logging',
-    value   => "/etc/st2api/${_logger_config}.conf",
+    value   => "/etc/st2auth/${_logger_config}.conf",
   }
 
   ## Notifier Settings
