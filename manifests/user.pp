@@ -30,7 +30,7 @@ define st2::user(
   $ssh_key_type      = undef,
   $ssh_public_key    = undef,
   $ssh_private_key   = undef,
-  $uid               = '800',
+  $uid               = undef,
 ) {
   include ::st2::params
 
