@@ -52,16 +52,10 @@ define st2::pack (
   }
 
   if $_ng_init {
-    Service<| tag == 'st2::profile::service' |> -> Exec["install-st2-pack-${name}"] -> Exec['restart-st2']
+    Service<| tag == 'st2::profile::service' |> -> Exec["install-st2-pack-${name}"]
   } else {
-    Exec['start st2'] -> Exec["install-st2-pack-${pack}"] -> Exec['restart-st2']
+    Exec['start st2'] -> Exec["install-st2-pack-${pack}"]
   }
-
-  ensure_resource('exec', 'restart-st2', {
-    'command'     => 'st2ctl restart',
-    'path'        => '/usr/sbin:/usr/bin:/sbin:/bin',
-    'refreshonly' => true,
-  })
 
   if $config {
     validate_hash($config)

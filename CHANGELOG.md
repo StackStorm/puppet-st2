@@ -1,7 +1,10 @@
 # Changelog
 
+## In Development
+* Stop `st2::pack` resource restarting StackStorm (*improvement*)
+
 ## 0.7.10 (Sept 2, 2015)
-*Fix `manage_mysql` -> `manage_postgresql` in st2::profile::server (*bugfix*)
+* Fix `manage_mysql` -> `manage_postgresql` in st2::profile::server (*bugfix*)
 * Fix error with stanley user UID change (*bugfix*)
 
 ## 0.7.9 (Sept 1, 2015)
