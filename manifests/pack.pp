@@ -64,7 +64,6 @@ define st2::pack (
       mode    => '0440',
       content => template('st2/config.yaml.erb'),
       require => Exec["install-st2-pack-${pack}"],
-      notify  => Exec["restart-st2"],
     }
   }
 }
