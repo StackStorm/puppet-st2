@@ -20,6 +20,8 @@
 #  [*cli_password*]       - CLI config - Auth Password
 #  [*cli_api_url*]        - CLI config - API URL
 #  [*cli_auth_url*]       - CLI config - Auth URL
+#  [*global_env*]         - Globally set the environment variables for ST2 API/Auth
+#                           Overwritten by local config or CLI arguments.
 #  [*workers*]            - Set the number of actionrunner processes to start
 #  [*ng_init*]            - [Experimental] Init scripts for services. Upstart ONLY
 #  [*syslog*]             - Routes all log messages to syslog
@@ -51,6 +53,7 @@ class st2(
   $cli_password       = fqdn_rand_string(32),
   $cli_api_url        = 'http://localhost:9101',
   $cli_auth_url       = 'http://localhost:9100',
+  $global_env         = false,
   $workers            = 8,
   $ng_init            = false,
   $mistral_api_url    = undef,

@@ -24,6 +24,7 @@
 #  include st2::profile::client
 #
 class st2::profile::client (
+  $auth        = $::st2::auth,
   $version     = $::st2::version,
   $autoupdate  = $::st2::autoupdate,
   $revision    = $::st2::revision,
@@ -36,6 +37,7 @@ class st2::profile::client (
   $cacert      = $::st2::cli_cacert,
   $debug       = $::st2::cli_debug,
   $cache_token = $::st2::cli_cache_token,
+  $global_env  = $::st2::global_env,
 ) inherits ::st2 {
   $_version = $autoupdate ? {
     true    => st2_latest_stable(),
@@ -59,12 +61,6 @@ class st2::profile::client (
 
   $_client_packages = $st2::params::st2_client_packages
   $_client_dependencies = $st2::params::debian_client_dependencies
-
-  $_auth = $::st2::auth
-  $_api_url = $::st2::api_url
-  $_auth_url = $::st2::auth_url
-  $_cli_username = $::st2::cli_username
-  $_cli_password = $::st2::cli_password
 
   st2::dependencies::install { $_client_dependencies: }
 
@@ -102,6 +98,17 @@ class st2::profile::client (
     owner  => 'root',
     group  => 'root',
     mode   => '0700',
+  }
+
+  # Setup global environment variables:
+  if $global_env {
+    file { '/etc/profile.d/st2.sh':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      content => template('st2/etc/profile.d/st2.sh.erb'),
+    }
   }
 
   Ini_setting {
@@ -150,7 +157,7 @@ class st2::profile::client (
     value   => $_cache_token,
   }
 
-  if $_auth {
+  if $auth {
     ini_setting { 'st2_cli_credentials_username':
       section => 'credentials',
       setting => 'username',
