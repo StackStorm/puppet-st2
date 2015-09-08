@@ -36,6 +36,7 @@ class st2::profile::client (
   $cacert      = $::st2::cli_cacert,
   $debug       = $::st2::cli_debug,
   $cache_token = $::st2::cli_cache_token,
+  $global_env  = $::st2::global_env,
 ) inherits ::st2 {
   $_version = $autoupdate ? {
     true    => st2_latest_stable(),
@@ -102,6 +103,17 @@ class st2::profile::client (
     owner  => 'root',
     group  => 'root',
     mode   => '0700',
+  }
+
+  # Setup global environment variables:
+  if $global_env {
+    file { '/etc/profile.d/st2.sh':
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      content => template('st2/etc/profile.d/st2.sh.erb'),
+    }
   }
 
   Ini_setting {
