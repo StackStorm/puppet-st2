@@ -1,6 +1,10 @@
 # Changelog
 
-## In Development
+## Under Development
+* Configure st2client CLI settings for any user (*improvement*)
+
+## 0.8.0 (Sept 10, 2015)
+* Release StackStorm v0.13.2
 * Stop `st2::pack` resource restarting StackStorm (*improvement*)
 
 ## 0.7.10 (Sept 2, 2015)
