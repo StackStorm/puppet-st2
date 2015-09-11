@@ -356,7 +356,7 @@ class st2::profile::mistral(
           owner  => 'root',
           group  => 'root',
           mode   => '0444',
-          content => template('st2/etc/systemd/mistral.service.erb'),
+          content => template('st2/etc/systemd/system/mistral.service.erb'),
         }
       }
     }
