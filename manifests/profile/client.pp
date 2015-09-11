@@ -84,6 +84,21 @@ class st2::profile::client (
     notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
   }
 
+  # Setup st2client settings for Root user by default
+  st2::client::settings { 'root':
+    homedir     => '/root',
+    auth        => $auth,
+    api_url     => $api_url,
+    auth_url    => $auth_url,
+    base_url    => $base_url,
+    username    => $username,
+    password    => $password,
+    api_version => $api_version,
+    cacert      => $cacert,
+    debug       => $debug,
+    cache_token => $cache_token,
+  }
+
   # Once the system is properly bootstrapped, leave a breadcrumb for future runs
   file { '/etc/facter/facts.d/st2client_bootstrapped.txt':
     ensure  => file,
@@ -91,13 +106,6 @@ class st2::profile::client (
     group   => 'root',
     mode    => '0444',
     content => 'st2client_bootstrapped=true',
-  }
-
-  file { '/root/.st2':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0700',
   }
 
   # Setup global environment variables:
@@ -108,70 +116,6 @@ class st2::profile::client (
       group   => 'root',
       mode    => '0755',
       content => template('st2/etc/profile.d/st2.sh.erb'),
-    }
-  }
-
-  Ini_setting {
-    ensure  => present,
-    path    => '/root/.st2/config',
-    require => File['/root/.st2'],
-  }
-
-  ini_setting { 'st2_cli_api_url':
-    section => 'api',
-    setting => 'url',
-    value   => $api_url,
-  }
-  ini_setting { 'st2_cli_general_base_url':
-    section => 'general',
-    setting => 'base_url',
-    value   => $base_url,
-  }
-  ini_setting { 'st2_cli_general_api_version':
-    section => 'general',
-    setting => 'api_version',
-    value   => $api_version,
-  }
-  ini_setting { 'st2_cli_general_cacert':
-    section => 'general',
-    setting => 'cacert',
-    value   => $cacert,
-  }
-
-  $_cli_debug = $debug ? {
-    true    => 'True',
-    default => 'False',
-  }
-  ini_setting { 'st2_cli_cli_debug':
-    section => 'cli',
-    setting => 'debug',
-    value   => $_cli_debug,
-  }
-  $_cache_token = $cache_token ? {
-    true    => 'True',
-    default => 'False',
-  }
-  ini_setting { 'st2_cli_cache_token':
-    section => 'cli',
-    setting => 'cache_token',
-    value   => $_cache_token,
-  }
-
-  if $auth {
-    ini_setting { 'st2_cli_credentials_username':
-      section => 'credentials',
-      setting => 'username',
-      value   => $username,
-    }
-    ini_setting { 'st2_cli_credentials_password':
-      section => 'credentials',
-      setting => 'password',
-      value   => $password,
-    }
-    ini_setting { 'st2_cli_auth_url':
-      section => 'auth',
-      setting => 'url',
-      value   => $auth_url,
     }
   }
 }
