@@ -11,7 +11,7 @@ class st2::package::redhat (
   $version = $::st2::version,
 ) inherits st2 {
   $_os = downcase($::operatingsystem)
-  $_osver = $::operatingsystemrelease
+  $_osver = $::operatingsystemmajrelease
 
   if $version =~ /dev$/ {
     $_suite = "unstable"
