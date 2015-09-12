@@ -23,7 +23,10 @@ class st2::profile::rabbitmq {
   }
 
   if $::osfamily == "RedHat" {
-    include erlang
+    class {'erlang':
+      require => Class['epel']
+    }
+
     case $::operatingsystemmajrelease {
       '7': {
         yumrepo { 'erlang-solutions':
