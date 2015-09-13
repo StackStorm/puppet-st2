@@ -60,9 +60,23 @@ class st2::params(
     'st2auth',
     'st2debug',
   ]
-  $st2_client_packages = [
-    'python-st2client',
-  ]
+  case $::osfamily {
+    'Debian': {
+      $st2_client_packages = [
+        'python-st2client',
+      ]
+    }
+    'RedHat': {
+      $st2_client_packages = [
+        'python-st2client',
+      ]
+    }
+    default: {
+      $st2_client_packages = [
+        'python-st2client',
+      ]
+    }
+  }
 
   ### Debian Specific Information ###
   $debian_dependencies = [
