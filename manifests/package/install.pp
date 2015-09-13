@@ -48,6 +48,13 @@ define st2::package::install(
         undef   => st2_latest_stable_revision($_version, $_type),
         default => $revision,
       }
+      # Temporary Hack while fixing build pipeline
+      if $name =~ /client/ {
+        $_package_version = "${_version}.${_revision}-1"
+      } else {
+        $_package_version = "${_version}-${_revision}"
+      }
+  
       $_package_version = "${_version}-${_revision}"
     }
     default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }
