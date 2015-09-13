@@ -68,7 +68,7 @@ class st2::params(
     }
     'RedHat': {
       $st2_client_packages = [
-        'python-st2client',
+        'st2client',
       ]
     }
     default: {
