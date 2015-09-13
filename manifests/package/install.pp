@@ -54,8 +54,6 @@ define st2::package::install(
       } else {
         $_package_version = "${_version}-${_revision}"
       }
-  
-      $_package_version = "${_version}-${_revision}"
     }
     default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }
   }
