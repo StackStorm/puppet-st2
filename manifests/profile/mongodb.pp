@@ -19,7 +19,11 @@ class st2::profile::mongodb {
   include '::st2::params'
 
   if !defined(Class['::mongodb::server']) {
-    class { '::mongodb::server': }
+    class {'::mongodb::globals':
+      manage_package_repo => true,
+    }->
+    class {'::mongodb::server': }->
+    class {'::mongodb::client': }
   }
 
   $_mongodb_dependencies = $::osfamily ? {
