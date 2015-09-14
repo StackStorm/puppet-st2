@@ -16,7 +16,14 @@
 #  include st2::profile::python
 #
 class st2::profile::python {
-  if !defined(Class['::python']) {
+  if $::osfamily == "RedHat" {
+    package {'python27':
+      ensure => 'latest'
+    }
+    package {'python27-virtualenv':
+      ensure => 'latest'
+    }
+  } elsif !defined(Class['::python']) {
     class { '::python':
       version    => 'system',
       pip        => true,
@@ -24,4 +31,6 @@ class st2::profile::python {
       virtualenv => true,
     }
   }
+
+
 }
