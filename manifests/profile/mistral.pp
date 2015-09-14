@@ -143,7 +143,7 @@ class st2::profile::mistral(
   ### Bootstrap Python ###
   python::virtualenv { $_mistral_root:
     ensure       => present,
-    version      => 'system',
+    version      => '2.7',
     systempkgs   => false,
     venv_dir     => "${_mistral_root}/.venv",
     cwd          => $_mistral_root,
@@ -292,7 +292,7 @@ class st2::profile::mistral(
     owner  => 'root',
     group  => 'root',
     mode   => '0444',
-    content => 'mistral_bootstrapped=true'
+    content => 'mistral_bootstrapped=true',
   }
 
   ### Set Mistral API Settings. Useful when setting up uWSGI or other server
@@ -351,12 +351,25 @@ class st2::profile::mistral(
         }
       }
       'RedHat': {
-        file { '/etc/systemd/system/mistral.service':
-          ensure => file,
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444',
-          content => template('st2/etc/systemd/system/mistral.service.erb'),
+        case $::operatingsystemmajrelease {
+          '7': {
+            file { '/etc/systemd/system/mistral.service':
+              ensure => file,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0444',
+              content => template('st2/etc/systemd/system/mistral.service.erb'),
+            }
+          }
+          '6': {
+            file { '/etc/init.d/mistral':
+              ensure => file,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0444',
+              content => template('st2/etc/init.d/mistral.erb'),
+            }
+          }
         }
       }
     }

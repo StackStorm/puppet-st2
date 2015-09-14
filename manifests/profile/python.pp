@@ -23,6 +23,9 @@ class st2::profile::python {
     package {'python27-virtualenv':
       ensure => 'latest'
     }
+    package {'python27-devel':
+      ensure => 'latest'
+    }
   } elsif !defined(Class['::python']) {
     class { '::python':
       version    => 'system',
