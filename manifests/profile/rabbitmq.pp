@@ -23,9 +23,7 @@ class st2::profile::rabbitmq {
   }
 
   if $::osfamily == "RedHat" {
-    class {'erlang':
-      require => Class['epel']
-    }
+    class {'::erlang': }
 
     case $::operatingsystemmajrelease {
       '7': {

@@ -10,7 +10,6 @@
 class st2::package::redhat (
   $version = $::st2::version,
 ) inherits st2 {
-  include epel
   $_os = downcase($::operatingsystem)
   $_osver = $::operatingsystemmajrelease
 

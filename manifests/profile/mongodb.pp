@@ -19,15 +19,19 @@ class st2::profile::mongodb {
   include '::st2::params'
 
   if !defined(Class['::mongodb::server']) {
-    class {'::mongodb::globals':
-      manage_package_repo => true,
-    }->
-    class {'::mongodb::server': }->
-    class {'::mongodb::client': }
+    if $::osfamily == "RedHat" {
+      require epel
+      class {'::mongodb::server': }->
+      class {'::mongodb::client': }
+
+    }else{
+      class { '::mongodb::server': }
+    }
   }
 
   $_mongodb_dependencies = $::osfamily ? {
     'Debian' => $::st2::params::debian_mongodb_dependencies,
+    'RedHat' => $::st2::params::redhat_mongodb_dependencies,
     default  => undef,
   }
 
