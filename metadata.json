@@ -18,7 +18,7 @@
     {"name":"stankevich-python","version_requirement":">= 1.7.15"},
     {"name":"puppetlabs-gcc","version_requirement":">= 0.2.0"},
     {"name":"puppetlabs-inifile","version_requirement":">= 1.2.0"},
-    {"name":"puppetlabs-mongodb","version_requirement":">= 0.8.0"},
+    {"name":"puppetlabs-mongodb","version_requirement":">= 0.11.0"},
     {"name":"puppetlabs-postgresql","version_requirement":">= 4.4.2"},
     {"name":"puppetlabs-rabbitmq","version_requirement":">= 4.1.0"},
     {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.2.0"},
