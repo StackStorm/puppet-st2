@@ -18,7 +18,7 @@ class st2::profile::repos {
   if $::osfamily == "RedHat" {
     require epel
 
-    if $operatingsystemmajrelease == '6': {
+    if $operatingsystemmajrelease == '6' {
       package{'ius-release':
         ensure    => 'installed',
         provider  => 'rpm',
