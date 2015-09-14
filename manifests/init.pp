@@ -63,23 +63,4 @@ class st2(
   $syslog_protocol    = 'udp',
   $syslog_port        = 514,
   $syslog_facility    = 'local7',
-) {
-  
-  # The hackery is strong.  Not sure where else to hack this in.
-  if $::osfamily == "RedHat" {
-    file{'/etc/facter':
-      ensure  => 'directory',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0444'
-    }
-
-    file{'/etc/facter/facts.d':
-      ensure  => 'directory',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0444',
-      require => File['/etc/facter']
-    }
-  }
-}
+) {}
