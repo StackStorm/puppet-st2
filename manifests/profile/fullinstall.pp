@@ -14,6 +14,11 @@
 #  include st2::profile::fullinstall
 #
 class st2::profile::fullinstall inherits st2 {
+  
+  class { '::st2::profile::facter':
+    before => Anchor['st2::bootstrap']
+  }
+
   class { '::st2::profile::repos':
     before => Anchor['st2::bootstrap']
   }
