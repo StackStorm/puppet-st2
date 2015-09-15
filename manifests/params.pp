@@ -109,7 +109,6 @@ class st2::params(
     'libffi-devel',
     'libxml2-devel',
     'libxslt-devel',
-    'python-devel',
   ]
   $redhat_client_dependencies = [
     'python-prettytable',
