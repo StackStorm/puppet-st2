@@ -26,12 +26,14 @@ class st2::profile::python {
     package {'python27-devel':
       ensure => 'latest'
     }
-  } elsif !defined(Class['::python']) {
-    class { '::python':
-      version    => 'system',
-      pip        => true,
-      dev        => true,
-      virtualenv => true,
+  } else {
+    if !defined(Class['::python']) {
+      class { '::python':
+        version    => 'system',
+        pip        => true,
+        dev        => true,
+        virtualenv => true,
+      }
     }
   }
 
