@@ -10,7 +10,7 @@
 ### END INIT INFO
 
 dir=""
-cmd="/opt/openstack/mistral/.venv/bin/python /opt/openstack/mistral/mistral/cmd/launch.py --config-file /etc/mistral/mistral.conf --log-file /var/log/mistral.log --log-config-append /etc/mistral/wf_trace_logging.conf --server "<%= @subsystems %>""
+cmd="/opt/openstack/mistral/.venv/bin/python /opt/openstack/mistral/mistral/cmd/launch.py --config-file /etc/mistral/mistral.conf --log-file /var/log/mistral.log --log-config-append /etc/mistral/wf_trace_logging.conf --server '<%= @subsystems %>'"
 user="root"
 
 name=`basename $0`
