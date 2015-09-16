@@ -456,7 +456,7 @@ class st2::profile::server (
   } else {
     ## Needs to have real init scripts
     exec { 'start st2':
-      command => 'st2ctl start',
+      command => 'st2ctl restart',
       unless  => 'ps ax | grep -v grep | grep actionrunner',
       path    => '/usr/bin:/usr/sbin:/bin:/sbin',
       require => Exec['register st2 content'],

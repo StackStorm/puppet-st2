@@ -140,10 +140,16 @@ class st2::profile::mistral(
 
   ### END Mistral Downloads ###
 
+  if ($::osfamily == "RedHat") and ($operatingsystemmajrelease == '6') {
+    $python_version = '2.7'
+  } else {
+    $python_version = 'system'
+  }
+
   ### Bootstrap Python ###
   python::virtualenv { $_mistral_root:
     ensure       => present,
-    version      => '2.7',
+    version      => $python_version,
     systempkgs   => false,
     venv_dir     => "${_mistral_root}/.venv",
     cwd          => $_mistral_root,
