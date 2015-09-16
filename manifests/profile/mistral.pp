@@ -50,7 +50,7 @@ class st2::profile::mistral(
   $disable_executor    = false,
   $disable_engine      = false,
 ) inherits st2 {
-  include '::st2::dependencies'
+  require '::st2::dependencies'
 
   $_st2_version = $autoupdate ? {
     undef   => st2_latest_stable(),
@@ -157,7 +157,7 @@ class st2::profile::mistral(
   # Not using virtualenv requirements attribute because oslo has bad wheel, and fails
   python::requirements { 'mistral':
     requirements => "${_mistral_root}/requirements.txt",
-    virtualenv   => "${_mistral_root}/.venv",
+    virtualenv   => "${_mistral_root}/.venv"
   }
 
   python::pip { 'python-mistralclient':
@@ -168,6 +168,7 @@ class st2::profile::mistral(
       Exec['setup st2mistral plugin'],
       Exec['setup mistral database'],
     ],
+    virtualenv   => "${_mistral_root}/.venv"
   }
   ### END Bootstrap Python ###
 
@@ -366,7 +367,7 @@ class st2::profile::mistral(
               ensure => file,
               owner  => 'root',
               group  => 'root',
-              mode   => '0444',
+              mode   => '0755',
               content => template('st2/etc/init.d/mistral.erb'),
             }
           }
