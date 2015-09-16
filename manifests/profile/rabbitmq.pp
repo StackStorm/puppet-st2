@@ -21,4 +21,19 @@ class st2::profile::rabbitmq {
       package_apt_pin => '100',
     }
   }
+
+  if $::osfamily == "RedHat" {
+    class {'::erlang': }
+
+    yumrepo { 'erlang-solutions':
+      ensure   => present,
+      baseurl  => "http://packages.erlang-solutions.com/rpm/centos/\$releasever/\$basearch",
+      descr    => 'Centos $releasever - $basearch - Erlang Solutions',
+      enabled  => 1,
+      gpgcheck => 0,
+    }
+    Yumrepo['erlang-solutions']
+      -> Class['::erlang']
+      -> Class['::rabbitmq']
+  }
 }

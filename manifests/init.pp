@@ -63,4 +63,4 @@ class st2(
   $syslog_protocol    = 'udp',
   $syslog_port        = 514,
   $syslog_facility    = 'local7',
-) { }
+) {}

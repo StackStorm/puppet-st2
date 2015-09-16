@@ -50,7 +50,7 @@ class st2::profile::mistral(
   $disable_executor    = false,
   $disable_engine      = false,
 ) inherits st2 {
-  include '::st2::dependencies'
+  require '::st2::dependencies'
 
   $_st2_version = $autoupdate ? {
     undef   => st2_latest_stable(),
@@ -140,10 +140,16 @@ class st2::profile::mistral(
 
   ### END Mistral Downloads ###
 
+  if ($::osfamily == "RedHat") and ($operatingsystemmajrelease == '6') {
+    $python_version = '2.7'
+  } else {
+    $python_version = 'system'
+  }
+
   ### Bootstrap Python ###
   python::virtualenv { $_mistral_root:
     ensure       => present,
-    version      => 'system',
+    version      => $python_version,
     systempkgs   => false,
     venv_dir     => "${_mistral_root}/.venv",
     cwd          => $_mistral_root,
@@ -157,7 +163,7 @@ class st2::profile::mistral(
   # Not using virtualenv requirements attribute because oslo has bad wheel, and fails
   python::requirements { 'mistral':
     requirements => "${_mistral_root}/requirements.txt",
-    virtualenv   => "${_mistral_root}/.venv",
+    virtualenv   => "${_mistral_root}/.venv"
   }
 
   python::pip { 'python-mistralclient':
@@ -168,6 +174,7 @@ class st2::profile::mistral(
       Exec['setup st2mistral plugin'],
       Exec['setup mistral database'],
     ],
+    virtualenv   => "${_mistral_root}/.venv"
   }
   ### END Bootstrap Python ###
 
@@ -292,7 +299,7 @@ class st2::profile::mistral(
     owner  => 'root',
     group  => 'root',
     mode   => '0444',
-    content => 'mistral_bootstrapped=true'
+    content => 'mistral_bootstrapped=true',
   }
 
   ### Set Mistral API Settings. Useful when setting up uWSGI or other server
@@ -351,12 +358,25 @@ class st2::profile::mistral(
         }
       }
       'RedHat': {
-        file { '/etc/systemd/system/mistral.service':
-          ensure => file,
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444',
-          content => template('st2/etc/systemd/mistral.service.erb'),
+        case $::operatingsystemmajrelease {
+          '7': {
+            file { '/etc/systemd/system/mistral.service':
+              ensure => file,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0444',
+              content => template('st2/etc/systemd/system/mistral.service.erb'),
+            }
+          }
+          '6': {
+            file { '/etc/init.d/mistral':
+              ensure => file,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0755',
+              content => template('st2/etc/init.d/mistral.erb'),
+            }
+          }
         }
       }
     }
