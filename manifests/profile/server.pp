@@ -147,7 +147,7 @@ class st2::profile::server (
   }
 
   exec { 'register st2 content':
-    command     => "python ${_register_command} --register-all --config-file ${_conf_dir}/st2.conf",
+    command     => "python2.7 ${_register_command} --register-all --config-file ${_conf_dir}/st2.conf",
     path        => '/usr/bin:/usr/sbin:/bin:/sbin',
     refreshonly => true,
     notify      => File['/etc/facter/facts.d/st2server_bootstrapped.txt'],
