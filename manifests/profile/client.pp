@@ -94,12 +94,12 @@ class st2::profile::client (
           command => 'pip2.7 install -U -r /tmp/st2client-requirements.txt',
           notify  => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
           require => Wget::Fetch['Download st2client requirements.txt']
-        }   
+        }
       } else {
         python::requirements { '/tmp/st2client-requirements.txt':
           notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
           require => Wget::Fetch['Download st2client requirements.txt']
-        }   
+        }
       }
     }
   }

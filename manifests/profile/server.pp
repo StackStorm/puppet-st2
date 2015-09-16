@@ -135,7 +135,7 @@ class st2::profile::server (
         python::requirements { '/tmp/st2server-requirements.txt':
           before  => Exec['register st2 content'],
           require => Wget::Fetch['Download st2server requirements.txt']
-        }     
+        }
       }
     }
   }
