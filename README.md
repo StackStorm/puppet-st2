@@ -7,11 +7,11 @@ Module to manage [StackStorm](http://stackstorm.com)
 
 Currently tested with:
 * Ubuntu 14.04
+* RHEL/Centos 6/7
 
 Compatability currently being tested:
 * Debian 7
 * Ubuntu 12.04
-* RHEL/Centos 6/7
 
 ## Maintainers
 
