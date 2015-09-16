@@ -3,6 +3,9 @@
 ## Under Development
 * Configure st2client CLI settings for any user (*improvement*)
 
+## 0.9.0 (Sept 16, 2015)
+* Add support for RHEL/CentOS 6 & 7
+
 ## 0.8.0 (Sept 10, 2015)
 * Release StackStorm v0.13.2
 * Stop `st2::pack` resource restarting StackStorm (*improvement*)
