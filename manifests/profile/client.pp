@@ -75,13 +75,33 @@ class st2::profile::client (
     wget::fetch { 'Download st2client requirements.txt':
       source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/st2client/requirements.txt",
       cache_dir   => '/var/cache/wget',
-      destination => '/tmp/st2client-requirements.txt',
-      before      => Python::Requirements['/tmp/st2client-requirements.txt'],
+      destination => '/tmp/st2client-requirements.txt'
     }
   }
 
-  python::requirements { '/tmp/st2client-requirements.txt':
-    notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
+  # More RedHat 6 hackery.  Need to use pip2.7.
+  case $::osfamily {
+    'Debian': {
+      python::requirements { '/tmp/st2client-requirements.txt':
+        notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
+        require => Wget::Fetch['Download st2client requirements.txt']
+      }
+    }
+    'RedHat': {
+      if $operatingsystemmajrelease == '6' {
+        exec { 'pip27_install_st2client_reqs':
+          path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+          command => 'pip2.7 install -U -r /tmp/st2client-requirements.txt',
+          notify  => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
+          require => Wget::Fetch['Download st2client requirements.txt']
+        }   
+      } else {
+        python::requirements { '/tmp/st2client-requirements.txt':
+          notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
+          require => Wget::Fetch['Download st2client requirements.txt']
+        }   
+      }
+    }
   }
 
   # Setup st2client settings for Root user by default
