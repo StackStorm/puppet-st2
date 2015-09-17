@@ -12,6 +12,7 @@
 #  [*api_url*]            - URL where the StackStorm API lives (default: undef)
 #  [*auth*]               - Toggle to enable/disable auth (Default: false)
 #  [*auth_url*]           - URL where the StackStorm WebUI lives (default: undef)
+#  [*flow_url*]           - URL Path where StackStorm Flow lives (default: undef)
 #  [*cli_base_url*]       - CLI config - Base URL lives
 #  [*cli_api_version*]    - CLI config - API Version
 #  [*cli_debug*]          - CLI config - Enable/Disable Debug
@@ -45,6 +46,7 @@ class st2(
   $auth               = true,
   $auth_url           = undef,
   $auth_mode          = 'standalone',
+  $flow_url           = undef,
   $cli_base_url       = 'http://localhost',
   $cli_api_version    = 'v1',
   $cli_debug          = false,
