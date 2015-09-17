@@ -22,6 +22,7 @@ class st2::profile::web(
   $api_url    = $::st2::api_url,
   $auth       = $::st2::auth,
   $auth_url   = $::st2::auth_url,
+  $flow_url   = $::st2::flow_url,
   $version    = $::st2::version,
   $autoupdate = $::st2::autoupdate,
 ) inherits st2 {

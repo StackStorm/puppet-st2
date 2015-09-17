@@ -1,6 +1,7 @@
 # Changelog
 
 ## Under Development
+* Configure WebUI to integrate with Flow (*feature*)
 * Configure st2client CLI settings for any user (*improvement*)
 
 ## 0.9.0 (Sept 16, 2015)
