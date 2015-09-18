@@ -111,7 +111,11 @@ class st2::profile::server (
     wget::fetch { 'Download st2server requirements.txt':
       source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/requirements.txt",
       cache_dir   => '/var/cache/wget',
-      destination => '/tmp/st2server-requirements.txt'
+      destination => '/tmp/st2server-requirements.txt',
+      before      => [
+        Python::Requirements['/tmp/st2server-requirements.txt'],
+        Exec['pip27_install_st2server_reqs']
+      ]
     }
   }
 
@@ -120,7 +124,6 @@ class st2::profile::server (
     'Debian': {
       python::requirements { '/tmp/st2server-requirements.txt':
         before  => Exec['register st2 content'],
-        require => Wget::Fetch['Download st2server requirements.txt']
       }
     }
     'RedHat': {
@@ -128,13 +131,12 @@ class st2::profile::server (
         exec { 'pip27_install_st2server_reqs':
           path    => '/usr/bin:/usr/sbin:/bin:/sbin',
           command => 'pip2.7 install -U -r /tmp/st2server-requirements.txt',
+          before  => Exec['register st2 content'],
           notify  => File['/etc/facter/facts.d/st2server_bootstrapped.txt'],
-          require => Wget::Fetch['Download st2server requirements.txt']
         }
       } else {
         python::requirements { '/tmp/st2server-requirements.txt':
           before  => Exec['register st2 content'],
-          require => Wget::Fetch['Download st2server requirements.txt']
         }
       }
     }
