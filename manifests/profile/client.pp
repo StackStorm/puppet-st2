@@ -75,7 +75,7 @@ class st2::profile::client (
     wget::fetch { 'Download st2client requirements.txt':
       source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/st2client/requirements.txt",
       cache_dir   => '/var/cache/wget',
-      destination => '/tmp/st2client-requirements.txt'
+      destination => '/tmp/st2client-requirements.txt',
       before      => [
         Python::Requirements['/tmp/st2client-requirements.txt'],
         Exec['pip27_install_st2client_reqs']
