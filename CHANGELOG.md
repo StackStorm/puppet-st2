@@ -1,5 +1,8 @@
 # Changelog
 
+# In Development
+* Fix condition where `autoupdate: false` would result in missing resources (*bugfix*)
+
 ## 0.9.1 (Sept 17, 2015)
 * Configure WebUI to integrate with Flow (*feature*)
 * Configure st2client CLI settings for any user (*improvement*)
