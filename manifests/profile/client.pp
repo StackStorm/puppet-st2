@@ -76,6 +76,10 @@ class st2::profile::client (
       source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/st2client/requirements.txt",
       cache_dir   => '/var/cache/wget',
       destination => '/tmp/st2client-requirements.txt'
+      before      => [
+        Python::Requirements['/tmp/st2client-requirements.txt'],
+        Exec['pip27_install_st2client_reqs']
+      ]
     }
   }
 
@@ -84,7 +88,6 @@ class st2::profile::client (
     'Debian': {
       python::requirements { '/tmp/st2client-requirements.txt':
         notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
-        require => Wget::Fetch['Download st2client requirements.txt']
       }
     }
     'RedHat': {
@@ -93,12 +96,10 @@ class st2::profile::client (
           path    => '/usr/bin:/usr/sbin:/bin:/sbin',
           command => 'pip2.7 install -U -r /tmp/st2client-requirements.txt',
           notify  => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
-          require => Wget::Fetch['Download st2client requirements.txt']
         }
       } else {
         python::requirements { '/tmp/st2client-requirements.txt':
           notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
-          require => Wget::Fetch['Download st2client requirements.txt']
         }
       }
     }
