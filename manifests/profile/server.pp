@@ -305,12 +305,15 @@ class st2::profile::server (
   }
 
   if $_ng_init {
+    $_package_map = $::st2::params::component_map
+
     file { '/etc/init/st2actionrunner.conf':
       ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0444',
       source => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
+      notify => Service['st2actionrunner'],
     }
 
     # Spin up any number of workers as needed
@@ -323,6 +326,10 @@ class st2::profile::server (
       hasstatus  => true,
       hasrestart => true,
       provider   => 'upstart',
+      subscribe  => [
+        Package[$_package_map['actionrunner']],
+        Package['st2common'],
+      ],
     }
 
     if $auth and $manage_st2auth_service {
@@ -332,6 +339,7 @@ class st2::profile::server (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/st2/etc/init/st2auth.conf',
+        notify => Service['st2auth'],
       }
 
       service { 'st2auth':
@@ -340,6 +348,10 @@ class st2::profile::server (
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
+        subscribe  => [
+          Package[$_package_map['auth']],
+          Package['st2common'],
+        ],
       }
     }
 
@@ -350,6 +362,7 @@ class st2::profile::server (
         group  => 'root',
         mode   => '0444',
         source => 'puppet:///modules/st2/etc/init/st2api.conf',
+        notify => Service['st2api'],
       }
 
       service { 'st2api':
@@ -358,6 +371,10 @@ class st2::profile::server (
         hasstatus  => true,
         hasrestart => true,
         provider   => 'upstart',
+        subscribe  => [
+          Package[$_package_map['api']],
+          Package['st2common'],
+        ],
       }
     }
 
@@ -367,6 +384,7 @@ class st2::profile::server (
       group  => 'root',
       mode   => '0444',
       source => 'puppet:///modules/st2/etc/init/st2resultstracker.conf',
+      notify => Service['st2resultstracker'],
     }
 
     service { 'st2resultstracker':
@@ -375,6 +393,10 @@ class st2::profile::server (
       hasstatus  => true,
       hasrestart => true,
       provider   => 'upstart',
+      subscribe  => [
+        Package[$_package_map['resultstracker']],
+        Package['st2common'],
+      ],
     }
 
     file { '/etc/init/st2sensorcontainer.conf':
@@ -383,6 +405,7 @@ class st2::profile::server (
       group  => 'root',
       mode   => '0444',
       source => 'puppet:///modules/st2/etc/init/st2sensorcontainer.conf',
+      notify => Service['st2sensorcontainer'],
     }
 
     service { 'st2sensorcontainer':
@@ -391,6 +414,10 @@ class st2::profile::server (
       hasstatus  => true,
       hasrestart => true,
       provider   => 'upstart',
+      subscribe  => [
+        Package[$_package_map['sensorcontainer']],
+        Package['st2common'],
+      ],
     }
 
     file { '/etc/init/st2notifier.conf':
@@ -399,6 +426,7 @@ class st2::profile::server (
       group  => 'root',
       mode   => '0444',
       source => 'puppet:///modules/st2/etc/init/st2notifier.conf',
+      notify => Service['st2notifier'],
     }
 
     service { 'st2notifier':
@@ -407,6 +435,10 @@ class st2::profile::server (
       hasstatus  => true,
       hasrestart => true,
       provider   => 'upstart',
+      subscribe  => [
+        Package[$_package_map['notifier']],
+        Package['st2common'],
+      ],
     }
 
     file { '/etc/init/st2rulesengine.conf':
@@ -415,6 +447,7 @@ class st2::profile::server (
       group  => 'root',
       mode   => '0444',
       source => 'puppet:///modules/st2/etc/init/st2rulesengine.conf',
+      notify => Service['st2rulesengine'],
     }
 
     service { 'st2rulesengine':
@@ -423,6 +456,10 @@ class st2::profile::server (
       hasstatus  => true,
       hasrestart => true,
       provider   => 'upstart',
+      subscribe  => [
+        Package[$_package_map['rulesengine']],
+        Package['st2common'],
+      ],
     }
 
     if $manage_st2web_service {
@@ -453,6 +490,7 @@ class st2::profile::server (
     -> Service<| tag == 'st2::profile::server' |>
 
     Service<| tag == 'st2::profile::server' |> -> St2::Pack<||>
+
   } else {
     ## Needs to have real init scripts
     exec { 'start st2':

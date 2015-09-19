@@ -25,7 +25,7 @@ class st2::package::debian {
     release     => "${::lsbdistcodename}_${_suite}",
     repos       => 'main',
     include_src => false,
-    key         => '6B8C7982',
+    key         => '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982',
     key_source  => 'https://downloads.stackstorm.net/deb/pubkey.gpg',
   }
 }
