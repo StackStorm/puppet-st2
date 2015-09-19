@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.4 (Sept 18, 2015)
+* Restart services on package update (*bugfix*)
+
 ## 0.9.3 (Sept 17, 2015)
 * Fix condition where `autoupdate: false` would result in missing resources (*bugfix*)
 
