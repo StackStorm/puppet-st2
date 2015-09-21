@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.5 (Sept 21, 2015)
+* pin stahnma-epel to 1.1.0
+
 ## 0.9.4 (Sept 18, 2015)
 * Restart services on package update (*bugfix*)
 
