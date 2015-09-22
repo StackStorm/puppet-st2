@@ -38,7 +38,7 @@ class st2::profile::client (
   $cacert               = $::st2::cli_cacert,
   $debug                = $::st2::cli_debug,
   $cache_token          = $::st2::cli_cache_token,
-  $silence_ssl_warnings = $::st2:cli_silence_ssl_warnings,
+  $silence_ssl_warnings = $::st2::cli_silence_ssl_warnings,
   $global_env           = $::st2::global_env,
 ) inherits ::st2 {
   $_version = $autoupdate ? {
