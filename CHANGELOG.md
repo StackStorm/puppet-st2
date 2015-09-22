@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.6 (Sept 22, 2015)
+* Add ``silence_ssl_warnings`` option to the client profile.
+
 ## 0.9.5 (Sept 21, 2015)
 * pin stahnma-epel to 1.1.0
 
