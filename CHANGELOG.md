@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.7 (Sept 22, 2015)
+* Restart mistral on init script update
+
 ## 0.9.6 (Sept 22, 2015)
 * Add ``silence_ssl_warnings`` option to the client profile.
 
