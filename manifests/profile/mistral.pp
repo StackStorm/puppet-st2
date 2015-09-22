@@ -355,6 +355,7 @@ class st2::profile::mistral(
           group  => 'root',
           mode   => '0444',
           content => template('st2/etc/init/mistral.conf.erb'),
+          notify  => Service['mistral'],
         }
       }
       'RedHat': {
@@ -366,6 +367,7 @@ class st2::profile::mistral(
               group  => 'root',
               mode   => '0444',
               content => template('st2/etc/systemd/system/mistral.service.erb'),
+              notify  => Service['mistral'],
             }
           }
           '6': {
@@ -375,6 +377,7 @@ class st2::profile::mistral(
               group  => 'root',
               mode   => '0755',
               content => template('st2/etc/init.d/mistral.erb'),
+              notify  => Service['mistral'],
             }
           }
         }
