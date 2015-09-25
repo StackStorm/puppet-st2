@@ -30,6 +30,13 @@ define st2::rbac (
     'mode'    => '0755',
     'require' => Class['::st2::profile::server'],
   })
+  ensure_resource('file', "${_rbac_dir}/roles", {
+    'ensure'  => 'directory',
+    'owner'   => 'root',
+    'group'   => 'root',
+    'mode'    => '0755',
+    'require' => Class['::st2::profile::server'],
+  })
   ensure_resource('file', "${_rbac_dir}/assignments", {
     'ensure'  => 'directory',
     'owner'   => 'root',
