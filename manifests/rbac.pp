@@ -4,6 +4,15 @@
 # This is an enterprise feature, and requires a license
 # to be used.
 #
+# Example
+#
+#   st2::rbac { 'admin':
+#     description => "Administrative user",
+#     roles       => [
+#       'observer',
+#       'my_test_role',
+#     ],
+#   }
 define st2::rbac (
   $ensure      = 'present',
   $user        = $name,
