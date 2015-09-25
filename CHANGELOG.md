@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.8 (Sept 25, 2015)
+* Add ability to manage StackStorm RBAC roles (*improvement*)
+
 ## 0.9.7 (Sept 22, 2015)
 * Restart mistral on init script update
 

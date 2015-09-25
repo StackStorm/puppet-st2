@@ -1,0 +1,8 @@
+---
+    username: "<%= @user %>"
+    description: "<%= @description %>"
+    enabled: <%= @_enabled_state %>
+    roles:
+<%- @roles.each do |role| -%>
+        - "<%= role %>"
+<%- end -%>
