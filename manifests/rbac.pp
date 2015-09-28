@@ -54,9 +54,9 @@ define st2::rbac (
     'require' => Class['::st2::profile::server'],
   })
   ensure_resource('exec', 'reload st2 rbac definitions', {
-    'cmd'         => 'st2-apply-rbac-definitions',
-    'refreshonly' => 'true',
-    'path'        => '/usr/sbin:/usr/bin:/sbin:/bin',
+    'command'         => 'st2-apply-rbac-definitions',
+    'refreshonly'     => 'true',
+    'path'            => '/usr/sbin:/usr/bin:/sbin:/bin',
   })
   file { "${_rbac_dir}/assignments/${user}.yaml":
     ensure  => 'file',
