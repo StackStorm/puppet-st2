@@ -29,6 +29,9 @@ GEM
       facter (> 1.6, < 3)
       hiera (~> 1.0)
       json_pure
+    puppet-blacksmith (3.3.1)
+      puppet (>= 2.7.16)
+      rest-client
     puppet-lint (1.1.0)
     puppet-syntax (1.4.1)
       rake
@@ -78,5 +81,6 @@ DEPENDENCIES
   coveralls
   facter (>= 1.7.0)
   puppet
+  puppet-blacksmith (>= 3.3.1)
   puppet-lint (>= 0.3.2)
   puppetlabs_spec_helper (>= 0.1.0)
