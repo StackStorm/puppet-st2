@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.9 (Sept 28, 2015)
+* Fix typo in RBAC type.
+
 ## 0.9.8 (Sept 25, 2015)
 * Add ability to manage StackStorm RBAC roles (*improvement*)
 
