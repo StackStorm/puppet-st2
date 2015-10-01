@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.12 (Oct 1, 2015)
+* Refresh services on ini setting change.
+
 ## 0.9.11 (Oct 1, 2015)
 * Add ability for user to change SSH key location in /etc/st2/st2.conf
 
