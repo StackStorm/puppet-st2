@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.11 (Oct 1, 2015)
+* Add ability for user to change SSH key location in /etc/st2/st2.conf
+
 ## 0.9.10 (Sept 28, 2015)
 * Fix typo in RBAC type.
 
