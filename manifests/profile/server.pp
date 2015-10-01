@@ -26,6 +26,7 @@
 #  [*syslog_protocol*]        - Syslog protocol.
 #  [*syslog_port*]            - Syslog port.
 #  [*syslog_facility*]        - Syslog facility.
+#  [*ssh_key_location*]       - Location on filesystem of Admin SSH key for remote runner
 #
 # === Variables
 #
@@ -56,6 +57,7 @@ class st2::profile::server (
   $manage_st2api_service  = true,
   $manage_st2auth_service = true,
   $manage_st2web_service  = true,
+  $ssh_key_location       = $::st2::ssh_key_location,
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
@@ -166,7 +168,7 @@ class st2::profile::server (
     path    => '/etc/st2/st2.conf',
     section => 'system_user',
     setting => 'ssh_key_file',
-    value   => '/home/stanley/.ssh/st2_stanley_key',
+    value   => $ssh_key_location,
   }
 
   ## ActionRunner settings

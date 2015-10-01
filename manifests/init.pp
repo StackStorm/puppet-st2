@@ -30,6 +30,7 @@
 #  [*syslog_protocol*]    - Syslog protocol. Default: udp
 #  [*syslog_port*]        - Syslog port. Default: 514
 #  [*syslog_facility*]    - Syslog facility. Default: local7
+#  [*ssh_key_location*]   - Location on filesystem of Admin SSH key for remote runner
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
@@ -66,4 +67,5 @@ class st2(
   $syslog_protocol          = 'udp',
   $syslog_port              = 514,
   $syslog_facility          = 'local7',
+  $ssh_key_location         = '/home/stanley/.ssh/st2_stanley_key',
 ) {}
