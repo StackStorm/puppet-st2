@@ -396,8 +396,7 @@ class st2::profile::mistral(
 
     # Setup refresh events on config change for mistral
     Ini_setting<| tag == 'mistral' |> ~> Service['mistral']
-    Exec<| tag == 'mistral' |> -> Service['mistral']
-    
+    Exec<| tag == 'st2::profile::mistral' |> -> Service['mistral']
   }
   ### END Mistral Init Scripts ###
 }
