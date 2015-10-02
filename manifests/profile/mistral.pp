@@ -258,8 +258,11 @@ class st2::profile::mistral(
     class { '::postgresql::server':
       postgres_password => $db_root_password,
     }
-
     
+    ## This uses the Spaceship operator to call the mistral service,
+    ## to ensure there is no breakage if a user is not managing the
+    ## there is no compilation error.
+    Class['::postgresql::server'] -> Service<| tag == 'mistral' |>
 
     ### Dependencies ###
     include ::postgresql::lib::devel
