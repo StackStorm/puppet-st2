@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.13 (Oct 2, 2015)
+* Ensure postgresql is setup and running before starting Mistral service.
+
 ## 0.9.12 (Oct 1, 2015)
 * Refresh services on ini setting change.
 
