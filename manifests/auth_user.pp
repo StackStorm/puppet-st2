@@ -20,4 +20,6 @@ define st2::auth_user(
     mechanism => 'basic',
     file      => $_htpasswd_file,
   }
+  
+  Httpauth[$name] -> Service<| title == 'st2auth' |>
 }
