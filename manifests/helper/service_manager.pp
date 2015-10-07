@@ -8,9 +8,9 @@ define st2::helper::service_manager (
 
   $_package_map = $::st2::params::component_map
   $st2_process = $_package_map["${process}"]
-
+  $init_provider = $::st2::params::init_type
+  
   if $osfamily == 'Debian' {
-    $init_provider = 'upstart'
 
     file { "/etc/init/${st2_process}.conf":
       ensure => present,
@@ -22,7 +22,6 @@ define st2::helper::service_manager (
     }
   } elsif $osfamily == 'RedHat' {
     if $operatingsystemmajrelease == '7' {
-      $init_provider = 'systemd'
 
       st2::helper::systemd{ "${st2_process}_systemd":
         st2_process  => $st2_process,
@@ -30,7 +29,7 @@ define st2::helper::service_manager (
       }
 
     } elsif $operatingsystemmajrelease == '6' {
-      $init_provider = 'redhat'
+
     }
   }
 
