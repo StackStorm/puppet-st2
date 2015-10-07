@@ -2,7 +2,7 @@
 #
 #  Lets create some Systemd scripts
 #
-define st2_systemd_startup (
+define st2::systemd_startup (
   $st2_process  = undef,
   $process_type = 'single'
   ) {
