@@ -20,7 +20,7 @@ define st2::helper::service_manager (
       source => "puppet:///modules/st2/etc/init/${st2_process}.conf",
       notify => Service["${st2_process}"],
     }
-  } elif $osfamily == 'RedHat' {
+  } elsif $osfamily == 'RedHat' {
     if $operatingsystemmajrelease == '7' {
       $init_provider = 'systemd'
 
@@ -29,7 +29,7 @@ define st2::helper::service_manager (
         process_type => 'single'
       }
 
-    } elif $operatingsystemmajrelease == '6' {
+    } elsif $operatingsystemmajrelease == '6' {
       $init_provider = 'redhat'
     }
   }
