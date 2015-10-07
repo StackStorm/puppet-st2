@@ -2,7 +2,7 @@
 #
 #  Lets create some Systemd scripts
 #
-define st2::::helper::systemd (
+define st2::helper::systemd (
   $st2_process  = undef,
   $process_type = 'single'
   ) {
