@@ -1,16 +1,12 @@
-description "Start & stop st2web"
-version "1.0"
+[Unit]
+Description=Start and Stop st2web
 
-start on started networking
-stop on runlevel [!2345]
+[Service]
+WorkingDirectory=/opt/stackstorm/static/webui
+ExecStart=/usr/bin/python -m SimpleHTTPServer 8080
+Type=simple
+User=stanley
+Group=stanley
 
-env APPUSER="stanley"
-env APPDIR="/opt/stackstorm/static/webui"
-env APPBIN="python"
-env APPARGS="-m SimpleHTTPServer 8080"
-
-respawn
-
-script
-  exec su - $APPUSER -c "$APPDIR/$APPBIN $APPARGS"
-end script
+[Install]
+WantedBy=multi-user.target
