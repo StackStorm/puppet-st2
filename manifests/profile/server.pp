@@ -319,18 +319,18 @@ class st2::profile::server (
 
     # Spin up any number of workers as needed
     $_workers = prefix(range("0", "${workers}"), "worker")
-    ::st2::helper::actionrunner_upstart { $_workers: }
 
-    service { 'st2actionrunner':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => $init_provider,
-      subscribe  => [
-        Package[$_package_map['actionrunner']],
-        Package['st2common'],
-      ],
+    if $osfamily == 'Debian' {
+      ::st2::helper::actionrunner_upstart { $_workers: }
+    } else {
+      st2::helper::service_manager{'actionrunner':
+        process => 'actionrunner'
+      }
+
+      file_line{'st2actionrunner count':
+        path => '/etc/sysconfig/st2actionrunner',
+        line => "WORKERSNUM=${_workers}"
+      }
     }
 
     if $auth and $manage_st2auth_service {
