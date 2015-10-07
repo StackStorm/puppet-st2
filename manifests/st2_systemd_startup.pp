@@ -4,10 +4,10 @@
 #
 define st2_systemd::startup (
   $st2_process  = undef,
-  $process_type = single
+  $process_type = 'single'
   ) {
 
-  if $process_type = multi {
+  if $process_type == 'multi' {
     $type = "${process_type}@"
   } else {
     $type = ''
