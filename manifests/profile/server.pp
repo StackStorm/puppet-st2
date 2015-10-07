@@ -381,7 +381,7 @@ class st2::profile::server (
               mode    => '0444',
               source  => "puppet:///modules/st2/systemd/system/st2web.service",
             }
-          },
+          }
           '6': {
 
           }
