@@ -1,8 +1,8 @@
-# Definition: st2_systemd
+# Definition: systemd
 #
 #  Lets create some Systemd scripts
 #
-define st2::systemd_startup (
+define st2::::helper::systemd (
   $st2_process  = undef,
   $process_type = 'single'
   ) {
