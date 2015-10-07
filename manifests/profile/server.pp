@@ -362,14 +362,31 @@ class st2::profile::server (
     }
 
     if $manage_st2web_service {
-      file { '/etc/init/st2web.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/init/st2web.conf',
-      }
+      $init_provider = $::st2::params::init_type
+      if $operatingsystem == 'Ubuntu' {
+        file { '/etc/init/st2web.conf':
+          ensure => present,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => 'puppet:///modules/st2/etc/init/st2web.conf',
+        }
+      } elsif $operatingsystem == 'RedHat': {
+        case $operatingsystemmajrelease {
+          '7': {
+            file { "/etc/systemd/system/st2web.service":
+              ensure  => file,
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0444',
+              source  => "puppet:///modules/st2/systemd/system/st2web.service",
+            }
+          },
+          '6': {
 
+          }
+        }
+      }
       service { 'st2web':
         ensure     => running,
         enable     => true,

@@ -1,0 +1,16 @@
+description "Start & stop st2web"
+version "1.0"
+
+start on started networking
+stop on runlevel [!2345]
+
+env APPUSER="stanley"
+env APPDIR="/opt/stackstorm/static/webui"
+env APPBIN="python"
+env APPARGS="-m SimpleHTTPServer 8080"
+
+respawn
+
+script
+  exec su - $APPUSER -c "$APPDIR/$APPBIN $APPARGS"
+end script
