@@ -22,7 +22,7 @@ define st2::helper::service_manager (
     }
   } elsif $osfamily == 'RedHat' {
     if $operatingsystemmajrelease == '7' {
-      if $process = 'actionrunner' {
+      if $process == 'actionrunner' {
         $process_type = 'multi'
         file{"/etc/systemd/system/st2actionrunner.service":
           ensure  => file,
