@@ -5,14 +5,6 @@
 define st2::helper::service_manager (
   $process = undef,
 ) {
-  if $osfamily == 'Debian' {
-    
-  } elif $osfamily == 'RedHat' {
-    $init_provider = $operatingsystemmajrelease ? {
-      '7' => 'systemd',
-      '6' => 'redhat'
-    }
-  }
 
   $_package_map = $::st2::params::component_map
   $st2_process = $_package_map["${process}"]
