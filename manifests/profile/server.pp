@@ -371,7 +371,7 @@ class st2::profile::server (
           mode   => '0444',
           source => 'puppet:///modules/st2/etc/init/st2web.conf',
         }
-      } elsif $operatingsystem == 'RedHat': {
+      } elsif $operatingsystem == 'RedHat' {
         case $operatingsystemmajrelease {
           '7': {
             file { "/etc/systemd/system/st2web.service":
