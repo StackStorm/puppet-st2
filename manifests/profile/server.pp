@@ -341,26 +341,26 @@ class st2::profile::server (
         }
       }
       'sysv': {
-        ::st2::helper::service_manager{ 'st2actionrunner': }
+        ::st2::helper::service_manager{ 'actionrunner': }
       }
-    }
-
-    if $auth and $manage_st2auth_service {
-      ::st2::helper::service_manager{'st2auth': }
-    }
-
-    if $manage_st2api_service {
-      ::st2::helper::service_manager{'st2api': }
     }
 
     if $manage_st2web_service {
       ::st2::helper::service_manager { 'st2web': }
     }
 
-    ::st2::helper::service_manager{'st2resultstracker': }
-    ::st2::helper::service_manager{'st2sensorcontainer': }
-    ::st2::helper::service_manager{'st2notifier': }
-    ::st2::helper::service_manager{'st2rulesengine': }
+    if $auth and $manage_st2auth_service {
+      st2::helper::service_manager { 'auth': }
+    }
+
+    if $manage_st2api_service {
+      st2::helper::service_manager { 'api': }
+    }
+
+    ::st2::helper::service_manager { 'resultstracker': }
+    ::st2::helper::service_manager { 'sensorcontainer': }
+    ::st2::helper::service_manager { 'notifier': }
+    ::st2::helper::service_manager { 'rulesengine': }
 
 
     file_line { 'st2 ng_init enable':
