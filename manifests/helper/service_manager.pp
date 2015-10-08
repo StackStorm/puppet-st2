@@ -7,7 +7,7 @@ define st2::helper::service_manager (
 ) {
   $_package_map = $::st2::params::component_map
   $package = $_package_map["${process}"]
-  $st2_package = "st2${process}"
+  $st2_process = "st2${process}"
   $init_provider = $::st2::params::init_type
 
   if $osfamily == 'Debian' {
