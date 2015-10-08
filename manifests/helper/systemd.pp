@@ -8,12 +8,13 @@ define st2::helper::systemd (
   ) {
 
   if $process_type == 'multi' {
-    $type = "${process_type}@"
+    $extra_char = "${process_type}@"
   } else {
-    $type = ''
+    $extra_char = ''
   }
-
-  file{"/etc/systemd/system/${st2_process}${type}.service":
+  
+  $process_name = $st2_process
+  file{"/etc/systemd/system/${st2_process}${extra_char}.service":
     ensure  => file,
     owner   => 'root',
     group   => 'root',
@@ -22,10 +23,10 @@ define st2::helper::systemd (
   }
 
   if $process_type == 'single' {
-    exec{'sysctl enable':
+    exec{"sysctl enable ${st2_process}":
       path    => '/bin:/usr/bin:/usr/local/bin',
       command => "systemctl --no-reload enable ${st2_process}",
-      require => File["/etc/systemd/system/${st2_process}${type}.service"],
+      require => File["/etc/systemd/system/${st2_process}${extra_char}.service"],
       notify  => Service["${st2_process}"],
     }
   }
