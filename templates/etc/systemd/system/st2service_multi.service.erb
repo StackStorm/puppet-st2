@@ -1,5 +1,5 @@
 [Unit]
-Description=StackStorm service <% @name %>
+Description=StackStorm service <% @process_name %>
 After=network.target
 
 [Service]
@@ -8,7 +8,7 @@ User=st2
 Group=st2
 Environment="DAEMON_ARGS=--config-file /etc/st2/st2.conf"
 Environment="WORKERID=%i"
-ExecStart=/usr/bin/<%- @name %> $DAEMON_ARGS
+ExecStart=/usr/bin/<%- @process_name %> $DAEMON_ARGS
 TimeoutSec=60
 PrivateTmp=true
 Restart=on-failure
