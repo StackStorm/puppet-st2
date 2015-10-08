@@ -13,6 +13,7 @@ define st2::helper::systemd (
     $extra_char = ''
   }
   
+  $process_name = $st2_process
   file{"/etc/systemd/system/${st2_process}${extra_char}.service":
     ensure  => file,
     owner   => 'root',
