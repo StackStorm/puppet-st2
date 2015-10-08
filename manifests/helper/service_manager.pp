@@ -39,7 +39,7 @@ define st2::helper::service_manager (
           notify  => Service["${st2_process}"],
         }
 
-        st2::helper::systemd{ "${st2_process}_systemd":
+        st2::helper::systemd{ "${st2_process}s_systemd":
           st2_process  => $st2_process,
           process_type => $process_type
         }
