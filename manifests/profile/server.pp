@@ -83,6 +83,7 @@ class st2::profile::server (
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
   $_ng_init = $::st2::ng_init
+  $_init_provider = $::st2::params::init_type
 
   $_python_pack = $::osfamily ? {
     'Debian' => '/usr/lib/python2.7/dist-packages',
@@ -320,80 +321,40 @@ class st2::profile::server (
     # Spin up any number of workers as needed
     $_workers = prefix(range("0", "${workers}"), "worker")
 
-    if $osfamily == 'Debian' {
-      ::st2::helper::actionrunner_upstart { $_workers: }
-    } else {
-      st2::helper::service_manager{'st2actionrunner':
-        process => 'st2actionrunner'
+    case $_init_provider {
+      'upstart': {
+        ::st2::helper::actionrunner_upstart { $_workers: }
       }
+      'systemd': {
+        ::st2::helper::service_manager{'st2actionrunner':
+          process => 'st2actionrunner'
+        }
 
-      file_line{'st2actionrunner count':
-        path => '/etc/sysconfig/st2actionrunner',
-        line => "WORKERSNUM=${_workers}"
+        file_line{'st2actionrunner count':
+          path => '/etc/sysconfig/st2actionrunner',
+          line => "WORKERSNUM=${_workers}"
+        }
+      }
+      'sysv': {
+        ::st2::helper::service_manager{ 'st2actionrunner': }
       }
     }
 
     if $auth and $manage_st2auth_service {
-      st2::helper::service_manager{'st2auth':
-        process => 'st2auth'
-      }
+      ::st2::helper::service_manager{'st2auth': }
     }
 
     if $manage_st2api_service {
-      st2::helper::service_manager{'st2api':
-        process => 'st2api'
-      }
+      ::st2::helper::service_manager{'st2api': }
     }
 
-    st2::helper::service_manager{'st2resultstracker':
-        process => 'st2resultstracker'
-    }
-
-    st2::helper::service_manager{'st2sensorcontainer':
-        process => 'st2sensorcontainer'
-    }
-
-    st2::helper::service_manager{'st2notifier':
-        process => 'st2notifier'
-    }
-
-    st2::helper::service_manager{'st2rulesengine':
-        process => 'st2rulesengine'
-    }
+    ::st2::helper::service_manager{'st2resultstracker': }
+    ::st2::helper::service_manager{'st2sensorcontainer': }
+    ::st2::helper::service_manager{'st2notifier': }
+    ::st2::helper::service_manager{'st2rulesengine': }
 
     if $manage_st2web_service {
-      $init_provider = $::st2::params::init_type
-      if $operatingsystem == 'Ubuntu' {
-        file { '/etc/init/st2web.conf':
-          ensure => present,
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444',
-          source => 'puppet:///modules/st2/etc/init/st2web.conf',
-        }
-      } elsif $operatingsystem == 'RedHat' {
-        case $operatingsystemmajrelease {
-          '7': {
-            file { "/etc/systemd/system/st2web.service":
-              ensure  => file,
-              owner   => 'root',
-              group   => 'root',
-              mode    => '0444',
-              source  => "puppet:///modules/st2/systemd/system/st2web.service",
-            }
-          }
-          '6': {
-
-          }
-        }
-      }
-      service { 'st2web':
-        ensure     => running,
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => $init_provider,
-      }
+      ::st2::helper::service_manager { 'st2web': }
     }
 
     file_line { 'st2 ng_init enable':
