@@ -1,32 +1,35 @@
 #!/bin/sh
-# Init script for st2api
+# Init script for st2actionrunner
 # Maintained by StackStorm Engineering <opsadmin@stackstorm.com>
 # Implemented based on LSB Core 3.1:
 #   * Sections: 20.2, 20.3
 #
 ### BEGIN INIT INFO
-# Provides:          st2api
+# Provides:          st2actionrunner
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: StackStorm st2api service
-# Description:       StackStorm st2api service
+# Short-Description: StackStorm st2actionrunner service
+# Description:       StackStorm st2actionrunner service
 ### END INIT INFO
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 export PATH
 
-name="st2api"
-program="/usr/bin/st2api"
+name="st2actionrunner"
+program="/usr/bin/st2actionrunner"
 args="--config-file /etc/st2/st2.conf"
-pidfile="/var/run/$name.pid"
 
 [ -r /etc/default/$name ] && . /etc/default/$name
 [ -r /etc/sysconfig/$name ] && . /etc/sysconfig/$name
 
+if [ -z "$WORKERS" ]; then
+  WORKERS=2
+fi
+
 trace() {
-  logger -t "/etc/init.d/st2api" "$@"
+  logger -t "/etc/init.d/st2actionrunner" "$@"
 }
 
 emit() {
@@ -35,33 +38,48 @@ emit() {
 }
 
 start() {
-  exec $program $args
-  echo $! > $pidfile
-  emit "$name started"
+  i=1
+  while [ $i -le $WORKERS ]; do
+    pidfile="/var/run/$name.$i.pid"
+    i=`expr $i + 1`
+    exec $program $args
+    echo $! > $pidfile
+    emit "$name started"
+  done
+
   return 0
 }
 
 stop() {
   # Try a few times to kill TERM the program
-  if status ; then
-    pid=$(cat "$pidfile")
-    trace "Killing $name (pid $pid) with SIGTERM"
-    kill -TERM $pid
-    # Wait for it to exit.
-    for i in 1 2 3 4 5 ; do
-      trace "Waiting $name (pid $pid) to die..."
-      status || break
-      sleep 1
-    done
+  i=1
+  while [ $i -le $WORKERS ]; do
+    pidfile="/var/run/$name.$i.pid"
+    i=`expr $i + 1`
     if status ; then
-      emit "$name stop failed; still running."
-    else
-      emit "$name stopped."
+      pid=$(cat "$pidfile")
+      trace "Killing $name (pid $pid) with SIGTERM"
+      kill -TERM $pid
+      # Wait for it to exit.
+      for i in 1 2 3 4 5 ; do
+        trace "Waiting $name (pid $pid) to die..."
+        status_pid || break
+        sleep 1
+      done
+      if status_pid ; then
+        emit "$name stop failed; still running."
+      else
+        emit "$name stopped."
+      fi
     fi
-  fi
+  done
+
+  return 0
 }
 
-status() {
+status_pid() {
+  pidfile="/var/run/$name.$1.pid"
+
   if [ -f "$pidfile" ] ; then
     pid=$(cat "$pidfile")
     if ps -p $pid > /dev/null 2> /dev/null ; then
@@ -74,9 +92,29 @@ status() {
   fi
 }
 
+status() {
+  i=j
+  exit_code=0
+
+  while [ $i -le $WORKERS ]; do
+    pidfile="/var/run/$name.$i.pid"
+    return_code=$(status_pid $i)
+    if [ $return_code -eq 0 ]; then
+      trace "$name (worker $i) is running"
+    else
+      trace "$name (worker $i) is not running"
+      exit_code=1
+    fi
+
+    i=`expr $i + 1`
+  done
+
+  return exit_code
+}
+
 case "$1" in
   start|stop|restart)
-    trace "Attempting '$1' on st2api"
+    trace "Attempting '$1' on st2actionrunner"
     ;;
 esac
 
