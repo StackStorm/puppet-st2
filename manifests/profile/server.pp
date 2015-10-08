@@ -307,7 +307,6 @@ class st2::profile::server (
   }
 
   if $_ng_init {
-    $_package_map = $::st2::params::component_map
 
     file { '/etc/init/st2actionrunner.conf':
       ensure => present,
@@ -320,165 +319,80 @@ class st2::profile::server (
 
     # Spin up any number of workers as needed
     $_workers = prefix(range("0", "${workers}"), "worker")
-    ::st2::helper::actionrunner_upstart { $_workers: }
 
-    service { 'st2actionrunner':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
-      subscribe  => [
-        Package[$_package_map['actionrunner']],
-        Package['st2common'],
-      ],
+    if $osfamily == 'Debian' {
+      ::st2::helper::actionrunner_upstart { $_workers: }
+    } else {
+      st2::helper::service_manager{'actionrunner':
+        process => 'actionrunner'
+      }
+
+      file_line{'st2actionrunner count':
+        path => '/etc/sysconfig/st2actionrunner',
+        line => "WORKERSNUM=${_workers}"
+      }
     }
 
     if $auth and $manage_st2auth_service {
-      file { '/etc/init/st2auth.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/init/st2auth.conf',
-        notify => Service['st2auth'],
-      }
-
-      service { 'st2auth':
-        ensure     => running,
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => 'upstart',
-        subscribe  => [
-          Package[$_package_map['auth']],
-          Package['st2common'],
-        ],
+      st2::helper::service_manager{'auth':
+        process => 'auth'
       }
     }
 
     if $manage_st2api_service {
-      file { '/etc/init/st2api.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/init/st2api.conf',
-        notify => Service['st2api'],
-      }
-
-      service { 'st2api':
-        ensure     => running,
-        enable     => true,
-        hasstatus  => true,
-        hasrestart => true,
-        provider   => 'upstart',
-        subscribe  => [
-          Package[$_package_map['api']],
-          Package['st2common'],
-        ],
+      st2::helper::service_manager{'api':
+        process => 'api'
       }
     }
 
-    file { '/etc/init/st2resultstracker.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2resultstracker.conf',
-      notify => Service['st2resultstracker'],
+    st2::helper::service_manager{'resultstracker':
+        process => 'resultstracker'
     }
 
-    service { 'st2resultstracker':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
-      subscribe  => [
-        Package[$_package_map['resultstracker']],
-        Package['st2common'],
-      ],
+    st2::helper::service_manager{'sensorcontainer':
+        process => 'sensorcontainer'
     }
 
-    file { '/etc/init/st2sensorcontainer.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2sensorcontainer.conf',
-      notify => Service['st2sensorcontainer'],
+    st2::helper::service_manager{'notifier':
+        process => 'notifier'
     }
 
-    service { 'st2sensorcontainer':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
-      subscribe  => [
-        Package[$_package_map['sensorcontainer']],
-        Package['st2common'],
-      ],
-    }
-
-    file { '/etc/init/st2notifier.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2notifier.conf',
-      notify => Service['st2notifier'],
-    }
-
-    service { 'st2notifier':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
-      subscribe  => [
-        Package[$_package_map['notifier']],
-        Package['st2common'],
-      ],
-    }
-
-    file { '/etc/init/st2rulesengine.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2rulesengine.conf',
-      notify => Service['st2rulesengine'],
-    }
-
-    service { 'st2rulesengine':
-      ensure     => running,
-      enable     => true,
-      hasstatus  => true,
-      hasrestart => true,
-      provider   => 'upstart',
-      subscribe  => [
-        Package[$_package_map['rulesengine']],
-        Package['st2common'],
-      ],
+    st2::helper::service_manager{'rulesengine':
+        process => 'rulesengine'
     }
 
     if $manage_st2web_service {
-      file { '/etc/init/st2web.conf':
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => 'puppet:///modules/st2/etc/init/st2web.conf',
-      }
+      $init_provider = $::st2::params::init_type
+      if $operatingsystem == 'Ubuntu' {
+        file { '/etc/init/st2web.conf':
+          ensure => present,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => 'puppet:///modules/st2/etc/init/st2web.conf',
+        }
+      } elsif $operatingsystem == 'RedHat' {
+        case $operatingsystemmajrelease {
+          '7': {
+            file { "/etc/systemd/system/st2web.service":
+              ensure  => file,
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0444',
+              source  => "puppet:///modules/st2/systemd/system/st2web.service",
+            }
+          }
+          '6': {
 
+          }
+        }
+      }
       service { 'st2web':
         ensure     => running,
         enable     => true,
         hasstatus  => true,
         hasrestart => true,
-        provider   => 'upstart',
+        provider   => $init_provider,
       }
     }
 

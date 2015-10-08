@@ -1,0 +1,12 @@
+[Unit]
+Description=Start and Stop st2web
+
+[Service]
+WorkingDirectory=/opt/stackstorm/static/webui
+ExecStart=/usr/bin/python -m SimpleHTTPServer 8080
+Type=simple
+User=stanley
+Group=stanley
+
+[Install]
+WantedBy=multi-user.target
