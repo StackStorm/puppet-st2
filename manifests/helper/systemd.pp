@@ -10,7 +10,7 @@ define st2::helper::systemd (
   if $process_type == 'multi' {
     $extra_char = "${process_type}@"
   } else {
-    $extra_Char = ''
+    $extra_char = ''
   }
 
   file{"/etc/systemd/system/${st2_process}${extra_char}.service":
