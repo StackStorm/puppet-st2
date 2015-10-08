@@ -323,7 +323,7 @@ class st2::profile::server (
     if $osfamily == 'Debian' {
       ::st2::helper::actionrunner_upstart { $_workers: }
     } else {
-      st2::helper::service_manager{'actionrunner':
+      st2::helper::service_manager{'st2actionrunner':
         process => 'actionrunner'
       }
 
@@ -334,30 +334,30 @@ class st2::profile::server (
     }
 
     if $auth and $manage_st2auth_service {
-      st2::helper::service_manager{'auth':
+      st2::helper::service_manager{'st2auth':
         process => 'auth'
       }
     }
 
     if $manage_st2api_service {
-      st2::helper::service_manager{'api':
+      st2::helper::service_manager{'st2api':
         process => 'api'
       }
     }
 
-    st2::helper::service_manager{'resultstracker':
+    st2::helper::service_manager{'st2resultstracker':
         process => 'resultstracker'
     }
 
-    st2::helper::service_manager{'sensorcontainer':
+    st2::helper::service_manager{'st2sensorcontainer':
         process => 'sensorcontainer'
     }
 
-    st2::helper::service_manager{'notifier':
+    st2::helper::service_manager{'st2notifier':
         process => 'notifier'
     }
 
-    st2::helper::service_manager{'rulesengine':
+    st2::helper::service_manager{'st2rulesengine':
         process => 'rulesengine'
     }
 

@@ -3,11 +3,11 @@
 #  This deined type is used to add service management scripts for the various distros
 #
 define st2::helper::service_manager (
-  $process = undef,
+  $st2_process = undef,
 ) {
 
   $_package_map = $::st2::params::component_map
-  $st2_process = $_package_map["${process}"]
+  #$st2_process = $_package_map["${process}"]
   $init_provider = $::st2::params::init_type
 
   if $osfamily == 'Debian' {
@@ -22,7 +22,7 @@ define st2::helper::service_manager (
     }
   } elsif $osfamily == 'RedHat' {
     if $operatingsystemmajrelease == '7' {
-      if $process == 'actionrunner' {
+      if $st2_process == 'st2actionrunner' {
         $process_type = 'multi'
         file{"/etc/systemd/system/st2actionrunner.service":
           ensure  => file,
