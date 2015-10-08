@@ -324,7 +324,7 @@ class st2::profile::server (
       ::st2::helper::actionrunner_upstart { $_workers: }
     } else {
       st2::helper::service_manager{'st2actionrunner':
-        process => 'actionrunner'
+        process => 'st2actionrunner'
       }
 
       file_line{'st2actionrunner count':
@@ -335,30 +335,30 @@ class st2::profile::server (
 
     if $auth and $manage_st2auth_service {
       st2::helper::service_manager{'st2auth':
-        process => 'auth'
+        process => 'st2auth'
       }
     }
 
     if $manage_st2api_service {
       st2::helper::service_manager{'st2api':
-        process => 'api'
+        process => 'st2api'
       }
     }
 
     st2::helper::service_manager{'st2resultstracker':
-        process => 'resultstracker'
+        process => 'st2resultstracker'
     }
 
     st2::helper::service_manager{'st2sensorcontainer':
-        process => 'sensorcontainer'
+        process => 'st2sensorcontainer'
     }
 
     st2::helper::service_manager{'st2notifier':
-        process => 'notifier'
+        process => 'st2notifier'
     }
 
     st2::helper::service_manager{'st2rulesengine':
-        process => 'rulesengine'
+        process => 'st2rulesengine'
     }
 
     if $manage_st2web_service {
