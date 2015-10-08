@@ -60,7 +60,7 @@ define st2::helper::service_manager (
     hasrestart => true,
     provider   => $init_provider,
     subscribe  => [
-      Package[$_package_map["${process}"]],
+      Package["${process}"],
       Package['st2common'],
     ],
   }
