@@ -324,6 +324,11 @@ class st2::profile::server (
     case $_init_provider {
       'upstart': {
         ::st2::helper::actionrunner_upstart { $_workers: }
+
+        file_line{'st2actionrunner count':
+          path => '/etc/default/st2actionrunner',
+          line => "WORKERS=${_workers}"
+        }
       }
       'systemd': {
         ::st2::helper::service_manager{'st2actionrunner':
@@ -348,14 +353,15 @@ class st2::profile::server (
       ::st2::helper::service_manager{'st2api': }
     }
 
+    if $manage_st2web_service {
+      ::st2::helper::service_manager { 'st2web': }
+    }
+
     ::st2::helper::service_manager{'st2resultstracker': }
     ::st2::helper::service_manager{'st2sensorcontainer': }
     ::st2::helper::service_manager{'st2notifier': }
     ::st2::helper::service_manager{'st2rulesengine': }
 
-    if $manage_st2web_service {
-      ::st2::helper::service_manager { 'st2web': }
-    }
 
     file_line { 'st2 ng_init enable':
       path => '/etc/environment',
