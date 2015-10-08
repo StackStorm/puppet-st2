@@ -22,7 +22,7 @@ define st2::helper::systemd (
   }
 
   if $process_type == 'single' {
-    exec{'sysctl enable':
+    exec{'sysctl enable ${st2_process}':
       path    => '/bin:/usr/bin:/usr/local/bin',
       command => "systemctl --no-reload enable ${st2_process}",
       require => File["/etc/systemd/system/${st2_process}${type}.service"],
