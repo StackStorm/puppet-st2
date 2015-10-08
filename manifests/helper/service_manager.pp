@@ -30,7 +30,7 @@ define st2::helper::service_manager (
           source  => "puppet:///modules/st2/systemd/system/st2actionrunner.service",
         }
 
-        exec{'sysctl enable':
+        exec{'sysctl enable ${process}':
           path    => '/bin:/usr/bin:/usr/local/bin',
           command => "systemctl --no-reload enable st2actionrunner",
           require => File["/etc/systemd/system/${process}${type}.service"],
