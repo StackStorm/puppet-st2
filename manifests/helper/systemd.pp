@@ -13,8 +13,8 @@ define st2::helper::systemd (
     $extra_char = ''
   }
   
-  $st2_process = $st2_process
   file{"/etc/systemd/system/${st2_process}${extra_char}.service":
+    name    => "${st2_process}"
     ensure  => file,
     owner   => 'root',
     group   => 'root',
