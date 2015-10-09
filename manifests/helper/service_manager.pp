@@ -30,7 +30,7 @@ define st2::helper::service_manager (
           group  => 'root',
           mode   => '0444',
           source => "puppet:///modules/st2/systemd/system/st2actionrunner.service",
-          notify => Exec["sysctl enable ${st2_process}
+          notify => Exec["sysctl enable ${st2_process}"],
         }
 
         exec{"sysctl enable ${st2_process}":
