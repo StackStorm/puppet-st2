@@ -308,15 +308,6 @@ class st2::profile::server (
 
   if $_ng_init {
 
-    file { '/etc/init/st2actionrunner.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
-      notify => Service['st2actionrunner'],
-    }
-
     # Spin up any number of workers as needed
     $_workers = prefix(range("0", "${workers}"), "worker")
 
@@ -325,6 +316,13 @@ class st2::profile::server (
     } else {
       st2::helper::service_manager{'actionrunner':
         process => 'actionrunner'
+      }
+
+      file{'/etc/sysconfig/st2actionrunner':
+        ensure => 'present',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0640'
       }
 
       file_line{'st2actionrunner count':
@@ -363,7 +361,7 @@ class st2::profile::server (
 
     if $manage_st2web_service {
       $init_provider = $::st2::params::init_type
-      if $operatingsystem == 'Ubuntu' {
+      if $osfamily == 'Debian' {
         file { '/etc/init/st2web.conf':
           ensure => present,
           owner  => 'root',
@@ -371,7 +369,7 @@ class st2::profile::server (
           mode   => '0444',
           source => 'puppet:///modules/st2/etc/init/st2web.conf',
         }
-      } elsif $operatingsystem == 'RedHat' {
+      } elsif $osfamily == 'RedHat' {
         case $operatingsystemmajrelease {
           '7': {
             file { "/etc/systemd/system/st2web.service":
