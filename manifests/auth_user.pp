@@ -21,5 +21,4 @@ define st2::auth_user(
     file      => $_htpasswd_file,
   }
   
-  Httpauth[$name] -> Service<| title == 'st2auth' |>
 }

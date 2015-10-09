@@ -309,15 +309,6 @@ class st2::profile::server (
 
   if $_ng_init {
 
-    file { '/etc/init/st2actionrunner.conf':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
-      notify => Service['st2actionrunner'],
-    }
-
     # Spin up any number of workers as needed
     $_workers = prefix(range("0", "${workers}"), "worker")
 
@@ -361,7 +352,6 @@ class st2::profile::server (
     ::st2::helper::service_manager { 'sensorcontainer': }
     ::st2::helper::service_manager { 'notifier': }
     ::st2::helper::service_manager { 'rulesengine': }
-
 
     file_line { 'st2 ng_init enable':
       path => '/etc/environment',
