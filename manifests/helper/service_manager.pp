@@ -53,7 +53,7 @@ define st2::helper::service_manager (
         }
       }
     }
-    'sysv': {
+    'init': {
       file { "/etc/init.d/${process}":
         ensure => file,
         owner  => 'root',

@@ -368,7 +368,7 @@ class st2::profile::mistral(
           notify  => Service['mistral'],
         }
       }
-      'sysv': {
+      'init': {
         file { '/etc/init.d/mistral':
           ensure => file,
           owner  => 'root',

@@ -331,7 +331,7 @@ class st2::profile::server (
           line => "WORKERSNUM=${_workers}"
         }
       }
-      'sysv': {
+      'init': {
         ::st2::helper::service_manager{ 'actionrunner': }
       }
     }

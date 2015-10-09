@@ -125,14 +125,14 @@ class st2::params(
     'RedHat': {
       if $::operatingsystem == 'Amazon' {
         $init_type = $::operatingsystemmajrelease ? {
-          '2014'  => 'sysv',
-          '2015'  => 'sysv',
-          default => 'sysv',
+          '2014'  => 'init',
+          '2015'  => 'init',
+          default => 'init',
         }
       } else {
         $init_type = $::operatingsystemmajrelease ? {
-          '5'     => 'sysv',
-          '6'     => 'sysv',
+          '5'     => 'init',
+          '6'     => 'init',
           default => 'systemd',
         }
       }
@@ -140,8 +140,8 @@ class st2::params(
     'Debian': {
       if $::operatingsystem == 'Debian' {
         $init_type = $::operatingsystemmajrelease ? {
-          '6'     => 'sysv',
-          '7'     => 'sysv',
+          '6'     => 'init',
+          '7'     => 'init',
           '8'     => 'systemd',
           default => 'systemd',
         }
