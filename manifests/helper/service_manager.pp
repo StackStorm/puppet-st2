@@ -35,7 +35,7 @@ define st2::helper::service_manager (
         exec{"sysctl enable ${st2_process}":
           path    => '/bin:/usr/bin:/usr/local/bin',
           command => "systemctl --no-reload enable st2actionrunner",
-          require => File["/etc/systemd/system/${st2_process}.service"],
+          require => File["/etc/systemd/system/st2actionrunner.service"],
           notify  => Service["${st2_process}"],
         }
 
