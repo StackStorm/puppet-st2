@@ -66,4 +66,6 @@ define st2::helper::service_manager (
       Package['st2common'],
     ],
   }
+  
+  File<| tag == ‘st2::helper::service_manager’ |> ~> Service[$st2_process]
 }
