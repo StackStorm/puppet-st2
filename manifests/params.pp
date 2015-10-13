@@ -47,6 +47,22 @@ class st2::params(
     rulesengine     => 'st2reactor',
     sensorcontainer => 'st2reactor',
   }
+  $subsystem_map = {
+    actionrunner       => 'st2actionrunner',
+    api                => 'st2api',
+    auth               => 'st2auth',
+    notifier           => 'st2notifier',
+    resultstracker     => 'st2resultstracker',
+    rulesengine        => 'st2rulesengine',
+    sensorcontainer    => 'st2sensorcontainer',
+    st2actionrunner    => 'st2actionrunner',
+    st2api             => 'st2api',
+    st2auth            => 'st2auth',
+    st2notifier        => 'st2notifier',
+    st2resultstracker  => 'st2resultstracker',
+    st2rulesengine     => 'st2rulesengine',
+    st2sensorcontainer => 'st2sensorcontainer',
+  }
 
   # Non-user configurable parameters
   $repo_url = 'https://github.com/StackStorm/st2'

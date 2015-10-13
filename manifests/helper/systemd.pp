@@ -12,7 +12,7 @@ define st2::helper::systemd (
   } else {
     $extra_char = ''
   }
-  
+
   $process_name = $st2_process
   file{"/etc/systemd/system/${st2_process}${extra_char}.service":
     ensure  => file,
@@ -20,6 +20,7 @@ define st2::helper::systemd (
     group   => 'root',
     mode    => '0444',
     content => template("st2/etc/systemd/system/st2service_${process_type}.service.erb"),
+    tag     => 'st2::service_manager',
   }
 
   if $process_type == 'single' {
