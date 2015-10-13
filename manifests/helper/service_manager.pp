@@ -5,10 +5,10 @@
 define st2::helper::service_manager (
   $process = $name,
 ) {
-  $_package_map   = $::st2::params::component_map
-  $_package       = $_package_map["${process}"]
-  $_init_provider = $::st2::params::init_type
-  $_subsystem     = $::st2::params::subsystem_map[$process]
+  $_package_map = $::st2::params::component_map
+  $_package     = $_package_map["${process}"]
+  $_init_type   = $::st2::params::init_type
+  $_subsystem   = $::st2::params::subsystem_map[$process]
 
   tag('st2::service_manager')
 
@@ -75,7 +75,7 @@ define st2::helper::service_manager (
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
-    provider   => $init_provider,
+    provider   => $init_type,
     subscribe  => [
       Package["${_package}"],
       Package['st2common'],
