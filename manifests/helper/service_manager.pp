@@ -67,5 +67,5 @@ define st2::helper::service_manager (
     ],
   }
   
-  File<| tag == ‘st2::helper::service_manager’ |> ~> Service[$st2_process]
+  File<| tag == 'st2::helper::service_manager' |> ~> Service[$st2_process]
 }
