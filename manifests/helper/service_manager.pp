@@ -75,7 +75,7 @@ define st2::helper::service_manager (
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
-    provider   => $init_provider,
+    provider   => $_init_type,
     subscribe  => [
       Package["${_package}"],
       Package['st2common'],
