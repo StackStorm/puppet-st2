@@ -3,28 +3,29 @@
 #  This deined type is used to add service management scripts for the various distros
 #
 define st2::helper::service_manager (
-  $process = undef,
+  $process = $name,
 ) {
-  $_package_map = $::st2::params::component_map
-  $package = $_package_map["${process}"]
-  $st2_process = "st2${process}"
-  $init_provider = $::st2::params::init_type
+  $_package_map   = $::st2::params::component_map
+  $_package       = $_package_map["${process}"]
+  $_init_provider = $::st2::params::init_type
+  $_subsystem     = $::st2::params::subsystem_map[$process]
 
-  if $osfamily == 'Debian' {
+  tag('st2::service_manager')
 
-    file { "/etc/init/${process}.conf":
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0444',
-      source => "puppet:///modules/st2/etc/init/${st2_process}.conf",
-      notify => Service["${st2_process}"],
+  case $_init_type {
+    'upstart': {
+      $_init_file   = "/etc/init/${_subsystem}.conf"
+      $_init_mode   = '0644'
+      $_init_source = "puppet:///modules/st2/etc/init/${_subsystem}.conf"
     }
-  } elsif $osfamily == 'RedHat' {
-    if $operatingsystemmajrelease == '7' {
-      if $process == 'st2actionrunner' {
+    'systemd': {
+      $init_file = undef
+
+      # If Actionrunner, we need two init scripts. First is the
+      # anchor init script, which calls out actionrunner
+      if $_subsystem == 'st2actionrunner' {
         $process_type = 'multi'
-        file{"/etc/systemd/system/st2actionrunner.service":
+        file{ "/etc/systemd/system/st2actionrunner.service":
           ensure  => file,
           owner   => 'root',
           group   => 'root',
@@ -32,40 +33,54 @@ define st2::helper::service_manager (
           source  => "puppet:///modules/st2/systemd/system/st2actionrunner.service",
         }
 
-        exec{"sysctl enable ${st2_process}":
+        exec{ "sysctl enable ${_subsystem}":
           path    => '/bin:/usr/bin:/usr/local/bin',
           command => "systemctl --no-reload enable st2actionrunner",
           require => File["/etc/systemd/system/st2actionrunner.service"],
-          notify  => Service["${st2_process}"],
-        }
-
-        st2::helper::systemd{ "${st2_process}_multi_systemd":
-          st2_process  => $process,
-          process_type => $process_type
+          notify  => Service["${_subsystem}"],
         }
       } else {
         $process_type = 'single'
-        st2::helper::systemd{ "${st2_process}_systemd":
-          st2_process  => $st2_process,
-          process_type => $process_type
-        }
       }
-    } elsif $operatingsystemmajrelease == '6' {
 
+      # Declare the Subsystem for SystemD.
+      st2::helper::systemd{ $_subsystem:
+        st2_process  => $_subsystem,
+        process_type => $process_type,
+      }
+    }
+    'init': {
+      $_init_file   = "/etc/init.d/${_subsystem}"
+      $_init_mode   = '0755'
+      $_init_source = "puppet:///modules/st2/etc/init.d/${_subsystem}"
+    }
+    default: {
+      fail("[st2::helper::service_manager] Unable to setup init script for init system ${_init_type}. Not supported")
     }
   }
 
-  service { "${st2_process}":
+  if $_init_file {
+    file { $_init_file:
+      ensure => file,
+      owner  => 'root',
+      group  => 'root',
+      mode   => $_init_mode,
+      source => $_init_source,
+      notify => Service[$_subsystem],
+    }
+  }
+
+  service { $_subsystem:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
     provider   => $init_provider,
     subscribe  => [
-      Package["${package}"],
+      Package["${_package}"],
       Package['st2common'],
     ],
   }
-  
-  File<| tag == 'st2::helper::service_manager' |> ~> Service[$st2_process]
+
+  File<| tag == 'st2::service_manager' |> ~> Service[$st2_process]
 }
