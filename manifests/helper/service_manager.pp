@@ -6,74 +6,81 @@ define st2::helper::service_manager (
   $process = $name,
 ) {
   $_package_map = $::st2::params::component_map
-  $package = $_package_map["${process}"]
-  $st2_process = "st2${process}"
-  $_init_provider = $::st2::params::init_type
+  $_package     = $_package_map["${process}"]
+  $_init_type   = $::st2::params::init_type
+  $_subsystem   = $::st2::params::subsystem_map[$process]
 
-  case $_init_provider {
+  tag('st2::service_manager')
+
+  case $_init_type {
     'upstart': {
-      file { "/etc/init/${process}.conf":
-        ensure => present,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444',
-        source => "puppet:///modules/st2/etc/init/${process}.conf",
-        notify => Service["${st2_process}"],
-      }
+      $_init_file   = "/etc/init/${_subsystem}.conf"
+      $_init_mode   = '0644'
+      $_init_source = "puppet:///modules/st2/etc/init/${_subsystem}.conf"
     }
     'systemd': {
-      if $process == 'st2actionrunner' {
+      $init_file = undef
+
+      # If Actionrunner, we need two init scripts. First is the
+      # anchor init script, which calls out actionrunner
+      if $_subsystem == 'st2actionrunner' {
         $process_type = 'multi'
         file{ "/etc/systemd/system/st2actionrunner.service":
-          ensure => file,
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444',
-          source => "puppet:///modules/st2/systemd/system/st2actionrunner.service",
-          notify => Exec["sysctl enable ${st2_process}"],
+          ensure  => file,
+          owner   => 'root',
+          group   => 'root',
+          mode    => '0444',
+          source  => "puppet:///modules/st2/systemd/system/st2actionrunner.service",
         }
 
-        exec{"sysctl enable ${st2_process}":
-          path        => '/bin:/usr/bin:/usr/local/bin',
-          command     => "systemctl --no-reload enable st2actionrunner",
-          refreshonly => true,
-          require     => File["/etc/systemd/system/${st2_process}.service"],
-          notify      => Service["${st2_process}"],
-        }
-
-        st2::helper::systemd{ "${st2_process}_multi_systemd":
-          st2_process  => $process,
-          process_type => $process_type
+        exec{ "sysctl enable ${_subsystem}":
+          path    => '/bin:/usr/bin:/usr/local/bin',
+          command => "systemctl --no-reload enable st2actionrunner",
+          require => File["/etc/systemd/system/st2actionrunner.service"],
+          notify  => Service["${_subsystem}"],
         }
       } else {
         $process_type = 'single'
-        st2::helper::systemd{ "${st2_process}_systemd":
-          st2_process  => $st2_process,
-          process_type => $process_type
-        }
+      }
+
+      # Declare the Subsystem for SystemD.
+      st2::helper::systemd{ $_subsystem:
+        st2_process  => $_subsystem,
+        process_type => $process_type,
       }
     }
     'init': {
-      file { "/etc/init.d/${process}":
-        ensure => file,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-        source => "puppet:///modules/st2/etc/init.d/${process}.conf",
-        notify => Service[$st2_process],
-      }
+      $_init_file   = "/etc/init.d/${_subsystem}"
+      $_init_mode   = '0755'
+      $_init_source = "puppet:///modules/st2/etc/init.d/${_subsystem}"
+    }
+    default: {
+      fail("[st2::helper::service_manager] Unable to setup init script for init system ${_init_type}. Not supported")
     }
   }
 
-  service { "${st2_process}":
+  if $_init_file {
+    file { $_init_file:
+      ensure => file,
+      owner  => 'root',
+      group  => 'root',
+      mode   => $_init_mode,
+      source => $_init_source,
+      notify => Service[$_subsystem],
+    }
+  }
+
+  service { $_subsystem:
     ensure     => running,
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
-    provider   => $_init_provider,
+    provider   => $_init_type,
     subscribe  => [
-      Package["${package}"],
+      Package["${_package}"],
       Package['st2common'],
     ],
   }
+
+  File<| tag == 'st2::service_manager' |> ~> Service[$_subsystem]
 }
