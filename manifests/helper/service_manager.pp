@@ -12,7 +12,7 @@ define st2::helper::service_manager (
 
   tag('st2::service_manager')
 
-  case $_init_type {
+  case $_init_provider {
     'upstart': {
       $_init_file   = "/etc/init/${_subsystem}.conf"
       $_init_mode   = '0644'
@@ -75,7 +75,7 @@ define st2::helper::service_manager (
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
-    provider   => $init_type,
+    provider   => $_init_type,
     subscribe  => [
       Package["${_package}"],
       Package['st2common'],
