@@ -1,6 +1,6 @@
 # Definition: st2::helper::service_manager
 #
-#  This deined type is used to add service management scripts for the various distros
+#  This defined type is used to add service management scripts for the various distros
 #
 define st2::helper::service_manager (
   $process = $name,
