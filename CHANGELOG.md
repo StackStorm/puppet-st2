@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.16 (Oct 14, 2015)
+* Repair package map with CentOS 7 systems
+
+## 0.9.15 (Oct 13, 2015)
+* Support for SysV and SystemD Init types
+
 ## 0.9.14 (Oct 2, 2015)
 * Ensure postgresql is setup and running before starting Mistral service.
 
