@@ -12,15 +12,15 @@ define st2::helper::auth_manager (
     true    => 'True',
     default => 'False',
   }
-  $_api_url = $::st2::params::api_url
-  $_st2_conf_file = $::st2::params::conf_file
-  $_st2_api_logging_file  = $::st2::params::api::logging_file
-  $_use_ssl = $::st2::params::use_ssl_for_auth_api
-  $_ssl_key = $::st2::params::api::ssl_key
-  $_ssl_cert = $::st2::params::api::ssl_cert
-  $_auth_users = hiera_hash('st2::params::auth_users', {})
-  $_cli_username = $::st2::params::cli_username
-  $_cli_password = $::st2::params::cli_password
+  $_api_url = $::st2::api_url
+  $_st2_conf_file = $::st2::conf_file
+  $_st2_api_logging_file  = $::st2::api_logging_file
+  $_use_ssl = $::st2::use_ssl
+  $_ssl_key = $::st2::ssl_key
+  $_ssl_cert = $::st2::ssl_cert
+  $_auth_users = hiera_hash('st2::auth_users', {})
+  $_cli_username = $::st2::cli_username
+  $_cli_password = $::st2::cli_password
 
   tag('st2::auth_manager')
 
@@ -94,7 +94,7 @@ define st2::helper::auth_manager (
     # SSL Settings
     if $_use_ssl {
       if !$ssl_cert or !$ssl_key {
-        fail('[st2::auth::standalone] Missing $ssl_cert or $ssl_key to enable SSL')
+        fail('[st2::helper::auth_manager] Missing $ssl_cert or $ssl_key to enable SSL')
       }
 
       ini_setting { 'auth_ssl_cert':
@@ -125,16 +125,16 @@ define st2::helper::auth_manager (
         # Nothing to set for now
       }
       'mongodb': {
-        $_db_host = $::st2::params::db::host
-        $_db_port = $::st2::params::db::port
-        $_db_name = $::st2::params::db::name
+        $_db_host = $::st2::db_host
+        $_db_port = $::st2::db_port
+        $_db_name = $::st2::db_name
         $_auth_backend_kwargs = "{\"db_host\": \"${_db_host}\", \"db_port\": \"${_db_port}\", \"db_name\": \"${_db_name}\"}"
       }
     }
 
     ini_setting { 'auth_backend_kwargs':
       ensure  => present,
-      path    => '/etc/st2/st2.conf',
+      path    => "${_st2_conf_file}",
       section => 'auth',
       setting => 'backend_kwargs',
       value   => "${_auth_backend_kwargs}",

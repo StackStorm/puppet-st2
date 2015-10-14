@@ -9,7 +9,12 @@
 #  [*revision*]           - Revision of StackStorm to install
 #  [*autoupdate*]         - Automatically update to latest stable. (default: false)
 #  [*mistral_git_branch*] - Tagged branch of Mistral to download/install
+#  [*conf_file*]          - The path where st2 config is stored
+#  [*use_ssl*]            - Enable/Disable SSL for all st2 APIs
+#  [*ssl_key*]            - The path to SSL key for all st2 APIs
+#  [*ssl_cert*]           - The path to SSL cert for all st2 APIs
 #  [*api_url*]            - URL where the StackStorm API lives (default: undef)
+#  [*api_logging_file*]   - Path to st2 API logging file (default: /etc/st2api/logging.conf)
 #  [*auth*]               - Toggle to enable/disable auth (Default: false)
 #  [*auth_url*]           - URL where the StackStorm WebUI lives (default: undef)
 #  [*flow_url*]           - URL Path where StackStorm Flow lives (default: undef)
@@ -31,6 +36,9 @@
 #  [*syslog_port*]        - Syslog port. Default: 514
 #  [*syslog_facility*]    - Syslog facility. Default: local7
 #  [*ssh_key_location*]   - Location on filesystem of Admin SSH key for remote runner
+#  [*db_host*]            - Hostname to talk to st2 db
+#  [*db_port*]            - Port for db server for st2 to talk to
+#  [*db_name*]            - Name of db to connect to
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
@@ -39,11 +47,17 @@
 #    st2::revison: 11
 #
 class st2(
-  $version            = '0.13.2',
-  $revision           = '5',
-  $autoupdate         = false,
-  $mistral_git_branch = 'st2-0.13.1',
+  $version                  = '0.13.2',
+  $revision                 = '5',
+  $autoupdate               = false,
+  $mistral_git_branch       = 'st2-0.13.1',
+  $conf_dir                 = $::st2::params::conf_dir,
+  $conf_file                = "$::st2::params::conf_dir/st2.conf",
+  $use_ssl                  = false,
+  $ssl_cert                 = '/etc/ssl/cert.crt',
+  $ssl_key                  = '/etc/ssl/cert.key',
   $api_url                  = undef,
+  $api_logging_file         = '/etc/st2api/logging.conf',
   $auth                     = true,
   $auth_url                 = undef,
   $auth_mode                = 'standalone',
@@ -68,4 +82,7 @@ class st2(
   $syslog_port              = 514,
   $syslog_facility          = 'local7',
   $ssh_key_location         = '/home/stanley/.ssh/st2_stanley_key',
-) {}
+  $db_host                  = 'localhost',
+  $db_port                  = '27017',
+  $db_name                  = 'st2'
+) inherits st2::params {}
