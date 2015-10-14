@@ -346,8 +346,7 @@ class st2::profile::mistral(
     $subsystems = join($_enabled_subsystems, ',')
     $_init_type = $::st2::params::init_type
 
-
-    case $::init_type{
+    case $_init_type {
       'upstart': {
         file { '/etc/init/mistral.conf':
           ensure => file,
