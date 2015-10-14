@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.18 (Oct 14, 2015)
+## 0.9.19 (Oct 14, 2015)
 * Repair init scripts for Mistral on RHEL 6/7 and Debian
 
 ## 0.9.17 (Oct 14, 2015)
