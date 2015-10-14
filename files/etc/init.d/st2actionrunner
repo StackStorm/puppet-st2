@@ -93,7 +93,7 @@ status_pid() {
 }
 
 status() {
-  i=j
+  i=1
   exit_code=0
 
   while [ $i -le $WORKERS ]; do
