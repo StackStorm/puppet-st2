@@ -42,7 +42,7 @@ start() {
   while [ $i -le $WORKERS ]; do
     pidfile="/var/run/$name.$i.pid"
     i=`expr $i + 1`
-    $program $args
+    $program $args &
     echo $! > $pidfile
     emit "$name started"
   done

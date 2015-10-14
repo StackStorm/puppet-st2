@@ -37,7 +37,7 @@ emit() {
 
 start() {
   cd /opt/stackstorm/static/webui
-  exec $program $args
+  $program $args &
   echo $! > $pidfile
   emit "$name started"
   return 0
