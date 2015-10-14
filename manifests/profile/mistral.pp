@@ -344,9 +344,11 @@ class st2::profile::mistral(
     $_flags = [$_api_flag, $_executor_flag, $_engine_flag]
     $_enabled_subsystems = delete_undef_values($_flags)
     $subsystems = join($_enabled_subsystems, ',')
+    $_init_type = $::st2::params::init_type
 
-    case $::osfamily {
-      'Debian': {
+
+    case $::init_type{
+      'upstart': {
         file { '/etc/init/mistral.conf':
           ensure => file,
           owner  => 'root',
@@ -356,28 +358,24 @@ class st2::profile::mistral(
           notify  => Service['mistral'],
         }
       }
-      'RedHat': {
-        case $::operatingsystemmajrelease {
-          '7': {
-            file { '/etc/systemd/system/mistral.service':
-              ensure => file,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0444',
-              content => template('st2/etc/systemd/system/mistral.service.erb'),
-              notify  => Service['mistral'],
-            }
-          }
-          '6': {
-            file { '/etc/init.d/mistral':
-              ensure => file,
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0755',
-              content => template('st2/etc/init.d/mistral.erb'),
-              notify  => Service['mistral'],
-            }
-          }
+      'systemd': {
+        file { '/etc/systemd/system/mistral.service':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          content => template('st2/etc/systemd/system/mistral.service.erb'),
+          notify  => Service['mistral'],
+        }
+      }
+      'init': {
+        file { '/etc/init.d/mistral':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0755',
+          content => template('st2/etc/init.d/mistral.erb'),
+          notify  => Service['mistral'],
         }
       }
     }
