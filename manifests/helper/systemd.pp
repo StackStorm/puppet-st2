@@ -8,7 +8,7 @@ define st2::helper::systemd (
   ) {
 
   if $process_type == 'multi' {
-    $extra_char = "${process_type}@"
+    $extra_char = "@"
   } else {
     $extra_char = ''
   }
