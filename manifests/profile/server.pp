@@ -316,9 +316,17 @@ class st2::profile::server (
       'upstart': {
         ::st2::helper::actionrunner_upstart { $_workers: }
 
+        file { '/etc/default/st2actionrunner':
+          ensure => 'file',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444'
+        }
+        
         file_line{'st2actionrunner count':
           path => '/etc/default/st2actionrunner',
-          line => "WORKERS=${_workers}"
+          line => "WORKERS=${_workers}",
+          require => File['/etc/default/st2actionrunner']
         }
       }
       'systemd': {
@@ -326,9 +334,17 @@ class st2::profile::server (
           process => 'st2actionrunner'
         }
 
+        file { '/etc/sysconfig/st2actionrunner':
+          ensure => 'file',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444'
+        }
+        
         file_line{'st2actionrunner count':
           path => '/etc/sysconfig/st2actionrunner',
-          line => "WORKERSNUM=${_workers}"
+          line => "WORKERSNUM=${_workers}",
+          require => File['/etc/sysconfig/st2actionrunner']
         }
       }
       'init': {
