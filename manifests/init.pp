@@ -52,7 +52,7 @@ class st2(
   $autoupdate               = false,
   $mistral_git_branch       = 'st2-0.13.1',
   $conf_dir                 = $::st2::params::conf_dir,
-  $conf_file                = "$::st2::params::conf_dir/st2.conf",
+  $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = false,
   $ssl_cert                 = '/etc/ssl/cert.crt',
   $ssl_key                  = '/etc/ssl/cert.key',
