@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-User=st2
-Group=st2
+User=root
+Group=root
 Environment="DAEMON_ARGS=--config-file /etc/st2/st2.conf"
 Environment="WORKERID=%i"
 ExecStart=/usr/bin/<%= @process_name %> $DAEMON_ARGS
