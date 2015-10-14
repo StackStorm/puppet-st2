@@ -39,13 +39,20 @@ class st2::params(
   ]
 
   $component_map = {
-    actionrunner    => 'st2actions',
-    api             => 'st2api',
-    auth            => 'st2auth',
-    notifier        => 'st2actions',
-    resultstracker  => 'st2actions',
-    rulesengine     => 'st2reactor',
-    sensorcontainer => 'st2reactor',
+    actionrunner       => 'st2actions',
+    api                => 'st2api',
+    auth               => 'st2auth',
+    notifier           => 'st2actions',
+    resultstracker     => 'st2actions',
+    rulesengine        => 'st2reactor',
+    sensorcontainer    => 'st2reactor
+    st2actionrunner    => 'st2actions',
+    st2api             => 'st2api',
+    st2auth            => 'st2auth',
+    st2notifier        => 'st2actions',
+    st2resultstracker  => 'st2actions',
+    st2rulesengine     => 'st2reactor',
+    st2sensorcontainer => 'st2reactor',
   }
   $subsystem_map = {
     actionrunner       => 'st2actionrunner',
