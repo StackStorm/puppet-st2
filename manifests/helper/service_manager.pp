@@ -6,7 +6,7 @@ define st2::helper::service_manager (
   $process = $name,
 ) {
   include ::st2::params
-  
+
   $_package_map = $::st2::params::component_map
   $_package     = $_package_map[$process]
   $_init_type   = $::st2::params::init_type
@@ -80,6 +80,6 @@ define st2::helper::service_manager (
     provider   => $_init_type,
   }
 
-  Package<| tag == 'st2::package::install' |> ~> Service[$_subsystem]
+  Package[$_package] ~> Service[$_subsystem]
   File<| tag == 'st2::service_manager' |> ~> Service[$_subsystem]
 }

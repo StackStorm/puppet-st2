@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.16 (Oct 14, 2015)
+## 0.9.17 (Oct 14, 2015)
 * Repair package map with CentOS 7 systems
 
 ## 0.9.15 (Oct 13, 2015)
