@@ -3,10 +3,10 @@
 #  This defined type is used to configure various kinds of auth plugins for st2
 #
 define st2::helper::auth_manager (
-  $auth_mode = $auth_mode,  # proxy or standalone
-  $auth_backend = $auth_backend,
-  $debug = $debug,
-  $test_user = $test_user,
+  $auth_mode = $st2::params::auth_mode,
+  $auth_backend = $st2::params::auth_backend
+  $debug = False,
+  $test_user = True
 ) {
   $_debug = $debug ? {
     true    => 'True',
