@@ -119,10 +119,10 @@ define st2::helper::auth_manager (
 
     case $_auth_backend {
       'proxy': {
-        # Nothing to set for now
+        notify {'Nothing to do here for proxy': }
       }
       'pam': {
-        # Nothing to set for now
+        notify {'Nothing to do here for pam': }
       }
       'mongodb': {
         $_db_host = $::st2::db_host
