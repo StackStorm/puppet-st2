@@ -119,12 +119,28 @@ define st2::helper::auth_manager (
 
     case $_auth_backend {
       'proxy': {
-        notify {'Nothing to do here for proxy': }
+        file { '/tmp/auth_backend_proxy':
+          ensure => 'file',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644'
+        }
       }
       'pam': {
-        notify {'Nothing to do here for pam': }
+        file { '/tmp/auth_backend_pam':
+          ensure => 'file',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644'
+        }
       }
       'mongodb': {
+        file { '/tmp/auth_backend_mongodb':
+          ensure => 'file',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644'
+        }
         $_db_host = $::st2::db_host
         $_db_port = $::st2::db_port
         $_db_name = $::st2::db_name
