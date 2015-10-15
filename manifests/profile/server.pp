@@ -400,4 +400,4 @@ class st2::profile::server (
 
     Exec['start st2'] -> St2::Pack<||>
   }
-
+}
