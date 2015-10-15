@@ -43,19 +43,13 @@ class st2::auth::mongodb (
   }
   $_api_url = $::st2::api_url
 
-  # Defaults for st2config to ensure service refresh propagates
-  # anytime these values are changed. See profile/server.pp
-  # for more info
-  Ini_setting {
-    tag => 'st2::config',
-  }
-
   ini_setting { 'auth_mode':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'mode',
     value   => 'standalone',
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_backend':
     ensure  => present,
@@ -63,6 +57,7 @@ class st2::auth::mongodb (
     section => 'auth',
     setting => 'backend',
     value   => 'mongodb',
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_backend_kwargs':
     ensure  => present,
@@ -70,6 +65,7 @@ class st2::auth::mongodb (
     section => 'auth',
     setting => 'backend_kwargs',
     value   => "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\", \"db_name\": \"${db_name}\"}",
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_debug':
     ensure  => present,
@@ -77,6 +73,7 @@ class st2::auth::mongodb (
     section => 'auth',
     setting => 'debug',
     value   => $_debug,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_ssl':
     ensure  => present,
@@ -84,6 +81,7 @@ class st2::auth::mongodb (
     section => 'auth',
     setting => 'use_ssl',
     value   => $_ssl,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_api_url':
     ensure  => present,
@@ -91,6 +89,7 @@ class st2::auth::mongodb (
     section => 'auth',
     setting => 'api_url',
     value   => $_api_url,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_logging_file':
     ensure  => present,
@@ -98,6 +97,7 @@ class st2::auth::mongodb (
     section => 'auth',
     setting => 'logging',
     value   => $logging_file,
+    tag     => 'st2::config',
   }
 
   # SSL Settings
@@ -112,6 +112,7 @@ class st2::auth::mongodb (
       section => 'auth',
       setting => 'cert',
       value   => $ssl_cert,
+      tag     => 'st2::config',
     }
     ini_setting { 'auth_ssl_key':
       ensure  => present,
@@ -119,6 +120,7 @@ class st2::auth::mongodb (
       section => 'auth',
       setting => 'key',
       value   => $ssl_key,
+      tag     => 'st2::config',
     }
   }
 }

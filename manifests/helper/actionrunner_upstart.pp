@@ -22,5 +22,6 @@ define st2::helper::actionrunner_upstart (
     enable     => true,
     hasstatus  => true,
     hasrestart => true,
+    tag        => 'st2::server',
   }
 }

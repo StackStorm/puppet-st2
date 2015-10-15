@@ -164,17 +164,13 @@ class st2::profile::server (
     content => 'st2server_bootstrapped=true',
   }
 
-  # Sets a tag on all the Ini_setting resources
-  Ini_setting {
-    tag => 'st2::config',
-  }
-
   ini_setting { 'ssh_key_stanley':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'system_user',
     setting => 'ssh_key_file',
     value   => $ssh_key_location,
+    tag     => 'st2::config',
   }
 
   ## ActionRunner settings
@@ -184,6 +180,7 @@ class st2::profile::server (
     section => 'actionrunner',
     setting => 'logging',
     value   => "/etc/st2actions/${_logger_config}.conf",
+    tag     => 'st2::config',
   }
 
   ## API Settings
@@ -193,6 +190,7 @@ class st2::profile::server (
     section => 'api',
     setting => 'host',
     value   => $st2api_listen_ip,
+    tag     => 'st2::config',
   }
   ini_setting { 'api_listen_port':
     ensure  => present,
@@ -200,6 +198,7 @@ class st2::profile::server (
     section => 'api',
     setting => 'port',
     value   => $st2api_listen_port,
+    tag     => 'st2::config',
   }
   ini_setting { 'api_allow_origin':
     ensure  => 'present',
@@ -207,6 +206,7 @@ class st2::profile::server (
     section => 'api',
     setting => 'allow_origin',
     value   => '*',
+    tag     => 'st2::config',
   }
   ini_setting { 'api_logging':
     ensure => present,
@@ -214,6 +214,7 @@ class st2::profile::server (
     section => 'api',
     setting => 'logging',
     value   => "/etc/st2api/${_logger_config}.conf",
+    tag     => 'st2::config',
   }
 
   ## Authentication Settings
@@ -223,6 +224,7 @@ class st2::profile::server (
     section => 'auth',
     setting => 'enable',
     value   => $_enable_auth,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_listen_port':
     ensure  => present,
@@ -230,6 +232,7 @@ class st2::profile::server (
     section => 'auth',
     setting => 'port',
     value   => $st2auth_listen_port,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_listen_ip':
     ensure  => present,
@@ -237,6 +240,7 @@ class st2::profile::server (
     section => 'auth',
     setting => 'host',
     value   => $st2auth_listen_ip,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_logging':
     ensure => present,
@@ -244,6 +248,7 @@ class st2::profile::server (
     section => 'auth',
     setting => 'logging',
     value   => "/etc/st2auth/${_logger_config}.conf",
+    tag     => 'st2::config',
   }
 
   ## Notifier Settings
@@ -253,6 +258,7 @@ class st2::profile::server (
     section => 'notifier',
     setting => 'logging',
     value   => "/etc/st2actions/${_logger_config}.notifier.conf",
+    tag     => 'st2::config',
   }
 
   ## Resultstracker Settings
@@ -262,6 +268,7 @@ class st2::profile::server (
     section => 'resultstracker',
     setting => 'logging',
     value   => "/etc/st2actions/${_logger_config}.resultstracker.conf",
+    tag     => 'st2::config',
   }
 
   ## Rules Engine Settings
@@ -271,6 +278,7 @@ class st2::profile::server (
     section => 'rulesengine',
     setting => 'logging',
     value   => "/etc/st2reactor/${_logger_config}.rulesengine.conf",
+    tag     => 'st2::config',
   }
 
   ## Sensor container Settings
@@ -280,6 +288,7 @@ class st2::profile::server (
     section => 'sensorcontainer',
     setting => 'logging',
     value   => "/etc/st2reactor/${_logger_config}.sensorcontainer.conf",
+    tag     => 'st2::config',
   }
 
   ## Syslog Settings
@@ -289,6 +298,7 @@ class st2::profile::server (
     section => 'syslog',
     setting => 'host',
     value   => $syslog_host,
+    tag     => 'st2::config',
   }
   ini_setting { 'syslog_protocol':
     ensure  => present,
@@ -296,6 +306,7 @@ class st2::profile::server (
     section => 'syslog',
     setting => 'protocol',
     value   => $syslog_protocol,
+    tag     => 'st2::config',
   }
   ini_setting { 'syslog_port':
     ensure  => present,
@@ -303,6 +314,7 @@ class st2::profile::server (
     section => 'syslog',
     setting => 'port',
     value   => $syslog_port,
+    tag     => 'st2::config',
   }
   ini_setting { 'syslog_facility':
     ensure  => present,
@@ -310,6 +322,7 @@ class st2::profile::server (
     section => 'syslog',
     setting => 'facility',
     value   => $syslog_facility,
+    tag     => 'st2::config',
   }
 
   if $_ng_init {
@@ -327,7 +340,7 @@ class st2::profile::server (
           group  => 'root',
           mode   => '0444'
         }
-        
+
         file_line{'st2actionrunner count':
           path => '/etc/default/st2actionrunner',
           line => "WORKERS=${_workers}",
@@ -345,7 +358,7 @@ class st2::profile::server (
           group  => 'root',
           mode   => '0444'
         }
-        
+
         file_line{'st2actionrunner count':
           path => '/etc/sysconfig/st2actionrunner',
           line => "WORKERS=${_workers}",
@@ -381,9 +394,9 @@ class st2::profile::server (
 
     St2::Package::Install<| tag == 'st2::profile::server' |>
     -> Ini_setting<| tag == 'st2::config' |>
-    ~> Service<| tag == 'st2::profile::server' |>
+    ~> Service<| tag == 'st2::server' |>
 
-    Service<| tag == 'st2::profile::server' |> -> St2::Pack<||>
+    Service<| tag == 'st2::server' |> -> St2::Pack<||>
 
   } else {
     ## Needs to have real init scripts

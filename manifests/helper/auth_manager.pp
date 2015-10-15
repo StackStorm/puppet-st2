@@ -25,20 +25,13 @@ class st2::helper::auth_manager (
   tag('st2::auth_manager')
 
   # Common settings for all auth backends
-
-  # Defaults for st2config to ensure service refresh propagates
-  # anytime these values are changed. See profile/server.pp
-  # for more info
-  Ini_setting {
-    tag => 'st2::config',
-  }
-
   ini_setting { 'auth_debug':
     ensure  => present,
     path    => "${_st2_conf_file}",
     section => 'auth',
     setting => 'debug',
     value   => $_debug,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_api_url':
     ensure  => present,
@@ -46,6 +39,7 @@ class st2::helper::auth_manager (
     section => 'auth',
     setting => 'api_url',
     value   => $_api_url,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_mode':
     ensure  => present,
@@ -53,6 +47,7 @@ class st2::helper::auth_manager (
     section => 'auth',
     setting => 'mode',
     value   => $auth_mode,
+    tag     => 'st2::config',
   }
 
   if $auth_mode == 'standalone' {
@@ -62,6 +57,7 @@ class st2::helper::auth_manager (
       section => 'auth',
       setting => 'backend',
       value   => "${auth_backend}",
+      tag     => 'st2::config',
     }
     ini_setting { 'auth_logging_file':
       ensure  => present,
@@ -69,6 +65,7 @@ class st2::helper::auth_manager (
       section => 'auth',
       setting => 'logging',
       value   => "${_st2_api_logging_file}",
+      tag     => 'st2::config',
     }
     ini_setting { 'auth_ssl':
       ensure  => present,
@@ -76,6 +73,7 @@ class st2::helper::auth_manager (
       section => 'auth',
       setting => 'use_ssl',
       value   => "${_use_ssl}",
+      tag     => 'st2::config',
     }
 
 
@@ -91,6 +89,7 @@ class st2::helper::auth_manager (
         section => 'auth',
         setting => 'cert',
         value   => "${_ssl_cert}",
+        tag     => 'st2::config',
       }
       ini_setting { 'auth_ssl_key':
         ensure  => present,
@@ -98,6 +97,7 @@ class st2::helper::auth_manager (
         section => 'auth',
         setting => 'key',
         value   => "${_ssl_key}",
+        tag     => 'st2::config',
       }
     }
 
@@ -137,6 +137,7 @@ class st2::helper::auth_manager (
         section => 'auth',
         setting => 'backend_kwargs',
         value   => "${_auth_backend_kwargs}",
+        tag     => 'st2::config',
       }
     }
   } else {
