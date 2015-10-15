@@ -78,6 +78,7 @@ define st2::helper::service_manager (
     hasstatus  => true,
     hasrestart => true,
     provider   => $_init_type,
+    tag        => 'st2::server',
   }
 
   Package[$_package] ~> Service[$_subsystem]

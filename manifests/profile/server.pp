@@ -340,7 +340,7 @@ class st2::profile::server (
           group  => 'root',
           mode   => '0444'
         }
-        
+
         file_line{'st2actionrunner count':
           path => '/etc/default/st2actionrunner',
           line => "WORKERS=${_workers}",
@@ -358,7 +358,7 @@ class st2::profile::server (
           group  => 'root',
           mode   => '0444'
         }
-        
+
         file_line{'st2actionrunner count':
           path => '/etc/sysconfig/st2actionrunner',
           line => "WORKERS=${_workers}",
@@ -394,9 +394,9 @@ class st2::profile::server (
 
     St2::Package::Install<| tag == 'st2::profile::server' |>
     -> Ini_setting<| tag == 'st2::config' |>
-    ~> Service<| tag == 'st2::profile::server' |>
+    ~> Service<| tag == 'st2::server' |>
 
-    Service<| tag == 'st2::profile::server' |> -> St2::Pack<||>
+    Service<| tag == 'st2::server' |> -> St2::Pack<||>
 
   } else {
     ## Needs to have real init scripts
