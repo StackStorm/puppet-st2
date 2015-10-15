@@ -20,6 +20,13 @@ class st2::auth::proxy (
   }
   $_api_url = $::st2::api_url
 
+  # Defaults for st2config to ensure service refresh propagates
+  # anytime these values are changed. See profile/server.pp
+  # for more info
+  Ini_setting {
+    tag => 'st2::config',
+  }
+
   ini_setting { 'auth_mode':
     ensure  => present,
     path    => '/etc/st2/st2.conf',

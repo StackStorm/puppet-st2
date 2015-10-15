@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.9.24 (Oct 15, 2015)
+* Bug fixes
+* Service restart with `Ini_setting { tag => 'st2::config' }`
+
 ## 0.9.19 (Oct 14, 2015)
 * Repair init scripts for Mistral on RHEL 6/7 and Debian
 
