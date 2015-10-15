@@ -20,19 +20,13 @@ class st2::auth::proxy (
   }
   $_api_url = $::st2::api_url
 
-  # Defaults for st2config to ensure service refresh propagates
-  # anytime these values are changed. See profile/server.pp
-  # for more info
-  Ini_setting {
-    tag => 'st2::config',
-  }
-
   ini_setting { 'auth_mode':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'mode',
     value   => 'proxy',
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_debug':
     ensure  => present,
@@ -40,6 +34,7 @@ class st2::auth::proxy (
     section => 'auth',
     setting => 'debug',
     value   => $_debug,
+    tag     => 'st2::config',
   }
   ini_setting { 'auth_api_url':
     ensure  => present,
@@ -47,5 +42,6 @@ class st2::auth::proxy (
     section => 'auth',
     setting => 'api_url',
     value   => $_api_url,
+    tag     => 'st2::config',
   }
 }

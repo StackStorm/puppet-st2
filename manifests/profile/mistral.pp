@@ -215,10 +215,6 @@ class st2::profile::mistral(
   # Defaults for Mistral Config to ensure service refresh propagates
   # anytime these values are changed. See profile/mistral.pp
   # for more info
-  Ini_setting {
-    tag => 'mistral::config',
-  }
-
   ini_setting { 'connection config':
     ensure  => present,
     path    => '/etc/mistral/mistral.conf',

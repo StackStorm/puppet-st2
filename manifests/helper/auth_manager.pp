@@ -25,14 +25,6 @@ class st2::helper::auth_manager (
   tag('st2::auth_manager')
 
   # Common settings for all auth backends
-
-  # Defaults for st2config to ensure service refresh propagates
-  # anytime these values are changed. See profile/server.pp
-  # for more info
-  Ini_setting {
-    tag => 'st2::config',
-  }
-
   ini_setting { 'auth_debug':
     ensure  => present,
     path    => "${_st2_conf_file}",
