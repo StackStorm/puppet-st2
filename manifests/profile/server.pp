@@ -164,6 +164,11 @@ class st2::profile::server (
     content => 'st2server_bootstrapped=true',
   }
 
+  # Sets a tag on all the Ini_setting resources
+  Ini_setting {
+    tag => 'st2::config',
+  }
+
   ini_setting { 'ssh_key_stanley':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
@@ -390,9 +395,9 @@ class st2::profile::server (
     }
 
     St2::Package::Install<| tag == 'st2::profile::server' |>
-    -> Ini_setting<| tag == 'st2::profile::server' |>
+    -> Ini_setting<| tag == 'st2::config' |>
     -> Exec['start st2']
 
     Exec['start st2'] -> St2::Pack<||>
   }
-}
+
