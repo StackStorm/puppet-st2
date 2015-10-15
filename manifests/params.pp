@@ -71,6 +71,10 @@ class st2::params(
     st2sensorcontainer => 'st2sensorcontainer',
   }
 
+  # Auth settings
+  $auth_mode = standalone
+  $auth_backend = pam
+  
   # Non-user configurable parameters
   $repo_url = 'https://github.com/StackStorm/st2'
   $conf_dir = '/etc/st2'
