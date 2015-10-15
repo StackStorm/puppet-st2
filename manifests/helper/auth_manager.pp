@@ -156,6 +156,12 @@ define st2::helper::auth_manager (
       value   => "${_auth_backend_kwargs}",
     }
   } else {
-      notify{ 'auth mode is not standalone': }
+    notify{ 'auth mode is not standalone': }
+    file { '/tmp/auth_not_standalone':
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644'
+    }
   }
 }
