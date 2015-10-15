@@ -54,7 +54,7 @@ define st2::helper::auth_manager (
       path    => "${_st2_conf_file}",
       section => 'auth',
       setting => 'backend',
-      value   => "${_auth_backend}",
+      value   => "${auth_backend}",
     }
     ini_setting { 'auth_logging_file':
       ensure  => present,
@@ -117,7 +117,7 @@ define st2::helper::auth_manager (
 
     $_auth_backend_kwargs = ''
 
-    case $_auth_backend {
+    case $auth_backend {
       'proxy': {
         file { '/tmp/auth_backend_proxy':
           ensure => 'file',
