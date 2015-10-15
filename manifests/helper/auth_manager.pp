@@ -1,13 +1,14 @@
-# Definition: st2::helper::auth_manager
+# Class : st2::helper::auth_manager
 #
 #  This defined type is used to configure various kinds of auth plugins for st2
 #
-define st2::helper::auth_manager (
-  $auth_mode = $st2::params::auth_mode,
-  $auth_backend = $st2::params::auth_backend
-  $debug = False,
-  $test_user = True
-) {
+class st2::helper::auth_manager (
+  $auth_mode    = $::st2::params::auth_mode,
+  $auth_backend = $::st2::params::auth_backend,
+  $debug        = false,
+  $test_user    = true,
+) inherits st2::params {
+
   $_debug = $debug ? {
     true    => 'True',
     default => 'False',
@@ -115,53 +116,45 @@ define st2::helper::auth_manager (
 
     # Backend specific ini setttings
 
-    $_auth_backend_kwargs = ''
-
     case $auth_backend {
-      'proxy': {
-        file { '/tmp/auth_backend_proxy':
-          ensure => 'file',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0644'
-        }
-      }
-      'pam': {
-        file { '/tmp/auth_backend_pam':
-          ensure => 'file',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0644'
-        }
+      'proxy', 'pam': {
+        $_auth_backend_kwargs = undef
       }
       'mongodb': {
-        file { '/tmp/auth_backend_mongodb':
-          ensure => 'file',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0644'
-        }
         $_db_host = $::st2::db_host
         $_db_port = $::st2::db_port
         $_db_name = $::st2::db_name
-        $_auth_backend_kwargs = "{\"db_host\": \"${_db_host}\", \"db_port\": \"${_db_port}\", \"db_name\": \"${_db_name}\"}"
+        $_kwargs  = {
+          'db_host' => "${_db_host}",
+          'db_port' => "${_db_port}",
+          'db_name' => "${_db_name}",
+        }
+
+        # Use inline_template to use native JSON function
+        $_auth_backend_kwargs = inline_template('<%= require json; @_kwargs.to_json %>')
       }
     }
 
-    ini_setting { 'auth_backend_kwargs':
-      ensure  => present,
-      path    => "${_st2_conf_file}",
-      section => 'auth',
-      setting => 'backend_kwargs',
-      value   => "${_auth_backend_kwargs}",
+    facter::fact { 'st2_auth_mode':
+      value => $auth_mode,
+    }
+    facter::fact { 'st2_auth_backend':
+      value => $_auth_backend,
+    }
+
+    # Only evaluate if kwargs are not undefined.
+    if $_auth_backend_kwargs {
+      ini_setting { 'auth_backend_kwargs':
+        ensure  => present,
+        path    => "${_st2_conf_file}",
+        section => 'auth',
+        setting => 'backend_kwargs',
+        value   => "${_auth_backend_kwargs}",
+      }
     }
   } else {
-    notify{ 'auth mode is not standalone': }
-    file { '/tmp/auth_not_standalone':
-      ensure => 'file',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644'
+    facter::fact { 'st2_auth_mode':
+      value => $auth_mode,
     }
   }
 }
