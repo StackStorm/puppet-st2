@@ -1,13 +1,13 @@
-# Definition: st2::helper::auth_manager
+# Class : st2::helper::auth_manager
 #
 #  This defined type is used to configure various kinds of auth plugins for st2
 #
-define st2::helper::auth_manager (
-  $auth_mode = $auth_mode,  # proxy or standalone
-  $auth_backend = $auth_backend,
-  $debug = $debug,
-  $test_user = $test_user,
-) {
+class st2::helper::auth_manager (
+  $auth_mode    = $::st2::params::auth_mode,
+  $auth_backend = $::st2::params::auth_backend,
+  $debug        = false,
+) inherits st2::params {
+
   $_debug = $debug ? {
     true    => 'True',
     default => 'False',
@@ -61,7 +61,7 @@ define st2::helper::auth_manager (
       path    => "${_st2_conf_file}",
       section => 'auth',
       setting => 'backend',
-      value   => "${_auth_backend}",
+      value   => "${auth_backend}",
     }
     ini_setting { 'auth_logging_file':
       ensure  => present,
@@ -78,25 +78,6 @@ define st2::helper::auth_manager (
       value   => "${_use_ssl}",
     }
 
-    # System Users
-    $_testuser_ensure = $test_user ? {
-      true    => present,
-      default => absent,
-    }
-    st2::auth_user { 'testu':
-      ensure    => $_testuser_ensure,
-      password => 'testp',
-    }
-    st2::auth_user { $_cli_username:
-      password => $_cli_password,
-    }
-
-    if $test_user {
-      notify { $::st2::notices::auth_test_user_enabled: }
-    }
-
-    # Automatically generate users from Hiera
-    create_resources('st2::auth_user', $_auth_users)
 
     # SSL Settings
     if $_use_ssl {
@@ -122,29 +103,45 @@ define st2::helper::auth_manager (
 
     # Backend specific ini setttings
 
-    $_auth_backend_kwargs = ''
-
-    case $_auth_backend {
-      'proxy': {
-        notify {'Nothing to do here for proxy': }
-      }
-      'pam': {
-        notify {'Nothing to do here for pam': }
+    case $auth_backend {
+      'proxy', 'pam': {
+        $_auth_backend_kwargs = undef
       }
       'mongodb': {
         $_db_host = $::st2::db_host
         $_db_port = $::st2::db_port
         $_db_name = $::st2::db_name
-        $_auth_backend_kwargs = "{\"db_host\": \"${_db_host}\", \"db_port\": \"${_db_port}\", \"db_name\": \"${_db_name}\"}"
+        $_kwargs  = {
+          'db_host' => "${_db_host}",
+          'db_port' => "${_db_port}",
+          'db_name' => "${_db_name}",
+        }
+
+        # Use inline_template to use native JSON function
+        $_auth_backend_kwargs = inline_template('<%= require json; @_kwargs.to_json %>')
       }
     }
 
-    ini_setting { 'auth_backend_kwargs':
-      ensure  => present,
-      path    => "${_st2_conf_file}",
-      section => 'auth',
-      setting => 'backend_kwargs',
-      value   => "${_auth_backend_kwargs}",
+    facter::fact { 'st2_auth_mode':
+      value => $auth_mode,
+    }
+    facter::fact { 'st2_auth_backend':
+      value => $_auth_backend,
+    }
+
+    # Only evaluate if kwargs are not undefined.
+    if $_auth_backend_kwargs {
+      ini_setting { 'auth_backend_kwargs':
+        ensure  => present,
+        path    => "${_st2_conf_file}",
+        section => 'auth',
+        setting => 'backend_kwargs',
+        value   => "${_auth_backend_kwargs}",
+      }
+    }
+  } else {
+    facter::fact { 'st2_auth_mode':
+      value => $auth_mode,
     }
   }
 }

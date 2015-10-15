@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.24 (Oct 15, 2015)
+## 0.9.25 (Oct 15, 2015)
 * Bug fixes
 * Service restart with `Ini_setting { tag => 'st2::config' }`
 
