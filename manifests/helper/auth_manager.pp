@@ -6,7 +6,6 @@ class st2::helper::auth_manager (
   $auth_mode    = $::st2::params::auth_mode,
   $auth_backend = $::st2::params::auth_backend,
   $debug        = false,
-  $test_user    = true,
 ) inherits st2::params {
 
   $_debug = $debug ? {
@@ -72,25 +71,6 @@ class st2::helper::auth_manager (
       value   => "${_use_ssl}",
     }
 
-    # System Users
-    $_testuser_ensure = $test_user ? {
-      true    => present,
-      default => absent,
-    }
-    st2::auth_user { 'testu':
-      ensure    => $_testuser_ensure,
-      password => 'testp',
-    }
-    st2::auth_user { $_cli_username:
-      password => $_cli_password,
-    }
-
-    if $test_user {
-      notify { $::st2::notices::auth_test_user_enabled: }
-    }
-
-    # Automatically generate users from Hiera
-    create_resources('st2::auth_user', $_auth_users)
 
     # SSL Settings
     if $_use_ssl {
