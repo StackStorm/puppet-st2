@@ -380,7 +380,7 @@ class st2::profile::server (
     }
 
     St2::Package::Install<| tag == 'st2::profile::server' |>
-    -> Ini_setting<| tag == 'st2::profile::server' |>
+    -> Ini_setting<| tag == 'st2::config' |>
     ~> Service<| tag == 'st2::profile::server' |>
 
     Service<| tag == 'st2::profile::server' |> -> St2::Pack<||>
