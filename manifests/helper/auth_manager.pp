@@ -155,5 +155,7 @@ define st2::helper::auth_manager (
       setting => 'backend_kwargs',
       value   => "${_auth_backend_kwargs}",
     }
+  } else {
+      notify{ 'auth mode is not standalone': }
   }
 }
