@@ -50,6 +50,7 @@ class st2::profile::server (
   $syslog_host            = $::st2::syslog_host,
   $syslog_port            = $::st2::syslog_port,
   $syslog_facility        = $::st2::syslog_facitily,
+  $syslog_protocol        = $::st2::syslog_protocol,
   $st2api_listen_ip       = '0.0.0.0',
   $st2api_listen_port     = '9101',
   $st2auth_listen_ip      = '0.0.0.0',
