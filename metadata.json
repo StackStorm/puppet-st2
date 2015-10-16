@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "0.9.26",
+  "version": "0.9.27",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache 2.0",

@@ -346,6 +346,15 @@ class st2::profile::server (
           line => "WORKERS=${_workers}",
           require => File['/etc/default/st2actionrunner']
         }
+
+        # Stub init script for workers to anchor to
+        file { '/etc/init/st2actionrunner.conf':
+          ensure  => file,
+          owver   => 'root',
+          group   => 'root',
+          mode    => '0444',
+          content => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
+        }
       }
       'systemd': {
         ::st2::helper::service_manager{'st2actionrunner':
