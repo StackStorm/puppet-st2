@@ -15,7 +15,12 @@ class st2::helper::auth_manager (
   $_api_url = $::st2::api_url
   $_st2_conf_file = $::st2::conf_file
   $_st2_api_logging_file  = $::st2::api_logging_file
-  $_use_ssl = $::st2::use_ssl
+
+  # Casting here necessary for Ruby->Python boolean type.
+  $_use_ssl = $::st2::use_ssl ? {
+    true    => 'True',
+    default => 'False',
+  }
   $_ssl_key = $::st2::ssl_key
   $_ssl_cert = $::st2::ssl_cert
   $_auth_users = hiera_hash('st2::auth_users', {})
@@ -77,7 +82,7 @@ class st2::helper::auth_manager (
     }
 
 
-    # SSL Settings
+# SSL Settings
     if $_use_ssl {
       if !$ssl_cert or !$ssl_key {
         fail('[st2::helper::auth_manager] Missing $ssl_cert or $ssl_key to enable SSL')
