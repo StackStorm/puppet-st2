@@ -343,7 +343,7 @@ class st2::profile::server (
 
         file_line{'st2actionrunner count':
           path => '/etc/default/st2actionrunner',
-          line => "WORKERS=${_workers}",
+          line => "WORKERS=${workers}",
           require => File['/etc/default/st2actionrunner']
         }
 
@@ -370,7 +370,7 @@ class st2::profile::server (
 
         file_line{'st2actionrunner count':
           path => '/etc/sysconfig/st2actionrunner',
-          line => "WORKERS=${_workers}",
+          line => "WORKERS=${workers}",
           require => File['/etc/sysconfig/st2actionrunner']
         }
       }
