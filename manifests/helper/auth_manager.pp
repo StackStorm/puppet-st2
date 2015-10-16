@@ -17,7 +17,8 @@ class st2::helper::auth_manager (
   $_st2_api_logging_file  = $::st2::api_logging_file
 
   # Casting here necessary for Ruby->Python boolean type.
-  $_use_ssl = $::st2::use_ssl ? {
+  $_use_ssl = $::st2::use_ssl
+  $_use_ssl_value = $_use_ssl ? {
     true    => 'True',
     default => 'False',
   }
@@ -77,7 +78,7 @@ class st2::helper::auth_manager (
       path    => "${_st2_conf_file}",
       section => 'auth',
       setting => 'use_ssl',
-      value   => "${_use_ssl}",
+      value   => "${_use_ssl_value}",
       tag     => 'st2::config',
     }
 
