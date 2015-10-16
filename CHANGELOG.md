@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.1 (Oct 16. 2015)
+* Init scripts default install now
+
 ## 0.10.0 (Oct 15, 2015)
 * Bug fixes
 * Service restart with `Ini_setting { tag => 'st2::config' }`
