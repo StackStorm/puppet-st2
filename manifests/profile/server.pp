@@ -353,7 +353,7 @@ class st2::profile::server (
           owner   => 'root',
           group   => 'root',
           mode    => '0444',
-          content => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
+          source  => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
         }
       }
       'systemd': {
