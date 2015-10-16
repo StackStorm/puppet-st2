@@ -350,7 +350,7 @@ class st2::profile::server (
         # Stub init script for workers to anchor to
         file { '/etc/init/st2actionrunner.conf':
           ensure  => file,
-          owver   => 'root',
+          owner   => 'root',
           group   => 'root',
           mode    => '0444',
           content => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
