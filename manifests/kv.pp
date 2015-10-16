@@ -19,7 +19,6 @@ define st2::kv (
   $value,
 ) {
   include ::st2
-  $_ng_init = $::st2::ng_init
 
   exec { "set-st2-key-${key}":
     command     => "st2 key set ${key} ${value}",
@@ -29,9 +28,5 @@ define st2::kv (
     try_sleep   => '10',
   }
 
-  if $_ng_init {
-    Service<| tag == 'st2::profile::service' |> -> Exec["set-st2-key-${key}"]
-  } else {
-    Exec['start st2'] -> Exec["set-st2-key-${key}"]
-  }
+  Service<| tag == 'st2::profile::service' |> -> Exec["set-st2-key-${key}"]
 }

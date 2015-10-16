@@ -50,6 +50,7 @@ class st2::profile::server (
   $syslog_host            = $::st2::syslog_host,
   $syslog_port            = $::st2::syslog_port,
   $syslog_facility        = $::st2::syslog_facitily,
+  $syslog_protocol        = $::st2::syslog_protocol,
   $st2api_listen_ip       = '0.0.0.0',
   $st2api_listen_port     = '9101',
   $st2auth_listen_ip      = '0.0.0.0',
@@ -82,7 +83,6 @@ class st2::profile::server (
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
-  $_ng_init = $::st2::ng_init
   $_init_provider = $::st2::params::init_type
 
   $_python_pack = $::osfamily ? {
@@ -325,101 +325,78 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
-  if $_ng_init {
+  # Spin up any number of workers as needed
+  $_workers = prefix(range("0", "${workers}"), "worker")
 
-    # Spin up any number of workers as needed
-    $_workers = prefix(range("0", "${workers}"), "worker")
+  case $_init_provider {
+    'upstart': {
+      ::st2::helper::actionrunner_upstart { $_workers: }
 
-    case $_init_provider {
-      'upstart': {
-        ::st2::helper::actionrunner_upstart { $_workers: }
-
-        file { '/etc/default/st2actionrunner':
-          ensure => 'file',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444'
-        }
-
-        file_line{'st2actionrunner count':
-          path => '/etc/default/st2actionrunner',
-          line => "WORKERS=${workers}",
-          require => File['/etc/default/st2actionrunner']
-        }
-
-        # Stub init script for workers to anchor to
-        file { '/etc/init/st2actionrunner.conf':
-          ensure  => file,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0444',
-          source  => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
-        }
+      file { '/etc/default/st2actionrunner':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444'
       }
-      'systemd': {
-        ::st2::helper::service_manager{'st2actionrunner':
-          process => 'st2actionrunner'
-        }
 
-        file { '/etc/sysconfig/st2actionrunner':
-          ensure => 'file',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444'
-        }
-
-        file_line{'st2actionrunner count':
-          path => '/etc/sysconfig/st2actionrunner',
-          line => "WORKERS=${workers}",
-          require => File['/etc/sysconfig/st2actionrunner']
-        }
+      file_line{'st2actionrunner count':
+        path => '/etc/default/st2actionrunner',
+        line => "WORKERS=${workers}",
+        require => File['/etc/default/st2actionrunner']
       }
-      'init': {
-        ::st2::helper::service_manager{ 'actionrunner': }
+
+      # Stub init script for workers to anchor to
+      file { '/etc/init/st2actionrunner.conf':
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0444',
+        source  => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
       }
     }
+    'systemd': {
+      ::st2::helper::service_manager{'st2actionrunner':
+        process => 'st2actionrunner'
+      }
 
-    if $manage_st2web_service {
-      ::st2::helper::service_manager { 'st2web': }
+      file { '/etc/sysconfig/st2actionrunner':
+        ensure => 'file',
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444'
+      }
+
+      file_line{'st2actionrunner count':
+        path => '/etc/sysconfig/st2actionrunner',
+        line => "WORKERS=${workers}",
+        require => File['/etc/sysconfig/st2actionrunner']
+      }
     }
-
-    if $auth and $manage_st2auth_service {
-      st2::helper::service_manager { 'auth': }
+    'init': {
+      ::st2::helper::service_manager{ 'actionrunner': }
     }
-
-    if $manage_st2api_service {
-      st2::helper::service_manager { 'api': }
-    }
-
-    ::st2::helper::service_manager { 'resultstracker': }
-    ::st2::helper::service_manager { 'sensorcontainer': }
-    ::st2::helper::service_manager { 'notifier': }
-    ::st2::helper::service_manager { 'rulesengine': }
-
-    file_line { 'st2 ng_init enable':
-      path => '/etc/environment',
-      line => 'NG_INIT=true',
-    }
-
-    St2::Package::Install<| tag == 'st2::profile::server' |>
-    -> Ini_setting<| tag == 'st2::config' |>
-    ~> Service<| tag == 'st2::server' |>
-
-    Service<| tag == 'st2::server' |> -> St2::Pack<||>
-
-  } else {
-    ## Needs to have real init scripts
-    exec { 'start st2':
-      command => 'st2ctl restart',
-      unless  => 'ps ax | grep -v grep | grep actionrunner',
-      path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-      require => Exec['register st2 content'],
-    }
-
-    St2::Package::Install<| tag == 'st2::profile::server' |>
-    -> Ini_setting<| tag == 'st2::config' |>
-    -> Exec['start st2']
-
-    Exec['start st2'] -> St2::Pack<||>
   }
+
+  if $manage_st2web_service {
+    ::st2::helper::service_manager { 'st2web': }
+  }
+
+  if $auth and $manage_st2auth_service {
+    st2::helper::service_manager { 'auth': }
+  }
+
+  if $manage_st2api_service {
+    st2::helper::service_manager { 'api': }
+  }
+
+  ::st2::helper::service_manager { 'resultstracker': }
+  ::st2::helper::service_manager { 'sensorcontainer': }
+  ::st2::helper::service_manager { 'notifier': }
+  ::st2::helper::service_manager { 'rulesengine': }
+
+  St2::Package::Install<| tag == 'st2::profile::server' |>
+  -> Ini_setting<| tag == 'st2::config' |>
+  ~> Service<| tag == 'st2::server' |>
+
+  Service<| tag == 'st2::server' |> -> St2::Pack<||>
 }

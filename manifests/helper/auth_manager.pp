@@ -6,6 +6,7 @@ class st2::helper::auth_manager (
   $auth_mode    = $::st2::params::auth_mode,
   $auth_backend = $::st2::params::auth_backend,
   $debug        = false,
+  $syslog       = false,
 ) inherits st2::params {
 
   $_debug = $debug ? {
@@ -14,8 +15,20 @@ class st2::helper::auth_manager (
   }
   $_api_url = $::st2::api_url
   $_st2_conf_file = $::st2::conf_file
-  $_st2_api_logging_file  = $::st2::api_logging_file
+
+  $_logger_config = $syslog ? {
+    true    => 'syslog',
+    default => 'logging',
+  }
+  $_st2_api_logging_file = "/etc/st2api/${_logger_config}.conf"
+  $_st2_auth_logging_file = "/etc/st2auth/${_logger_config}.conf"
+
+  # Casting here necessary for Ruby->Python boolean type.
   $_use_ssl = $::st2::use_ssl
+  $_use_ssl_value = $_use_ssl ? {
+    true    => 'True',
+    default => 'False',
+  }
   $_ssl_key = $::st2::ssl_key
   $_ssl_cert = $::st2::ssl_cert
   $_auth_users = hiera_hash('st2::auth_users', {})
@@ -64,7 +77,7 @@ class st2::helper::auth_manager (
       path    => "${_st2_conf_file}",
       section => 'auth',
       setting => 'logging',
-      value   => "${_st2_api_logging_file}",
+      value   => "${_st2_auth_logging_file}",
       tag     => 'st2::config',
     }
     ini_setting { 'auth_ssl':
@@ -72,12 +85,12 @@ class st2::helper::auth_manager (
       path    => "${_st2_conf_file}",
       section => 'auth',
       setting => 'use_ssl',
-      value   => "${_use_ssl}",
+      value   => "${_use_ssl_value}",
       tag     => 'st2::config',
     }
 
 
-    # SSL Settings
+# SSL Settings
     if $_use_ssl {
       if !$ssl_cert or !$ssl_key {
         fail('[st2::helper::auth_manager] Missing $ssl_cert or $ssl_key to enable SSL')

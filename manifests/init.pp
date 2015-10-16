@@ -29,7 +29,6 @@
 #  [*global_env*]         - Globally set the environment variables for ST2 API/Auth
 #                           Overwritten by local config or CLI arguments.
 #  [*workers*]            - Set the number of actionrunner processes to start
-#  [*ng_init*]            - [Experimental] Init scripts for services. Upstart ONLY
 #  [*syslog*]             - Routes all log messages to syslog
 #  [*syslog_host*]        - Syslog host. Default: localhost
 #  [*syslog_protocol*]    - Syslog protocol. Default: udp
@@ -60,6 +59,7 @@ class st2(
   $api_logging_file         = '/etc/st2api/logging.conf',
   $auth                     = true,
   $auth_url                 = undef,
+  $api_logging_file         = '/etc/st2auth/logging.conf',
   $auth_mode                = 'standalone',
   $flow_url                 = undef,
   $cli_base_url             = 'http://localhost',
@@ -73,7 +73,6 @@ class st2(
   $cli_auth_url             = 'http://localhost:9100',
   $global_env               = false,
   $workers                  = 8,
-  $ng_init                  = false,
   $mistral_api_url          = undef,
   $mistral_api_port         = '8989',
   $syslog                   = false,
