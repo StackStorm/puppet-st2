@@ -28,7 +28,6 @@ define st2::pack (
   $_cli_username = $::st2::cli_username
   $_cli_password = $::st2::cli_password
   $_auth = $::st2::auth
-  $_ng_init = $::st2::ng_init
 
   $_repo_url = $repo_url ? {
     undef   => '',
@@ -51,11 +50,7 @@ define st2::pack (
     try_sleep   => '10',
   }
 
-  if $_ng_init {
-    Service<| tag == 'st2::profile::service' |> -> Exec["install-st2-pack-${name}"]
-  } else {
-    Exec['start st2'] -> Exec["install-st2-pack-${pack}"]
-  }
+  Service<| tag == 'st2::profile::service' |> -> Exec["install-st2-pack-${name}"]
 
   if $config {
     validate_hash($config)
