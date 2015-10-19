@@ -1,7 +1,8 @@
 # Changelog
 
-## 0.10.2 (Oct 19. 2015)
+## 0.10.3 (Oct 19. 2015)
 * Fix for RHEL 6 client package installation
+* Re-enable `ng_init` env flag to compat with `st2ctl`
 
 ## 0.10.1 (Oct 16. 2015)
 * Init scripts default install now
