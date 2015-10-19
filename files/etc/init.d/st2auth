@@ -24,6 +24,7 @@ pidfile="/var/run/$name.pid"
 
 [ -r /etc/default/$name ] && . /etc/default/$name
 [ -r /etc/sysconfig/$name ] && . /etc/sysconfig/$name
+[ -r /etc/environment ] && . /etc/environment
 
 trace() {
   logger -t "/etc/init.d/st2auth" "$@"
