@@ -20,6 +20,7 @@ export PATH
 name="st2web"
 [ -r /etc/default/$name ] && . /etc/default/$name
 [ -r /etc/sysconfig/$name ] && . /etc/sysconfig/$name
+[ -r /etc/environment ] && . /etc/environment
 
 WEBUI_PORT=${WEBUI_PORT:-8080}
 program="/usr/bin/python"

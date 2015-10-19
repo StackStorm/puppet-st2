@@ -23,6 +23,7 @@ args="--config-file /etc/st2/st2.conf"
 
 [ -r /etc/default/$name ] && . /etc/default/$name
 [ -r /etc/sysconfig/$name ] && . /etc/sysconfig/$name
+[ -r /etc/environment ] && . /etc/environment
 
 if [ -z "$WORKERS" ]; then
   WORKERS=2
@@ -42,7 +43,7 @@ start() {
   while [ $i -le $WORKERS ]; do
     pidfile="/var/run/$name.$i.pid"
     i=`expr $i + 1`
-    $program $args &
+    $program $args > /dev/null 2>&1 &
     echo $! > $pidfile
     emit "$name started"
   done
