@@ -84,4 +84,5 @@ class st2(
   $db_host                  = 'localhost',
   $db_port                  = '27017',
   $db_name                  = 'st2'
+  $ng_init                  = true,
 ) inherits st2::params {}

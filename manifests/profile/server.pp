@@ -59,6 +59,7 @@ class st2::profile::server (
   $manage_st2auth_service = true,
   $manage_st2web_service  = true,
   $ssh_key_location       = $::st2::ssh_key_location,
+  $ng_init                = $::st2::ng_init,
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
@@ -100,6 +101,15 @@ class st2::profile::server (
   $_logger_config = $syslog ? {
     true    => 'syslog',
     default => 'logging',
+  }
+
+  # This must remain here until upstream packages fully use
+  # init scripts. Otherwise, it's Puppet-specific right now
+  if $ng_init {
+    file_line { 'st2 ng_init enable':
+      path => '/etc/environment',
+      line => 'NG_INIT=true',
+    }
   }
 
   file { $_conf_dir:
