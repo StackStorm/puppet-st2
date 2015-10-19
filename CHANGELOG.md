@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.2 (Oct 19. 2015)
+* Fix for RHEL 6 client package installation
+
 ## 0.10.1 (Oct 16. 2015)
 * Init scripts default install now
 
