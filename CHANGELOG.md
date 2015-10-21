@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.8 (Oct 21, 2015)
+* Adding api_url parameter to server profile
+
 ## 0.10.7 (Oct 21, 2015)
 * Adding backend kwargs attribute to st2::helper::auth_manager
 * Disable static UID for auto-generated users
