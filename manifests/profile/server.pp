@@ -247,6 +247,8 @@ class st2::profile::server (
     value   => $api_url,
     tag     => 'st2::config',
   }
+  Ini_setting<| title == ‘auth_api_url’ |> -> Ini_setting<| title == ‘auth_ext_api_url’ |>
+
   ini_setting { 'auth_listen_port':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
