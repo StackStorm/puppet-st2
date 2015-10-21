@@ -238,6 +238,7 @@ class st2::profile::server (
     value   => $_enable_auth,
     tag     => 'st2::config',
   }
+  ### This is really awful and I hate myself for it.  Please revisit.
   ini_setting { 'auth_ext_api_url':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
