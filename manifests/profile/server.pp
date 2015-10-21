@@ -238,7 +238,7 @@ class st2::profile::server (
     value   => $_enable_auth,
     tag     => 'st2::config',
   }
-  ini_setting { 'auth_api_url':
+  ini_setting { 'auth_ext_api_url':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'auth',
