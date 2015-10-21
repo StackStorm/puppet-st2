@@ -30,7 +30,6 @@
 
 class st2::params(
   $robots_group_name = 'st2robots',
-  $robots_group_gid  = 800,
 ) {
   $subsystems = [
     'actionrunner', 'api', 'sensorcontainer',
