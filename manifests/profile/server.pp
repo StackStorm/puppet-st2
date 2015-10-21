@@ -12,6 +12,7 @@
 #  [*st2api_listen_port*]     - Listen port for st2api process
 #  [*st2auth_listen_ip*]      - Listen IP for st2auth process
 #  [*st2auth_listen_port*]    - Listen port for st2auth process
+#  [*api_url*]                - External API url
 #  [*manage_st2api_service*]  - Toggle whether this module creates an init script for st2api.
 #                               If you disable this, it is your responsibility to create a service
 #                               named `st2api` for `st2ctl` to continue to work.
@@ -55,6 +56,7 @@ class st2::profile::server (
   $st2api_listen_port     = '9101',
   $st2auth_listen_ip      = '0.0.0.0',
   $st2auth_listen_port    = '9100',
+  $api_url                = $::st2::api_url,
   $manage_st2api_service  = true,
   $manage_st2auth_service = true,
   $manage_st2web_service  = true,
@@ -234,6 +236,14 @@ class st2::profile::server (
     section => 'auth',
     setting => 'enable',
     value   => $_enable_auth,
+    tag     => 'st2::config',
+  }
+  ini_setting { 'auth_api_url':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'api_url',
+    value   => $api_url,
     tag     => 'st2::config',
   }
   ini_setting { 'auth_listen_port':
