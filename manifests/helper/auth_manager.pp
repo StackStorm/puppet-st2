@@ -132,12 +132,12 @@ class st2::helper::auth_manager (
         }
 
         # Use inline_template to use native JSON function
-        $_auth_backend_kwargs = inline_template('<%= require json; @_kwargs.to_json %>')
+        $_auth_backend_kwargs = inline_template('<%= require "json"; @_kwargs.to_json %>')
       }
       default: {
         if $backend_kwargs {
           validate_hash($backend_kwargs)
-          $_auth_backend_kwargs = inline_template('<%= require json; @_backend_kwargs.to_json %>')
+          $_auth_backend_kwargs = inline_template('<%= require "json"; @_backend_kwargs.to_json %>')
         }
       }
     }
