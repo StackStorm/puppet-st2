@@ -3,10 +3,11 @@
 #  This defined type is used to configure various kinds of auth plugins for st2
 #
 class st2::helper::auth_manager (
-  $auth_mode    = $::st2::params::auth_mode,
-  $auth_backend = $::st2::params::auth_backend,
-  $debug        = false,
-  $syslog       = false,
+  $auth_mode      = $::st2::params::auth_mode,
+  $auth_backend   = $::st2::params::auth_backend,
+  $debug          = false,
+  $syslog         = false,
+  $backend_kwargs = undef,
 ) inherits st2::params {
 
   $_debug = $debug ? {
@@ -132,6 +133,12 @@ class st2::helper::auth_manager (
 
         # Use inline_template to use native JSON function
         $_auth_backend_kwargs = inline_template('<%= require json; @_kwargs.to_json %>')
+      }
+      default: {
+        if $backend_kwargs {
+          validate_hash($backend_kwargs)
+          $_auth_backend_kwargs = inline_template('<%= require json; @_backend_kwargs.to_json %>')
+        }
       }
     }
 
