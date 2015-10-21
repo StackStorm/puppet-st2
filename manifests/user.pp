@@ -9,11 +9,9 @@
 #  [*ssh_public_key*]    - SSH Public Key without leading key-type and end email
 #  [*ssh_key_type*]      - Type of SSH Key (ssh-dsa/ssh-rsa)
 #  [*ssh_private_key*]   - Private key
-#  [*uid*]               - UID of admin user (default: 800)
 #
 # === Variables
 #  [*_robots_group_name*] - Local variable to grab the global robot group name
-#  [*_robots_group_gid*]  - Local variable to grab the global robot group GID
 #
 # === Examples
 #
@@ -30,16 +28,13 @@ define st2::user(
   $ssh_key_type      = undef,
   $ssh_public_key    = undef,
   $ssh_private_key   = undef,
-  $uid               = undef,
 ) {
   include ::st2::params
 
   $_robots_group_name = $st2::params::robots_group_name
-  $_robots_group_gid  = $st2::params::robots_group_gid
 
   ensure_resource('group', $_robots_group_name, {
     'ensure' => present,
-    'gid'    => $_robots_group_gid,
   })
 
   if $create_sudo_entry {
@@ -52,7 +47,6 @@ define st2::user(
   ensure_resource('user', $name, {
     'ensure'     => present,
     'shell'      => '/bin/bash',
-    'uid'        => $uid,
     'gid'        => 'st2robots',
     'managehome' => true,
   })
