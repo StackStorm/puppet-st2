@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.5 (Oct 21, 2015)
+## 0.10.6 (Oct 21, 2015)
 * Adding backend kwargs attribute to st2::helper::auth_manager
 
 ## 0.10.4 (Oct 19. 2015)
