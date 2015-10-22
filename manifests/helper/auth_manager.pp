@@ -3,6 +3,7 @@
 #  This defined type is used to configure various kinds of auth plugins for st2
 #
 class st2::helper::auth_manager (
+  $api_url        = $::st2::api_url,
   $auth_mode      = $::st2::params::auth_mode,
   $auth_backend   = $::st2::params::auth_backend,
   $debug          = false,
@@ -14,7 +15,6 @@ class st2::helper::auth_manager (
     true    => 'True',
     default => 'False',
   }
-  $_api_url = $::st2::api_url
   $_st2_conf_file = $::st2::conf_file
 
   $_logger_config = $syslog ? {
@@ -52,7 +52,7 @@ class st2::helper::auth_manager (
     path    => "${_st2_conf_file}",
     section => 'auth',
     setting => 'api_url',
-    value   => $_api_url,
+    value   => $api_url,
     tag     => 'st2::config',
   }
   ini_setting { 'auth_mode':
