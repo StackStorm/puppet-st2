@@ -32,8 +32,13 @@ define st2::user(
   include ::st2::params
 
   $_robots_group_name = $st2::params::robots_group_name
+  $_packs_group_name = $st2::params::packs_group_name
 
   ensure_resource('group', $_robots_group_name, {
+    'ensure' => present,
+  })
+
+  ensure_resource('group', $_packs_group_name, {
     'ensure' => present,
   })
 
