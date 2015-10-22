@@ -28,6 +28,7 @@ define st2::user(
   $ssh_key_type      = undef,
   $ssh_public_key    = undef,
   $ssh_private_key   = undef,
+  $groups            = undef,
 ) {
   include ::st2::params
 
@@ -48,6 +49,7 @@ define st2::user(
     'ensure'     => present,
     'shell'      => '/bin/bash',
     'gid'        => 'st2robots',
+    'groups'     => $groups,
     'managehome' => true,
   })
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.10.11 (Oct 22, 2015)
+## 0.10.12 (Oct 22, 2015)
 * Limit setting of `api_url` to st2::helper::auth_manager
 
 ## 0.10.8 (Oct 21, 2015)
