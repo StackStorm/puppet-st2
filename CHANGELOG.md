@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.1111111111111111111111 (Oct 22, 2015)
+* Limit setting of `api_url` to st2::helper::auth_manager
+
 ## 0.10.8 (Oct 21, 2015)
 * Adding api_url parameter to server profile
 
