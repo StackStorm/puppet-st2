@@ -52,9 +52,9 @@ class st2::stanley (
     client            => $client,
     server            => $server,
     create_sudo_entry => true,
+    groups            => 'st2packs',
     ssh_public_key    => $_ssh_public_key,
     ssh_key_type      => $_ssh_key_type,
     ssh_private_key   => $_ssh_private_key,
   }
-
 }
