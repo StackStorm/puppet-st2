@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.14 (Oct 26, 2015)
+* Ensure /opt/stackstorm/packs directory is SGID for pack group
+
 ## 0.10.13 (Oct 22, 2015)
 * Add st2packs to default deploy and ensure Stanley exists
 * Limit setting of `api_url` to st2::helper::auth_manager
