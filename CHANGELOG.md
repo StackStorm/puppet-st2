@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.15 (Oct 28, 2015)
+* Remove DAG errors with fullinstall profile
+
 ## 0.10.14 (Oct 26, 2015)
 * Ensure /opt/stackstorm/packs directory is SGID for pack group
 
