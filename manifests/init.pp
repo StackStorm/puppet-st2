@@ -46,10 +46,10 @@
 #    st2::revison: 11
 #
 class st2(
-  $version                  = '0.13.2',
+  $version                  = '1.1.0',
   $revision                 = '5',
   $autoupdate               = false,
-  $mistral_git_branch       = 'st2-0.13.1',
+  $mistral_git_branch       = 'st2-1.1.0',
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = false,

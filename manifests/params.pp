@@ -46,6 +46,7 @@ class st2::params(
     resultstracker     => 'st2actions',
     rulesengine        => 'st2reactor',
     sensorcontainer    => 'st2reactor',
+    web                => 'st2common',
     st2actionrunner    => 'st2actions',
     st2api             => 'st2api',
     st2auth            => 'st2auth',
@@ -53,6 +54,7 @@ class st2::params(
     st2resultstracker  => 'st2actions',
     st2rulesengine     => 'st2reactor',
     st2sensorcontainer => 'st2reactor',
+    st2web             => 'st2common',
   }
   $subsystem_map = {
     actionrunner       => 'st2actionrunner',
@@ -62,6 +64,7 @@ class st2::params(
     resultstracker     => 'st2resultstracker',
     rulesengine        => 'st2rulesengine',
     sensorcontainer    => 'st2sensorcontainer',
+    web                => 'st2web',
     st2actionrunner    => 'st2actionrunner',
     st2api             => 'st2api',
     st2auth            => 'st2auth',
@@ -69,6 +72,7 @@ class st2::params(
     st2resultstracker  => 'st2resultstracker',
     st2rulesengine     => 'st2rulesengine',
     st2sensorcontainer => 'st2sensorcontainer',
+    st2web             => 'st2web',
   }
 
   # Auth settings
