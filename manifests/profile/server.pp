@@ -370,7 +370,12 @@ class st2::profile::server (
         process => 'st2actionrunner'
       }
 
-      file { '/etc/sysconfig/st2actionrunner':
+      $_config_default = $::osfamily ? {
+        'RedHat' => '/etc/sysconfig',
+        'Debian' => '/etc/default',
+      }
+
+      file { "${_config_default}/st2actionrunner":
         ensure => 'file',
         owner  => 'root',
         group  => 'root',
@@ -378,9 +383,9 @@ class st2::profile::server (
       }
 
       file_line{'st2actionrunner count':
-        path => '/etc/sysconfig/st2actionrunner',
+        path => "${_config_default}/st2actionrunner",
         line => "WORKERS=${workers}",
-        require => File['/etc/sysconfig/st2actionrunner']
+        require => File["${_config_default}/st2actionrunner"]
       }
     }
     'init': {

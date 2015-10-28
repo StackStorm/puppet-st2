@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "0.10.14",
+  "version": "0.10.15",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache 2.0",
@@ -24,7 +24,8 @@
     {"name":"puppetlabs-vcsrepo","version_requirement":">= 1.2.0"},
     {"name":"jfryman-tiller","version_requirement":">= 0.1.0"},
     {"name":"garethr-erlang","version_requirement":">= 0.3.0"},
-    {"name":"stahnma-epel","version_requirement":">= 1.1.0"}
+    {"name":"stahnma-epel","version_requirement":">= 1.1.0"},
+    {"name":"ghoneycutt-facter","version_requirement":">= 2.1.0"}
   ]
 }
 

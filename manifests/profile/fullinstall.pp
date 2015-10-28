@@ -14,7 +14,6 @@
 #  include st2::profile::fullinstall
 #
 class st2::profile::fullinstall inherits st2 {
-  
   class { '::st2::profile::facter':
     before => Anchor['st2::bootstrap']
   }
@@ -52,10 +51,11 @@ class st2::profile::fullinstall inherits st2 {
   Anchor['st2::pre_reqs']
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
-  -> class { '::st2::auth::standalone': }
   -> class { '::st2::profile::web': }
-  -> class { '::st2::stanley': }
 
   include ::st2::packs
   include ::st2::kvs
+
+  class { '::st2::auth::pam': }
+  class { '::st2::stanley': }
 }
