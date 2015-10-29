@@ -25,30 +25,37 @@ define st2::helper::service_manager (
 
       # If Actionrunner, we need two init scripts. First is the
       # anchor init script, which calls out actionrunner
-      if $_subsystem == 'st2actionrunner' {
-        $process_type = 'multi'
-        file{ "/etc/systemd/system/st2actionrunner.service":
-          ensure  => file,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0444',
-          source  => "puppet:///modules/st2/systemd/system/st2actionrunner.service",
+      # The WebUI is served via python SimpleHTTP and has a custom
+      # unit file.
+      if $_subsystem == 'st2web' or $_subsystem == 'st2actionrunner' {
+        file{ "/etc/systemd/system/${_subsystem}.service":
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          source => "puppet:///modules/st2/systemd/system/${_subsystem}.service",
         }
 
         exec{ "sysctl enable ${_subsystem}":
           path    => '/bin:/usr/bin:/usr/local/bin',
-          command => "systemctl --no-reload enable st2actionrunner",
-          require => File["/etc/systemd/system/st2actionrunner.service"],
-          notify  => Service["${_subsystem}"],
+          command => "systemctl --no-reload enable ${_subsystem}",
+          require => File["/etc/systemd/system/${_subsystem}.service"],
+          notify  => Service[$_subsystem],
         }
-      } else {
-        $process_type = 'single'
       }
 
-      # Declare the Subsystem for SystemD.
-      st2::helper::systemd{ $_subsystem:
-        st2_process  => $_subsystem,
-        process_type => $process_type,
+      $process_type = $_subsystem ? {
+        'st2web'          => 'complex',
+        'st2actionrunner' => 'multi',
+        default           => single
+      }
+
+      unless $process_type == 'complex' {
+        # Declare the Subsystem for SystemD.
+        st2::helper::systemd{ $_subsystem:
+          st2_process  => $_subsystem,
+          process_type => $process_type,
+        }
       }
     }
     'init': {
