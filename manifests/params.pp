@@ -190,4 +190,10 @@ class st2::params(
       $init_type = undef
     }
   }
+
+  ## Python Packages Directory Detection
+  $python_pack = $::osfamily ? {
+    'Debian' => '/usr/lib/python2.7/dist-packages',
+    'RedHat' => '/usr/lib/python2.7/site-packages',
+  }
 }
