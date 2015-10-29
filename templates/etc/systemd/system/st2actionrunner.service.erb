@@ -5,8 +5,8 @@ After=network.target
 [Service]
 Type=oneshot
 EnvironmentFile=-/etc/sysconfig/st2actionrunner
-ExecStart=/bin/bash /usr/lib/python2.7/site-packages/st2actions/bin/runners.sh start
-ExecStop=/bin/bash /usr/lib/python2.7/site-packages/st2actions/bin/runners.sh stop
+ExecStart=/bin/bash <%= @runners_script %> start
+ExecStop=/bin/bash <%= @runners_script %> stop
 RemainAfterExit=true
 
 [Install]
