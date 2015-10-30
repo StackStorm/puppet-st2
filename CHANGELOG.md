@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.16 (Oct 30, 2015)
+* Set sticky bit on Group, not User for stackstorm packs dir
+
 ## 0.10.15 (Oct 28, 2015)
 * Remove DAG errors with fullinstall profile
 
