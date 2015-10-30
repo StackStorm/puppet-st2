@@ -47,7 +47,7 @@ define st2::pack (
     'ensure'  => 'directory',
     'owner'   => 'root',
     'group'   => $_st2_packs_group,
-    'mode'    => '4775',
+    'mode'    => '2775',
     'recurse' => true,
   })
 
