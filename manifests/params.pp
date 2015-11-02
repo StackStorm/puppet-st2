@@ -75,6 +75,8 @@ class st2::params(
     st2web             => 'st2web',
   }
 
+  $repo_base = 'https://downloads.stackstorm.net'
+  
   # Auth settings
   $auth_mode = standalone
   $auth_backend = pam

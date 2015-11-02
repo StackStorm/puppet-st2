@@ -21,7 +21,7 @@ class st2::package::redhat (
 
   yumrepo { 'stackstorm':
     ensure   => present,
-    baseurl  => "https://downloads.stackstorm.net/rpm/el/${_osver}/${_suite}",
+    baseurl  => "${::st2::repo_base}/rpm/el/${_osver}/${_suite}",
     descr    => 'StackStorm RPM Repository',
     enabled  => 1,
     gpgcheck => 0,

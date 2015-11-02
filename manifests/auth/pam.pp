@@ -25,7 +25,7 @@ class st2::auth::pam(
   }
 
   wget::fetch { "Download auth pam backend":
-    source             => "https://downloads.stackstorm.net/st2community/${distro_path}/auth_backends/st2_auth_backend_pam-${version}-py2.7.egg",
+    source             => "${::st2::repo_base}/st2community/${distro_path}/auth_backends/st2_auth_backend_pam-${version}-py2.7.egg",
     cache_dir          => '/var/cache/wget',
     nocheckcertificate => true,
     destination        => "/tmp/st2_auth_backend_pam-${version}-py2.7.egg"
