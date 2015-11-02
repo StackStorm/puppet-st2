@@ -11,6 +11,7 @@ define st2::helper::service_manager (
   $_package     = $_package_map[$process]
   $_init_type   = $::st2::params::init_type
   $_subsystem   = $::st2::params::subsystem_map[$process]
+  $_python_pack = $::st2::params::python_pack
 
   tag('st2::service_manager')
 
@@ -23,32 +24,53 @@ define st2::helper::service_manager (
     'systemd': {
       $init_file = undef
 
-      # If Actionrunner, we need two init scripts. First is the
-      # anchor init script, which calls out actionrunner
-      if $_subsystem == 'st2actionrunner' {
-        $process_type = 'multi'
-        file{ "/etc/systemd/system/st2actionrunner.service":
-          ensure  => file,
-          owner   => 'root',
-          group   => 'root',
-          mode    => '0444',
-          source  => "puppet:///modules/st2/systemd/system/st2actionrunner.service",
+      $process_type = $_subsystem ? {
+        'st2web'          => 'complex',
+        'st2actionrunner' => 'multi',
+        default           => 'single'
+      }
+
+      unless $process_type == 'single' {
+        # If Actionrunner, we need two init scripts. First is the
+        # anchor init script, which calls out actionrunner
+        # The WebUI is served via python SimpleHTTP and has a custom
+        # unit file.
+        case $_subsystem {
+          'st2web': {
+            file{ "/etc/systemd/system/${_subsystem}.service":
+              ensure => file,
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0444',
+              source => "puppet:///modules/st2/systemd/system/${_subsystem}.service",
+            }
+          }
+          'st2actionrunner': {
+            $runners_script = "${_python_pack}/st2actions/bin/runners.sh"
+            file{ "/etc/systemd/system/${_subsystem}.service":
+              ensure  => file,
+              owner   => 'root',
+              group   => 'root',
+              mode    => '0444',
+              content => template("st2/etc/systemd/system/${_subsystem}.service.erb"),
+            }
+          }
         }
 
         exec{ "sysctl enable ${_subsystem}":
           path    => '/bin:/usr/bin:/usr/local/bin',
-          command => "systemctl --no-reload enable st2actionrunner",
-          require => File["/etc/systemd/system/st2actionrunner.service"],
-          notify  => Service["${_subsystem}"],
+          command => "systemctl --no-reload enable ${_subsystem}",
+          require => File["/etc/systemd/system/${_subsystem}.service"],
+          notify  => Service[$_subsystem],
         }
-      } else {
-        $process_type = 'single'
       }
 
-      # Declare the Subsystem for SystemD.
-      st2::helper::systemd{ $_subsystem:
-        st2_process  => $_subsystem,
-        process_type => $process_type,
+      unless $process_type == 'complex' {
+        # Declare the Subsystem for SystemD.
+        st2::helper::systemd{ $_subsystem:
+          st2_process  => $_subsystem,
+          process_type => $process_type,
+        }
       }
     }
     'init': {
