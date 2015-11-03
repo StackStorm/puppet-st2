@@ -50,7 +50,7 @@ class st2(
   $revision                 = '5',
   $autoupdate               = false,
   $mistral_git_branch       = 'st2-1.1.0',
-  $repo_base                = $::st2::params::repo_base
+  $repo_base                = $::st2::params::repo_base,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = false,
