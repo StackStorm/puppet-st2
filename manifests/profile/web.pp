@@ -47,7 +47,7 @@ class st2::profile::web(
 
   if $autoupdate or ! $_bootstrapped {
     wget::fetch { 'st2web':
-      source      => "http://downloads.stackstorm.net/releases/st2/${_version}/webui/webui-${_version}.tar.gz",
+      source      => "${::st2::repo_base}/releases/st2/${_version}/webui/webui-${_version}.tar.gz",
       cache_dir   => '/var/cache/wget',
       destination => '/tmp/st2web.tar.gz',
       before      => Exec['extract webui'],

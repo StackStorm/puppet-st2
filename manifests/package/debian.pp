@@ -21,11 +21,11 @@ class st2::package::debian {
   }
 
   apt::source { 'stackstorm':
-    location    => 'https://downloads.stackstorm.net/deb/',
+    location    => "${::st2::repo_base}/deb/",
     release     => "${::lsbdistcodename}_${_suite}",
     repos       => 'main',
     include_src => false,
     key         => '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982',
-    key_source  => 'https://downloads.stackstorm.net/deb/pubkey.gpg',
+    key_source  => "${::st2::repo_base}/deb/pubkey.gpg",
   }
 }

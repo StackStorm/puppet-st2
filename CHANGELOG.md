@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.17 (Nov 2, 2015)
+* Parameterized download server to CI
+
 ## 0.10.16 (Oct 30, 2015)
 * Set sticky bit on Group, not User for stackstorm packs dir
 
