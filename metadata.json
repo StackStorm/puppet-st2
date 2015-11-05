@@ -25,7 +25,7 @@
     {"name":"jfryman-tiller","version_requirement":">= 0.1.0"},
     {"name":"garethr-erlang","version_requirement":">= 0.3.0"},
     {"name":"stahnma-epel","version_requirement":">= 1.1.0"},
-    {"name":"ghoneycutt-facter","version_requirement":">= 2.1.0"}
+    {"name":"ghoneycutt-facter","version_requirement":">= 3.0.0"}
   ]
 }
 
