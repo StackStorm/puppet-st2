@@ -102,6 +102,7 @@ class st2::profile::mistral(
       Exec['setup mistral'],
       Exec['setup st2mistral plugin'],
       Python::Virtualenv[$_mistral_root],
+      Python::Requirements['mistral'],
       Exec['setup mistral database'],
     ]
     $_st2mistral_before = [
