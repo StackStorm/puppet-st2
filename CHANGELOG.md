@@ -1,5 +1,8 @@
 # Changelog
 
+## TBD
+* Disable upstart logging for st2 services.
+
 ## 0.10.17 (Nov 2, 2015)
 * Parameterized download server to CI
 
