@@ -16,7 +16,7 @@
 #  include st2::profile::python
 #
 class st2::profile::python {
-  if ($::osfamily == "RedHat") and ($operatingsystemmajrelease == '6') {
+  if ($::osfamily == "RedHat") {
     package {'python27':
       ensure => 'latest'
     }
