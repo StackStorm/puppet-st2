@@ -65,7 +65,7 @@ class st2::profile::web(
   # This is crude... get some augeas on
   ## Manage connection list currently
   file { '/opt/stackstorm/static/webui/config.js':
-    ensure  => present,
+    ensure  => file,
     owner   => 'root',
     group   => 'root',
     mode    => '0444',
