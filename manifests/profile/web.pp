@@ -52,14 +52,13 @@ class st2::profile::web(
       destination => '/tmp/st2web.tar.gz',
       before      => Exec['extract webui'],
     }
-  }
 
-  exec { 'extract webui':
-    command => 'tar -xzvf /tmp/st2web.tar.gz -C /opt/stackstorm/static/webui --strip-components=1 --owner root --group root --no-same-owner',
-    creates => '/opt/stackstorm/static/webui/index.html',
-    path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-    require => File['/opt/stackstorm/static/webui'],
-    before  => File['/etc/facter/facts.d/st2web_bootstrapped.txt'],
+    exec { 'extract webui':
+      command => 'tar -xzvf /tmp/st2web.tar.gz -C /opt/stackstorm/static/webui --strip-components=1 --owner root --group root --no-same-owner',
+      path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+      require => File['/opt/stackstorm/static/webui'],
+      before  => File['/etc/facter/facts.d/st2web_bootstrapped.txt'],
+    }
   }
 
   # This is crude... get some augeas on
