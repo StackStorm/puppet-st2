@@ -34,8 +34,8 @@ class st2::package::debian {
         "${::lsbdistcodename}${_repo_suffix}",
       ], '/')
       $_release    = $_suite
-      $_key        = '' # TODO: Fill out
-      $_key_source = '' # TODO: Fill out
+      $_key        = 'A850304EED82AE89A136271F1AB74003483DED8B'
+      $_key_source = 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray'
     }
     default: {
       # download.stackstorm.com
