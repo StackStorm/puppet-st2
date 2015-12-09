@@ -22,7 +22,7 @@ class st2::package::debian {
   }
 
   case $_repo_base {
-    /dl.bintray.com/ => {
+    /dl.bintray.com/: {
       $_repo_suffix = $_repo_env ? {
         'staging' => '_staging',
         default   => undef,
@@ -37,7 +37,7 @@ class st2::package::debian {
       $_key        = '' # TODO: Fill out
       $_key_source = '' # TODO: Fill out
     }
-    default => {
+    default: {
       # download.stackstorm.com
       $_location   = "${_repo_base}/deb/"
       $_release    = "${::lsbdistcodename}_${_suite}"
