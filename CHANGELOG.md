@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.1 (Dec 9, 2015)
+* Extract a new version of st2web on update
+
+## 0.11.0 (Dec 4, 2015)
+* Force rewrite of webui/config.js on every provision 
+
 ## 0.10.18 (Nov 11, 2015)
 * Disable upstart logging for st2 services.
 * Make sure that st2web logs on Ubuntu under upstart are written to /var/log/st2web.log
