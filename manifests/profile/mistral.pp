@@ -166,6 +166,12 @@ class st2::profile::mistral(
     virtualenv   => "${_mistral_root}/.venv"
   }
 
+  python::pip { 'gunicorn':
+    pkgname => 'gunicorn',
+    ensure => present,
+    virtualenv   => "${_mistral_root}/.venv"
+  }
+
   python::pip { 'python-mistralclient':
     ensure => present,
     url    => "git+https://github.com/StackStorm/python-mistralclient.git@${_git_branch}",
