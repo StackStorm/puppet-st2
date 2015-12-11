@@ -8,6 +8,7 @@
 #
 # === Variables
 #  [*repo_url*] - The URL where the StackStorm project is hosted on GitHub
+#  [*repo_env*] - Specify the environment of package repo (production, staging)
 #  [*conf_dir*] - The local directory where st2 config is stored
 #  [*subsystems*] - Different executable subsystems within StackStorm
 #  [*component_map*] - Hash table of mappings of Subsystems -> Components
@@ -76,11 +77,12 @@ class st2::params(
   }
 
   $repo_base = 'https://downloads.stackstorm.net'
-  
+  $repo_env = 'production'
+
   # Auth settings
   $auth_mode = standalone
   $auth_backend = pam
-  
+
   # Non-user configurable parameters
   $repo_url = 'https://github.com/StackStorm/st2'
   $conf_dir = '/etc/st2'

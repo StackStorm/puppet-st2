@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.1 (Dec 9, 2015)
+* Adding ability to download packages from testing bintray repos
+
 ## 0.11.1 (Dec 9, 2015)
 * Extract a new version of st2web on update
 
