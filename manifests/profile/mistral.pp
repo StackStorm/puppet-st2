@@ -359,6 +359,14 @@ class st2::profile::mistral(
           content => template('st2/etc/init/mistral.conf.erb'),
           notify  => Service['mistral'],
         }
+        file { '/etc/init/mistral-api.conf':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          content => template('st2/etc/init/mistral-api.conf.erb'),
+          notify  => Service['mistral'],
+        }
       }
       'systemd': {
         file { '/etc/systemd/system/mistral.service':

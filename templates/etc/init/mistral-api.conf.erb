@@ -1,0 +1,10 @@
+# Moving under puppet. To enable:
+# 1. Install gunicorn to mistral virutal env /opt/stackstorm/mistral/.venv
+# 2. Modify /etc/init/mistral.conf and remove "api" from --server
+# 3. Modify st2ctl to add mistral-api
+# 4. Remove these comments :)
+
+description "Mistral Workflow API Service"
+
+chdir /opt/openstack/mistral
+exec /opt/openstack/mistral/.venv/bin/gunicorn -b 0.0.0.0:8989 -w 2 mistral.api.wsgi
