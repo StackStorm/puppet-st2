@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.2 (Dec 11, 2015)
+* Fixing error where WebUI fails because of missing resource
+
 ## 0.12.1 (Dec 9, 2015)
 * Adding ability to download packages from testing bintray repos
 
@@ -7,7 +10,7 @@
 * Extract a new version of st2web on update
 
 ## 0.11.0 (Dec 4, 2015)
-* Force rewrite of webui/config.js on every provision 
+* Force rewrite of webui/config.js on every provision
 
 ## 0.10.18 (Nov 11, 2015)
 * Disable upstart logging for st2 services.

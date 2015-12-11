@@ -57,7 +57,10 @@ class st2::profile::web(
       command => 'tar -xzvf /tmp/st2web.tar.gz -C /opt/stackstorm/static/webui --strip-components=1 --owner root --group root --no-same-owner',
       path    => '/usr/bin:/usr/sbin:/bin:/sbin',
       require => File['/opt/stackstorm/static/webui'],
-      before  => File['/etc/facter/facts.d/st2web_bootstrapped.txt'],
+      before  => [
+        File['/etc/facter/facts.d/st2web_bootstrapped.txt'],
+        File['/opt/stackstorm/static/webui/config.js'],
+      ],
     }
   }
 
@@ -69,7 +72,6 @@ class st2::profile::web(
     group   => 'root',
     mode    => '0444',
     content => template('st2/opt/st2web/config.js.erb'),
-    require => Exec['extract webui'],
   }
 
   file { '/etc/facter/facts.d/st2web_bootstrapped.txt':
