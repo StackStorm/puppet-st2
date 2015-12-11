@@ -14,10 +14,10 @@
 #  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
 #  [*db_max_overflow*]     - Max DB overload for Mistral Connections
 #  [*db_pool_recycle*]     - DB Pool recycle time
-#  [*api_url*]             - URI of Mistral backend (e.x.: http://localhost)
-#  [*api_port*]            - Port of Mistral backend. (Default: 8989)
+#  [*api_url*]             - URI of Mistral backend (e.x.: 127.0.0.1)
+#  [*api_port*]            - Port of Mistral backend. Default: 8989
 #  [*manage_service*]      - Manage the Mistral service. Default: true
-#  [*disable_api*]         - Disables the API subsystem. Default: false
+#  [*disable_api*]         - Disables the embedded API subsystem. Default: true (served by gunicorn)
 #  [*disable_executor*]    - Disables the executor subsystem. Default: false
 #  [*disable_engine*]      - Disables the engine subsystem. Default: false
 #
@@ -46,7 +46,7 @@ class st2::profile::mistral(
   $api_url             = $::st2::mistral_api_url,
   $api_port            = $::st2::mistral_api_port,
   $manage_service      = true,
-  $disable_api         = false,
+  $disable_api         = true,
   $disable_executor    = false,
   $disable_engine      = false,
 ) inherits st2 {
@@ -309,7 +309,7 @@ class st2::profile::mistral(
     content => 'mistral_bootstrapped=true',
   }
 
-  ### Set Mistral API Settings. Useful when setting up uWSGI or other server
+  ### Set Mistral API Settings. Used when API runs embedded (disable_api=false).
   if $api_url {
     ini_setting { 'mistral_api_host':
       ensure  => present,

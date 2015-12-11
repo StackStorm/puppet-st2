@@ -6,5 +6,10 @@
 
 description "Mistral Workflow API Service"
 
-chdir /opt/openstack/mistral
-exec /opt/openstack/mistral/.venv/bin/gunicorn -b 0.0.0.0:8989 -w 2 mistral.api.wsgi
+start on starting mistral
+stop on stopping mistral
+
+script
+    chdir /opt/openstack/mistral
+    exec /opt/openstack/mistral/.venv/bin/gunicorn -b <%= @api_url %>:<%= @api_port %> -w 2 mistral.api.wsgi
+end script
