@@ -35,7 +35,7 @@ class st2::package::debian(
         "${::lsbdistcodename}${_repo_suffix}",
       ], '/')
       $_release    = $_suite
-      $_key        = 'A850304EED82AE89A136271F1AB74003483DED8B'
+      $_key        = '8756C4F765C9AC3CB6B85D62379CE192D401AB61'
       $_key_source = 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray'
     }
     default: {
