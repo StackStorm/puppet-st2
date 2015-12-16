@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.3 (Dec 15, 2015)
+* Adding tests around bintray repo feature
+
 ## 0.12.2 (Dec 11, 2015)
 * Fixing error where WebUI fails because of missing resource
 
