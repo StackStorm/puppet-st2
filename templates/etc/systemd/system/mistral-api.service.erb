@@ -1,5 +1,6 @@
 [Unit]
 Description=Mistral Workflow API Service
+BindsTo=mistral.service
 
 [Service]
 ExecStart=/opt/openstack/mistral/.venv/bin/gunicorn -b <%= @api_url %>:<%= @api_port %> -w 2 mistral.api.wsgi
