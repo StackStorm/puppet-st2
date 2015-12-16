@@ -34,7 +34,7 @@ describe 'st2::package::debian' do
                  'release'     => 'unstable',
                  'repos'       => 'main',
                  'include_src' => false,
-                 'key'         => 'A850304EED82AE89A136271F1AB74003483DED8B',
+                 'key'         => '8756C4F765C9AC3CB6B85D62379CE192D401AB61',
                  'key_source'  => 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray',
                )
       }
