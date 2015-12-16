@@ -4,15 +4,15 @@ describe 'st2::package::debian' do
   context 'default parameters' do
     let (:facts) { FactHelper.ubuntu_trusty_x64 }
 
-    it 'should download from download.stackstorm.com stable repo' do
+    it 'should download from downloads.stackstorm.net stable repo' do
       expect {
         should contain_apt__source('stackstorm').with(
-                 'location'    => 'https://download.stackstorm.com/deb/',
+                 'location'    => 'https://downloads.stackstorm.net/deb/',
                  'release'     => 'trusty_stable',
                  'repos'       => 'main',
                  'include_src' => false,
                  'key'         => '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982',
-                 'key_source'  => 'https://download.stackstorm.com/deb/pubkey.gpg',
+                 'key_source'  => 'https://downloads.stackstorm.net/deb/pubkey.gpg',
                )
       }
     end
@@ -72,15 +72,15 @@ describe 'st2::package::debian' do
       }
     }
 
-    it 'should download from download.stackstorm.com 'do
+    it 'should download from downloads.stackstorm.net 'do
       expect {
         should contain_apt__source('stackstorm').with(
-                 'location'    => 'https://download.stackstorm.com/deb/',
+                 'location'    => 'https://downloads.stackstorm.net/deb/',
                  'release'     => 'trusty_stable',
                  'repos'       => 'main',
                  'include_src' => false,
                  'key'         => '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982',
-                 'key_source'  => 'https://download.stackstorm.com/deb/pubkey.gpg',
+                 'key_source'  => 'https://downloads.stackstorm.net/deb/pubkey.gpg',
                )
       }
     end
