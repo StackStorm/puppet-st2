@@ -82,6 +82,7 @@ class st2::profile::client (
   st2::package::install { $_client_packages:
     version  => $_version,
     revision => $_revision,
+    repo_base => $_repo_base,
   }
 
   ### This should be a versioned download too... currently on master

@@ -16,6 +16,7 @@
 define st2::package::install(
   $version  = undef,
   $revision = undef,
+  $repo_base = undef,
 ) {
   case $::osfamily {
     'Debian': {
@@ -31,7 +32,14 @@ define st2::package::install(
       }
       # Temporary Hack while fixing build pipeline
       if $name =~ /client/ {
-        $_package_version = "${_version}.${_revision}-1"
+        case $_repo_base {
+          /^https:\/\/dl.bintray.com/: {
+            $_package_version = "${_version}-${_revision}"
+          }
+          default: {
+            $_package_version = "${_version}.${_revision}-1"
+          }
+        }
       } else {
         $_package_version = "${_version}-${_revision}"
       }
