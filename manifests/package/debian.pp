@@ -37,6 +37,9 @@ class st2::package::debian(
       $_release    = $_suite
       $_key        = '8756C4F765C9AC3CB6B85D62379CE192D401AB61'
       $_key_source = 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray'
+      $st2::params::st2_client_packages = [
+        'st2client',
+      ]
     }
     default: {
       $_location   = 'https://download.stackstorm.com/deb/'
