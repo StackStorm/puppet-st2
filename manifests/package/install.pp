@@ -32,7 +32,7 @@ define st2::package::install(
       }
       # Temporary Hack while fixing build pipeline
       if $name =~ /client/ {
-        case $_repo_base {
+        case $repo_base {
           /^https:\/\/dl.bintray.com/: {
             $_package_version = "${_version}-${_revision}"
           }
