@@ -61,7 +61,20 @@ class st2::profile::client (
   include '::st2::notices'
   include '::st2::params'
 
-  $_client_packages = $st2::params::st2_client_packages
+  # If we are using bintray packages, st2client packages are simply called `st2client`.
+  # XXX: This is simply a workaround until the puppet overlords figure out the right way.
+  $_repo_base = $st2::repo_base
+  case $_repo_base {
+    /^https:\/\/dl.bintray.com/: {
+      $_client_packages = [
+        'st2client',
+      ]
+    }
+    default: {
+      $_client_packages = $st2::params::st2_client_packages
+    }
+  }
+
   $_client_dependencies = $st2::params::debian_client_dependencies
 
   st2::dependencies::install { $_client_dependencies: }
