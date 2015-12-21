@@ -7,39 +7,39 @@
 #
 # === Examples
 #  include ::st2::package::debian
-class st2::package::debian {
-  $_version = $::st2::version
-  $_repo_base = $::st2::repo_base
-  $_repo_env = $::st2::repo_env
+class st2::package::debian(
+  $version   = $::st2::version,
+  $repo_base = $::st2::repo_base,
+  $repo_env  = $::st2::repo_env,
+  ) {
 
   if !defined(Class['::apt']) {
     include ::apt
   }
 
-  $_suite = $_version ? {
+  $_suite = $version ? {
     /dev$/  => 'unstable',
     default => 'stable',
   }
 
-  case $_repo_base {
-    /dl.bintray.com/: {
-      $_repo_suffix = $_repo_env ? {
+  case $repo_base {
+    /^https:\/\/dl.bintray.com/: {
+      $_repo_suffix = $repo_env ? {
         'staging' => '_staging',
         default   => undef,
       }
 
       $_location   = join([
-        $_repo_base,
+        $repo_base,
         'stackstorm',
         "${::lsbdistcodename}${_repo_suffix}",
       ], '/')
       $_release    = $_suite
-      $_key        = 'A850304EED82AE89A136271F1AB74003483DED8B'
+      $_key        = '8756C4F765C9AC3CB6B85D62379CE192D401AB61'
       $_key_source = 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray'
     }
     default: {
-      # download.stackstorm.com
-      $_location   = "${_repo_base}/deb/"
+      $_location   = 'https://download.stackstorm.com/deb/'
       $_release    = "${::lsbdistcodename}_${_suite}"
       $_key        = '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982'
       $_key_source = "${_location}/pubkey.gpg"
