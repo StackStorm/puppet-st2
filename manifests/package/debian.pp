@@ -39,7 +39,7 @@ class st2::package::debian(
       $_key_source = 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray'
     }
     default: {
-      $_location   = 'https://downloads.stackstorm.com/deb/'
+      $_location   = 'https://downloads.stackstorm.net/deb/'
       $_release    = "${::lsbdistcodename}_${_suite}"
       $_key        = '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982'
       $_key_source = "${_location}/pubkey.gpg"
