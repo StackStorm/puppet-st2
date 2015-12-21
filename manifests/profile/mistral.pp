@@ -17,7 +17,7 @@
 #  [*api_url*]             - URI of Mistral backend (e.x.: 127.0.0.1)
 #  [*api_port*]            - Port of Mistral backend. Default: 8989
 #  [*manage_service*]      - Manage the Mistral service. Default: true
-#  [*disable_api*]         - Disables the embedded API subsystem. Default: true (served by gunicorn)
+#  [*api_service*]         - Run API in a separte service via gunicorn. Default: true
 #  [*disable_executor*]    - Disables the executor subsystem. Default: false
 #  [*disable_engine*]      - Disables the engine subsystem. Default: false
 #
@@ -46,7 +46,7 @@ class st2::profile::mistral(
   $api_url             = $::st2::mistral_api_url,
   $api_port            = $::st2::mistral_api_port,
   $manage_service      = true,
-  $disable_api         = true,
+  $api_service         = $::st2::mistral_api_service,
   $disable_executor    = false,
   $disable_engine      = false,
 ) inherits st2 {
@@ -166,10 +166,12 @@ class st2::profile::mistral(
     virtualenv   => "${_mistral_root}/.venv"
   }
 
-  python::pip { 'gunicorn':
-    pkgname => 'gunicorn',
-    ensure => present,
-    virtualenv   => "${_mistral_root}/.venv"
+  if $api_service {
+    python::pip { 'gunicorn':
+      pkgname => 'gunicorn',
+      ensure => present,
+      virtualenv   => "${_mistral_root}/.venv"
+    }
   }
 
   python::pip { 'python-mistralclient':
@@ -309,7 +311,7 @@ class st2::profile::mistral(
     content => 'mistral_bootstrapped=true',
   }
 
-  ### Set Mistral API Settings. Used when API runs embedded (disable_api=false).
+  ### Set Mistral API Settings. Used when API runs embedded (api_service=false).
   if $api_url {
     ini_setting { 'mistral_api_host':
       ensure  => present,
@@ -337,7 +339,7 @@ class st2::profile::mistral(
     # We take all of these toggles as flags, drop them into an array
     # weed out any undefined subsystems, and expose `$subsystems` to the
     # underlying template
-    $_api_flag = $disable_api ? {
+    $_api_flag = $api_service ? {
       true    => undef,
       default => 'api',
     }
@@ -365,13 +367,19 @@ class st2::profile::mistral(
           content => template('st2/etc/init/mistral.conf.erb'),
           notify  => Service['mistral'],
         }
-        file { '/etc/init/mistral-api.conf':
-          ensure => file,
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0444',
-          content => template('st2/etc/init/mistral-api.conf.erb'),
-          notify  => Service['mistral'],
+        if $api_service {
+          file { '/etc/init/mistral-api.conf':
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            content => template('st2/etc/init/mistral-api.conf.erb'),
+            notify  => Service['mistral'],
+          }
+        } else {
+            file { '/etc/init/mistral-api.conf':
+            ensure => absent,
+          }
         }
       }
       'systemd': {
