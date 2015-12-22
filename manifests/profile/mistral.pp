@@ -14,10 +14,10 @@
 #  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
 #  [*db_max_overflow*]     - Max DB overload for Mistral Connections
 #  [*db_pool_recycle*]     - DB Pool recycle time
-#  [*api_url*]             - URI of Mistral backend (e.x.: http://localhost)
-#  [*api_port*]            - Port of Mistral backend. (Default: 8989)
+#  [*api_url*]             - URI of Mistral backend (e.x.: 127.0.0.1)
+#  [*api_port*]            - Port of Mistral backend. Default: 8989
 #  [*manage_service*]      - Manage the Mistral service. Default: true
-#  [*disable_api*]         - Disables the API subsystem. Default: false
+#  [*api_service*]         - Run API in a separte service via gunicorn. Default: true
 #  [*disable_executor*]    - Disables the executor subsystem. Default: false
 #  [*disable_engine*]      - Disables the engine subsystem. Default: false
 #
@@ -46,7 +46,7 @@ class st2::profile::mistral(
   $api_url             = $::st2::mistral_api_url,
   $api_port            = $::st2::mistral_api_port,
   $manage_service      = true,
-  $disable_api         = false,
+  $api_service         = $::st2::mistral_api_service,
   $disable_executor    = false,
   $disable_engine      = false,
 ) inherits st2 {
@@ -164,6 +164,14 @@ class st2::profile::mistral(
   python::requirements { 'mistral':
     requirements => "${_mistral_root}/requirements.txt",
     virtualenv   => "${_mistral_root}/.venv"
+  }
+
+  if $api_service {
+    python::pip { 'gunicorn':
+      pkgname => 'gunicorn',
+      ensure => present,
+      virtualenv   => "${_mistral_root}/.venv"
+    }
   }
 
   python::pip { 'python-mistralclient':
@@ -303,7 +311,7 @@ class st2::profile::mistral(
     content => 'mistral_bootstrapped=true',
   }
 
-  ### Set Mistral API Settings. Useful when setting up uWSGI or other server
+  ### Set Mistral API Settings. Used when API runs embedded (api_service=false).
   if $api_url {
     ini_setting { 'mistral_api_host':
       ensure  => present,
@@ -331,7 +339,7 @@ class st2::profile::mistral(
     # We take all of these toggles as flags, drop them into an array
     # weed out any undefined subsystems, and expose `$subsystems` to the
     # underlying template
-    $_api_flag = $disable_api ? {
+    $_api_flag = $api_service ? {
       true    => undef,
       default => 'api',
     }
@@ -359,6 +367,20 @@ class st2::profile::mistral(
           content => template('st2/etc/init/mistral.conf.erb'),
           notify  => Service['mistral'],
         }
+        if $api_service {
+          file { '/etc/init/mistral-api.conf':
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0444',
+            content => template('st2/etc/init/mistral-api.conf.erb'),
+            notify  => Service['mistral'],
+          }
+        } else {
+            file { '/etc/init/mistral-api.conf':
+            ensure => absent,
+          }
+        }
       }
       'systemd': {
         file { '/etc/systemd/system/mistral.service':
@@ -367,6 +389,14 @@ class st2::profile::mistral(
           group  => 'root',
           mode   => '0444',
           content => template('st2/etc/systemd/system/mistral.service.erb'),
+          notify  => Service['mistral'],
+        }
+        file { '/etc/systemd/system/mistral-api.service':
+          ensure => file,
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0444',
+          content => template('st2/etc/systemd/system/mistral-api.service.erb'),
           notify  => Service['mistral'],
         }
       }
@@ -378,6 +408,20 @@ class st2::profile::mistral(
           mode   => '0755',
           content => template('st2/etc/init.d/mistral.erb'),
           notify  => Service['mistral'],
+        }
+        if $api_service {
+          file { '/etc/init.d/mistral-api':
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            content => template('st2/etc/init.d/mistral-api.erb'),
+            notify  => Service['mistral'],
+          }
+        } else {
+            file { '/etc/init.d/mistral-api':
+            ensure => absent,
+          }
         }
       }
     }

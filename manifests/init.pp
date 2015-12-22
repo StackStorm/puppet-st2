@@ -79,6 +79,7 @@ class st2(
   $workers                  = 8,
   $mistral_api_url          = undef,
   $mistral_api_port         = '8989',
+  $mistral_api_service      = false,
   $syslog                   = false,
   $syslog_host              = 'localhost',
   $syslog_protocol          = 'udp',
