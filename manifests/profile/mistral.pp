@@ -396,7 +396,7 @@ class st2::profile::mistral(
           owner  => 'root',
           group  => 'root',
           mode   => '0444',
-          content => template('st2/etc/systemd/system//mistral-api.service.erb'),
+          content => template('st2/etc/systemd/system/mistral-api.service.erb'),
           notify  => Service['mistral'],
         }
       }
@@ -408,6 +408,20 @@ class st2::profile::mistral(
           mode   => '0755',
           content => template('st2/etc/init.d/mistral.erb'),
           notify  => Service['mistral'],
+        }
+        if $api_service {
+          file { '/etc/init.d/mistral-api':
+            ensure => file,
+            owner  => 'root',
+            group  => 'root',
+            mode   => '0755',
+            content => template('st2/etc/init.d/mistral-api.erb'),
+            notify  => Service['mistral'],
+          }
+        } else {
+            file { '/etc/init.d/mistral-api':
+            ensure => absent,
+          }
         }
       }
     }
