@@ -288,7 +288,23 @@ class st2::profile::mistral(
   }
 
   exec { 'setup mistral database':
-    command     => 'python ./tools/sync_db.py --config-file /etc/mistral/mistral.conf',
+    command     => 'mistral-db-manage --config-file /etc/mistral/mistral.conf upgrade head',
+    refreshonly => true,
+    cwd         => $_mistral_root,
+    path        => [
+      "${_mistral_root}/.venv/bin",
+      '/usr/local/bin',
+      '/usr/local/sbin',
+      '/usr/bin',
+      '/usr/sbin',
+      '/bin',
+      '/sbin',
+    ],
+    notify      => Exec['populate mistral database'],
+  }
+
+  exec { 'populate mistral database':
+    command     => 'mistral-db-manage --config-file /etc/mistral/mistral.conf populate',
     refreshonly => true,
     cwd         => $_mistral_root,
     path        => [
@@ -435,7 +451,7 @@ class st2::profile::mistral(
 
     # Setup refresh events on config change for mistral
     Ini_setting<| tag == 'mistral' |> ~> Service['mistral']
-    Exec['setup mistral database'] -> Service['mistral']
+    Exec['populate mistral database'] -> Service['mistral']
   }
   ### END Mistral Init Scripts ###
 }
