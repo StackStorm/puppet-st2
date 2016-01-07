@@ -1,97 +1,132 @@
 #!/bin/sh
+# Init script for st2api
+# Maintained by StackStorm Engineering <opsadmin@stackstorm.com>
+# Implemented based on LSB Core 3.1:
+#   * Sections: 20.2, 20.3
+#
 ### BEGIN INIT INFO
-# Provides:
-# Required-Start:    $remote_fs $syslog
-# Required-Stop:     $remote_fs $syslog
+# Provides:          mistral
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: Start daemon at boot time
-# Description:       Enable service provided by daemon.
+# Short-Description: StackStorm's Mistral workflow service
+# Description:       StackStorm's Mistral workflow service
 ### END INIT INFO
 
-dir=""
-cmd="/opt/openstack/mistral/.venv/bin/python /opt/openstack/mistral/mistral/cmd/launch.py --config-file /etc/mistral/mistral.conf --log-file /var/log/mistral.log --log-config-append /etc/mistral/wf_trace_logging.conf --server '<%= @subsystems %>'"
+
+name="mistral"
+cmd="/opt/openstack/mistral/.venv/bin/python /opt/openstack/mistral/mistral/cmd/launch.py \
+ --config-file /etc/mistral/mistral.conf --log-file /var/log/mistral.log \
+ --log-config-append /etc/mistral/wf_trace_logging.conf --server '<%= @subsystems %>'"
 user="root"
 
-name=`basename $0`
-pid_file="/var/run/$name.pid"
-stdout_log="/var/log/$name.log"
-stderr_log="/var/log/$name.err"
+<% if @api_service -%>
+<%# mistral service also starts & stops standalone mistral-api if enabled %>
+dependent="mistral-api"
+<% end -%>
 
-get_pid() {
-    cat "$pid_file"
+pidfile="/var/run/$name.pid"
+log_file="/var/log/$name-service.log"
+
+[ -r /etc/default/$name ] && . /etc/default/$name
+[ -r /etc/sysconfig/$name ] && . /etc/sysconfig/$name
+[ -r /etc/environment ] && . /etc/environment
+
+trace() {
+  logger -t "/etc/init.d/$name" "$@"
 }
 
-is_running() {
-    [ -f "$pid_file" ] && ps `get_pid` > /dev/null 2>&1
+emit() {
+  trace "$@"
+  echo "$@"
+}
+
+start() {
+  if [ -z "$user" ]; then
+      su -c "$cmd" > $log_file 2>&1 &
+  else
+      su $user -c "$cmd" > $log_file 2>&1 &
+  fi
+  echo $! > $pidfile
+  emit "$name started"
+
+<% if @api_service -%>
+  service $dependent start
+<% end -%>
+  return 0
+}
+
+stop() {
+  # Try a few times to kill TERM the program
+  if status ; then
+    pid=$(cat "$pidfile")
+    trace "Killing $name (pid $pid) with SIGTERM"
+    kill -TERM $pid
+    # Wait for it to exit.
+    for i in 1 2 3 4 5 ; do
+      trace "Waiting $name (pid $pid) to die..."
+      status || break
+      sleep 1
+    done
+    if status ; then
+      emit "$name stop failed; still running."
+    else
+      emit "$name stopped."
+    fi
+    <% if @api_service %>
+    service $dependent stop
+    <% end %>
+  fi
+}
+
+status() {
+  if [ -f "$pidfile" ] ; then
+    pid=$(cat "$pidfile")
+    if ps -p $pid > /dev/null 2> /dev/null ; then
+      return 0
+    else
+      return 2 # program is dead but pid file exists
+    fi
+  else
+    return 3 # program is not running
+  fi
 }
 
 case "$1" in
-    start)
-    if is_running; then
-        echo "Already started"
-    else
-        echo "Starting $name"
-        if [ -z "$user" ]; then
-            su -c "$cmd" >> "$stdout_log" 2>> "$stderr_log" &
-        else
-            su $user -c "$cmd" >> "$stdout_log" 2>> "$stderr_log" &
-        fi
-        echo $! > "$pid_file"
-        if ! is_running; then
-            echo "Unable to start, see $stdout_log and $stderr_log"
-            exit 1
-        fi
-    fi
-    ;;
-    stop)
-    if is_running; then
-        echo -n "Stopping $name.."
-        kill `get_pid`
-        for i in {1..10}
-        do
-            if ! is_running; then
-                break
-            fi
-
-            echo -n "."
-            sleep 1
-        done
-        echo
-
-        if is_running; then
-            echo "Not stopped; may still be shutting down or shutdown may have failed"
-            exit 1
-        else
-            echo "Stopped"
-            if [ -f "$pid_file" ]; then
-                rm "$pid_file"
-            fi
-        fi
-    else
-        echo "Not running"
-    fi
-    ;;
-    restart)
-    $0 stop
-    if is_running; then
-        echo "Unable to stop, will not attempt to start"
-        exit 1
-    fi
-    $0 start
-    ;;
-    status)
-    if is_running; then
-        echo "Running"
-    else
-        echo "Stopped"
-        exit 1
-    fi
-    ;;
-    *)
-    echo "Usage: $0 {start|stop|restart|status}"
-    exit 1
+  start|stop|restart)
+    trace "Attempting '$1' on $name"
     ;;
 esac
 
-exit 0
+case "$1" in
+  start)
+    status
+    code=$?
+    if [ $code -eq 0 ]; then
+      emit "$name is already running"
+      exit $code
+    else
+      start
+      exit $?
+    fi
+    ;;
+  stop) stop ;;
+  status)
+    status
+    code=$?
+    if [ $code -eq 0 ] ; then
+      emit "$name is running"
+    else
+      emit "$name is not running"
+    fi
+    exit $code
+    ;;
+  restart)
+    stop && start
+    ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop|status|restart}" >&2
+    exit 3
+  ;;
+esac
+
+exit $?
