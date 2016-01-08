@@ -39,13 +39,13 @@ emit() {
 }
 
 start() {
-  i=1
-  while [ $i -le $WORKERS ]; do
-    pidfile="/var/run/$name.$i.pid"
-    i=`expr $i + 1`
+  a=1
+  while [ $a -le $WORKERS ]; do
+    pidfile="/var/run/$name.$a.pid"
+    a=`expr $a + 1`
     $program $args > /dev/null 2>&1 &
     echo $! > $pidfile
-    emit "$name started"
+    emit "$name $a started"
   done
 
   return 0
@@ -53,27 +53,27 @@ start() {
 
 stop() {
   # Try a few times to kill TERM the program
-  i=1
-  while [ $i -le $WORKERS ]; do
-    pidfile="/var/run/$name.$i.pid"
-    if status ; then
-      pid=$(cat "$pidfile")
-      trace "Killing $name (pid $pid) with SIGTERM"
+  b=1
+  while [ $b -le $WORKERS ]; do
+    pidfile="/var/run/$name.$b.pid"
+    pid=$(cat "$pidfile")
+    if status_pid $b; then
+      trace "Killing $name $b (pid $pid) with SIGTERM"
       kill -TERM $pid
       # Wait for it to exit.
       for i in 1 2 3 4 5 ; do
-        trace "Waiting $name (pid $pid) to die..."
-        status_pid || break
+        trace "Waiting $name $b (pid $pid) to die..."
+        status_pid $b || break
         sleep 1
       done
-      if status_pid ; then
-        emit "$name stop failed; still running."
+      if status_pid $b; then
+        emit "$name $b stop failed; still running."
       else
-        emit "$name stopped."
+        emit "$name $b stopped."
       fi
     fi
 
-    i=`expr $i + 1`
+    b=`expr $b + 1`
   done
 
   return 0
@@ -95,21 +95,21 @@ status_pid() {
 }
 
 status() {
-  i=1
+  c=1
   exit_code=0
 
-  while [ $i -le $WORKERS ]; do
-    pidfile="/var/run/$name.$i.pid"
-    status_pid $i
+  while [ $c -le $WORKERS ]; do
+    pidfile="/var/run/$name.$c.pid"
+    status_pid $c
     return_code=$?
     if [ $return_code -eq 0 ]; then
-      trace "$name (worker $i) is running"
+      trace "$name (worker $c) is running"
     else
-      trace "$name (worker $i) is not running"
+      trace "$name (worker $c) is not running"
       exit_code=1
     fi
 
-    i=`expr $i + 1`
+    c=`expr $c + 1`
   done
 
   return $exit_code
