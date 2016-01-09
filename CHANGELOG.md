@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.13.0 (Jan 8, 2015)
+* Don't install a default SSH key for ``stanley`` user if one is not explicitly provided.
+
 ## 0.12.3 (Dec 15, 2015)
 * Adding tests around bintray repo feature
 

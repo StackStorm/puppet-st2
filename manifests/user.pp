@@ -70,25 +70,29 @@ define st2::user(
 
   if $client {
     if !$ssh_key_type or !$ssh_public_key {
-      fail("St2::User[${name}]: ${st2::notices::user_missing_client_keys}")
+      notify { "St2::User[${name}]: ${st2::notices::user_missing_client_keys}": }
     }
-    ssh_authorized_key { "st2_${name}_key":
-      type    => $ssh_key_type,
-      user    => $name,
-      key     => $ssh_public_key,
-      require => File["/home/${name}/.ssh"],
+    else {
+      ssh_authorized_key { "st2_${name}_key":
+        type    => $ssh_key_type,
+        user    => $name,
+        key     => $ssh_public_key,
+        require => File["/home/${name}/.ssh"],
+      }
     }
   }
   if $server {
     if !$ssh_private_key {
-      fail("St2::User[${name}]:: ${st2::notices::user_missing_private_key}")
+      notify { "St2::User[${name}]:: ${st2::notices::user_missing_private_key}": }
     }
-    file { "/home/${name}/.ssh/st2_${name}_key":
-      ensure  => file,
-      owner   => $name,
-      group   => 'root',
-      mode    => '0400',
-      content => $ssh_private_key,
+    else {
+      file { "/home/${name}/.ssh/st2_${name}_key":
+        ensure  => file,
+        owner   => $name,
+        group   => 'root',
+        mode    => '0400',
+        content => $ssh_private_key,
+      }
     }
   }
   ### END Setup SSH Keys ###
