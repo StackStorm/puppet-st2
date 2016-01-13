@@ -24,7 +24,7 @@ class st2::package::debian(
 
   if $repo_base /https/ {
     $repo_protocol = 'https://'
-  else:
+  } else {
     $repo_protocol = 'http://'
   }
   
