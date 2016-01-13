@@ -22,7 +22,7 @@ class st2::package::debian(
     default => 'stable',
   }
 
-  if $repo_base /https/ {
+  if $repo_base =~ /https/ {
     $repo_protocol = 'https://'
   } else {
     $repo_protocol = 'http://'
