@@ -24,7 +24,6 @@
 <%- db_username = env_st2_db_username || nil -%>
 <%- db_password = env_st2_db_password || nil -%>
 <%- mask_secrets = env_mask_secrets || 'True' -%>
-<%- pack_virtualenv_opts = env_pack_virtualenv_opts || '--system-site-packages' -%>
 
 [api]
 # Host and port to bind the API server.
@@ -44,7 +43,6 @@ logging = <%= conf_root %>/st2reactor/conf/console.conf
 
 [actionrunner]
 logging = <%= conf_root %>/st2actions/conf/console.conf
-virtualenv_opts = <%= pack_virtualenv_opts %>
 
 [auth]
 host = 0.0.0.0
