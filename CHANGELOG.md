@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.14.0 (Jan 15, 2015)
+* Add services files for the new ``st2garbagecollector`` service.
+
 ## 0.13.0 (Jan 8, 2015)
 * Don't install a default SSH key for ``stanley`` user if one is not explicitly provided.
 
