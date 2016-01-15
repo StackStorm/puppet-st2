@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.14.1 (Jan 15, 2015)
+* Fix typo - st2garbagecollector is part of st2reactor package.
+
 ## 0.14.0 (Jan 15, 2015)
 * Add services files for the new ``st2garbagecollector`` service.
 
