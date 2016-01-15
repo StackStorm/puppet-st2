@@ -290,6 +290,16 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
+  ## Garbage collector Settings
+  ini_setting { 'garbagecollector_logging':
+    ensure => present,
+    path   => '/etc/st2/st2.conf',
+    section => 'garbagecollector',
+    setting => 'logging',
+    value   => "/etc/st2reactor/${_logger_config}.garbagecollector.conf",
+    tag     => 'st2::config',
+  }
+
   ## Sensor container Settings
   ini_setting { 'sensorcontainer_logging':
     ensure => present,
@@ -407,6 +417,7 @@ class st2::profile::server (
   ::st2::helper::service_manager { 'sensorcontainer': }
   ::st2::helper::service_manager { 'notifier': }
   ::st2::helper::service_manager { 'rulesengine': }
+  ::st2::helper::service_manager { 'garbagecollector': }
 
   St2::Package::Install<| tag == 'st2::profile::server' |>
   -> Ini_setting<| tag == 'st2::config' |>
