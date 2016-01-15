@@ -47,7 +47,7 @@ class st2::params(
     resultstracker      => 'st2actions',
     rulesengine         => 'st2reactor',
     sensorcontainer     => 'st2reactor',
-    garbagecollector    => 'st2garbagecollector',
+    garbagecollector    => 'st2reactor',
     web                 => 'st2common',
 
     st2actionrunner     => 'st2actions',
@@ -57,7 +57,7 @@ class st2::params(
     st2resultstracker   => 'st2actions',
     st2rulesengine      => 'st2reactor',
     st2sensorcontainer  => 'st2reactor',
-    st2garbagecollector => 'st2garbagecollector',
+    st2garbagecollector => 'st2reactor',
     st2web              => 'st2common',
   }
   $subsystem_map = {
