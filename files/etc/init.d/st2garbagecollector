@@ -36,6 +36,11 @@ emit() {
 }
 
 start() {
+  if [ ! -f $program ]; then
+      # Service not available or installed
+      return 1
+  fi
+
   $program $args > /dev/null 2>&1 &
   echo $! > $pidfile
   emit "$name started"
