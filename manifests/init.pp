@@ -48,7 +48,7 @@
 #    st2::revison: 11
 #
 class st2(
-  $version                  = '1.2.0',
+  $version                  = '1.3dev',
   $revision                 = '8',
   $autoupdate               = false,
   $mistral_git_branch       = 'st2-1.2.0',
