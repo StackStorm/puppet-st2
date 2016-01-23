@@ -48,10 +48,10 @@
 #    st2::revison: 11
 #
 class st2(
-  $version                  = '1.2.0',
-  $revision                 = '8',
+  $version                  = '1.3.0',
+  $revision                 = '9',
   $autoupdate               = false,
-  $mistral_git_branch       = 'st2-1.2.0',
+  $mistral_git_branch       = 'st2-1.3.0',
   $repo_base                = $::st2::params::repo_base,
   $repo_env                 = $::st2::params::repo_env,
   $conf_dir                 = $::st2::params::conf_dir,
