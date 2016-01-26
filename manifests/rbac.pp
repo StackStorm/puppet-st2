@@ -19,43 +19,10 @@ define st2::rbac (
   $description = "Created and managed by Puppet",
   $roles       = [],
 ) {
-  $_rbac_dir = '/opt/stackstorm/rbac'
+  include ::st2::rbac::support
   $_enabled_state = $ensure ? {
     'present' => 'true',
     default   => 'false',
-  }
-
-  file { $_rbac_dir:
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => 'root',
-    'mode'    => '0755',
-    'recurse' => true,
-    'require' => Class['::st2::profile::server'],
-  }
-
-  file "${_rbac_dir}/assignments":
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => 'root',
-    'mode'    => '0755',
-    'require' => Class['::st2::profile::server'],
-  }
-
-  file { "${_rbac_dir}/roles":
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => 'root',
-    'mode'    => '0755',
-    'require' => Class['::st2::profile::server'],
-  }
-
-  file { "${_rbac_dir}/assignments":
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => 'root',
-    'mode'    => '0755',
-    'require' => Class['::st2::profile::server'],
   }
 
   ensure_resource('exec', 'reload st2 rbac definitions', {
