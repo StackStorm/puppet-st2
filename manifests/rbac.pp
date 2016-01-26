@@ -38,6 +38,6 @@ define st2::rbac (
     group   => 'root',
     mode    => '0644',
     content => template('st2/rbac/assignments/user.yaml.erb'),
-    notify  => 'reload st2 rbac definitions'
+    notify  => Exec['reload st2 rbac definitions']
   }
 }
