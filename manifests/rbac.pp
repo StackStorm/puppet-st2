@@ -26,11 +26,11 @@ define st2::rbac (
     default   => 'false',
   }
 
-  exec { 'reload st2 rbac definitions':
-    command         => 'st2-apply-rbac-definitions',
-    refreshonly     => 'true',
-    path            => '/usr/sbin:/usr/bin:/sbin:/bin',
-  }
+  ensure_resource('exec', 'reload st2 rbac definitions', {
+    'command'         => 'st2-apply-rbac-definitions',
+    'refreshonly'     => 'true',
+    'path'            => '/usr/sbin:/usr/bin:/sbin:/bin',
+  })
 
   file { "${_rbac_dir}/assignments/${user}.yaml":
     ensure  => 'file',
@@ -38,6 +38,6 @@ define st2::rbac (
     group   => 'root',
     mode    => '0644',
     content => template('st2/rbac/assignments/user.yaml.erb'),
-    notify  => Exec['reload st2 rbac definitions']
+    notify  => Exec['reload st2 rbac definitions'],
   }
 }
