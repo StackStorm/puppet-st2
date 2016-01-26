@@ -20,6 +20,7 @@ define st2::rbac (
   $roles       = [],
 ) {
   include ::st2::rbac::support
+  $_rbac_dir = '/opt/stackstorm/rbac'
   $_enabled_state = $ensure ? {
     'present' => 'true',
     default   => 'false',
