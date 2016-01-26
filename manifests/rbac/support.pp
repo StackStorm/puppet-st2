@@ -10,7 +10,7 @@ class st2::rbac::support {
     require => Class['::st2::profile::server'],
   }
 
-  file "${_rbac_dir}/assignments":
+  file { "${_rbac_dir}/assignments":
     ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
