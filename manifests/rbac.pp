@@ -30,6 +30,7 @@ define st2::rbac (
     'owner'   => 'root',
     'group'   => 'root',
     'mode'    => '0755',
+    'recurse' => true,
     'require' => Class['::st2::profile::server'],
   })
   ensure_resource('file', "${_rbac_dir}/assignments", {
@@ -64,6 +65,9 @@ define st2::rbac (
     group   => 'root',
     mode    => '0644',
     content => template('st2/rbac/assignments/user.yaml.erb'),
+    require => [
+      File['/opt/stackstorm/rbac/assignments'],
+    ],
     notify  => Exec['reload st2 rbac definitions'],
   }
 }
