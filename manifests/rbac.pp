@@ -25,12 +25,6 @@ define st2::rbac (
     default   => 'false',
   }
 
-  ensure_resource('exec', 'reload st2 rbac definitions', {
-    'command'         => 'st2-apply-rbac-definitions',
-    'refreshonly'     => 'true',
-    'path'            => '/usr/sbin:/usr/bin:/sbin:/bin',
-  })
-
   file { "${_rbac_dir}/assignments/${user}.yaml":
     ensure  => 'file',
     owner   => 'root',
@@ -40,6 +34,6 @@ define st2::rbac (
     require => [
       File['/opt/stackstorm/rbac/assignments'],
     ],
-    notify  => Exec['reload st2 rbac definitions'],
+    notify  => Class['::st2::rbac::support']
   }
 }

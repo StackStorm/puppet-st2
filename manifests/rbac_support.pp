@@ -33,4 +33,10 @@ class st2::rbac::support {
     'mode'    => '0755',
     'require' => Class['::st2::profile::server'],
   }
+
+  exec { 'reload st2 rbac definitions':
+    'command'         => 'st2-apply-rbac-definitions',
+    'refreshonly'     => 'true',
+    'path'            => '/usr/sbin:/usr/bin:/sbin:/bin',
+  }
 }
