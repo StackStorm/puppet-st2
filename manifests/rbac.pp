@@ -32,9 +32,6 @@ define st2::rbac (
     group   => 'root',
     mode    => '0644',
     content => template('st2/rbac/assignments/user.yaml.erb'),
-    require => [
-      File['/opt/stackstorm/rbac/assignments'],
-    ],
     notify  => Class['::st2::rbac::support']
   }
 }
