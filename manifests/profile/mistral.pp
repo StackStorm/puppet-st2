@@ -67,6 +67,7 @@ class st2::profile::mistral(
   $_mistral_root = '/opt/openstack/mistral'
   $_bootstrapped = $::mistral_bootstrapped ? {
     undef   => false,
+    false   => false,
     default => true,
   }
   $_update_vcsroot = $autoupdate ? {

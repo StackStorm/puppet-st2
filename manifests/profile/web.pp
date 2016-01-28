@@ -32,6 +32,7 @@ class st2::profile::web(
   }
   $_bootstrapped = $::st2web_bootstrapped ? {
     undef   => false,
+    false   => false,
     default => str2bool($::st2web_bootstrapped),
   }
 

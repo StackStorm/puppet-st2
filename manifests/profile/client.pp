@@ -51,6 +51,7 @@ class st2::profile::client (
   }
   $_bootstrapped = $::st2client_bootstrapped ? {
     undef   => false,
+    false   => false,
     default => true,
   }
   $_git_tag = $_version ? {
