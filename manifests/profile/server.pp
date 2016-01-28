@@ -72,8 +72,7 @@ class st2::profile::server (
   }
   $_bootstrapped = $::st2server_bootstrapped ? {
     undef   => false,
-    false   => false,
-    default => true,
+    default => str2bool($::st2server_bootstrapped),
   }
   $_revision = $autoupdate ? {
     true    => undef,
