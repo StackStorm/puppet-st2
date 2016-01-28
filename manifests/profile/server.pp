@@ -118,35 +118,38 @@ class st2::profile::server (
   }
 
   ### This should be a versioned download too... currently on master
-  wget::fetch { 'Download st2server requirements.txt':
-    source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/requirements.txt",
-    cache_dir   => '/var/cache/wget',
-    destination => '/tmp/st2server-requirements.txt'
-  }
-  # More RedHat 6 hackery.  Need to use pip2.7.
-  case $::osfamily {
-    'Debian': {
-      python::requirements { '/tmp/st2server-requirements.txt':
-        before  => Exec['register st2 content'],
-        require => Wget::Fetch['Download st2server requirements.txt']
-      }
+  if $autoupdate or ! $_bootstrapped {
+    wget::fetch { 'Download st2server requirements.txt':
+      source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/requirements.txt",
+      cache_dir   => '/var/cache/wget',
+      destination => '/tmp/st2server-requirements.txt'
     }
-    'RedHat': {
-      if $operatingsystemmajrelease == '6' {
-        exec { 'pip27_install_st2server_reqs':
-          path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-          command => 'pip2.7 install -U -r /tmp/st2server-requirements.txt',
-          notify  => File['/etc/facter/facts.d/st2server_bootstrapped.txt'],
-          require => Wget::Fetch['Download st2server requirements.txt']
-        }
-      } else {
+    # More RedHat 6 hackery.  Need to use pip2.7.
+    case $::osfamily {
+      'Debian': {
         python::requirements { '/tmp/st2server-requirements.txt':
           before  => Exec['register st2 content'],
           require => Wget::Fetch['Download st2server requirements.txt']
         }
       }
+      'RedHat': {
+        if $operatingsystemmajrelease == '6' {
+          exec { 'pip27_install_st2server_reqs':
+            path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+            command => 'pip2.7 install -U -r /tmp/st2server-requirements.txt',
+            notify  => File['/etc/facter/facts.d/st2server_bootstrapped.txt'],
+            require => Wget::Fetch['Download st2server requirements.txt']
+          }
+        } else {
+          python::requirements { '/tmp/st2server-requirements.txt':
+            before  => Exec['register st2 content'],
+            require => Wget::Fetch['Download st2server requirements.txt']
+          }
+        }
+      }
     }
   }
+
 
   st2::package::install { $_server_packages:
     version     => $_version,
