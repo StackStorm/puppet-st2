@@ -64,6 +64,7 @@ class st2(
   $auth                     = true,
   $auth_url                 = undef,
   $auth_mode                = 'standalone',
+  $auth_logging_file         = '/etc/st2auth/logging.conf',
   $flow_url                 = undef,
   $cli_base_url             = 'http://localhost',
   $cli_api_version          = 'v1',
