@@ -38,6 +38,7 @@ class st2::profile::python {
         pip        => true,
         dev        => true,
         virtualenv => true,
+        provider   => 'pip',
       }
     }
   }
