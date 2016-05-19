@@ -38,6 +38,22 @@ class st2::package::debian(
       $_key        = '8756C4F765C9AC3CB6B85D62379CE192D401AB61'
       $_key_source = 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray'
     }
+    /^https:\/\/packagecloud.io/: {
+      $_repo_suffix = $repo_env ? {
+        'staging' => 'staging-',
+        default   => undef,
+      }
+
+      $_location   = join([
+        $repo_base,
+        'StackStorm',
+        "${_repo_suffix}stable",
+        "${::operatingsystem}",
+      ], '/')
+      $_release    = $_suite
+      $_key        = "418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB"
+      $_key_source = "${_location}/gpg.key"
+    }
     default: {
       $_location   = "${repo_base}/deb/"
       $_release    = "${::lsbdistcodename}_${_suite}"

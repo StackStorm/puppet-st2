@@ -73,7 +73,4 @@ define st2::package::install(
     default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }
   }
 
-  package { $name:
-    ensure => $_package_version,
-  }
 }

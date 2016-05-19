@@ -40,25 +40,29 @@ class st2::params(
   ]
 
   $component_map = {
-    actionrunner        => 'st2actions',
-    api                 => 'st2api',
-    auth                => 'st2auth',
-    notifier            => 'st2actions',
-    resultstracker      => 'st2actions',
-    rulesengine         => 'st2reactor',
-    sensorcontainer     => 'st2reactor',
-    garbagecollector    => 'st2reactor',
-    web                 => 'st2common',
+    actionrunner        => 'st2',
+    api                 => 'st2',
+    auth                => 'st2',
+    notifier            => 'st2',
+    resultstracker      => 'st2',
+    rulesengine         => 'st2',
+    sensorcontainer     => 'st2',
+    garbagecollector    => 'st2',
+    stream              => 'st2',
+    st2chatops          => 'st2chatops',
+    web                 => 'st2web',
 
-    st2actionrunner     => 'st2actions',
-    st2api              => 'st2api',
-    st2auth             => 'st2auth',
-    st2notifier         => 'st2actions',
-    st2resultstracker   => 'st2actions',
-    st2rulesengine      => 'st2reactor',
-    st2sensorcontainer  => 'st2reactor',
-    st2garbagecollector => 'st2reactor',
-    st2web              => 'st2common',
+    st2actionrunner     => 'st2',
+    st2api              => 'st2',
+    st2auth             => 'st2',
+    st2notifier         => 'st2',
+    st2resultstracker   => 'st2',
+    st2rulesengine      => 'st2',
+    st2sensorcontainer  => 'st2',
+    st2garbagecollector => 'st2',
+    st2stream           => 'st2',
+    st2chatops          => 'st2chatops',
+    st2web              => 'st2web',
   }
   $subsystem_map = {
     actionrunner        => 'st2actionrunner',
@@ -69,6 +73,8 @@ class st2::params(
     rulesengine         => 'st2rulesengine',
     sensorcontainer     => 'st2sensorcontainer',
     garbagecollector    => 'st2garbagecollector',
+    stream              => 'st2stream',
+    chatops             => 'st2chatops',
     web                 => 'st2web',
 
     st2actionrunner     => 'st2actionrunner',
@@ -79,10 +85,12 @@ class st2::params(
     st2rulesengine      => 'st2rulesengine',
     st2sensorcontainer  => 'st2sensorcontainer',
     st2garbagecollector => 'st2garbagecollector',
+    st2stream           => 'st2stream',
+    st2chatops          => 'st2chatops',
     st2web              => 'st2web',
   }
 
-  $repo_base = 'https://downloads.stackstorm.net'
+  $repo_base = 'https://packagecloud.io'
   $repo_env = 'production'
 
   # Auth settings
@@ -94,12 +102,10 @@ class st2::params(
   $conf_dir = '/etc/st2'
 
   $st2_server_packages = [
-    'st2common',
-    'st2reactor',
-    'st2actions',
-    'st2api',
-    'st2auth',
-    'st2debug',
+    'st2',
+    'st2web',
+    'st2chatops',
+    'mistral'
   ]
   case $::osfamily {
     'Debian': {
@@ -132,11 +138,7 @@ class st2::params(
     'libxslt1-dev',
     'python-tox',
   ]
-  $debian_client_dependencies = [
-    'python-prettytable',
-    'python-jsonpath-rw',
-    'python-dateutil',
-  ]
+  $debian_client_dependencies = []
   $debian_mongodb_dependencies = [
     'mongodb-dev',
   ]
@@ -151,9 +153,7 @@ class st2::params(
     'libxml2-devel',
     'libxslt-devel',
   ]
-  $redhat_client_dependencies = [
-    'python-prettytable',
-  ]
+  $redhat_client_dependencies = []
   ### END RedHat Specific Information ###
 
   # OS Init Type Detection
