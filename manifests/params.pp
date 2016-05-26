@@ -39,6 +39,10 @@ class st2::params(
     'auth'
   ]
 
+  $install_st2 = true
+  $install_chatops = true
+  $install_web = true
+
   $component_map = {
     actionrunner        => 'st2',
     api                 => 'st2',
@@ -164,6 +168,7 @@ class st2::params(
   # so we need a way to determine what the init system.
   case $::osfamily {
     'RedHat': {
+      $package_type = 'rpm'
       if $::operatingsystem == 'Amazon' {
         $init_type = $::operatingsystemmajrelease ? {
           '2014'  => 'init',
@@ -179,6 +184,7 @@ class st2::params(
       }
     }
     'Debian': {
+      $package_type = 'deb'
       if $::operatingsystem == 'Debian' {
         $init_type = $::operatingsystemmajrelease ? {
           '6'     => 'init',
@@ -197,6 +203,7 @@ class st2::params(
       }
     }
     default: {
+      $package_type = undef
       $init_type = undef
     }
   }
