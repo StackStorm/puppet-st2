@@ -26,15 +26,20 @@ class st2::profile::fullinstall inherits st2 {
     before => Anchor['st2::pre_reqs'],
   }
 
+  class { '::st2::profile::packagecloud':
+    before => Anchor['st2::pre_reqs'],
+  }
+
   anchor { 'st2::bootstrap': }
   anchor { 'st2::pre_reqs': }
 
   Anchor['st2::bootstrap']
+    -> Class['::st2::profile::packagecloud']
     -> Class['::st2::profile::rabbitmq']
     -> Class['::st2::profile::mongodb']
 
   Anchor['st2::pre_reqs']
-  -> class { '::st2::profile::server': }
+    -> class { '::st2::profile::server': }
 
   include ::st2::packs
   include ::st2::kvs

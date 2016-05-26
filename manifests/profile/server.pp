@@ -48,8 +48,6 @@ class st2::profile::server (
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
-  require '::st2::dependencies'
-  require '::st2::package::install'
 
   if $install_st2 == true {
     package{'st2':
@@ -69,7 +67,7 @@ class st2::profile::server (
     }
   }
 
-  package{'mistral':
+  package{'st2mistral':
     ensure    => 'latest',
   }
 
