@@ -75,7 +75,11 @@ class st2::profile::server (
   if $enterprise_token != undef {
     package{'st2enterprise':
       ensure    => 'latest',
-      }
+    }
+
+    package{'st2-auth-ldap':
+      ensure    => 'latest',
+    }
   }
 
 }
