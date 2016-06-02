@@ -12,4 +12,11 @@ class st2::profile::packagecloud {
     packagecloud::repo{'stackstorm/stable':
         type    => "$package_type"
     }
+
+    if $st2::enterprise_token != undef {
+    	packagecloud::repo{'stackstorm/enterprise':
+            type         => "$package_type",
+            master_token => $st2::enterprise_token
+        }
+    }
 }

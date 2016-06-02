@@ -68,7 +68,13 @@ class st2::profile::server (
   }
 
   package{'st2mistral':
-    ensure    => 'latest',
+    ensure      => 'latest',
+  }
+
+  if $st2::enterprise_token != undef {
+    package{'st2enterprise':
+      ensure    => 'latest',
+      }
   }
 
 }

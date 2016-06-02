@@ -48,6 +48,7 @@
 #    st2::revison: 11
 #
 class st2(
+  $enterprise_token         = undef,
   $install_st2              = $::st2::params::install_st2,
   $install_chatops          = $::st2::params::install_chatops,
   $install_web              = $::st2::params::install_Web,
