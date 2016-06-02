@@ -45,6 +45,7 @@ class st2::profile::server (
   $install_chatops        = $::st2::install_chatops,
   $install_web            = $::st2::install_web,
   $install_st2            = $::st2::install_st2,
+  $enterprise_token       = $::st2::enterprise_token,
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
@@ -71,7 +72,7 @@ class st2::profile::server (
     ensure      => 'latest',
   }
 
-  if $st2::enterprise_token != undef {
+  if $enterprise_token != undef {
     package{'st2enterprise':
       ensure    => 'latest',
       }

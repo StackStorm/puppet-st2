@@ -13,7 +13,8 @@
 #
 #  include st2::profile::fullinstall
 #
-class st2::profile::fullinstall inherits st2 {
+class st2::profile::fullinstall(
+    $enterprise_token = '') inherits st2 {
   class { '::st2::profile::facter':
     before => Anchor['st2::bootstrap']
   }
@@ -27,9 +28,13 @@ class st2::profile::fullinstall inherits st2 {
   }
 
   class { '::st2::profile::packagecloud':
+    enterprise_token => $enterprise_token,
     before => Anchor['st2::pre_reqs'],
   }
 
+  class { '::st2::profile::server':
+    enterprise_token => $enterprise_token
+  }
   anchor { 'st2::bootstrap': }
   anchor { 'st2::pre_reqs': }
 
@@ -39,7 +44,7 @@ class st2::profile::fullinstall inherits st2 {
     -> Class['::st2::profile::mongodb']
 
   Anchor['st2::pre_reqs']
-    -> class { '::st2::profile::server': }
+    -> Class['::st2::profile::server']
 
   include ::st2::packs
   include ::st2::kvs
