@@ -51,6 +51,8 @@ class st2::profile::mistral(
   $disable_engine      = false,
 ) inherits st2 {
   require '::st2::dependencies'
+  
+  ensure_packages('git')
 
   $_st2_version = $autoupdate ? {
     undef   => st2_latest_stable(),
@@ -119,7 +121,7 @@ class st2::profile::mistral(
     source   => 'https://github.com/StackStorm/mistral.git',
     revision => $_git_branch,
     provider => 'git',
-    require  => File['/opt/openstack'],
+    require  => [File['/opt/openstack'], Package['git']],
     before   => $_mistral_root_before,
   }
   vcsrepo { '/etc/mistral/actions/st2mistral':
@@ -127,7 +129,7 @@ class st2::profile::mistral(
     source => 'https://github.com/StackStorm/st2mistral.git',
     revision => $_git_branch,
     provider => 'git',
-    require  => File['/etc/mistral/actions'],
+    require  => [File['/etc/mistral/actions'], Package['git']],
     before   => $_st2mistral_before,
   }
 
