@@ -16,6 +16,9 @@ class st2::profile::source(
   $branch = 'master',
 ) {
   include ::st2::profile::python
+
+  ensure_packages('git')
+
   $_repo_root = '/opt/stackstorm/src'
 
   file { '/opt/stackstorm':
@@ -30,7 +33,7 @@ class st2::profile::source(
     source   => 'https://github.com/StackStorm/st2.git',
     revision => $branch,
     provider => 'git',
-    require  => File['/opt/stackstorm'],
+    require  => [File['/opt/stackstorm'], Package['git']],
   }
 
   file { '/etc/st2':

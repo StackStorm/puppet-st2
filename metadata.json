@@ -12,7 +12,6 @@
     {"name":"puppetlabs/stdlib","version_requirement":">= 4.6.0"},
     {"name":"nanliu/staging","version_requirement":">= 1.0.2"},
     {"name":"puppetlabs/apt","version_requirement":">= 1.7.0"},
-    {"name":"maestrodev/git","version_requirement":">= 1.0.6"},
     {"name":"maestrodev/wget","version_requirement":">= 1.5.6"},
     {"name":"saz/sudo","version_requirement":">= 3.0.9"},
     {"name":"stankevich/python","version_requirement":">= 1.7.15"},
