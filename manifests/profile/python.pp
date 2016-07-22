@@ -35,9 +35,10 @@ class st2::profile::python {
     if !defined(Class['::python']) {
       class { '::python':
         version    => 'system',
-        pip        => true,
+        pip        => latest,
         dev        => true,
-        virtualenv => true,
+        virtualenv => present,
+        provider   => 'pip',
       }
     }
   }
