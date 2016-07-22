@@ -16,7 +16,7 @@
 #  include st2::profile::python
 #
 class st2::profile::python {
-  if ($::osfamily == "RedHat") and ($operatingsystemmajrelease == '6') {
+  if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
     package {'python27':
       ensure => 'latest'
     }
@@ -27,9 +27,9 @@ class st2::profile::python {
       ensure => 'latest'
     }
     exec {'install_pip27':
-      path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-      command     => 'easy_install-2.7 pip',
-      require     => Package['python27']
+      path    => '/usr/bin:/usr/sbin:/bin:/sbin',
+      command => 'easy_install-2.7 pip',
+      require => Package['python27']
     }
   } else {
     if !defined(Class['::python']) {
