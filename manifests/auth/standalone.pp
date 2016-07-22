@@ -106,7 +106,7 @@ class st2::auth::standalone(
     default => absent,
   }
   st2::auth_user { 'testu':
-    ensure    => $_testuser_ensure,
+    ensure   => $_testuser_ensure,
     password => 'testp',
   }
   st2::auth_user { $_cli_username:

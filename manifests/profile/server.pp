@@ -79,7 +79,7 @@ class st2::profile::server (
     default => $revision,
   }
   $_git_tag = $_version ? {
-    /dev/   => "master",
+    /dev/   => 'master',
     default => "v${_version}",
   }
 
@@ -133,7 +133,7 @@ class st2::profile::server (
         }
       }
       'RedHat': {
-        if $operatingsystemmajrelease == '6' {
+        if $::operatingsystemmajrelease == '6' {
           exec { 'pip27_install_st2server_reqs':
             path    => '/usr/bin:/usr/sbin:/bin:/sbin',
             command => 'pip2.7 install -U -r /tmp/st2server-requirements.txt',
@@ -147,14 +147,17 @@ class st2::profile::server (
           }
         }
       }
+      default: {
+          crit('Unsupported OS Family, only Debian and RedHat are supported')
+      }
     }
   }
 
 
   st2::package::install { $_server_packages:
-    version     => $_version,
-    revision    => $_revision,
-    notify      => Exec['register st2 content'],
+    version  => $_version,
+    revision => $_revision,
+    notify   => Exec['register st2 content'],
   }
 
   exec { 'register st2 content':
@@ -183,8 +186,8 @@ class st2::profile::server (
 
   ## ActionRunner settings
   ini_setting { 'actionrunner_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'actionrunner',
     setting => 'logging',
     value   => "/etc/st2actions/${_logger_config}.conf",
@@ -217,8 +220,8 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
   ini_setting { 'api_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'api',
     setting => 'logging',
     value   => "/etc/st2api/${_logger_config}.conf",
@@ -252,8 +255,8 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
   ini_setting { 'auth_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'logging',
     value   => "/etc/st2auth/${_logger_config}.conf",
@@ -262,8 +265,8 @@ class st2::profile::server (
 
   ## Notifier Settings
   ini_setting { 'notifier_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'notifier',
     setting => 'logging',
     value   => "/etc/st2actions/${_logger_config}.notifier.conf",
@@ -272,8 +275,8 @@ class st2::profile::server (
 
   ## Resultstracker Settings
   ini_setting { 'resultstracker_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'resultstracker',
     setting => 'logging',
     value   => "/etc/st2actions/${_logger_config}.resultstracker.conf",
@@ -282,8 +285,8 @@ class st2::profile::server (
 
   ## Rules Engine Settings
   ini_setting { 'rulesengine_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'rulesengine',
     setting => 'logging',
     value   => "/etc/st2reactor/${_logger_config}.rulesengine.conf",
@@ -292,8 +295,8 @@ class st2::profile::server (
 
   ## Garbage collector Settings
   ini_setting { 'garbagecollector_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'garbagecollector',
     setting => 'logging',
     value   => "/etc/st2reactor/${_logger_config}.garbagecollector.conf",
@@ -302,8 +305,8 @@ class st2::profile::server (
 
   ## Sensor container Settings
   ini_setting { 'sensorcontainer_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'sensorcontainer',
     setting => 'logging',
     value   => "/etc/st2reactor/${_logger_config}.sensorcontainer.conf",
@@ -345,7 +348,7 @@ class st2::profile::server (
   }
 
   # Spin up any number of workers as needed
-  $_workers = prefix(range("0", "${workers}"), "worker")
+  $_workers = prefix(range('0', $workers), 'worker')
 
   case $_init_provider {
     'upstart': {
@@ -359,18 +362,18 @@ class st2::profile::server (
       }
 
       file_line{'st2actionrunner count':
-        path => '/etc/default/st2actionrunner',
-        line => "WORKERS=${workers}",
+        path    => '/etc/default/st2actionrunner',
+        line    => "WORKERS=${workers}",
         require => File['/etc/default/st2actionrunner']
       }
 
       # Stub init script for workers to anchor to
       file { '/etc/init/st2actionrunner.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0444',
+        source => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
       }
     }
     'systemd': {
@@ -391,13 +394,16 @@ class st2::profile::server (
       }
 
       file_line{'st2actionrunner count':
-        path => "${_config_default}/st2actionrunner",
-        line => "WORKERS=${workers}",
+        path    => "${_config_default}/st2actionrunner",
+        line    => "WORKERS=${workers}",
         require => File["${_config_default}/st2actionrunner"]
       }
     }
     'init': {
       ::st2::helper::service_manager{ 'actionrunner': }
+    }
+    default: {
+        crit('Unsupported init system, only Upstart, Systemd and Init are supported')
     }
   }
 

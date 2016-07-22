@@ -22,7 +22,7 @@ class st2::profile::rabbitmq {
     }
   }
 
-  if $::osfamily == "RedHat" {
+  if $::osfamily == 'RedHat' {
     class {'::erlang': }
 
     yumrepo { 'erlang-solutions':

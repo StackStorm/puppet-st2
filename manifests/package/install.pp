@@ -43,7 +43,7 @@ define st2::package::install(
       } else {
         $_package_version = "${_version}-${_revision}"
       }
-      Class["apt::update"] -> Package<| title == $name |>
+      Class['apt::update'] -> Package<| title == $name |>
     }
     'RedHat': {
       include ::st2::package::redhat
@@ -70,7 +70,7 @@ define st2::package::install(
         $_package_version = "${_version}-${_revision}"
       }
     }
-    default: { fail("Class[st2::package]: $st2::notice::unsupported_os") }
+    default: { fail("Class[st2::package]: ${st2::notice::unsupported_os}") }
   }
 
   package { $name:

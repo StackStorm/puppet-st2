@@ -19,7 +19,7 @@ class st2::profile::mongodb {
   include '::st2::params'
 
   if !defined(Class['::mongodb::server']) {
-    if $::osfamily == "RedHat" {
+    if $::osfamily == 'RedHat' {
       Yumrepo['epel']->
       class {'::mongodb::server': }->
       class {'::mongodb::client': }

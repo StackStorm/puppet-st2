@@ -80,8 +80,8 @@ class st2::profile::client (
   st2::dependencies::install { $_client_dependencies: }
 
   st2::package::install { $_client_packages:
-    version  => $_version,
-    revision => $_revision,
+    version   => $_version,
+    revision  => $_revision,
     repo_base => $_repo_base,
   }
 
@@ -98,12 +98,12 @@ class st2::profile::client (
     case $::osfamily {
       'Debian': {
         python::requirements { '/tmp/st2client-requirements.txt':
-          notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
+          notify  => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
           require => Wget::Fetch['Download st2client requirements.txt']
         }
       }
       'RedHat': {
-        if $operatingsystemmajrelease == '6' {
+        if $::operatingsystemmajrelease == '6' {
           exec { 'pip27_install_st2client_reqs':
             path    => '/usr/bin:/usr/sbin:/bin:/sbin',
             command => 'pip2.7 install -U -r /tmp/st2client-requirements.txt',
@@ -112,10 +112,13 @@ class st2::profile::client (
           }
         } else {
           python::requirements { '/tmp/st2client-requirements.txt':
-            notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
+            notify  => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
             require => Wget::Fetch['Download st2client requirements.txt']
           }
         }
+      }
+      default: {
+          crit('Unsupported OS Family, only Debian and RedHat are supported')
       }
     }
   }

@@ -36,7 +36,7 @@ class st2::profile::fullinstall inherits st2 {
 
   class { '::st2::profile::mistral':
     manage_postgresql => true,
-    before => Anchor['st2::pre_reqs'],
+    before            => Anchor['st2::pre_reqs'],
   }
 
   anchor { 'st2::bootstrap': }

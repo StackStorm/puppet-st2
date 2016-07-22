@@ -14,18 +14,18 @@
 #
 #
 define st2::kv (
+  $value,
   $ensure   = present,
   $key      = $name,
-  $value,
 ) {
   include ::st2
 
   exec { "set-st2-key-${key}":
-    command     => "st2 key set ${key} ${value}",
-    unless      => "st2 key get ${key} | grep ${key}",
-    path        => '/usr/sbin:/usr/bin:/sbin:/bin',
-    tries       => '5',
-    try_sleep   => '10',
+    command   => "st2 key set ${key} ${value}",
+    unless    => "st2 key get ${key} | grep ${key}",
+    path      => '/usr/sbin:/usr/bin:/sbin:/bin',
+    tries     => '5',
+    try_sleep => '10',
   }
 
   Service<| tag == 'st2::profile::service' |> -> Exec["set-st2-key-${key}"]
