@@ -36,6 +36,7 @@ class st2::profile::web(
   }
 
   file { [
+      '/opt/stackstorm',
       '/opt/stackstorm/static',
       '/opt/stackstorm/static/webui',
     ]:
