@@ -47,11 +47,15 @@ class st2::package::debian(
   }
 
   apt::source { 'stackstorm':
-    location    => $_location,
-    release     => $_release,
-    repos       => 'main',
-    include_src => false,
-    key         => $_key,
-    key_source  => $_key_source,
+    location => $_location,
+    release  => $_release,
+    repos    => 'main',
+    include  => {
+        'src' => false
+    },
+    key      => {
+        'id'     => $_key,
+        'source' => $_key_source
+    },
   }
 }
