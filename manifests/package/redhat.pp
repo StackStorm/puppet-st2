@@ -14,9 +14,9 @@ class st2::package::redhat (
   $_osver = $::operatingsystemmajrelease
 
   if $version =~ /dev$/ {
-    $_suite = "unstable"
+    $_suite = 'unstable'
   } else {
-    $_suite = "stable"
+    $_suite = 'stable'
   }
 
   yumrepo { 'stackstorm':

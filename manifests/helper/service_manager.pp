@@ -55,6 +55,9 @@ define st2::helper::service_manager (
               content => template("st2/etc/systemd/system/${_subsystem}.service.erb"),
             }
           }
+          default: {
+              crit('Invalid subsystem provided, only st2web and st2actionrunner are valid options')
+          }
         }
 
         exec{ "sysctl enable ${_subsystem}":

@@ -41,7 +41,7 @@ class st2::helper::auth_manager (
   # Common settings for all auth backends
   ini_setting { 'auth_debug':
     ensure  => present,
-    path    => "${_st2_conf_file}",
+    path    => $_st2_conf_file,
     section => 'auth',
     setting => 'debug',
     value   => $_debug,
@@ -49,7 +49,7 @@ class st2::helper::auth_manager (
   }
   ini_setting { 'auth_api_url':
     ensure  => present,
-    path    => "${_st2_conf_file}",
+    path    => $_st2_conf_file,
     section => 'auth',
     setting => 'api_url',
     value   => $api_url,
@@ -57,7 +57,7 @@ class st2::helper::auth_manager (
   }
   ini_setting { 'auth_mode':
     ensure  => present,
-    path    => "${_st2_conf_file}",
+    path    => $_st2_conf_file,
     section => 'auth',
     setting => 'mode',
     value   => $auth_mode,
@@ -67,50 +67,50 @@ class st2::helper::auth_manager (
   if $auth_mode == 'standalone' {
     ini_setting { 'auth_backend':
       ensure  => present,
-      path    => "${_st2_conf_file}",
+      path    => $_st2_conf_file,
       section => 'auth',
       setting => 'backend',
-      value   => "${auth_backend}",
+      value   => $auth_backend,
       tag     => 'st2::config',
     }
     ini_setting { 'auth_logging_file':
       ensure  => present,
-      path    => "${_st2_conf_file}",
+      path    => $_st2_conf_file,
       section => 'auth',
       setting => 'logging',
-      value   => "${_st2_auth_logging_file}",
+      value   => $_st2_auth_logging_file,
       tag     => 'st2::config',
     }
     ini_setting { 'auth_ssl':
       ensure  => present,
-      path    => "${_st2_conf_file}",
+      path    => $_st2_conf_file,
       section => 'auth',
       setting => 'use_ssl',
-      value   => "${_use_ssl_value}",
+      value   => $_use_ssl_value,
       tag     => 'st2::config',
     }
 
 
 # SSL Settings
     if $_use_ssl {
-      if !$ssl_cert or !$ssl_key {
+      if !$::st2::ssl_cert or !$::st2::ssl_key {
         fail('[st2::helper::auth_manager] Missing $ssl_cert or $ssl_key to enable SSL')
       }
 
       ini_setting { 'auth_ssl_cert':
         ensure  => present,
-        path    => "${_st2_conf_file}",
+        path    => $_st2_conf_file,
         section => 'auth',
         setting => 'cert',
-        value   => "${_ssl_cert}",
+        value   => $_ssl_cert,
         tag     => 'st2::config',
       }
       ini_setting { 'auth_ssl_key':
         ensure  => present,
-        path    => "${_st2_conf_file}",
+        path    => $_st2_conf_file,
         section => 'auth',
         setting => 'key',
-        value   => "${_ssl_key}",
+        value   => $_ssl_key,
         tag     => 'st2::config',
       }
     }
@@ -126,9 +126,9 @@ class st2::helper::auth_manager (
         $_db_port = $::st2::db_port
         $_db_name = $::st2::db_name
         $_kwargs  = {
-          'db_host' => "${_db_host}",
-          'db_port' => "${_db_port}",
-          'db_name' => "${_db_name}",
+          'db_host' => $_db_host,
+          'db_port' => $_db_port,
+          'db_name' => $_db_name,
         }
 
         # Use inline_template to use native JSON function
@@ -146,17 +146,17 @@ class st2::helper::auth_manager (
       value => $auth_mode,
     }
     facter::fact { 'st2_auth_backend':
-      value => $_auth_backend,
+      value => $::st2::_auth_backend,
     }
 
     # Only evaluate if kwargs are not undefined.
     if $_auth_backend_kwargs {
       ini_setting { 'auth_backend_kwargs':
         ensure  => present,
-        path    => "${_st2_conf_file}",
+        path    => $_st2_conf_file,
         section => 'auth',
         setting => 'backend_kwargs',
-        value   => "${_auth_backend_kwargs}",
+        value   => $_auth_backend_kwargs,
         tag     => 'st2::config',
       }
     }

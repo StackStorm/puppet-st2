@@ -8,7 +8,7 @@ define st2::helper::systemd (
   ) {
 
   if $process_type == 'multi' {
-    $extra_char = "@"
+    $extra_char = '@'
   } else {
     $extra_char = ''
   }
@@ -28,7 +28,7 @@ define st2::helper::systemd (
       path    => '/bin:/usr/bin:/usr/local/bin',
       command => "systemctl --no-reload enable ${st2_process}",
       require => File["/etc/systemd/system/${st2_process}${extra_char}.service"],
-      notify  => Service["${st2_process}"],
+      notify  => Service[$st2_process],
     }
   }
 }

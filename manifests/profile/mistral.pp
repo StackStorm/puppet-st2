@@ -449,6 +449,9 @@ class st2::profile::mistral(
           }
         }
       }
+      default: {
+          crit('unsupported init system, only Upstart, Systemd and Init are supported')
+      }
     }
 
     service { 'mistral':
