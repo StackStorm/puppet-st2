@@ -48,6 +48,10 @@
 #    st2::revison: 11
 #
 class st2(
+  $enterprise_token         = undef,
+  $install_st2              = $::st2::params::install_st2,
+  $install_chatops          = $::st2::params::install_chatops,
+  $install_web              = $::st2::params::install_Web,
   $version                  = '1.2.0',
   $revision                 = '8',
   $autoupdate               = false,
@@ -55,6 +59,7 @@ class st2(
   $repo_base                = $::st2::params::repo_base,
   $repo_env                 = $::st2::params::repo_env,
   $conf_dir                 = $::st2::params::conf_dir,
+  $package_type             = $::st2::params::package_type,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = false,
   $ssl_cert                 = '/etc/ssl/cert.crt',
@@ -72,7 +77,7 @@ class st2(
   $cli_cache_token          = true,
   $cli_silence_ssl_warnings = false,
   $cli_username             = 'puppet',
-  $cli_password             = fqdn_rand_string(32),
+  $cli_password             = 'puppet',
   $cli_api_url              = 'http://localhost:9101',
   $cli_auth_url             = 'http://localhost:9100',
   $global_env               = false,
