@@ -64,34 +64,13 @@ class st2::profile::server (
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
-  require '::st2::dependencies'
-
-  $_version = $autoupdate ? {
-    true    => st2_latest_stable(),
-    default => $version,
-  }
-  $_bootstrapped = $::st2server_bootstrapped ? {
-    undef   => false,
-    default => str2bool($::st2server_bootstrapped),
-  }
-  $_revision = $autoupdate ? {
-    true    => undef,
-    default => $revision,
-  }
-  $_git_tag = $_version ? {
-    /dev/   => "master",
-    default => "v${_version}",
-  }
+  #require '::st2::dependencies'
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
   $_init_provider = $::st2::params::init_type
   $_python_pack = $::st2::params::python_pack
 
-  $_register_command = $_version ? {
-    /^0.8/  => "${_python_pack}/st2common/bin/registercontent.py",
-    default => "${_python_pack}/st2common/bin/st2-register-content",
-  }
   $_enable_auth = $auth ? {
     true    => 'True',
     default => 'False',
@@ -101,75 +80,9 @@ class st2::profile::server (
     default => 'logging',
   }
 
-  # This must remain here until upstream packages fully use
-  # init scripts. Otherwise, it's Puppet-specific right now
-  if $ng_init {
-    file_line { 'st2 ng_init enable':
-      path => '/etc/environment',
-      line => 'NG_INIT=true',
-    }
-  }
-
-  file { $_conf_dir:
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
-
-  ### This should be a versioned download too... currently on master
-  if $autoupdate or ! $_bootstrapped {
-    wget::fetch { 'Download st2server requirements.txt':
-      source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/requirements.txt",
-      cache_dir   => '/var/cache/wget',
-      destination => '/tmp/st2server-requirements.txt'
-    }
-    # More RedHat 6 hackery.  Need to use pip2.7.
-    case $::osfamily {
-      'Debian': {
-        python::requirements { '/tmp/st2server-requirements.txt':
-          before  => Exec['register st2 content'],
-          require => Wget::Fetch['Download st2server requirements.txt']
-        }
-      }
-      'RedHat': {
-        if $operatingsystemmajrelease == '6' {
-          exec { 'pip27_install_st2server_reqs':
-            path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-            command => 'pip2.7 install -U -r /tmp/st2server-requirements.txt',
-            notify  => File['/etc/facter/facts.d/st2server_bootstrapped.txt'],
-            require => Wget::Fetch['Download st2server requirements.txt']
-          }
-        } else {
-          python::requirements { '/tmp/st2server-requirements.txt':
-            before  => Exec['register st2 content'],
-            require => Wget::Fetch['Download st2server requirements.txt']
-          }
-        }
-      }
-    }
-  }
-
-
-  st2::package::install { $_server_packages:
-    version     => $_version,
-    revision    => $_revision,
-    notify      => Exec['register st2 content'],
-  }
-
-  exec { 'register st2 content':
-    command     => "python2.7 ${_register_command} --register-all --config-file ${_conf_dir}/st2.conf",
-    path        => '/usr/bin:/usr/sbin:/bin:/sbin',
-    refreshonly => true,
-    notify      => File['/etc/facter/facts.d/st2server_bootstrapped.txt'],
-  }
-
-  file { '/etc/facter/facts.d/st2server_bootstrapped.txt':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => 'st2server_bootstrapped=true',
+  package{ $_server_packages:
+    ensure     => $version,
+    tag        => 'st2::profile::server',
   }
 
   ini_setting { 'ssh_key_stanley':
@@ -187,7 +100,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'actionrunner',
     setting => 'logging',
-    value   => "/etc/st2actions/${_logger_config}.conf",
+    value   => "/etc/st2/${_logger_config}.actionrunner.conf",
     tag     => 'st2::config',
   }
 
@@ -221,7 +134,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'api',
     setting => 'logging',
-    value   => "/etc/st2api/${_logger_config}.conf",
+    value   => "/etc/st2/${_logger_config}.api.conf",
     tag     => 'st2::config',
   }
 
@@ -256,7 +169,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'logging',
-    value   => "/etc/st2auth/${_logger_config}.conf",
+    value   => "/etc/st2/${_logger_config}.auth.conf",
     tag     => 'st2::config',
   }
 
@@ -266,7 +179,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'notifier',
     setting => 'logging',
-    value   => "/etc/st2actions/${_logger_config}.notifier.conf",
+    value   => "/etc/st2/${_logger_config}.notifier.conf",
     tag     => 'st2::config',
   }
 
@@ -276,7 +189,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'resultstracker',
     setting => 'logging',
-    value   => "/etc/st2actions/${_logger_config}.resultstracker.conf",
+    value   => "/etc/st2/${_logger_config}.resultstracker.conf",
     tag     => 'st2::config',
   }
 
@@ -286,7 +199,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'rulesengine',
     setting => 'logging',
-    value   => "/etc/st2reactor/${_logger_config}.rulesengine.conf",
+    value   => "/etc/st2/${_logger_config}.rulesengine.conf",
     tag     => 'st2::config',
   }
 
@@ -296,7 +209,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'garbagecollector',
     setting => 'logging',
-    value   => "/etc/st2reactor/${_logger_config}.garbagecollector.conf",
+    value   => "/etc/st2/${_logger_config}.garbagecollector.conf",
     tag     => 'st2::config',
   }
 
@@ -306,7 +219,7 @@ class st2::profile::server (
     path   => '/etc/st2/st2.conf',
     section => 'sensorcontainer',
     setting => 'logging',
-    value   => "/etc/st2reactor/${_logger_config}.sensorcontainer.conf",
+    value   => "/etc/st2/${_logger_config}.sensorcontainer.conf",
     tag     => 'st2::config',
   }
 
@@ -347,81 +260,7 @@ class st2::profile::server (
   # Spin up any number of workers as needed
   $_workers = prefix(range("0", "${workers}"), "worker")
 
-  case $_init_provider {
-    'upstart': {
-      ::st2::helper::actionrunner_upstart { $_workers: }
-
-      file { '/etc/default/st2actionrunner':
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444'
-      }
-
-      file_line{'st2actionrunner count':
-        path => '/etc/default/st2actionrunner',
-        line => "WORKERS=${workers}",
-        require => File['/etc/default/st2actionrunner']
-      }
-
-      # Stub init script for workers to anchor to
-      file { '/etc/init/st2actionrunner.conf':
-        ensure  => file,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0444',
-        source  => 'puppet:///modules/st2/etc/init/st2actionrunner.conf',
-      }
-    }
-    'systemd': {
-      ::st2::helper::service_manager{'st2actionrunner':
-        process => 'st2actionrunner'
-      }
-
-      $_config_default = $::osfamily ? {
-        'RedHat' => '/etc/sysconfig',
-        'Debian' => '/etc/default',
-      }
-
-      file { "${_config_default}/st2actionrunner":
-        ensure => 'file',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0444'
-      }
-
-      file_line{'st2actionrunner count':
-        path => "${_config_default}/st2actionrunner",
-        line => "WORKERS=${workers}",
-        require => File["${_config_default}/st2actionrunner"]
-      }
-    }
-    'init': {
-      ::st2::helper::service_manager{ 'actionrunner': }
-    }
-  }
-
-  if $manage_st2web_service {
-    ::st2::helper::service_manager { 'st2web': }
-  }
-
-  if $auth and $manage_st2auth_service {
-    st2::helper::service_manager { 'auth': }
-  }
-
-  if $manage_st2api_service {
-    st2::helper::service_manager { 'api': }
-  }
-
-  ::st2::helper::service_manager { 'resultstracker': }
-  ::st2::helper::service_manager { 'sensorcontainer': }
-  ::st2::helper::service_manager { 'notifier': }
-  ::st2::helper::service_manager { 'rulesengine': }
-  ::st2::helper::service_manager { 'garbagecollector': }
-
-  St2::Package::Install<| tag == 'st2::profile::server' |>
+  Package<| tag == 'st2::profile::server' |>
   -> Ini_setting<| tag == 'st2::config' |>
-  ~> Service<| tag == 'st2::server' |>
 
-  Service<| tag == 'st2::server' |> -> St2::Pack<||>
 }

@@ -94,28 +94,29 @@ class st2::params(
   $conf_dir = '/etc/st2'
 
   $st2_server_packages = [
-    'st2common',
-    'st2reactor',
-    'st2actions',
-    'st2api',
-    'st2auth',
-    'st2debug',
+    'st2',
+    'st2chatops',
+    'st2web',
+    'st2mistral',
   ]
   case $::osfamily {
     'Debian': {
       $st2_client_packages = [
         'python-st2client',
       ]
+      $package_type = 'deb'
     }
     'RedHat': {
       $st2_client_packages = [
         'st2client',
       ]
+      $package_type = 'rpm'
     }
     default: {
       $st2_client_packages = [
         'python-st2client',
       ]
+      $package_type = 'deb'
     }
   }
 
