@@ -132,6 +132,7 @@ class st2::params(
     'libxml2-dev',
     'libxslt1-dev',
     'python-tox',
+    'python-pip',
   ]
   $debian_client_dependencies = [
     'python-prettytable',

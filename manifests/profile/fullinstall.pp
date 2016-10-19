@@ -50,8 +50,12 @@ class st2::profile::fullinstall inherits st2 {
   Anchor['st2::pre_reqs']
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
+  -> class { '::st2::auth::standalone': }
+  -> exec{'/usr/bin/st2ctl restart':
+    tag  => 'st2::start',}
+  -> exec{'/usr/bin/st2ctl reload':
+    tag  => 'st2::reload',}
 
   include ::st2::packs
   include ::st2::kvs
-
 }

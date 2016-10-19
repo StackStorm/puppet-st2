@@ -26,8 +26,7 @@ class st2::auth::standalone(
   $ssl           = false,
   $ssl_cert      = undef,
   $ssl_key       = undef,
-  $test_user     = true,
-  $logging_file  = '/etc/st2api/logging.conf',
+  $test_user     = false,
   $htpasswd_file = '/etc/st2/htpasswd',
 ) {
   $_debug = $debug ? {
@@ -42,6 +41,13 @@ class st2::auth::standalone(
   $_auth_users = hiera_hash('st2::auth_users', {})
   $_cli_username = $::st2::cli_username
   $_cli_password = $::st2::cli_password
+
+  file { $htpasswd_file:
+    ensure => present,
+    owner  => 'st2',
+    group  => 'st2',
+    mode   => '0600',
+  }
 
   ini_setting { 'auth_mode':
     ensure  => present,
@@ -91,14 +97,6 @@ class st2::auth::standalone(
     value   => $_api_url,
     tag     => 'st2::config',
   }
-  ini_setting { 'auth_logging_file':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'logging',
-    value   => $logging_file,
-    tag     => 'st2::config',
-  }
 
   # System Users
   $_testuser_ensure = $test_user ? {
@@ -106,7 +104,7 @@ class st2::auth::standalone(
     default => absent,
   }
   st2::auth_user { 'testu':
-    ensure    => $_testuser_ensure,
+    ensure   => $_testuser_ensure,
     password => 'testp',
   }
   st2::auth_user { $_cli_username:
@@ -123,7 +121,8 @@ class st2::auth::standalone(
   # SSL Settings
   if $ssl {
     if !$ssl_cert or !$ssl_key {
-      fail('[st2::auth::standalone] Missing $ssl_cert or $ssl_key to enable SSL')
+      fail('[st2::auth::standalone] Missing $ssl_cert \
+        or $ssl_key to enable SSL')
     }
 
     ini_setting { 'auth_ssl_cert':

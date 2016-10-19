@@ -7,20 +7,12 @@
 #  [*version*]                - Version of StackStorm to install
 #  [*revision*]               - Revision of StackStorm to install
 #  [*auth*]                   - Toggle Auth
-#  [*workers*]                - Set the number of actionrunner processes to start
+#  [*workers*]                - Set the number of actionrunner processes to 
+#                               start
 #  [*st2api_listen_ip*]       - Listen IP for st2api process
 #  [*st2api_listen_port*]     - Listen port for st2api process
 #  [*st2auth_listen_ip*]      - Listen IP for st2auth process
 #  [*st2auth_listen_port*]    - Listen port for st2auth process
-#  [*manage_st2api_service*]  - Toggle whether this module creates an init script for st2api.
-#                               If you disable this, it is your responsibility to create a service
-#                               named `st2api` for `st2ctl` to continue to work.
-#  [*manage_st2auth_service*] - Toggle whether this module creates an init script for st2auth.
-#                               If you disable this, it is your responsibility to create a service
-#                               named `st2auth` for `st2ctl` to continue to work.
-#  [*manage_st2web_service*]  - Toggle whether this module creates an init script for st2web.
-#                               If you disable this, it is your responsibility to create a service
-#                               named `st2web` for `st2ctl` to continue to work.
 #  [*syslog*]                 - Routes all log messages to syslog
 #  [*syslog_host*]            - Syslog host.
 #  [*syslog_protocol*]        - Syslog protocol.
@@ -41,10 +33,9 @@
 #
 #  include st2::profile::client
 #
+
 class st2::profile::server (
   $version                = $::st2::version,
-  $autoupdate             = $::st2::autoupdate,
-  $revision               = $::st2::revision,
   $auth                   = $::st2::auth,
   $workers                = $::st2::workers,
   $syslog                 = $::st2::syslog,
@@ -56,9 +47,6 @@ class st2::profile::server (
   $st2api_listen_port     = '9101',
   $st2auth_listen_ip      = '0.0.0.0',
   $st2auth_listen_port    = '9100',
-  $manage_st2api_service  = true,
-  $manage_st2auth_service = true,
-  $manage_st2web_service  = true,
   $ssh_key_location       = $::st2::ssh_key_location,
   $ng_init                = $::st2::ng_init,
 ) inherits st2 {
@@ -81,8 +69,12 @@ class st2::profile::server (
   }
 
   package{ $_server_packages:
-    ensure     => $version,
-    tag        => 'st2::profile::server',
+    ensure => $version,
+    tag    => 'st2::server::packages',
+  }
+
+  file { '/etc/st2':
+    ensure => directory
   }
 
   ini_setting { 'ssh_key_stanley':
@@ -96,8 +88,8 @@ class st2::profile::server (
 
   ## ActionRunner settings
   ini_setting { 'actionrunner_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'actionrunner',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.actionrunner.conf",
@@ -130,8 +122,8 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
   ini_setting { 'api_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'api',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.api.conf",
@@ -165,8 +157,8 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
   ini_setting { 'auth_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.auth.conf",
@@ -175,8 +167,8 @@ class st2::profile::server (
 
   ## Notifier Settings
   ini_setting { 'notifier_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'notifier',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.notifier.conf",
@@ -185,8 +177,8 @@ class st2::profile::server (
 
   ## Resultstracker Settings
   ini_setting { 'resultstracker_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'resultstracker',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.resultstracker.conf",
@@ -195,8 +187,8 @@ class st2::profile::server (
 
   ## Rules Engine Settings
   ini_setting { 'rulesengine_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'rulesengine',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.rulesengine.conf",
@@ -205,8 +197,8 @@ class st2::profile::server (
 
   ## Garbage collector Settings
   ini_setting { 'garbagecollector_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'garbagecollector',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.garbagecollector.conf",
@@ -215,8 +207,8 @@ class st2::profile::server (
 
   ## Sensor container Settings
   ini_setting { 'sensorcontainer_logging':
-    ensure => present,
-    path   => '/etc/st2/st2.conf',
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
     section => 'sensorcontainer',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.sensorcontainer.conf",
@@ -257,10 +249,7 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
-  # Spin up any number of workers as needed
-  $_workers = prefix(range("0", "${workers}"), "worker")
-
-  Package<| tag == 'st2::profile::server' |>
+  Package<| tag == 'st2::server::packages' |>
   -> Ini_setting<| tag == 'st2::config' |>
 
 }
