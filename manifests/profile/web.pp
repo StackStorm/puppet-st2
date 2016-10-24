@@ -26,43 +26,6 @@ class st2::profile::web(
   $version    = $::st2::version,
   $autoupdate = $::st2::autoupdate,
 ) inherits st2 {
-  $_version = $autoupdate ? {
-    true    => st2_latest_stable(),
-    default => $version,
-  }
-  $_bootstrapped = $::st2web_bootstrapped ? {
-    undef   => false,
-    default => str2bool($::st2web_bootstrapped),
-  }
-
-  file { [
-      '/opt/stackstorm/static',
-      '/opt/stackstorm/static/webui',
-    ]:
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0755',
-  }
-
-  if $autoupdate or ! $_bootstrapped {
-    wget::fetch { 'st2web':
-      source      => "${::st2::repo_base}/releases/st2/${_version}/webui/webui-${_version}.tar.gz",
-      cache_dir   => '/var/cache/wget',
-      destination => '/tmp/st2web.tar.gz',
-      before      => Exec['extract webui'],
-    }
-
-    exec { 'extract webui':
-      command => 'tar -xzvf /tmp/st2web.tar.gz -C /opt/stackstorm/static/webui --strip-components=1 --owner root --group root --no-same-owner',
-      path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-      require => File['/opt/stackstorm/static/webui'],
-      before  => [
-        File['/etc/facter/facts.d/st2web_bootstrapped.txt'],
-        File['/opt/stackstorm/static/webui/config.js'],
-      ],
-    }
-  }
 
   # This is crude... get some augeas on
   ## Manage connection list currently
@@ -74,11 +37,4 @@ class st2::profile::web(
     content => template('st2/opt/st2web/config.js.erb'),
   }
 
-  file { '/etc/facter/facts.d/st2web_bootstrapped.txt':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => 'st2web_bootstrapped=true',
-  }
 }

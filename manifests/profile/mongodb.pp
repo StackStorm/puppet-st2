@@ -20,7 +20,8 @@ class st2::profile::mongodb {
 
   if !defined(Class['::mongodb::server']) {
     if $::osfamily == "RedHat" {
-      Yumrepo['epel']->
+      class {'::mongodb::globals':
+          manage_package_repo => true,}->
       class {'::mongodb::server': }->
       class {'::mongodb::client': }
 
@@ -29,12 +30,4 @@ class st2::profile::mongodb {
     }
   }
 
-  $_mongodb_dependencies = $::osfamily ? {
-    'Debian' => $::st2::params::debian_mongodb_dependencies,
-    default  => undef,
-  }
-
-  if $_mongodb_dependencies {
-    ::st2::dependencies::install { $_mongodb_dependencies: }
-  }
 }

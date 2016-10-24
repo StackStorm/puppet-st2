@@ -26,9 +26,6 @@
 #
 class st2::profile::client (
   $auth                 = $::st2::auth,
-  $version              = $::st2::version,
-  $autoupdate           = $::st2::autoupdate,
-  $revision             = $::st2::revision,
   $api_url              = $::st2::cli_api_url,
   $auth_url             = $::st2::cli_auth_url,
   $base_url             = $::st2::cli_base_url,
@@ -41,85 +38,6 @@ class st2::profile::client (
   $silence_ssl_warnings = $::st2::cli_silence_ssl_warnings,
   $global_env           = $::st2::global_env,
 ) inherits ::st2 {
-  $_version = $autoupdate ? {
-    true    => st2_latest_stable(),
-    default => $version,
-  }
-  $_revision = $autoupdate ? {
-    true    => undef,
-    default => $revision,
-  }
-  $_bootstrapped = $::st2client_bootstrapped ? {
-    undef   => false,
-    default => str2bool($::st2client_bootstrapped),
-  }
-  $_git_tag = $_version ? {
-    /dev/   => 'master',
-    default => "v${_version}",
-  }
-
-  include '::st2::notices'
-  include '::st2::params'
-
-  # If we are using bintray packages, st2client packages are simply called `st2client`.
-  # XXX: This is simply a workaround until the puppet overlords figure out the right way.
-  $_repo_base = $st2::repo_base
-  case $_repo_base {
-    /^https:\/\/dl.bintray.com/: {
-      $_client_packages = [
-        'st2client',
-      ]
-    }
-    default: {
-      $_client_packages = $st2::params::st2_client_packages
-    }
-  }
-
-  $_client_dependencies = $st2::params::debian_client_dependencies
-
-  st2::dependencies::install { $_client_dependencies: }
-
-  st2::package::install { $_client_packages:
-    version  => $_version,
-    revision => $_revision,
-    repo_base => $_repo_base,
-  }
-
-  ### This should be a versioned download too... currently on master
-  ## Only attempt to download this if the server has been appropriately bootstrapped.
-  if $autoupdate or ! $_bootstrapped {
-    wget::fetch { 'Download st2client requirements.txt':
-      source      => "https://raw.githubusercontent.com/StackStorm/st2/${_git_tag}/st2client/requirements.txt",
-      cache_dir   => '/var/cache/wget',
-      destination => '/tmp/st2client-requirements.txt'
-    }
-
-    # More RedHat 6 hackery.  Need to use pip2.7.
-    case $::osfamily {
-      'Debian': {
-        python::requirements { '/tmp/st2client-requirements.txt':
-          notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
-          require => Wget::Fetch['Download st2client requirements.txt']
-        }
-      }
-      'RedHat': {
-        if $operatingsystemmajrelease == '6' {
-          exec { 'pip27_install_st2client_reqs':
-            path    => '/usr/bin:/usr/sbin:/bin:/sbin',
-            command => 'pip2.7 install -U -r /tmp/st2client-requirements.txt',
-            notify  => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
-            require => Wget::Fetch['Download st2client requirements.txt']
-          }
-        } else {
-          python::requirements { '/tmp/st2client-requirements.txt':
-            notify => File['/etc/facter/facts.d/st2client_bootstrapped.txt'],
-            require => Wget::Fetch['Download st2client requirements.txt']
-          }
-        }
-      }
-    }
-  }
-
 
   # Setup st2client settings for Root user by default
   st2::client::settings { 'root':
@@ -135,15 +53,6 @@ class st2::profile::client (
     debug                => $debug,
     cache_token          => $cache_token,
     silence_ssl_warnings => $silence_ssl_warnings,
-  }
-
-  # Once the system is properly bootstrapped, leave a breadcrumb for future runs
-  file { '/etc/facter/facts.d/st2client_bootstrapped.txt':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => 'st2client_bootstrapped=true',
   }
 
   # Setup global environment variables:

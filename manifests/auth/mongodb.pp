@@ -64,7 +64,8 @@ class st2::auth::mongodb (
     path    => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'backend_kwargs',
-    value   => "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\", \"db_name\": \"${db_name}\"}",
+    value   => "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\",\
+     \"db_name\": \"${db_name}\"}",
     tag     => 'st2::config',
   }
   ini_setting { 'auth_debug':
