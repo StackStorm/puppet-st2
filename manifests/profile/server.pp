@@ -52,7 +52,6 @@ class st2::profile::server (
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
-  #require '::st2::dependencies'
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
@@ -249,7 +248,14 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
+  service { $::st2::params::services:
+    ensure => 'running',
+    enable => true,
+    tag    => 'st2::service',
+  }
+
   Package<| tag == 'st2::server::packages' |>
   -> Ini_setting<| tag == 'st2::config' |>
+  -> Service<| tag == 'st2::service' |>
 
 }

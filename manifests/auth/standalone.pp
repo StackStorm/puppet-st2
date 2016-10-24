@@ -43,10 +43,11 @@ class st2::auth::standalone(
   $_cli_password = $::st2::cli_password
 
   file { $htpasswd_file:
-    ensure => present,
-    owner  => 'st2',
-    group  => 'st2',
-    mode   => '0600',
+    ensure  => present,
+    owner   => 'st2',
+    group   => 'st2',
+    mode    => '0600',
+    require => Package['st2']
   }
 
   ini_setting { 'auth_mode':

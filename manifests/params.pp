@@ -202,6 +202,20 @@ class st2::params(
       $init_type = undef
     }
   }
+  $services = [
+    'mistral-api',
+    'mistral-server',
+    'st2actionrunner',
+    'st2api',
+    'st2auth',
+    'st2chatops',
+    'st2garbagecollector',
+    'st2notifier',
+    'st2resultstracker',
+    'st2rulesengine',
+    'st2sensorcontainer',
+    'st2stream',
+  ]
 
   ## Python Packages Directory Detection
   $python_pack = $::osfamily ? {

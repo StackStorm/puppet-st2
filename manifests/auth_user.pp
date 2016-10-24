@@ -19,7 +19,8 @@ define st2::auth_user(
     password  => $password,
     mechanism => 'basic',
     file      => $_htpasswd_file,
-    notify    => File["$_htpasswd_file"]
+    notify    => File[$_htpasswd_file],
+    require   => Package['st2']
   }
   
 }
