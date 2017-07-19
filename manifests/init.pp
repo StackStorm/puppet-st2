@@ -40,16 +40,19 @@
 #  [*db_host*]            - Hostname to talk to st2 db
 #  [*db_port*]            - Port for db server for st2 to talk to
 #  [*db_name*]            - Name of db to connect to
+#  [*db_password*]        - Password for 'admin' and 'stackstorm' users in MongDB.
+#                           If 'undef' then use $cli_password
+#  [*mongodb_version*]    - Version of MongoDB to install. If not provided it
+#                           will be auto-calcuated based on $version
+#                           (default: undef)
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
 #  Example:
 #    st2::version: 0.6.0
-#    st2::revison: 11
 #
 class st2(
   $version                  = 'latest',
-  $revision                 = '8',
   $autoupdate               = false,
   $mistral_git_branch       = 'st2-1.2.0',
   $repo_base                = $::st2::params::repo_base,
@@ -64,7 +67,7 @@ class st2(
   $auth                     = true,
   $auth_url                 = undef,
   $auth_mode                = 'standalone',
-  $auth_logging_file         = '/etc/st2auth/logging.conf',
+  $auth_logging_file        = '/etc/st2auth/logging.conf',
   $flow_url                 = undef,
   $cli_base_url             = 'http://127.0.0.1',
   $cli_api_version          = 'v1',
@@ -89,5 +92,7 @@ class st2(
   $db_host                  = 'localhost',
   $db_port                  = '27017',
   $db_name                  = 'st2',
+  $db_password              = undef,
+  $mongodb_version          = undef,
   $ng_init                  = true,
 ) inherits st2::params {}

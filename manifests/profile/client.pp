@@ -15,11 +15,6 @@
 #  [*api_url*]              - CLI config - API URL
 #  [*auth_url*]             - CLI config - Auth URL
 #
-# === Variables
-#
-#  [*_client_packages*] - Local scoped variable to store all st2 client packages. Default: $::st2::version
-#  [*_client_dependencies*] - Local scoped variable to store any client dependencies Default: $::st2::revision
-#
 # === Examples
 #
 #  include st2::profile::client

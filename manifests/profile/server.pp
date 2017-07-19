@@ -5,7 +5,6 @@
 # === Parameters
 #
 #  [*version*]                - Version of StackStorm to install
-#  [*revision*]               - Revision of StackStorm to install
 #  [*auth*]                   - Toggle Auth
 #  [*workers*]                - Set the number of actionrunner processes to 
 #                               start

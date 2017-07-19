@@ -7,7 +7,7 @@
 #  * Python
 #  * MongoDB
 #  * NodeJS
-#  * Mistral/MySQL
+#  * Mistral+PostgreSQL
 #
 # === Examples
 #
