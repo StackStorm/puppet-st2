@@ -16,24 +16,11 @@
 #  include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq {
-  if !defined(Class['::rabbitmq']) {
-    class { '::rabbitmq':
-      package_apt_pin => '100',
-    }
+  package { 'rabbitmq-server':
+    ensure => 'installed',
   }
-
-  if $::osfamily == "RedHat" {
-    class {'::erlang': }
-
-    yumrepo { 'erlang-solutions':
-      ensure   => present,
-      baseurl  => "http://packages.erlang-solutions.com/rpm/centos/\$releasever/\$basearch",
-      descr    => 'Centos $releasever - $basearch - Erlang Solutions',
-      enabled  => 0,
-      gpgcheck => 0,
-    }
-    Yumrepo['erlang-solutions']
-      -> Class['::erlang']
-      -> Class['::rabbitmq']
+  service { 'rabbitmq-server':
+    ensure => 'running',
+    enable => true,
   }
 }

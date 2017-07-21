@@ -222,4 +222,12 @@ class st2::params(
     'Debian' => '/usr/lib/python2.7/dist-packages',
     'RedHat' => '/usr/lib/python2.7/site-packages',
   }
+
+  ## MongoDB Data
+  $mongodb_port = '27017'
+  $mongodb_bind_ips = ['127.0.0.1']
+
+  $mongodb_st2_db = 'st2'
+  $mongodb_st2_username = 'stackstorm'
+  $mongodb_st2_roles = ['readWrite']
 }

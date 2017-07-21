@@ -39,7 +39,9 @@
 #  [*ssh_key_location*]   - Location on filesystem of Admin SSH key for remote runner
 #  [*db_host*]            - Hostname to talk to st2 db
 #  [*db_port*]            - Port for db server for st2 to talk to
-#  [*db_name*]            - Name of db to connect to
+#  [*db_bind_ips*]        - Array of bind IP addresses for MongoDB to listen on
+#  [*db_name*]            - Name of db to connect to (default: 'st2')
+#  [*db_username*]        - Username to connect to db with (default: 'stackstorm')
 #  [*db_password*]        - Password for 'admin' and 'stackstorm' users in MongDB.
 #                           If 'undef' then use $cli_password
 #  [*mongodb_version*]    - Version of MongoDB to install. If not provided it
@@ -90,8 +92,10 @@ class st2(
   $syslog_facility          = 'local7',
   $ssh_key_location         = '/home/stanley/.ssh/st2_stanley_key',
   $db_host                  = 'localhost',
-  $db_port                  = '27017',
-  $db_name                  = 'st2',
+  $db_port                  = $::st2::params::mongodb_port,
+  $db_bind_ips              = $::st2::params::mongodb_bind_ips,
+  $db_name                  = $::st2::params::mongodb_st2_db,
+  $db_username              = $::st2::params::mongodb_st2_username,
   $db_password              = undef,
   $mongodb_version          = undef,
   $ng_init                  = true,

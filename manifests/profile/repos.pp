@@ -19,10 +19,10 @@ class st2::profile::repos(
 ) {
   require packagecloud
 
-  if $::osfamily == "RedHat" {
+  if $::osfamily == 'RedHat' {
     require epel
   }
-  packagecloud::repo{"stackstorm/stable":
+  packagecloud::repo { 'stackstorm/stable':
     type => $package_type
   }
 }

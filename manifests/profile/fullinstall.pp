@@ -42,16 +42,17 @@ class st2::profile::fullinstall inherits st2 {
   anchor { 'st2::pre_reqs': }
 
   Anchor['st2::bootstrap']
-    -> Class['::st2::profile::nodejs']
-    -> Class['::st2::profile::postgresql']
-    -> Class['::st2::profile::rabbitmq']
-    -> Class['::st2::profile::mongodb']
+  -> Class['::st2::profile::nodejs']
+  -> Class['::st2::profile::postgresql']
+  -> Class['::st2::profile::rabbitmq']
+  -> Class['::st2::profile::mongodb']
 
   Anchor['st2::pre_reqs']
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
   -> exec{'/usr/bin/st2ctl reload':
-    tag  => 'st2::reload',}
+    tag  => 'st2::reload',
+  }
 
   include ::st2::auth::standalone
   include ::st2::packs
