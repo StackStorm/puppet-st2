@@ -5,7 +5,14 @@
 #
 # === Parameters
 #
-#  This module contains no parameters
+#  [*db_name*]     - Name of db to connect to
+#  [*db_username*] - Username to connect to db with
+#  [*db_password*] - Password for 'admin' and 'stackstorm' users in MongDB.
+#                    If 'undef' then use $cli_password
+#  [*db_port*]     - Port for db server for st2 to talk to
+#  [*db_bind_ips*] - Array of bind IP addresses for MongoDB to listen on
+#  [*version*]     - Version of MongoDB to install. If not provided it will be
+#                    auto-calcuated based on $st2::version
 #
 # === Variables
 #

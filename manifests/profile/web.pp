@@ -37,4 +37,32 @@ class st2::profile::web(
     content => template('st2/opt/st2web/config.js.erb'),
   }
 
+  file { "${st2::params::nginx_conf_d}/st2.conf":
+    ensure => 'present',
+    source => $st2::params::nginx_st2_conf,
+    notify => Service['nginx'],
+  }
+
+  case $::osfamily  {
+    'RedHat': {
+      # remove 'default_server' string from default nginx config
+      exec { $st2::params::nginx_default_conf:
+        command => "sed -i 's/default_server//g' ${st2::params::nginx_default_conf}",
+        onlyif  => "test `grep -q 'default_server' ${st2::params::nginx_default_conf} | wc -l` > 0",
+        path    => ['/usr/bin', '/bin'],
+        notify  => Service['nginx'],
+      }
+    }
+    'Debian': {
+      file { $st2::params::nginx_default_conf:
+        ensure => 'absent',
+        notify => Service['nginx'],
+      }
+    }
+    default : {
+      notify{'Unsupported OS': }
+    }
+  }
+
+
 }

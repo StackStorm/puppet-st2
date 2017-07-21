@@ -38,6 +38,10 @@ class st2::profile::fullinstall inherits st2 {
     before => Anchor['st2::pre_reqs'],
   }
 
+  class { '::st2::profile::nginx':
+    before => Anchor['st2::pre_reqs'],
+  }
+
   anchor { 'st2::bootstrap': }
   anchor { 'st2::pre_reqs': }
 
@@ -53,6 +57,8 @@ class st2::profile::fullinstall inherits st2 {
   -> exec{'/usr/bin/st2ctl reload':
     tag  => 'st2::reload',
   }
+
+  # TODO st2web profile
 
   include ::st2::auth::standalone
   include ::st2::packs

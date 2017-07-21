@@ -223,6 +223,19 @@ class st2::params(
     'RedHat' => '/usr/lib/python2.7/site-packages',
   }
 
+  ## nginx default config
+  $nginx_default_conf = $::osfamily ? {
+    'Debian' => '/etc/nginx/conf.d/default.conf',
+    'RedHat' => '/etc/nginx/default.conf',
+  }
+  ## nginx conf.d directory in /etc
+  $nginx_conf_d = $::osfamily ? {
+    'Debian' => '/etc/nginx/conf.d',
+    'RedHat' => '/etc/nginx/conf.d',
+  }
+  # nginx config for StackStorm (installed with the st2 packages)
+  $nginx_st2_conf = '/usr/share/doc/st2/conf/nginx/st2.conf'
+
   ## MongoDB Data
   $mongodb_port = '27017'
   $mongodb_bind_ips = ['127.0.0.1']
