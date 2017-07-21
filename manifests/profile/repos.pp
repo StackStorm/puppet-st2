@@ -22,7 +22,7 @@ class st2::profile::repos(
   if $::osfamily == 'RedHat' {
     require epel
   }
-  packagecloud::repo { 'stackstorm/stable':
+  packagecloud::repo { 'StackStorm/stable':
     type => $package_type
   }
 }

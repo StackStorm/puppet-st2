@@ -16,11 +16,5 @@
 #  include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq {
-  package { 'rabbitmq-server':
-    ensure => 'installed',
-  }
-  service { 'rabbitmq-server':
-    ensure => 'running',
-    enable => true,
-  }
+  require ::rabbitmq
 }
