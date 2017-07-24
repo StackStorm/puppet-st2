@@ -1,6 +1,6 @@
 # == Class st2::profile::nginx
 #
-# st2 compatable installation of nginx and dependencies for use with
+# st2 compatible installation of nginx and dependencies for use with
 # StackStorm
 #
 # === Parameters
