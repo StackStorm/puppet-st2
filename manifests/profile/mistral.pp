@@ -37,7 +37,8 @@ class st2::profile::mistral(
   include st2::params
 
   ### Mistral Variables ###
-  $_st2_root = '/opt/stackstorm/virtualenv/st2'
+  $mistral_root = '/opt/stackstorm/mistral'
+  $mistral_config = '/etc/mistral/mistral.conf'
 
   $_db_password = $db_password ? {
     undef   => $st2::cli_password,
@@ -61,7 +62,7 @@ class st2::profile::mistral(
   ### Mistral Config ###
   ini_setting { 'database_connection':
     ensure  => present,
-    path    => '/etc/mistral/mistral.conf',
+    path    => $mistral_config,
     section => 'database',
     setting => 'connection',
     value   => "postgresql://${db_username}:${_db_password}@${db_server}/${db_name}",
@@ -79,24 +80,24 @@ class st2::profile::mistral(
     owner => $db_username,
   }
 
-  if $::mistral_bootstrapped != undef and str2bool($::mistral_bootstrapped) != true {
+  if str2bool($::mistral_bootstrapped) != true {
     exec { 'setup mistral database':
-      command     => 'mistral-db-manage --config-file /etc/mistral/mistral.conf upgrade head',
+      command     => "mistral-db-manage --config-file ${mistral_config} upgrade head",
       refreshonly => true,
-      path        => ["${_st2_root}/bin"],
-      require     => [Postgresql::Server::Database[$db_name],
-                      Postgresql::Server::Role[$db_username],
+      path        => ["${mistral_root}/bin"],
+      require     => [Postgresql::Server::Role[$db_username],
                       Ini_Setting['database_connection']],
-      before      => [Exec['populate mistral database'],
-                      File['/etc/facter/facts.d/mistral_bootstrapped.txt'] ],
-      notify      => Service['mistral'],
+      subscribe   => Postgresql::Server::Database[$db_name],
+      before      => File['/etc/facter/facts.d/mistral_bootstrapped.txt'],
+      notify      => [Exec['populate mistral database'],
+                      Service['mistral']],
     }
 
     exec { 'populate mistral database':
-      command     => 'mistral-db-manage --config-file /etc/mistral/mistral.conf populate',
+      command     => "mistral-db-manage --config-file ${mistral_config} populate",
       refreshonly => true,
-      path        => ["${_st2_root}/bin"],
-      require     => Exec['setup mistral database'],
+      path        => ["${mistral_root}/bin"],
+      subscribe   => Exec['setup mistral database'],
       before      => File['/etc/facter/facts.d/mistral_bootstrapped.txt'],
       notify      => Service['mistral'],
     }
@@ -118,32 +119,6 @@ class st2::profile::mistral(
     ensure => running,
     enable => true,
   }
-  service { 'mistral-server':
-    ensure => running,
-    enable => true,
-  }
-  service { 'mistral-api':
-    ensure => running,
-    enable => true,
-  }
-
-  # terrible hack because mistral-api errors when it first starts up
-  # this should only sleep on the initial boot
-  exec { 'wait for mistral-server':
-    command     => 'sleep 10',
-    path        => ['/usr/bin', '/bin'],
-    refreshonly => true,
-  }
-
-  # perform sleep after starting meta-service
-  # this will allow the checks for the sub-services to restart them
-  Service['mistral']
-  -> Exec['wait for mistral-server']
-  -> Service['mistral-server']
-  -> Service['mistral-api']
-
-  # perform the sleep if mistral service ever refreshes
-  Service['mistral'] ~> Exec['wait for mistral-server']
   ### End Mistral Service ###
 
 
