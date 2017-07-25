@@ -97,6 +97,8 @@ class st2::params(
     'st2',
     'st2chatops',
     'st2web',
+  ]
+  $st2_mistral_packages = [
     'st2mistral',
   ]
   case $::osfamily {
@@ -243,4 +245,9 @@ class st2::params(
   $mongodb_st2_db = 'st2'
   $mongodb_st2_username = 'stackstorm'
   $mongodb_st2_roles = ['readWrite']
+
+  ## RabbitMQ
+  $rabbitmq_port = 25672
+  $rabbitmq_protocol = 'tcp'
+  $rabbitmq_selinux_type = 'amqp_port_t'
 }

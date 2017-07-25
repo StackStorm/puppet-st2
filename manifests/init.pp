@@ -91,7 +91,7 @@ class st2(
   $syslog_port              = 514,
   $syslog_facility          = 'local7',
   $ssh_key_location         = '/home/stanley/.ssh/st2_stanley_key',
-  $db_host                  = 'localhost',
+  $db_host                  = '127.0.0.1',
   $db_port                  = $::st2::params::mongodb_port,
   $db_bind_ips              = $::st2::params::mongodb_bind_ips,
   $db_name                  = $::st2::params::mongodb_st2_db,

@@ -25,15 +25,5 @@ class st2::profile::postgresql(
     class { 'postgresql::server':
       listen_addresses => $db_listen_addresses,
     }
-
-    postgresql::server::role { $db_username:
-      password_hash => postgresql_password($db_username, $db_password),
-      createdb      => true,
-      before        => Postgresql::Server::Database[$db_name],
-    }
-
-    postgresql::server::database { $db_name:
-      owner => $db_username,
-    }
   }
 }
