@@ -10,9 +10,6 @@
 #  [*ssh_key_type*]      - Type of SSH Key (ssh-dsa/ssh-rsa)
 #  [*ssh_private_key*]   - Private key
 #
-# === Variables
-#  [*_robots_group_name*] - Local variable to grab the global robot group name
-#
 # === Examples
 #
 #  st2::user { 'stanley':
@@ -32,28 +29,24 @@ define st2::user(
 ) {
   include ::st2::params
 
-  $_robots_group_name = $st2::params::robots_group_name
   $_packs_group_name = $st2::params::packs_group_name
-
-  ensure_resource('group', $_robots_group_name, {
-    'ensure' => present,
-  })
 
   ensure_resource('group', $_packs_group_name, {
     'ensure' => present,
   })
 
   if $create_sudo_entry {
-    ensure_resource('sudo::conf', $_robots_group_name, {
+    ensure_resource('sudo::conf', $name, {
       'priority' => '10',
-      'content'  => "%${_robots_group_name} ALL=(ALL) NOPASSWD: SETENV: ALL",
+      # note: passes in $name variable into template
+      'content'  => template('st2/etc/sudoers.d/user.erb'),
     })
   }
 
   ensure_resource('user', $name, {
     'ensure'     => present,
     'shell'      => '/bin/bash',
-    'gid'        => 'st2robots',
+    'gid'        => $name,
     'groups'     => $groups,
     'managehome' => true,
   })
@@ -63,7 +56,7 @@ define st2::user(
     file { "/home/${name}/.ssh":
       ensure => directory,
       owner  => $name,
-      group  => $_robots_group_name,
+      group  => $name,
       mode   => '0750',
     }
   }
@@ -84,6 +77,18 @@ define st2::user(
   if $server {
     if !$ssh_private_key {
       notify { "St2::User[${name}]:: ${st2::notices::user_missing_private_key}": }
+
+      $ssh_keygen_type = $ssh_key_type ? {
+        undef => 'rsa',
+        default => $ssh_key_type,
+      }
+
+      exec { "generate ssh key /home/${name}/.ssh/st2_${name}_key":
+        command => "ssh-keygen -f /home/${name}/.ssh/st2_${name}_key -t ${ssh_keygen_type} -P ''",
+        creates => "/home/${name}/.ssh/st2_${name}_key",
+        path    => ['/usr/bin', '/sbin', '/bin'],
+        require => File["/home/${name}/.ssh"]
+      }
     }
     else {
       file { "/home/${name}/.ssh/st2_${name}_key":

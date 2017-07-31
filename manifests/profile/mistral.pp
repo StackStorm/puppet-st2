@@ -56,6 +56,7 @@ class st2::profile::mistral(
 
   package { $st2::params::st2_mistral_packages:
     ensure => $version,
+    tag    => 'st2::mistral::packages',
   }
   ### End Mistral Packages ###
 
@@ -67,6 +68,10 @@ class st2::profile::mistral(
     setting => 'connection',
     value   => "postgresql://${db_username}:${_db_password}@${db_server}/${db_name}",
   }
+
+  # TODO add extra config params
+  # https://forge.puppet.com/puppetlabs/inifile
+  # create_ini_settings()
   ### End Mistral Config ###
 
   ### Setup Mistral Database ###
@@ -128,7 +133,7 @@ class st2::profile::mistral(
   Ini_setting<| tag == 'mistral' |> ~> Service['mistral']
 
   # Setup dependencies between actions in this profile
-  Package[$st2::params::st2_mistral_packages]
+  Package<| tag == 'st2::mistral::packages' |>
   -> Ini_setting <| tag == 'mistral' |>
   -> Postgresql::Server::Database[$db_name]
   -> File['/etc/facter/facts.d/mistral_bootstrapped.txt']

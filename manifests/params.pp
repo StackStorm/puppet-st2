@@ -204,9 +204,7 @@ class st2::params(
       $init_type = undef
     }
   }
-  $services = [
-    'mistral-api',
-    'mistral-server',
+  $st2_services = [
     'st2actionrunner',
     'st2api',
     'st2auth',

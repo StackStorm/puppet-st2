@@ -19,7 +19,7 @@ class st2::profile::fullinstall inherits st2 {
   -> anchor { 'st2::bootstrap': }
   -> anchor { 'st2::pre_reqs': }
   -> anchor { 'st2::main': }
-  -> anchor { 'st2::post': }
+  -> anchor { 'st2::reload': }
   -> anchor { 'st2::end': }
 
   Anchor['st2::begin']
@@ -35,24 +35,21 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::nginx': }
   -> Anchor['st2::main']
   -> class { '::st2::profile::mistral': }
-  -> Anchor['st2::post']
+  -> class { '::st2::profile::client': }
+  -> class { '::st2::profile::server': }
+  -> class { '::st2::stanley': }
+  -> Anchor['st2::reload']
+  -> exec{'/usr/bin/st2ctl reload':
+    tag  => 'st2::reload',
+  }
   -> Anchor['st2::end']
 
 
   ############
   # TODO (not working below)
 
-  # Anchor['st2::pre_reqs']
-  # -> class { '::st2::profile::client': }
-  # -> class { '::st2::profile::server': }
-  # -> exec{'/usr/bin/st2ctl reload':
-    #   tag  => 'st2::reload',
-    #  }
-
-  # TODO st2web profile
-
-  # post
-  # include ::st2::auth::standalone
+  # TODO 
+  # st2web profile
   # include ::st2::packs
   # include ::st2::kvs
 }

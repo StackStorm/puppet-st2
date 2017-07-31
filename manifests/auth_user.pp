@@ -22,5 +22,5 @@ define st2::auth_user(
     notify    => File[$_htpasswd_file],
     require   => Package['st2']
   }
-  
+
 }

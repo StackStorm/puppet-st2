@@ -6,7 +6,7 @@
 #
 #  [*version*]                - Version of StackStorm to install
 #  [*auth*]                   - Toggle Auth
-#  [*workers*]                - Set the number of actionrunner processes to 
+#  [*workers*]                - Set the number of actionrunner processes to
 #                               start
 #  [*st2api_listen_ip*]       - Listen IP for st2api process
 #  [*st2api_listen_port*]     - Listen port for st2api process
@@ -67,16 +67,32 @@ class st2::profile::server (
     true    => 'syslog',
     default => 'logging',
   }
+  $_db_password = $db_password ? {
+    undef   => $st2::cli_password,
+    default => $db_password,
+  }
 
-  package{ $_server_packages:
+  ########################################
+  ## Packages
+  if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
+    package { 'libffi-devel':
+      ensure => 'latest',
+      before => Package[$_server_packages],
+    }
+  }
+
+  package { $_server_packages:
     ensure => $version,
     tag    => 'st2::server::packages',
   }
 
+  ########################################
+  ## Config
   file { '/etc/st2':
     ensure => directory
   }
 
+  ## SSH
   ini_setting { 'ssh_key_stanley':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
@@ -178,8 +194,8 @@ class st2::profile::server (
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'database',
-    setting => 'username',
-    value   => $db_password,
+    setting => 'password',
+    value   => $_db_password,
     tag     => 'st2::config',
   }
 
@@ -267,12 +283,17 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
-  service { $::st2::params::services:
+  ########################################
+  ## Services
+  service { $::st2::params::st2_services:
     ensure => 'running',
     enable => true,
     tag    => 'st2::service',
   }
 
+
+  ########################################
+  ## Dependencies
   Package<| tag == 'st2::server::packages' |>
   -> Ini_setting<| tag == 'st2::config' |>
   -> Service<| tag == 'st2::service' |>
