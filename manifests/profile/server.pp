@@ -155,7 +155,6 @@ class st2::profile::server (
     value   => $_enable_auth,
     tag     => 'st2::config',
   }
-
   ini_setting { 'auth_listen_port':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
@@ -291,6 +290,13 @@ class st2::profile::server (
     tag    => 'st2::service',
   }
 
+  ########################################
+  ## st2 user (stanley)
+  class { '::st2::stanley': }
+
+  ########################################
+  ## Datastore keys
+  class { '::st2::server::datastore_keys': }
 
   ########################################
   ## Dependencies
@@ -298,4 +304,11 @@ class st2::profile::server (
   -> Ini_setting<| tag == 'st2::config' |>
   -> Service<| tag == 'st2::service' |>
 
+  Package<| tag == 'st2::server::packages' |>
+  -> Class['::st2::server::datastore_keys']
+  -> Service<| tag == 'st2::service' |>
+
+  Package<| tag == 'st2::server::packages' |>
+  -> Class['::st2::stanley']
+  -> Service<| tag == 'st2::service' |>
 }

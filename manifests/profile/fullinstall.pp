@@ -37,7 +37,6 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::mistral': }
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
-  -> class { '::st2::stanley': }
   -> Anchor['st2::reload']
   -> exec{'/usr/bin/st2ctl reload':
     tag  => 'st2::reload',
@@ -45,10 +44,13 @@ class st2::profile::fullinstall inherits st2 {
   -> Anchor['st2::end']
 
 
+  class { '::st2::auth::standalone': }
+  -> Anchor['st2::reload']
+
   ############
   # TODO (not working below)
 
-  # TODO 
+  # TODO
   # st2web profile
   # include ::st2::packs
   # include ::st2::kvs

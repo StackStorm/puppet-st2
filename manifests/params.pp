@@ -92,6 +92,7 @@ class st2::params(
   # Non-user configurable parameters
   $repo_url = 'https://github.com/StackStorm/st2'
   $conf_dir = '/etc/st2'
+  $datstore_keys_dir = "${conf_dir}/keys"
 
   $st2_server_packages = [
     'st2',

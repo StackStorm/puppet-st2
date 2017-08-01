@@ -1,6 +1,6 @@
 # == Define: st2::user
 #
-#  Creates an admin user for use with st2
+#  Creates an system (OS level) user for use with st2 backend
 #
 # === Parameters
 #  [*client*]            - Allow incoming connections from the defined user (default: true)

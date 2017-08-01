@@ -1,12 +1,16 @@
 # Definition: st2::auth_user
 #
-#  Friendly helper to manage standalone auth for StackStorm
+#  Creates and manages StackStorm application users (standalone auth only)
 #
 # Usage
 #
-#  st2::auth_user { 'jfryman':
+#  st2::auth_user { 'st2admin':
 #    password => 'neato!',
 #  }
+#
+# TODO
+#   Allow this method to be used for other types of auth
+#
 define st2::auth_user(
   $ensure   = present,
   $password = undef,
