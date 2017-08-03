@@ -4,18 +4,27 @@ branches:
   - gh-pages
 sudo: false
 language: ruby
-script: "script/cibuild"
+install: "script/ci_install.sh"
+script: "script/ci_build.sh"
 bundler_args: --without rake
 matrix:
   fast_finish: true
   include:
     - rvm: 1.9.3
-      env: PUPPET_VERSION="~> 3.0"
+      env:
+        - PUPPET_VERSION="~> 3.0"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7"
     - rvm: 2.0.0
-      env: PUPPET_VERSION="~> 3.0"
+      env:
+        - PUPPET_VERSION="~> 3.0"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7"
     - rvm: 2.1.10
-      env: PUPPET_VERSION="~> 4.0"
+      env:
+        - PUPPET_VERSION="~> 4.0"
+        - GEMFILE_LOCK="Gemfile.lock.4.10"
     - rvm: 2.4.1
-      env: PUPPET_VERSION="~> 5.0"
+      env:
+        - PUPPET_VERSION="~> 5.0"
+        - GEMFILE_LOCK="Gemfile.lock.5.0"
 notifications:
   email: false
