@@ -29,6 +29,8 @@ class st2::auth::standalone(
   $test_user     = false,
   $htpasswd_file = '/etc/st2/htpasswd',
 ) {
+  include ::st2
+
   $_debug = $debug ? {
     true    => 'True',
     default => 'False',
