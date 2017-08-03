@@ -1,7 +1,7 @@
 require 'json'
 
 module FactHelper
-  def ubuntu_trusty_x64
+  def self.ubuntu_trusty_x64
     facts = %q(
 {
   "kernelrelease": "3.13.0-36-generic",
