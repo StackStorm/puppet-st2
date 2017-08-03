@@ -47,7 +47,6 @@ class st2::auth::standalone(
     owner  => 'st2',
     group  => 'st2',
     mode   => '0600',
-    before => Service['st2auth'],
   }
 
   ini_setting { 'auth_mode':
@@ -131,4 +130,9 @@ class st2::auth::standalone(
       tag     => 'st2::config',
     }
   }
+
+  #############
+  # Dependencies
+  File[$htpasswd_file]
+  -> Service<| tag == 'st2::service' |>
 }

@@ -24,8 +24,10 @@ define st2::auth_user(
     mechanism => 'basic',
     file      => $_htpasswd_file,
     notify    => File[$_htpasswd_file],
-    require   => Package['st2'],
     before    => Service['st2auth'],
   }
 
+  Package<| tag == 'st2::server::packages' |>
+  -> Httpauth[$name]
+  -> Service<| tag == 'st2::service' |>
 }
