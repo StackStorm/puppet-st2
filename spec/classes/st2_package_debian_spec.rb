@@ -1,4 +1,5 @@
 require 'spec_helper'
+require_relative '../helpers/fact_helper'
 
 describe 'st2::package::debian' do
   context 'default parameters' do
