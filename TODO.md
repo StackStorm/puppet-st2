@@ -1,0 +1,22 @@
+# TODO List for this project
+
+- Install and configure st2chatops
+- Reorganization effort
+  - Migrate to a "modern" puppet model like: https://github.com/puppetlabs/puppetlabs-postgresql
+  - All things in st2::profiles::xxx move to st2
+  - Create sub folders for each "profile" (server, client, etc)
+  - Decompose each "profile" into its parts (config, repo, install, service, etc)
+- Ability to install different versions
+- Support MongoDB 3.4
+- Support other OSes
+  - Ubuntu 14.04 / 16.04
+  - RHEL 6
+- Test alternate auth sources
+  - mongodb
+  - pam
+  - proxy
+- Support alternate auth backends
+  - LDAP
+  - Keystone
+- Remove unused code
+  - Tiller

@@ -30,6 +30,7 @@ define st2::user(
   include ::st2::params
 
   $_packs_group_name = $st2::params::packs_group_name
+  $_ssh_dir = "/home/${name}/.ssh"
 
   ensure_resource('group', $_packs_group_name, {
     'ensure' => present,
@@ -57,47 +58,66 @@ define st2::user(
       ensure => directory,
       owner  => $name,
       group  => $name,
-      mode   => '0750',
+      mode   => '0700',
     }
   }
 
-  if $client {
-    if !$ssh_key_type or !$ssh_public_key {
-      notify { "St2::User[${name}]: ${st2::notices::user_missing_client_keys}": }
-    }
-    else {
-      ssh_authorized_key { "st2_${name}_key":
-        type    => $ssh_key_type,
-        user    => $name,
-        key     => $ssh_public_key,
-        require => File["/home/${name}/.ssh"],
-      }
-    }
-  }
   if $server {
     if !$ssh_private_key {
-      notify { "St2::User[${name}]:: ${st2::notices::user_missing_private_key}": }
-
-      $ssh_keygen_type = $ssh_key_type ? {
+      $_ssh_keygen = true
+      $_ssh_keygen_type = $ssh_key_type ? {
         undef => 'rsa',
         default => $ssh_key_type,
       }
 
-      exec { "generate ssh key /home/${name}/.ssh/st2_${name}_key":
-        command => "ssh-keygen -f /home/${name}/.ssh/st2_${name}_key -t ${ssh_keygen_type} -P ''",
-        creates => "/home/${name}/.ssh/st2_${name}_key",
+      $_ssh_keygen_key_path = "${_ssh_dir}/st2_${name}_key"
+      exec { "generate ssh key ${_ssh_keygen_key_path}":
+        command => "ssh-keygen -f ${_ssh_keygen_key_path} -t ${_ssh_keygen_type} -P ''",
+        creates => $_ssh_keygen_key_path,
         path    => ['/usr/bin', '/sbin', '/bin'],
-        require => File["/home/${name}/.ssh"]
+        require => File[$_ssh_dir]
       }
     }
     else {
+      $_ssh_keygen = false
       file { "/home/${name}/.ssh/st2_${name}_key":
         ensure  => file,
         owner   => $name,
         group   => 'root',
-        mode    => '0400',
+        mode    => '0600',
         content => $ssh_private_key,
       }
+
+      file { "/home/${name}/.ssh/st2_${name}_key.pub":
+        ensure  => file,
+        owner   => $name,
+        group   => 'root',
+        mode    => '0644',
+        content => $ssh_public_key,
+      }
+    }
+  }
+
+  if $client {
+    if $_ssh_keygen {
+      exec { "add st2_${name}_key to ssh authorized keys":
+        command   => "cat ${_ssh_keygen_key_path}.pub >> ${_ssh_dir}/authorized_keys",
+        onlyif    => "test `grep -f ${_ssh_keygen_key_path}.pub ${_ssh_dir}/authorized_keys | wc -l` == 0",
+        path      => ['/usr/bin', '/bin'],
+        require   => File[$_ssh_dir],
+        subscribe => Exec["generate ssh key ${_ssh_keygen_key_path}"],
+      }
+    }
+    elsif $ssh_key_type and $ssh_public_key {
+      ssh_authorized_key { "st2_${name}_key":
+        type    => $ssh_key_type,
+        user    => $name,
+        key     => $ssh_public_key,
+        require => File[$_ssh_dir],
+      }
+    }
+    else {
+      notify { "St2::User[${name}]: ${st2::notices::user_missing_client_keys}": }
     }
   }
   ### END Setup SSH Keys ###

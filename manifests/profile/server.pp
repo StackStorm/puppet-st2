@@ -299,6 +299,13 @@ class st2::profile::server (
   class { '::st2::server::datastore_keys': }
 
   ########################################
+  ## Reload
+  exec {'/usr/bin/st2ctl reload --register-all':
+    tag         => 'st2::reload',
+    refreshonly => true,
+  }
+
+  ########################################
   ## Dependencies
   Package<| tag == 'st2::server::packages' |>
   -> Ini_setting<| tag == 'st2::config' |>
@@ -311,4 +318,7 @@ class st2::profile::server (
   Package<| tag == 'st2::server::packages' |>
   -> Class['::st2::stanley']
   -> Service<| tag == 'st2::service' |>
+
+  Service<| tag == 'st2::service' |>
+  ~> Exec<| tag == 'st2::reload' |>
 }

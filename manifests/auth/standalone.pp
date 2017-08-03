@@ -47,7 +47,8 @@ class st2::auth::standalone(
     owner   => 'st2',
     group   => 'st2',
     mode    => '0600',
-    require => Package['st2']
+    require => Package['st2'],
+    before  => Service['st2auth'],
   }
 
   ini_setting { 'auth_mode':

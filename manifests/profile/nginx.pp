@@ -16,13 +16,8 @@
 #  include st2::profile::nginx
 #
 class st2::profile::nginx inherits st2 {
-
-  package { 'nginx':
-    ensure => 'installed'
-  }
-
-  service { 'nginx':
-    ensure => 'running',
-    enable => true,
+  class { '::nginx':
+    manage_repo => true,
+    confd_purge => false,
   }
 }

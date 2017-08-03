@@ -19,7 +19,6 @@ class st2::profile::fullinstall inherits st2 {
   -> anchor { 'st2::bootstrap': }
   -> anchor { 'st2::pre_reqs': }
   -> anchor { 'st2::main': }
-  -> anchor { 'st2::reload': }
   -> anchor { 'st2::end': }
 
   Anchor['st2::begin']
@@ -32,26 +31,19 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::postgresql': }
   -> class { '::st2::profile::rabbitmq': }
   -> class { '::st2::profile::mongodb': }
-  -> class { '::st2::profile::nginx': }
   -> Anchor['st2::main']
   -> class { '::st2::profile::mistral': }
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
-  -> Anchor['st2::reload']
-  -> exec{'/usr/bin/st2ctl reload':
-    tag  => 'st2::reload',
-  }
+  -> class { '::st2::profile::web': }
   -> Anchor['st2::end']
+  
+  # default pack
+  if !defined(St2::Pack['st2']) {
+    st2::pack {'st2': }
+  }
 
-
-  class { '::st2::auth::standalone': }
-  -> Anchor['st2::reload']
-
-  ############
-  # TODO (not working below)
-
-  # TODO
-  # st2web profile
-  # include ::st2::packs
-  # include ::st2::kvs
+  include ::st2::auth::standalone
+  include ::st2::packs
+  include ::st2::kvs
 }
