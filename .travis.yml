@@ -13,7 +13,7 @@ matrix:
       env: PUPPET_VERSION="~> 3.0"
     - rvm: 2.0.0
       env: PUPPET_VERSION="~> 3.0"
-    - rvm: 2.1.0
+    - rvm: 2.4.1
       env: PUPPET_VERSION="~> 3.0"
 notifications:
   email: false
