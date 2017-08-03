@@ -18,6 +18,8 @@
 #  [*syslog_port*]            - Syslog port.
 #  [*syslog_facility*]        - Syslog facility.
 #  [*ssh_key_location*]       - Location on filesystem of Admin SSH key for remote runner
+#  [*db_username*]            - Username to connect to MongoDB with (default: 'stackstorm')
+#  [*db_password*]            - Password for 'stackstorm' user in MongDB.
 #
 # === Variables
 #
