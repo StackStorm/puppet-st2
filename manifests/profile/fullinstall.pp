@@ -37,7 +37,7 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::server': }
   -> class { '::st2::profile::web': }
   -> Anchor['st2::end']
-  
+
   # default pack
   if !defined(St2::Pack['st2']) {
     st2::pack {'st2': }

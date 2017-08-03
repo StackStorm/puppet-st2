@@ -52,9 +52,10 @@ class st2::profile::mongodb (
       version             => $mongodb_version,
       bind_ip             => $db_bind_ips,
       manage_pidfile      => false, # mongo will not start if this is true
-    }->
-    class { 'mongodb::client':
-    }->
+    }
+
+    class { 'mongodb::client': }
+
     class { 'mongodb::server':
       auth           => true,
       port           => $db_port,
@@ -63,6 +64,10 @@ class st2::profile::mongodb (
       admin_username => $st2::params::mongodb_admin_username,
       admin_password => $mongo_db_password,
     }
+
+    Class['mongodb::globals']
+    -> Class['mongodb::client']
+    -> Class['mongodb::server']
 
     # TODO: is this just redhat specific?
     Package <| title == 'mongodb_client' |> {
