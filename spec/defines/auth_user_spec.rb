@@ -8,14 +8,14 @@ describe 'st2::auth_user' do
     let (:params) {
       {
         :ensure   => 'present',
-        :password => 'sekritp3sswrd',
+        :password => 'sekritp3sswrd'
       }
     }
 
     it do
       should contain_httpauth('stanley').with(
         :ensure   => 'present',
-        :password => 'sekritp3sswrd',
+        :password => 'sekritp3sswrd'
       )
     end
   end

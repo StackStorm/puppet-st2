@@ -13,7 +13,7 @@ describe 'st2::package::debian' do
                  'repos'       => 'main',
                  'include_src' => false,
                  'key'         => '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982',
-                 'key_source'  => 'https://downloads.stackstorm.net/deb/pubkey.gpg',
+                 'key_source'  => 'https://downloads.stackstorm.net/deb/pubkey.gpg'
                )
       }
     end
@@ -36,7 +36,7 @@ describe 'st2::package::debian' do
                  'repos'       => 'main',
                  'include_src' => false,
                  'key'         => '8756C4F765C9AC3CB6B85D62379CE192D401AB61',
-                 'key_source'  => 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray',
+                 'key_source'  => 'https://bintray.com/user/downloadSubjectPublicKey?username=bintray'
                )
       }
     end
@@ -58,7 +58,7 @@ describe 'st2::package::debian' do
                  'repos'       => '',
                  'include_src' => '',
                  'key'         => '',
-                 'key_source'  => '',
+                 'key_source'  => ''
                )
       }
     end
@@ -81,7 +81,7 @@ describe 'st2::package::debian' do
                  'repos'       => 'main',
                  'include_src' => false,
                  'key'         => '1E26DCC8B9D4E6FCB65CC22E40A96AE06B8C7982',
-                 'key_source'  => 'https://downloads.stackstorm.net/deb/pubkey.gpg',
+                 'key_source'  => 'https://downloads.stackstorm.net/deb/pubkey.gpg'
                )
       }
     end
