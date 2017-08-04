@@ -1,5 +1,5 @@
 require 'spec_helper'
-require_relative '../helpers/fact_helper'
+require 'helpers/fact_helper'
 
 describe 'st2::auth_user' do
   let(:title) { 'stanley' }
