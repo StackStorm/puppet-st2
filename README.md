@@ -135,5 +135,16 @@ Error: Could not retrieve local facts: Could not autoload puppet/provider/packag
 Error: Failed to apply catalog: Could not retrieve local facts: Could not autoload puppet/provider/package/npm: /var/lib/puppet/lib/puppet/provider/package/npm.rb:3: syntax error, unexpected ':', expecting $end
 ...package).provide :npm, parent: Puppet::Provider::Package do
                               ^
-
 ```
+
+## How to generate Gemfile.lock.x.y.x
+
+**TODO** Install and switch to the proper versions of ruby before each call
+
+``` shell
+gem install bundler
+PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.3.8.7
+PUPPET_VERSION=4.10 bundle package; mv Gemfile.lock Gemfile.lock.4.10
+PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
+```
+

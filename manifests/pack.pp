@@ -43,6 +43,10 @@ define st2::pack (
     default => "subtree=${subtree}",
   }
 
+  ensure_resource('group', $_st2_packs_group, {
+    'ensure' => present,
+  })
+
   ensure_resource('file', '/opt/stackstorm', {
     'ensure' => 'directory',
     'owner'  => 'root',
@@ -92,6 +96,7 @@ define st2::pack (
     File["/opt/stackstorm/configs/${pack}.yaml"] ~> Exec<| tag == 'st2::reload' |>
   }
 
+  Group[$_st2_packs_group] -> File['/opt/stackstorm']
   File['/opt/stackstorm'] -> File<| tag == 'st2::subdirs' |>
   Package<| tag == 'st2::server::packages' |> -> File['/opt/stackstorm/packs']
   Service<| tag == 'st2::service' |> -> Exec["install-st2-pack-${name}"]
