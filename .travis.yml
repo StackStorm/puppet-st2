@@ -19,7 +19,7 @@ matrix:
     - rvm: 2.0.0
       env:
         - PUPPET_VERSION="~> 3.0"
-        - GEMFILE_LOCK="Gemfile.lock.3.8.7"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby2.0.0"
     - rvm: 2.1.10
       env:
         - PUPPET_VERSION="~> 4.0"
