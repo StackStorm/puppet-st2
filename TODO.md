@@ -20,3 +20,5 @@
   - Keystone
 - Remove unused code
   - Tiller
+- More unit tests
+- Figure out how to test different platforms via docker in Travis

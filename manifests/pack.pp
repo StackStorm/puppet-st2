@@ -43,19 +43,28 @@ define st2::pack (
     default => "subtree=${subtree}",
   }
 
+  ensure_resource('file', '/opt/stackstorm', {
+    'ensure' => 'directory',
+    'owner'  => 'root',
+    'group'  => 'root',
+    'mode'   => '0755',
+  })
+
   ensure_resource('file', '/opt/stackstorm/packs', {
     'ensure'  => 'directory',
     'owner'   => 'root',
     'group'   => $_st2_packs_group,
     'mode'    => '0775',
     'recurse' => true,
-    })
+    'tag'     => 'st2::subdirs',
+  })
 
   ensure_resource('file', '/opt/stackstorm/configs', {
     'ensure'  => 'directory',
     'owner'   => 'st2',
     'group'   => 'root',
     'mode'    => '0755',
+    'tag'     => 'st2::subdirs',
   })
 
   exec { "install-st2-pack-${pack}":
@@ -65,10 +74,6 @@ define st2::pack (
     tries     => '5',
     try_sleep => '3',
   }
-
-  Package<| tag == 'st2::server::packages' |> -> File['/opt/stackstorm/packs']
-  Service<| tag == 'st2::service' |> -> Exec["install-st2-pack-${name}"]
-  Exec<| tag == 'st2::reload' |> ~> Exec["install-st2-pack-${name}"]
 
   if $config {
     validate_hash($config)
@@ -86,4 +91,9 @@ define st2::pack (
 
     File["/opt/stackstorm/configs/${pack}.yaml"] ~> Exec<| tag == 'st2::reload' |>
   }
+
+  File['/opt/stackstorm'] -> File<| tag == 'st2::subdirs' |>
+  Package<| tag == 'st2::server::packages' |> -> File['/opt/stackstorm/packs']
+  Service<| tag == 'st2::service' |> -> Exec["install-st2-pack-${name}"]
+  Exec<| tag == 'st2::reload' |> ~> Exec["install-st2-pack-${name}"]
 }

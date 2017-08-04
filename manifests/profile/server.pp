@@ -88,6 +88,13 @@ class st2::profile::server (
     tag    => 'st2::server::packages',
   }
 
+  ensure_resource('file', '/opt/stackstorm', {
+    'ensure' => 'directory',
+    'owner'  => 'root',
+    'group'  => 'root',
+    'mode'   => '0755',
+  })
+
   ########################################
   ## Config
   file { '/etc/st2':

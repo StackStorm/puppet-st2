@@ -91,3 +91,49 @@ st2::packs:
       post_message_action:
         webhook_url: XXX
 ```
+
+
+## RHEL 7 Notes (Ruby 2.0.0, Puppet 3.8.7)
+
+The following modules need to have their versions locked in your
+Puppetfile because future versions dropped support for Puppet 3.x.
+All other dependencies are compatible with Puppet 3 (as of 2017-08-03).
+``` ruby
+mod 'puppet/nginx', '0.6.0'
+mod 'puppetlabs/vcsrepo', '1.5.0'
+mod 'puppet/nodejs', '2.3.0'
+```
+
+
+## RHEL 6 Notes (Ruby 1.8.7, Puppet 3.8.6)
+
+The following modules need to have their versions locked in your
+Puppetfile because future versions dropped support for Puppet 3.x.
+All other dependencies are compatible with Puppet 3 (as of 2017-08-03).
+
+
+``` ruby
+mod 'puppet/nginx', '0.6.0'
+mod 'puppetlabs/vcsrepo', '1.5.0'
+mod 'puppet/nodejs', '1.3.0'
+```
+
+
+**Note** that `puppet/nodejs` is an older version than for RHEL 7. This is
+because 1.3.0 dropped compatibility with Ruby 1.8.7 in future versions.
+If you run a version >1.3.0 on with Ruby 1.8.7, then you'll encounter
+the following error.
+
+``` shell
+
+Error: Could not autoload puppet/provider/package/npm: /var/lib/puppet/lib/puppet/provider/package/npm.rb:3: syntax error, unexpected ':', expecting $end
+...package).provide :npm, parent: Puppet::Provider::Package do
+                              ^
+Error: Could not retrieve local facts: Could not autoload puppet/provider/package/npm: /var/lib/puppet/lib/puppet/provider/package/npm.rb:3: syntax error, unexpected ':', expecting $end
+...package).provide :npm, parent: Puppet::Provider::Package do
+                              ^
+Error: Failed to apply catalog: Could not retrieve local facts: Could not autoload puppet/provider/package/npm: /var/lib/puppet/lib/puppet/provider/package/npm.rb:3: syntax error, unexpected ':', expecting $end
+...package).provide :npm, parent: Puppet::Provider::Package do
+                              ^
+
+```

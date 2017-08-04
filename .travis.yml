@@ -10,10 +10,12 @@ bundler_args: --without rake
 matrix:
   fast_finish: true
   include:
-    - rvm: 1.9.3
+    # RHEL 6
+    - rvm: 1.8.7
       env:
         - PUPPET_VERSION="~> 3.0"
-        - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.9.3"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.8.7"
+    # RHEL 7
     - rvm: 2.0.0
       env:
         - PUPPET_VERSION="~> 3.0"
