@@ -17,7 +17,8 @@ gem 'coveralls', :require => false
 
 gem 'puppet-blacksmith',      '>= 3.1.1'
 
-if build_name and build_name == 'Ubuntu 16'
+puts build_name
+if build_name and build_name == "Ubuntu 16"
   gem 'syck'
 end
 
