@@ -197,10 +197,7 @@ class st2::params(
         }
       } elsif $::operatingsystem == 'Ubuntu' {
         $init_type = $::operatingsystemmajrelease ? {
-          '12.04' => 'upstart',
           '14.04' => 'upstart',
-          '14.10' => 'upstart',
-          '15.04' => 'systemd',
           default => 'systemd',
         }
       }
