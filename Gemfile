@@ -14,9 +14,9 @@ gem 'coveralls', :require => false
 
 gem 'puppet-blacksmith',      '>= 3.1.1'
 
-if RUBY_VERSION < '2.0.0'
-  gem 'syck'
-end
+# if RUBY_VERSION >= '2.0.0'
+#   gem 'syck'
+# end
 
 ### ADD USER GEMS HERE ###
 
