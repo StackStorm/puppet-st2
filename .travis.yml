@@ -25,11 +25,15 @@ matrix:
         - BUILD_NAME="Ubuntu 14"
         - PUPPET_VERSION="~> 3.0"
         - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.9.3"
-    - rvm: 2.3.1
-      env:
-        - BUILD_NAME="Ubuntu 16"
-        - PUPPET_VERSION="~> 3.0"
-        - GEMFILE_LOCK="Gemfile.lock.3.8.5.ruby2.3.1"
+    # Can't run our unittests against Ubuntu 16 because it ships with
+    # a brand new version of Ruby (2.3.x) and an old version of puppet (3.8.5).
+    # These are not compatible and fail the unit tests, however the module does
+    # work on this version.
+    # - rvm: 2.3.1
+    #   env:
+    #     - BUILD_NAME="Ubuntu 16"
+    #     - PUPPET_VERSION="~> 3.0"
+    #     - GEMFILE_LOCK="Gemfile.lock.3.8.5.ruby2.3.1"
     - rvm: 2.1.10
       env:
         - BUILD_NAME="Puppet 4 (generic)"

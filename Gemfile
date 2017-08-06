@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-build_name = ENV['BUILD_NAME']
 puppetversion = ENV['PUPPET_VERSION']
 
 if puppetversion
@@ -16,11 +15,6 @@ gem 'facter',                 '>= 1.7.0'
 gem 'coveralls', :require => false
 
 gem 'puppet-blacksmith',      '>= 3.1.1'
-
-puts build_name
-if build_name and build_name == "Ubuntu 16"
-  gem 'syck'
-end
 
 ### ADD USER GEMS HERE ###
 

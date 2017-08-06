@@ -27,6 +27,22 @@ get you setup and going with minimal effort. Simply:
 include ::st2::profile::fullinstall
 ```
 
+### Ubuntu 14.04
+
+Because 14.04 ships with a very old version of puppet (3.4) and most puppet modules
+no longer support this version of puppet, we recommend upgrading to 3.8.7 at a
+minimum.
+
+``` shell
+# 14.04 trusty
+# By default this ships with puppet 3.4.x (very old), need a newer version to work
+# with any of the required puppet modules
+wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
+sudo dpkg -i puppetlabs-release-trusty.deb
+sudo apt-get update
+sudo apt-get install puppet=3.8.7-1puppetlabs1
+```
+
 ## Configuration
 
 This module aims to provide sane default configurations, but also stay
@@ -160,6 +176,8 @@ sudo apt-get install ruby-dev git gcc g++ make
 gem install bundler
 
 # 14.04 trusty
+# By default this ships with puppet 3.4.x (very old), need a newer version to work
+# with any of the required puppet modules
 wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
 sudo dpkg -i puppetlabs-release-trusty.deb
 sudo apt-get update
@@ -167,6 +185,7 @@ sudo apt-get install puppet=3.8.7-1puppetlabs1
 
 # 16.04 trusty
 sudo apt-get install puppet
+
 ```
 
 ### RHEL dev environment
