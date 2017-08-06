@@ -294,9 +294,10 @@ class st2::profile::server (
   ########################################
   ## Services
   service { $::st2::params::st2_services:
-    ensure => 'running',
-    enable => true,
-    tag    => 'st2::service',
+    ensure   => 'running',
+    enable   => true,
+    provider => $_init_provider,
+    tag      => 'st2::service',
   }
 
   ########################################

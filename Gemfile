@@ -13,6 +13,7 @@ gem 'facter',                 '>= 1.7.0'
 gem 'coveralls', :require => false
 
 gem 'puppet-blacksmith',      '>= 3.1.1'
+gem 'syck'
 
 ### ADD USER GEMS HERE ###
 

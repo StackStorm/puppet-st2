@@ -69,14 +69,43 @@ class st2::profile::mongodb (
     -> Class['mongodb::client']
     -> Class['mongodb::server']
 
-    # TODO: is this just redhat specific?
-    Package <| title == 'mongodb_client' |> {
-      ensure => 'present'
+    case $::osfamily {
+      'RedHat': {
+        Package <| tag == 'mongodb' |> {
+          ensure => 'present'
+        }
+      }
+      'Debian': {
+        # # MongoDB module doesn't pass the proper install options when using the
+        # # MongoDB repo on Ubuntu (Debian)
+        Package <| tag == 'mongodb' |> {
+          ensure          => 'present',
+          install_options => ['--allow-unauthenticated'],
+        }
+
+        # Debian's mongodb doesn't create PID file properly, so we need to
+        # create it and set proper permissions
+        file { '/var/run/mongod.pid':
+          ensure => present,
+          owner  => 'mongodb',
+          group  => 'mongodb',
+          mode   => '0644',
+          tag    => 'st2::mongodb::debian',
+        }
+
+        File <| title == '/var/lib/mongodb' |> {
+          recurse => true,
+          tag     => 'st2::mongodb::debian',
+        }
+
+        Package<| title == 'mongodb_server' |>
+        -> File<| tag == 'st2::mongodb::debian' |>
+        -> Service['mongodb']
+      }
+      default: {
+      }
     }
 
-    Package <| title == 'mongodb_server' |> {
-      ensure => 'present'
-    }
 
     # configure st2 database
     mongodb::db { $db_name:
