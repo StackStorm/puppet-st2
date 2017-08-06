@@ -20,10 +20,22 @@ matrix:
       env:
         - PUPPET_VERSION="~> 3.0"
         - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby2.0.0"
+    # Ubuntu 14
+    - rvm: 1.9.3
+      env:
+        - PUPPET_VERSION="~> 3.0"
+        - GEMFILE_LOCK="Gemfile.lock.3.4.3.ruby1.9.3"
+    # Ubuntu 16
+    - rvm: 2.3.1
+      env:
+        - PUPPET_VERSION="~> 3.0"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.5.ruby2.3.1"
+    # Puppet 4 (generic)
     - rvm: 2.1.10
       env:
         - PUPPET_VERSION="~> 4.0"
         - GEMFILE_LOCK="Gemfile.lock.4.10"
+    # Puppet 5 (generic)
     - rvm: 2.4.1
       env:
         - PUPPET_VERSION="~> 5.0"

@@ -139,7 +139,7 @@ Error: Failed to apply catalog: Could not retrieve local facts: Could not autolo
 
 ## How to generate Gemfile.lock.x.y.x
 
-**TODO** Install and switch to the proper versions of ruby before each call
+**TODO** Install and switch to the proper versions of ruby before each call (chruby)
 
 ``` shell
 gem install bundler
@@ -148,3 +148,17 @@ PUPPET_VERSION=4.10 bundle package; mv Gemfile.lock Gemfile.lock.4.10
 PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
 ```
 
+
+## Ubuntu dev environment
+
+``` shell
+apt-get install puppet ruby-dev git gcc g++ make
+gem install bundler
+```
+
+## RHEL dev environment
+
+``` shell
+yum -y install puppet ruby-devel git gcc g++ make
+gem install bundler
+```
