@@ -92,8 +92,9 @@ st2::packs:
         webhook_url: XXX
 ```
 
+## Module Dependencies
 
-## RHEL 7 Notes (Ruby 2.0.0, Puppet 3.8.7)
+### RHEL 7 Notes (Ruby 2.0.0, Puppet 3.8.7)
 
 The following modules need to have their versions locked in your
 Puppetfile because future versions dropped support for Puppet 3.x.
@@ -105,7 +106,7 @@ mod 'puppet/nodejs', '2.3.0'
 ```
 
 
-## RHEL 6 Notes (Ruby 1.8.7, Puppet 3.8.6)
+### RHEL 6 Notes (Ruby 1.8.7, Puppet 3.8.6)
 
 The following modules need to have their versions locked in your
 Puppetfile because future versions dropped support for Puppet 3.x.
@@ -137,19 +138,22 @@ Error: Failed to apply catalog: Could not retrieve local facts: Could not autolo
                               ^
 ```
 
-## How to generate Gemfile.lock.x.y.x
+### Ubuntu Notes (Puppet 3.8.7)
 
-**TODO** Install and switch to the proper versions of ruby before each call (chruby)
+The following modules need to have their versions locked in your
+Puppetfile because future versions dropped support for Puppet 3.x.
+All other dependencies are compatible with Puppet 3 (as of 2017-08-03).
 
 ``` shell
-gem install bundler
-PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.3.8.7
-PUPPET_VERSION=4.10 bundle package; mv Gemfile.lock Gemfile.lock.4.10
-PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
+mod 'puppet/nginx', '0.6.0'
+mod 'puppetlabs/vcsrepo', '1.5.0'
+mod 'puppet/nodejs', '2.3.0'
+mod 'puppetlabs/apt', '2.4.0'
 ```
 
+## Dev Notes
 
-## Ubuntu dev environment
+### Ubuntu dev environment
 
 ``` shell
 sudo apt-get install ruby-dev git gcc g++ make
@@ -165,9 +169,20 @@ sudo apt-get install puppet=3.8.7-1puppetlabs1
 sudo apt-get install puppet
 ```
 
-## RHEL dev environment
+### RHEL dev environment
 
 ``` shell
 sudo yum -y install puppet ruby-devel git gcc g++ make
 gem install bundler
+```
+
+### How to generate Gemfile.lock.x.y.x
+
+**TODO** Install and switch to the proper versions of ruby before each call (chruby)
+
+``` shell
+gem install bundler
+PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.3.8.7
+PUPPET_VERSION=4.10 bundle package; mv Gemfile.lock Gemfile.lock.4.10
+PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
 ```
