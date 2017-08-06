@@ -76,13 +76,23 @@ class st2::profile::mongodb (
         }
       }
       'Debian': {
-        # # MongoDB module doesn't pass the proper install options when using the
-        # # MongoDB repo on Ubuntu (Debian)
+        #############
+        # MongoDB module doens't ensure that the apt source is added prior to
+        # the packages.
+        # It also fails to ensure that apt-get update is run before trying
+        # to install the packages.
+        Apt::Source['mongodb'] -> Package<|tag == 'mongodb'|>
+        Class['Apt::Update'] -> Package<|tag == 'mongodb'|>
+
+        #############
+        # MongoDB module doesn't pass the proper install options when using the
+        # MongoDB repo on Ubuntu (Debian)
         Package <| tag == 'mongodb' |> {
           ensure          => 'present',
           install_options => ['--allow-unauthenticated'],
         }
 
+        #############
         # Debian's mongodb doesn't create PID file properly, so we need to
         # create it and set proper permissions
         file { '/var/run/mongod.pid':
@@ -97,8 +107,7 @@ class st2::profile::mongodb (
           recurse => true,
           tag     => 'st2::mongodb::debian',
         }
-
-        Package<| title == 'mongodb_server' |>
+        Package<| tag == 'mongodb' |>
         -> File<| tag == 'st2::mongodb::debian' |>
         -> Service['mongodb']
       }

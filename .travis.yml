@@ -24,7 +24,7 @@ matrix:
       env:
         - BUILD_NAME="Ubuntu 14"
         - PUPPET_VERSION="~> 3.0"
-        - GEMFILE_LOCK="Gemfile.lock.3.4.3.ruby1.9.3"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.9.3"
     - rvm: 2.3.1
       env:
         - BUILD_NAME="Ubuntu 16"

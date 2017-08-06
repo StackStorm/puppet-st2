@@ -152,13 +152,22 @@ PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
 ## Ubuntu dev environment
 
 ``` shell
-apt-get install puppet ruby-dev git gcc g++ make
+sudo apt-get install ruby-dev git gcc g++ make
 gem install bundler
+
+# 14.04 trusty
+wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
+sudo dpkg -i puppetlabs-release-trusty.deb
+sudo apt-get update
+sudo apt-get install puppet=3.8.7-1puppetlabs1
+
+# 16.04 trusty
+sudo apt-get install puppet
 ```
 
 ## RHEL dev environment
 
 ``` shell
-yum -y install puppet ruby-devel git gcc g++ make
+sudo yum -y install puppet ruby-devel git gcc g++ make
 gem install bundler
 ```
