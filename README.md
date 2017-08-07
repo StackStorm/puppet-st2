@@ -108,6 +108,31 @@ st2::packs:
         webhook_url: XXX
 ```
 
+## Known Limitations
+
+### MongoDB (all OSes)
+
+When running the initial install of st2 you will see an error from the 
+MongoDB module :
+
+```
+Error: Could not prefetch mongodb_database provider 'mongodb': Could not evaluate MongoDB shell command: load('/root/.mongorc.js'); printjson(db.getMongo().getDBs())
+```
+
+This error is caused by a deficiency in this module trying to use authentication
+in its prefetch step when authentication hasn't been configured yet on
+the database. The error can be safely ignored. Auth and databases will be 
+configured normally. Subsequent runs of puppet will not show this error.
+
+
+### Ubuntu 16.04
+
+Due to a known bug in st2 [3290](https://github.com/StackStorm/st2/issues/3290) 
+when first running the installation with this puppet module the `st2` pack
+will fail to install. Simply invoking puppet a second time will produce
+a fully running st2 installation with the `st2` pack installed.
+
+
 ## Module Dependencies
 
 ### RHEL 7 Notes (Ruby 2.0.0, Puppet 3.8.7)
