@@ -1,5 +1,137 @@
 # Changelog
 
+## 1.0.0 (Aug 6, 2017)
+
+#### manifests/auth/standalone.pp
+
+- D not have access to the `::st2` variables.
+- Had a dependency issue where (on some platforms) allowed the `htpasswd` file to be created after the st2 services were starting
+- Created an unnecessary "test user"
+
+#### manifests/auth_user.pp
+
+- Dependency issues here where the `htpasswd` file was sometimes trying to be created before the `/etc/st2` directory was created, and other times it was trying to be created after the st2 services had started.
+
+#### manifests/init.pp
+
+- Needed extra variables for SSL setup in st2web. 
+- Needed extra variables for proper database setup (mongodb and postgres)
+- Needed path to the st2auth logging config file
+- Needed variables about the datastore encryption keys
+
+#### manifests/kv.pp
+
+- Some puppet lint problems (notice the whitespace fix and reordering of class params)
+- Dependency issues where the tag being used for the `Service` resource was incorrect
+- Dependency issues where sometimes st2 hadn't been reloaded so the k/v loads would fail
+
+#### manifests/notices.pp
+
+- Puppet lint fixes for using double quotes without variable interpolation in the string.
+
+#### manifests/pack.pp
+
+- Unit tests revealed that many of the dependencies of this resource were not declared (group and directories)
+- Pointing at old location for config directory
+- Needed lots of dependency work to ensure resources were created in the proper order
+
+#### manifests/params.pp
+
+- Broke down the old `st2_server_packages` variable into various components to align more with what ansible-st2 and the "one liner" shell scripts do in their functions.
+- Removed some unused code in the "init provider" section
+- Broke down the old `st2_services` into its components similar to `st2_server_packages`. FYI: The mistral services are handled by the mistral install instead of being grouped together into `st2 server`.
+- Added lots of new parameters for services that were not configured in the past like (nginx, st2web, mongodb, rabbitmq)
+
+#### manifests/profile/client.pp
+
+- Removed stale comment
+
+#### manifests/profile/fullinstall.pp
+
+- Mainly dependency cleanup here.
+- Ensure that packages are installed in the correct order and that there are meaningful anchors in place in case others need to execute tasks at certain points during the install.
+
+#### manifests/profile/mistral.pp
+
+- This was completely re-written
+- Previously it was performing a lot of tasks manually that i believe st2mistral package now handles for us
+
+#### manifests/profile/mongodb.pp
+
+- Completely re-written
+- It now handles auth (did not previously)
+- It also deals with several deficiencies in the puppetlabs-mongodb module. This module has lots of annoying bugs. I'm not at the point where i want to code up a new module myself yet, but we do have to work around several quirks for this to even work (sorry!).
+
+#### manifests/profile/nginx.pp
+
+- New profile that installs and configures nginx (does not setup st2web config, that is left to the st2web profile)
+- Utilizes the nginx puppet module to do all of the heavy lifting here
+
+#### manifests/profile/nodejs.pp
+
+- Completely re-written
+- Utilizes the nodejs puppet module to do all of the heavy lifting instead of doing it ourselves
+- Works around a small quirk of the module on RedHat distributions
+
+#### manifests/profile/postgresql.pp
+
+- Expanded this to properly configure postgres for listening according to the standard installs (shell scripts and ansible-st2)
+- Also ensured that 9.4 is installed on RHEL6
+
+#### manifests/profile/rabbitmq.pp
+
+- Greatly simplified by allowing the rabbitmq module to do all of the heavy lifting for us
+
+#### manifests/profile/repos.pp
+
+- Fixed a bug where we were pointing to an all lowercase URL which caused st2 package installs to fail
+
+#### manifests/profile/selinux.pp
+
+- Added a class that configures SELinux on RHEL hosts
+
+#### manifests/profile/server.pp
+
+- Small changes here related to adding database auth capability
+- Added stanley user creation
+- Added datastore crypto creation
+- Added additional dependency management
+
+#### manifests/profile/web.pp
+
+- Completely re-written
+- I don't believe that st2web was complete when this module was last touched, so this class got a complete overhaul
+
+#### manifests/rbac.pp
+
+- Fixed a few puppet lint errors
+- Fixed an error where the RBAC rules were executed every puppet run
+
+#### manifests/server/datastore_keys.pp
+
+- New manifest that manages the datastore crypto keys
+
+#### manifests/stanley.pp
+
+- Removed unnecessary warning about ssh keys
+
+#### manifests/user.pp
+
+- Fixed a couple small bugs related to a legacy "robots" group.
+- This got a pretty big overhaul with regards to SSH key creation. Now, if SSH keys are not present new ones will be created (just like the shell scripts and  ansible-st2)
+
+#### metadata.json
+
+- Reformatted the whole file to standard JSON formatting scheme 
+- Updated module dependencies (some were missing)
+- Added supported OS block
+- Added supported puppet versions block
+
+#### spec/*
+
+- Lots of small fixes here related to running the tests on various versions of ruby.
+- Finally found a happy medium where all tests now pass 
+
 ## 0.14.1 (Jan 15, 2015)
 * Fix typo - st2garbagecollector is part of st2reactor package.
 

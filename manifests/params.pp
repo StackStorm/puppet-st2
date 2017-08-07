@@ -92,12 +92,19 @@ class st2::params(
   # Non-user configurable parameters
   $repo_url = 'https://github.com/StackStorm/st2'
   $conf_dir = '/etc/st2'
+  $datstore_keys_dir = "${conf_dir}/keys"
 
   $st2_server_packages = [
     'st2',
+  ]
+  $st2_chatops_packages = [
     'st2chatops',
-    'st2web',
+  ]
+  $st2_mistral_packages = [
     'st2mistral',
+  ]
+  $st2_web_packages = [
+    'st2web',
   ]
   case $::osfamily {
     'Debian': {
@@ -190,10 +197,7 @@ class st2::params(
         }
       } elsif $::operatingsystem == 'Ubuntu' {
         $init_type = $::operatingsystemmajrelease ? {
-          '12.04' => 'upstart',
           '14.04' => 'upstart',
-          '14.10' => 'upstart',
-          '15.04' => 'systemd',
           default => 'systemd',
         }
       }
@@ -202,13 +206,10 @@ class st2::params(
       $init_type = undef
     }
   }
-  $services = [
-    'mistral-api',
-    'mistral-server',
+  $st2_services = [
     'st2actionrunner',
     'st2api',
     'st2auth',
-    'st2chatops',
     'st2garbagecollector',
     'st2notifier',
     'st2resultstracker',
@@ -216,10 +217,47 @@ class st2::params(
     'st2sensorcontainer',
     'st2stream',
   ]
+  $st2_chatops_services = [
+    'st2chatops',
+  ]
 
   ## Python Packages Directory Detection
   $python_pack = $::osfamily ? {
     'Debian' => '/usr/lib/python2.7/dist-packages',
     'RedHat' => '/usr/lib/python2.7/site-packages',
   }
+
+  ## nginx default config
+  $nginx_default_conf = $::osfamily ? {
+    'Debian' => '/etc/nginx/conf.d/default.conf',
+    'RedHat' => $::operatingsystemmajrelease ? {
+      '6'     => '/etc/nginx/conf.d/default.conf',
+      default => '/etc/nginx/nginx.conf',
+    }
+  }
+  ## nginx conf.d directory in /etc
+  $nginx_conf_d = $::osfamily ? {
+    'Debian' => '/etc/nginx/conf.d',
+    'RedHat' => '/etc/nginx/conf.d',
+  }
+  # nginx config for StackStorm (installed with the st2 packages)
+  $nginx_st2_conf = '/usr/share/doc/st2/conf/nginx/st2.conf'
+
+  # st2web certs
+  $st2web_ssl_dir = '/etc/ssl/st2'
+  $st2web_ssl_cert = "${st2web_ssl_dir}/st2.crt"
+  $st2web_ssl_key = "${st2web_ssl_dir}/st2.key"
+
+  ## MongoDB Data
+  $mongodb_port = '27017'
+  $mongodb_bind_ips = ['127.0.0.1']
+
+  $mongodb_st2_db = 'st2'
+  $mongodb_st2_username = 'stackstorm'
+  $mongodb_st2_roles = ['readWrite']
+
+  ## RabbitMQ
+  $rabbitmq_port = 25672
+  $rabbitmq_protocol = 'tcp'
+  $rabbitmq_selinux_type = 'amqp_port_t'
 }
