@@ -6,11 +6,9 @@
   - All things in st2::profiles::xxx move to st2
   - Create sub folders for each "profile" (server, client, etc)
   - Decompose each "profile" into its parts (config, repo, install, service, etc)
-- Ability to install different versions
+- Ability to install different st2 versions
+- Chatops
 - Support MongoDB 3.4
-- Support other OSes
-  - Ubuntu 14.04 / 16.04
-  - RHEL 6
 - Test alternate auth sources
   - mongodb
   - pam
@@ -22,3 +20,4 @@
   - Tiller
 - More unit tests
 - Figure out how to test different platforms via docker in Travis
+- Automated dev environment setup
