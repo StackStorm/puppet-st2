@@ -23,11 +23,6 @@ class st2::stanley (
   $client          = true,
   $server          = true,
 ) {
-
-  if !$ssh_public_key or !$ssh_private_key {
-    notify { '[st2::stanley] WARNING: No private and public SSH key provided. Please refer to Class[st2] to learn more on configuring this for production use': }
-  }
-
   st2::user { $username:
     client            => $client,
     server            => $server,

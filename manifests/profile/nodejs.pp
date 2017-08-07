@@ -1,81 +1,48 @@
-# Class: st2::profile::nodejs
+# == Class st2::profile::nodejs
 #
-#  Parts taken from:
-#  https://github.com/voxpupuli/puppet-nodejs
-#  Module was not used due to incompatibilities
+# st2 compatable installation of NodeJS and dependencies for use with
+# StackStorm
+#
+# === Parameters
+#
+#  This module contains no parameters
+#
+# === Variables
+#
+#  This module contains no variables
+#
+# === Examples
+#
+#  include st2::profile::nodejs
 #
 class st2::profile::nodejs {
-  case $::osfamily {
-    'Debian': {
-        ensure_packages(['ca-certificates'])
-        apt::source { 'nodesource':
-          key      => {
-            'id'     => '9FD3B784BC1C6FC31A8A0A1C1655A0AB68576280',
-            'source' => 'https://deb.nodesource.com/gpgkey/nodesource.gpg.key',
-          },
-          location => 'https://deb.nodesource.com/node_4.x',
-          release  => $::lsbdistcodename,
-          repos    => 'main',
-          require  => [
-            Package['apt-transport-https'],
-            Package['ca-certificates'],
-          ],
-        }
+  if $::osfamily == 'RedHat' {
+    # Red Hat 7.x + already have NodeJS 6.x+ installed
+    # trying to install from nodesource repos fails, so just use the builtin
+    if $::operatingsystemmajrelease >= '7' {
+      class { '::nodejs':
+        manage_package_repo => false,
+        npm_package_ensure  => 'present',
+      }
     }
-    'RedHat': {
-        if $::operatingsystemrelease =~ /^5\.(\d+)/ {
-            include ::epel
-            $dist_version  = '5'
-            $name_string   = 'Enterprise Linux 5'
-        }
-
-        elsif $::operatingsystemrelease =~ /^6\.(\d+)/ {
-            $dist_version = '6'
-            $name_string  = 'Enterprise Linux 6'
-        }
-
-        elsif $::operatingsystemrelease =~ /^7\.(\d+)/ {
-            $dist_version = '7'
-            $name_string  = 'Enterprise Linux 7'
-        }
-        # nodesource repo
-        $descr   = "Node.js Packages for ${name_string} - \$basearch"
-        $baseurl = "https://rpm.nodesource.com/pub_4.x/el/${dist_version}/\$basearch"
-
-        # nodesource-source repo
-        $source_descr   = "Node.js for ${name_string} - \$basearch - Source"
-        $source_baseurl = "https://rpm.nodesource.com/pub_4.x/el/${dist_version}/SRPMS"
-
-        yumrepo { 'nodesource':
-          descr          => $descr,
-          baseurl        => $baseurl,
-          enabled        => '1',
-          failovermethod => 'priority',
-          gpgkey         => 'file:///etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL',
-          gpgcheck       => '1',
-          #require        => File['/etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL'],
-        }
-
-        yumrepo { 'nodesource-source':
-          descr          => $source_descr,
-          baseurl        => $source_baseurl,
-          enabled        => '0',
-          failovermethod => 'priority',
-          gpgkey         => 'file:///etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL',
-          gpgcheck       => '1',
-          #require        => File['/etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL'],
-        }
-
-        file { '/etc/pki/rpm-gpg/NODESOURCE-GPG-SIGNING-KEY-EL':
-          ensure => file,
-          group  => '0',
-          mode   => '0644',
-          owner  => 'root',
-          source => "puppet:///modules/${module_name}/repo/nodesource/NODESOURCE-GPG-SIGNING-KEY-EL",
-        }
+    # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
+    # In this old repo they hard-code some verifications about which versions
+    # are allowed to be installed (at the time the module was released).
+    # This has changed and NodeJS 4.x is supported and can be installed on
+    # RHEL 6.x. To fake this out we need to hard code the "repo_class"
+    # to the same thing they use internally but without the leading "::"
+    # to avoid their verification checks (ugh...).
+    else {
+      class { '::nodejs':
+        repo_url_suffix => '4.x',
+        repo_class      => 'nodejs::repo::nodesource',
+      }
     }
-    default: {
-      notify{'Unsupported OS':}
+  }
+  else {
+    # else install nodejs 4.x from nodesource repo
+    class { '::nodejs':
+      repo_url_suffix => '4.x',
     }
   }
 }
