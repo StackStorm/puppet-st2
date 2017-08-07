@@ -35,8 +35,8 @@ minimum.
 
 ``` shell
 # 14.04 trusty
-# By default this ships with puppet 3.4.x (very old), need a newer version to work
-# with any of the required puppet modules
+# By default this ships with puppet 3.4.x (very old), need a newer version to 
+# work with with of the required puppet module dependencies for this module. 
 wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
 sudo dpkg -i puppetlabs-release-trusty.deb
 sudo apt-get update
@@ -177,14 +177,23 @@ gem install bundler
 
 # 14.04 trusty
 # By default this ships with puppet 3.4.x (very old), need a newer version to work
-# with any of the required puppet modules
+# with any of the required puppet modules (minimum version = 3.8.x)
 wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
 sudo dpkg -i puppetlabs-release-trusty.deb
 sudo apt-get update
 sudo apt-get install puppet=3.8.7-1puppetlabs1
 
-# 16.04 trusty
-sudo apt-get install puppet
+# 16.04 xenial
+# Note: because the version of ruby shipped with Xenail is 2.3.x and the version
+# of puppet shipped (3.8.x) is incompatible, we have to run our tests using
+# a newer version of puppet (4.10 at a minimum) that supports the new version of
+# ruby.
+# Note - this is ONLY a unit testing deficiency, the usage of this module runs
+# just fine with the default version of puppet.
+wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
+sudo dpkg -i puppetlabs-release-pc1-xenial.deb
+sudo apt-get update
+sudo apt-get install puppet-agent
 
 ```
 
