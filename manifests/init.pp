@@ -9,7 +9,6 @@
 #  [*revision*]           - Revision of StackStorm to install
 #  [*autoupdate*]         - Automatically update to latest stable. (default: false)
 #  [*mistral_git_branch*] - Tagged branch of Mistral to download/install
-#  [*repo_url*]           - The URL where the StackStorm project is hosted on GitHub
 #  [*repo_env*]           - Specify the environment of package repo (production, staging)
 #  [*conf_file*]          - The path where st2 config is stored
 #  [*use_ssl*]            - Enable/Disable SSL for all st2 APIs

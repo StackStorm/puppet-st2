@@ -3,11 +3,9 @@
 #  Main parameters to manage the st2 module
 #
 # === Parameters
-#  [*robots_group_name*] - The name of the group created to hold the st2 admin user
-#  [*robots_group_id*] - The GID of the group created to hold the st2 admin user.
+#  [*packs_group_name*] - The name of the group created to hold the st2 admin user
 #
 # === Variables
-#  [*repo_url*] - The URL where the StackStorm project is hosted on GitHub
 #  [*repo_env*] - Specify the environment of package repo (production, staging)
 #  [*conf_dir*] - The local directory where st2 config is stored
 #  [*subsystems*] - Different executable subsystems within StackStorm
@@ -30,8 +28,7 @@
 #
 
 class st2::params(
-  $robots_group_name = 'st2robots',
-  $packs_group_name  = 'st2packs',
+  $packs_group_name = 'st2packs',
 ) {
   $subsystems = [
     'actionrunner', 'api', 'sensorcontainer',
@@ -60,27 +57,6 @@ class st2::params(
     st2garbagecollector => 'st2reactor',
     st2web              => 'st2common',
   }
-  $subsystem_map = {
-    actionrunner        => 'st2actionrunner',
-    api                 => 'st2api',
-    auth                => 'st2auth',
-    notifier            => 'st2notifier',
-    resultstracker      => 'st2resultstracker',
-    rulesengine         => 'st2rulesengine',
-    sensorcontainer     => 'st2sensorcontainer',
-    garbagecollector    => 'st2garbagecollector',
-    web                 => 'st2web',
-
-    st2actionrunner     => 'st2actionrunner',
-    st2api              => 'st2api',
-    st2auth             => 'st2auth',
-    st2notifier         => 'st2notifier',
-    st2resultstracker   => 'st2resultstracker',
-    st2rulesengine      => 'st2rulesengine',
-    st2sensorcontainer  => 'st2sensorcontainer',
-    st2garbagecollector => 'st2garbagecollector',
-    st2web              => 'st2web',
-  }
 
   $repo_base = 'https://downloads.stackstorm.net'
   $repo_env = 'production'
@@ -90,7 +66,6 @@ class st2::params(
   $auth_backend = pam
 
   # Non-user configurable parameters
-  $repo_url = 'https://github.com/StackStorm/st2'
   $conf_dir = '/etc/st2'
   $datstore_keys_dir = "${conf_dir}/keys"
 
@@ -127,85 +102,7 @@ class st2::params(
     }
   }
 
-  ### Debian Specific Information ###
-  $debian_dependencies = [
-    'make',
-    'realpath',
-    'gcc',
-    'python-yaml',
-    'libssl-dev',
-    'libyaml-dev',
-    'libffi-dev',
-    'libxml2-dev',
-    'libxslt1-dev',
-    'python-tox',
-    'python-pip',
-  ]
-  $debian_client_dependencies = [
-    'python-prettytable',
-    'python-jsonpath-rw',
-    'python-dateutil',
-  ]
-  $debian_mongodb_dependencies = [
-    'mongodb-dev',
-  ]
-  ### END Debian Specific Information ###
-
-  ### RedHat Specific Information ###
-  $redhat_dependencies = [
-    'gcc-c++',
-    'openssl-devel',
-    'libyaml-devel',
-    'libffi-devel',
-    'libxml2-devel',
-    'libxslt-devel',
-  ]
-  $redhat_client_dependencies = [
-    'python-prettytable',
-  ]
-  ### END RedHat Specific Information ###
-
-  # OS Init Type Detection
-  # This block of code is used to detect the underlying Init Daemon
-  # automatically.  This code is based on
-  # https://github.com/jethrocarr/puppet-initfact/blob/master/lib/facter/initsystem.rb
-  # This is Puppet code because masterless puppet has issues with pluginsync,
-  # so we need a way to determine what the init system.
-  case $::osfamily {
-    'RedHat': {
-      if $::operatingsystem == 'Amazon' {
-        $init_type = $::operatingsystemmajrelease ? {
-          '2014'  => 'init',
-          '2015'  => 'init',
-          default => 'init',
-        }
-      } else {
-        $init_type = $::operatingsystemmajrelease ? {
-          '5'     => 'init',
-          '6'     => 'init',
-          default => 'systemd',
-        }
-      }
-    }
-    'Debian': {
-      if $::operatingsystem == 'Debian' {
-        $init_type = $::operatingsystemmajrelease ? {
-          '6'     => 'init',
-          '7'     => 'init',
-          '8'     => 'systemd',
-          default => 'systemd',
-        }
-      } elsif $::operatingsystem == 'Ubuntu' {
-        $init_type = $::operatingsystemmajrelease ? {
-          '14.04' => 'upstart',
-          default => 'systemd',
-        }
-      }
-    }
-    default: {
-      $init_type = undef
-    }
-  }
+  ## StackStorm core services
   $st2_services = [
     'st2actionrunner',
     'st2api',
@@ -217,15 +114,11 @@ class st2::params(
     'st2sensorcontainer',
     'st2stream',
   ]
+
+  ## StackStorm ChatOps services
   $st2_chatops_services = [
     'st2chatops',
   ]
-
-  ## Python Packages Directory Detection
-  $python_pack = $::osfamily ? {
-    'Debian' => '/usr/lib/python2.7/dist-packages',
-    'RedHat' => '/usr/lib/python2.7/site-packages',
-  }
 
   ## nginx default config
   $nginx_default_conf = $::osfamily ? {

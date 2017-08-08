@@ -1,5 +1,7 @@
 # Class: st2::auth::pam
 #
+#  ** BROKEN **
+#  TODO: Fix this.
 #  Auth class to configure and setup PAM authentication
 #
 # Parameters:

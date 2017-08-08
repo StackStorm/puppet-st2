@@ -58,7 +58,6 @@ define st2::pack (
     'ensure'  => 'directory',
     'owner'   => 'root',
     'group'   => $_st2_packs_group,
-    'mode'    => '0775',
     'recurse' => true,
     'tag'     => 'st2::subdirs',
   })
@@ -83,7 +82,7 @@ define st2::pack (
     validate_hash($config)
     file { "/opt/stackstorm/configs/${pack}.yaml":
       ensure  => file,
-      mode    => '0755',
+      mode    => '0640',
       owner   => 'st2',
       group   => 'root',
       content => template('st2/config.yaml.erb'),

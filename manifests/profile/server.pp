@@ -27,8 +27,6 @@
 #                         Sources from st2::params
 #  [*_conf_dir*]        - Local scoped variable config directory for st2.
 #                         Sources from st2::params
-#  [*_python_pack*]     - Local scoped variable directory where system python lives
-#                         Sources from st2::params
 #
 # === Examples
 #
@@ -58,8 +56,6 @@ class st2::profile::server (
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
-  $_init_provider = $::st2::params::init_type
-  $_python_pack = $::st2::params::python_pack
 
   $_enable_auth = $auth ? {
     true    => 'True',
