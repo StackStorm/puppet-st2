@@ -1,9 +1,0 @@
-description "StackStorm's Mistral Workflow API Service"
-
-start on starting mistral
-stop on stopping mistral
-
-script
-    chdir /opt/openstack/mistral
-    exec /opt/openstack/mistral/.venv/bin/gunicorn -b <%= @api_url %>:<%= @api_port %> -w 2 mistral.api.wsgi
-end script

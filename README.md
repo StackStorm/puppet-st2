@@ -78,12 +78,16 @@ can be done via the `st2::pack` and `st2::pack::config` defined types.
 
 Installation/Configuration via modules:
 ```ruby
+  # install pack from the exchange
   st2::pack { 'linux': }
-  st2::pack { ['librato', 'consul']:
-    repo_url => 'https://github.com/StackStorm/st2incubator.git',
+  
+  # install pack from a git URL
+  st2::pack { 'private':
+    repo_url => 'https://private.domain.tld/git/stackstorm-private.git',
   }
+  
+  # install pack and apply configuration
   st2::pack { 'slack':
-    repo_url => 'https://github.com/StackStorm/st2incubator.git',
     config   => {
       'post_message_action' => {
         'webhook_url' => 'XXX',
@@ -97,12 +101,11 @@ Installation/Configuration via Hiera:
 st2::packs:
   linux:
     ensure: present
-  cicd:
+  private:
     ensure: present
-    repo_url: https://github.com/StackStorm/st2incubator.git
+    repo_url: https://private.domain.tld/git/stackstorm-private.git
   slack:
     ensure: present
-    repo_url: https://github.com/StackStorm/st2incubator.git
     config:
       post_message_action:
         webhook_url: XXX
@@ -228,6 +231,28 @@ sudo apt-get install puppet-agent
 sudo yum -y install puppet ruby-devel git gcc g++ make
 gem install bundler
 ```
+
+### Dev testing (standalone box)
+
+The file `docs/Puppetfile` is an r10k Puppetfile that downloads all of the
+dependencies required for this module and allows you to perform standalone
+testing without a puppet master. To utilize this file and form of testing
+perform the following
+
+``` shell
+# assuming you already have your dev environment setup from above (puppet must be installed)
+
+# install r10k
+gem install puppet_forge:2.2.6 r10k
+
+# run r10k to download all of our module dependencies defined in ./docs/Puppetfile
+r10k puppetfile install -v --moduledir=./modules --puppetfile=./docs/Puppetfile
+
+# run StackStorm full install using puppet
+puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
+
+```
+
 
 ### How to generate Gemfile.lock.x.y.x
 
