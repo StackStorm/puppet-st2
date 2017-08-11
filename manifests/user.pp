@@ -37,6 +37,17 @@ define st2::user(
   })
 
   if $create_sudo_entry {
+    if !defined(Class['::sudo']) and !defined(Class['sudo']) {
+      class { '::sudo':
+        # do not purge files in /etc/sudoers.d/*
+        purge               => false,
+        # the 'enable' option (for some reason) purges all /etc/sudoers.d/* files
+        enable              => false,
+        # do not replace /etc/sudoers file
+        config_file_replace => false,
+      }
+    }
+
     ensure_resource('sudo::conf', $name, {
       'priority' => '10',
       # note: passes in $name variable into template
