@@ -4,16 +4,47 @@ branches:
   - gh-pages
 sudo: false
 language: ruby
-script: "script/cibuild"
+install: "script/ci_install.sh"
+script: "script/ci_build.sh"
 bundler_args: --without rake
 matrix:
   fast_finish: true
   include:
-    - rvm: 1.9.3
-      env: PUPPET_VERSION="~> 3.0"
+    - rvm: 1.8.7
+      env:
+        - BUILD_NAME="RHEL 6"
+        - PUPPET_VERSION="~> 3.0"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.8.7"
     - rvm: 2.0.0
-      env: PUPPET_VERSION="~> 3.0"
-    - rvm: 2.1.0
-      env: PUPPET_VERSION="~> 3.0"
+      env:
+        - BUILD_NAME="RHEL 7"
+        - PUPPET_VERSION="~> 3.0"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby2.0.0"
+    - rvm: 1.9.3
+      env:
+        - BUILD_NAME="Ubuntu 14"
+        - PUPPET_VERSION="~> 3.0"
+        - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.9.3"
+    # Can't run our unittests against default puppet version on Ubuntu 16
+    # because it ships with a brand new version of Ruby (2.3.x) and an old
+    # version of puppet (3.8.5) that is not compatible with new versions
+    # of Ruby that are needed for the unit tests. This is only a unit testing
+    # deficiency, the runtime component of 3.8.5 works just fine with ruby 2.3
+    # for using this module.
+    - rvm: 2.3.1
+      env:
+        - BUILD_NAME="Ubuntu 16"
+        - PUPPET_VERSION="~> 4.0"
+        - GEMFILE_LOCK="Gemfile.lock.4.10.5.ruby2.3.1"
+    - rvm: 2.1.10
+      env:
+        - BUILD_NAME="Puppet 4 (generic)"
+        - PUPPET_VERSION="~> 4.0"
+        - GEMFILE_LOCK="Gemfile.lock.4.10"
+    - rvm: 2.4.1
+      env:
+        - BUILD_NAME="Puppet 5 (generic)"
+        - PUPPET_VERSION="~> 5.0"
+        - GEMFILE_LOCK="Gemfile.lock.5.0"
 notifications:
   email: false

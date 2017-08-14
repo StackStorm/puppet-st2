@@ -8,7 +8,6 @@
 # [*ssl*] - Enable SSL (default: false)
 # [*ssl_cert*] - Path to SSL Certificate file
 # [*ssl_key*] - Path to SSL Key file
-# [*test_user*] - Flag to enable the test user (default: true)
 # [*logging_file*] - Path to logging configuration file
 # [*htpasswd_file*] - Path to htpasswd file
 #
@@ -26,9 +25,10 @@ class st2::auth::standalone(
   $ssl           = false,
   $ssl_cert      = undef,
   $ssl_key       = undef,
-  $test_user     = false,
   $htpasswd_file = '/etc/st2/htpasswd',
 ) {
+  include ::st2
+
   $_debug = $debug ? {
     true    => 'True',
     default => 'False',
@@ -43,11 +43,10 @@ class st2::auth::standalone(
   $_cli_password = $::st2::cli_password
 
   file { $htpasswd_file:
-    ensure  => present,
-    owner   => 'st2',
-    group   => 'st2',
-    mode    => '0600',
-    require => Package['st2']
+    ensure => present,
+    owner  => 'st2',
+    group  => 'st2',
+    mode   => '0600',
   }
 
   ini_setting { 'auth_mode':
@@ -100,20 +99,8 @@ class st2::auth::standalone(
   }
 
   # System Users
-  $_testuser_ensure = $test_user ? {
-    true    => present,
-    default => absent,
-  }
-  st2::auth_user { 'testu':
-    ensure   => $_testuser_ensure,
-    password => 'testp',
-  }
   st2::auth_user { $_cli_username:
     password => $_cli_password,
-  }
-
-  if $test_user {
-    notify { $::st2::notices::auth_test_user_enabled: }
   }
 
   # Automatically generate users from Hiera
@@ -143,4 +130,9 @@ class st2::auth::standalone(
       tag     => 'st2::config',
     }
   }
+
+  #############
+  # Dependencies
+  File[$htpasswd_file]
+  -> Service<| tag == 'st2::service' |>
 }

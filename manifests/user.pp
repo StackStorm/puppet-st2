@@ -1,6 +1,6 @@
 # == Define: st2::user
 #
-#  Creates an admin user for use with st2
+#  Creates an system (OS level) user for use with st2 backend
 #
 # === Parameters
 #  [*client*]            - Allow incoming connections from the defined user (default: true)
@@ -9,9 +9,6 @@
 #  [*ssh_public_key*]    - SSH Public Key without leading key-type and end email
 #  [*ssh_key_type*]      - Type of SSH Key (ssh-dsa/ssh-rsa)
 #  [*ssh_private_key*]   - Private key
-#
-# === Variables
-#  [*_robots_group_name*] - Local variable to grab the global robot group name
 #
 # === Examples
 #
@@ -32,28 +29,36 @@ define st2::user(
 ) {
   include ::st2::params
 
-  $_robots_group_name = $st2::params::robots_group_name
   $_packs_group_name = $st2::params::packs_group_name
-
-  ensure_resource('group', $_robots_group_name, {
-    'ensure' => present,
-  })
+  $_ssh_dir = "/home/${name}/.ssh"
 
   ensure_resource('group', $_packs_group_name, {
     'ensure' => present,
   })
 
   if $create_sudo_entry {
-    ensure_resource('sudo::conf', $_robots_group_name, {
+    if !defined(Class['::sudo']) and !defined(Class['sudo']) {
+      class { '::sudo':
+        # do not purge files in /etc/sudoers.d/*
+        purge               => false,
+        # the 'enable' option (for some reason) purges all /etc/sudoers.d/* files
+        enable              => false,
+        # do not replace /etc/sudoers file
+        config_file_replace => false,
+      }
+    }
+
+    ensure_resource('sudo::conf', $name, {
       'priority' => '10',
-      'content'  => "%${_robots_group_name} ALL=(ALL) NOPASSWD: SETENV: ALL",
+      # note: passes in $name variable into template
+      'content'  => template('st2/etc/sudoers.d/user.erb'),
     })
   }
 
   ensure_resource('user', $name, {
     'ensure'     => present,
     'shell'      => '/bin/bash',
-    'gid'        => 'st2robots',
+    'gid'        => $name,
     'groups'     => $groups,
     'managehome' => true,
   })
@@ -63,36 +68,67 @@ define st2::user(
     file { "/home/${name}/.ssh":
       ensure => directory,
       owner  => $name,
-      group  => $_robots_group_name,
-      mode   => '0750',
+      group  => $name,
+      mode   => '0700',
     }
   }
 
-  if $client {
-    if !$ssh_key_type or !$ssh_public_key {
-      notify { "St2::User[${name}]: ${st2::notices::user_missing_client_keys}": }
-    }
-    else {
-      ssh_authorized_key { "st2_${name}_key":
-        type    => $ssh_key_type,
-        user    => $name,
-        key     => $ssh_public_key,
-        require => File["/home/${name}/.ssh"],
-      }
-    }
-  }
   if $server {
     if !$ssh_private_key {
-      notify { "St2::User[${name}]:: ${st2::notices::user_missing_private_key}": }
+      $_ssh_keygen = true
+      $_ssh_keygen_type = $ssh_key_type ? {
+        undef => 'rsa',
+        default => $ssh_key_type,
+      }
+
+      $_ssh_keygen_key_path = "${_ssh_dir}/st2_${name}_key"
+      exec { "generate ssh key ${_ssh_keygen_key_path}":
+        command => "ssh-keygen -f ${_ssh_keygen_key_path} -t ${_ssh_keygen_type} -P ''",
+        creates => $_ssh_keygen_key_path,
+        path    => ['/usr/bin', '/sbin', '/bin'],
+        require => File[$_ssh_dir]
+      }
     }
     else {
+      $_ssh_keygen = false
       file { "/home/${name}/.ssh/st2_${name}_key":
         ensure  => file,
         owner   => $name,
         group   => 'root',
-        mode    => '0400',
+        mode    => '0600',
         content => $ssh_private_key,
       }
+
+      file { "/home/${name}/.ssh/st2_${name}_key.pub":
+        ensure  => file,
+        owner   => $name,
+        group   => 'root',
+        mode    => '0644',
+        content => $ssh_public_key,
+      }
+    }
+  }
+
+  if $client {
+    if $_ssh_keygen {
+      exec { "add st2_${name}_key to ssh authorized keys":
+        command   => "cat ${_ssh_keygen_key_path}.pub >> ${_ssh_dir}/authorized_keys",
+        onlyif    => "test `grep -f ${_ssh_keygen_key_path}.pub ${_ssh_dir}/authorized_keys | wc -l` == 0",
+        path      => ['/usr/bin', '/bin'],
+        require   => File[$_ssh_dir],
+        subscribe => Exec["generate ssh key ${_ssh_keygen_key_path}"],
+      }
+    }
+    elsif $ssh_key_type and $ssh_public_key {
+      ssh_authorized_key { "st2_${name}_key":
+        type    => $ssh_key_type,
+        user    => $name,
+        key     => $ssh_public_key,
+        require => File[$_ssh_dir],
+      }
+    }
+    else {
+      notify { "St2::User[${name}]: ${st2::notices::user_missing_client_keys}": }
     }
   }
   ### END Setup SSH Keys ###
