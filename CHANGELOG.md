@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.16.0 (Aug 6, 2017)
+## 1.0.0-beta (Aug 14, 2017)
 
 #### files/repo/nodesource/NODESOURCE-GPG-SIGNING-KEY-EL
 
