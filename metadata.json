@@ -34,7 +34,7 @@
     },
     {
       "name": "stankevich/python",
-      "version_requirement": ">= 1.7.15"
+      "version_requirement": ">= 1.10.0"
     },
     {
       "name": "puppetlabs/gcc",
