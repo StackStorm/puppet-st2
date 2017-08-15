@@ -70,7 +70,7 @@
     },
     {
       "name": "ghoneycutt/facter",
-      "version_requirement": ">= 2.1.0"
+      "version_requirement": ">= 3.0.0"
     },
     {
       "name": "computology/packagecloud",
