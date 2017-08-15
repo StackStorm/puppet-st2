@@ -16,13 +16,13 @@
 define st2::rbac (
   $ensure      = 'present',
   $user        = $name,
-  $description = "Created and managed by Puppet",
+  $description = 'Created and managed by Puppet',
   $roles       = [],
 ) {
   $_rbac_dir = '/opt/stackstorm/rbac'
   $_enabled_state = $ensure ? {
-    'present' => 'true',
-    default   => 'false',
+    'present' => true,
+    default   => false,
   }
 
   ensure_resource('file', $_rbac_dir, {
@@ -55,7 +55,7 @@ define st2::rbac (
   })
   ensure_resource('exec', 'reload st2 rbac definitions', {
     'command'         => 'st2-apply-rbac-definitions',
-    'refreshonly'     => 'true',
+    'refreshonly'     => true,
     'path'            => '/usr/sbin:/usr/bin:/sbin:/bin',
   })
   file { "${_rbac_dir}/assignments/${user}.yaml":

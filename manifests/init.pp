@@ -9,7 +9,6 @@
 #  [*revision*]           - Revision of StackStorm to install
 #  [*autoupdate*]         - Automatically update to latest stable. (default: false)
 #  [*mistral_git_branch*] - Tagged branch of Mistral to download/install
-#  [*repo_url*]           - The URL where the StackStorm project is hosted on GitHub
 #  [*repo_env*]           - Specify the environment of package repo (production, staging)
 #  [*conf_file*]          - The path where st2 config is stored
 #  [*use_ssl*]            - Enable/Disable SSL for all st2 APIs
@@ -39,17 +38,22 @@
 #  [*ssh_key_location*]   - Location on filesystem of Admin SSH key for remote runner
 #  [*db_host*]            - Hostname to talk to st2 db
 #  [*db_port*]            - Port for db server for st2 to talk to
-#  [*db_name*]            - Name of db to connect to
+#  [*db_bind_ips*]        - Array of bind IP addresses for MongoDB to listen on
+#  [*db_name*]            - Name of db to connect to (default: 'st2')
+#  [*db_username*]        - Username to connect to db with (default: 'stackstorm')
+#  [*db_password*]        - Password for 'admin' and 'stackstorm' users in MongDB.
+#                           If 'undef' then use $cli_password
+#  [*mongodb_version*]    - Version of MongoDB to install. If not provided it
+#                           will be auto-calcuated based on $version
+#                           (default: undef)
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
 #  Example:
 #    st2::version: 0.6.0
-#    st2::revison: 11
 #
 class st2(
-  $version                  = '1.2.0',
-  $revision                 = '8',
+  $version                  = 'latest',
   $autoupdate               = false,
   $mistral_git_branch       = 'st2-1.2.0',
   $repo_base                = $::st2::params::repo_base,
@@ -59,22 +63,25 @@ class st2(
   $use_ssl                  = false,
   $ssl_cert                 = '/etc/ssl/cert.crt',
   $ssl_key                  = '/etc/ssl/cert.key',
+  $st2web_ssl_dir           = '/etc/ssl/st2',
+  $st2web_ssl_cert          = '/etc/ssl/st2/st2.crt',
+  $st2web_ssl_key           = '/etc/ssl/st2/st2.key',
   $api_url                  = undef,
   $api_logging_file         = '/etc/st2api/logging.conf',
   $auth                     = true,
   $auth_url                 = undef,
-  $api_logging_file         = '/etc/st2auth/logging.conf',
   $auth_mode                = 'standalone',
+  $auth_logging_file        = '/etc/st2auth/logging.conf',
   $flow_url                 = undef,
-  $cli_base_url             = 'http://localhost',
+  $cli_base_url             = 'http://127.0.0.1',
   $cli_api_version          = 'v1',
   $cli_debug                = false,
   $cli_cache_token          = true,
   $cli_silence_ssl_warnings = false,
-  $cli_username             = 'puppet',
-  $cli_password             = fqdn_rand_string(32),
-  $cli_api_url              = 'http://localhost:9101',
-  $cli_auth_url             = 'http://localhost:9100',
+  $cli_username             = 'st2admin',
+  $cli_password             = 'Ch@ngeMe',
+  $cli_api_url              = 'http://127.0.0.1:9101',
+  $cli_auth_url             = 'http://127.0.0.1:9100',
   $global_env               = false,
   $workers                  = 8,
   $mistral_api_url          = undef,
@@ -86,8 +93,14 @@ class st2(
   $syslog_port              = 514,
   $syslog_facility          = 'local7',
   $ssh_key_location         = '/home/stanley/.ssh/st2_stanley_key',
-  $db_host                  = 'localhost',
-  $db_port                  = '27017',
-  $db_name                  = 'st2',
+  $db_host                  = '127.0.0.1',
+  $db_port                  = $::st2::params::mongodb_port,
+  $db_bind_ips              = $::st2::params::mongodb_bind_ips,
+  $db_name                  = $::st2::params::mongodb_st2_db,
+  $db_username              = $::st2::params::mongodb_st2_username,
+  $db_password              = undef,
+  $mongodb_version          = undef,
   $ng_init                  = true,
+  $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
+  $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
 ) inherits st2::params {}
