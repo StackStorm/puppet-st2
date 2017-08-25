@@ -46,5 +46,12 @@ matrix:
         - BUILD_NAME="Puppet 5 (generic)"
         - PUPPET_VERSION="~> 5.0"
         - GEMFILE_LOCK="Gemfile.lock.5.0"
+
 notifications:
-  email: false
+  # Post build failures to '#puppet' channel in 'stackstorm-community' Slack
+  slack:
+    rooms:
+      - secure: SJ0wpsrrq7oYeepFawJs2iSuKLpWr6aoyWgP+fTPLq8tcZGuIUKJSLM+1FZddYE08QvykO1E0jyeqBrTyvFc7EwsW6vD5bpFYGtVMSMJJIgk76UEhmXbqtTJTjfjYT7/7RDnWlEGXXS7icIZSkEP1moz34fXEDbXKzCpFtqZkAo=
+    on_pull_requests: false
+    on_success: change # default: always
+    on_failure: always # default: always
