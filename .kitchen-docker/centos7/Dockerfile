@@ -11,6 +11,3 @@ RUN touch /home/<%= @username %>/.ssh/authorized_keys
 RUN chown <%= @username %> /home/<%= @username %>/.ssh/authorized_keys
 RUN chmod 0600 /home/<%= @username %>/.ssh/authorized_keys
 RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys
-RUN yum -y install puppet rubygems
-RUN gem install puppet_forge:2.2.6 r10k
-RUN r10k puppetfile install -v --moduledir=/tmp/modules --puppetfile=./Puppetfile

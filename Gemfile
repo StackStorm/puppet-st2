@@ -18,7 +18,8 @@ gem 'puppet-blacksmith',      '>= 3.1.1'
 
 # Gems for kitchen ci
 gem 'test-kitchen'
-gem 'kitchen-ansible'
+gem 'librarian-puppet'
+gem 'kitchen-puppet'
 gem 'kitchen-docker'
 gem 'kitchen-sync'
 

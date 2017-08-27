@@ -8,8 +8,10 @@ transport:
   name: sftp
 
 provisioner:
-  name: puppet apply
-  modulepath: /tmp/modules -e "include ::st2::profile::fullinstall"
+  name: puppet_apply
+  module_path: /tmp/modules
+  manifests_path: ./manifests
+  manifest: test/fullinstall.pp
 
 platforms:
   # Ubuntu Trusty with Upstart
