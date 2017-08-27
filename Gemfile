@@ -16,5 +16,11 @@ gem 'coveralls', :require => false
 
 gem 'puppet-blacksmith',      '>= 3.1.1'
 
+# Gems for kitchen ci
+gem 'test-kitchen'
+gem 'kitchen-ansible'
+gem 'kitchen-docker'
+gem 'kitchen-sync'
+
 ### ADD USER GEMS HERE ###
 
