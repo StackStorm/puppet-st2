@@ -1,10 +1,11 @@
 source 'https://rubygems.org'
 
-puppetversion = ENV['PUPPET_VERSION']
+puppet_version = ENV['PUPPET_VERSION']
 test_kitchen_enabled = ENV['TEST_KITCHEN_ENABLED']
+r10k_version = ENV['R10K_VERSION']
 
-if puppetversion
-  gem 'puppet', puppetversion, :require => false
+if puppet_version
+  gem 'puppet', puppet_version, :require => false
 else
   gem 'puppet', :require => false
 end
@@ -17,7 +18,11 @@ gem 'coveralls', :require => false
 
 gem 'puppet-blacksmith',      '>= 3.1.1'
 
-gem 'r10k'
+if r10k_version
+  gem 'r10k', r10k_version
+else
+  gem 'r10k', '>= 2.0.0'
+end
 
 # Gems for kitchen ci
 if test_kitchen_enabled != 'false'
