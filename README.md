@@ -258,7 +258,7 @@ puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
 
 ``` shell
 gem install bundler
-PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.3.8.7
-PUPPET_VERSION=4.10 bundle package; mv Gemfile.lock Gemfile.lock.4.10
-PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
+PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.puppet3.8.7
+PUPPET_VERSION="~> 4.0" bundle package; mv Gemfile.lock Gemfile.lock.puppet4
+PUPPET_VERSION="~> 5.0" bundle package; mv Gemfile.lock Gemfile.lock.puppet5
 ```
