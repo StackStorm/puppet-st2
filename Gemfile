@@ -17,6 +17,8 @@ gem 'coveralls', :require => false
 
 gem 'puppet-blacksmith',      '>= 3.1.1'
 
+gem 'r10k'
+
 # Gems for kitchen ci
 if test_kitchen_enabled != 'false'
   gem 'test-kitchen'
