@@ -12,6 +12,7 @@ provisioner:
   modules_path: /tmp/modules
   manifests_path: ./manifests
   manifest: test/fullinstall.pp
+  require_puppet_collections: false
 
 platforms:
   # Ubuntu Trusty with Upstart
