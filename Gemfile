@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 puppetversion = ENV['PUPPET_VERSION']
+test_kitchen_enabled = ENV['TEST_KITCHEN_ENABLED']
 
 if puppetversion
   gem 'puppet', puppetversion, :require => false
@@ -17,11 +18,13 @@ gem 'coveralls', :require => false
 gem 'puppet-blacksmith',      '>= 3.1.1'
 
 # Gems for kitchen ci
-gem 'test-kitchen'
-gem 'librarian-puppet'
-gem 'kitchen-puppet'
-gem 'kitchen-docker'
-gem 'kitchen-sync'
+if test_kitchen_enabled != 'false'
+  gem 'test-kitchen'
+  gem 'librarian-puppet'
+  gem 'kitchen-puppet'
+  gem 'kitchen-docker'
+  gem 'kitchen-sync'
+end
 
 ### ADD USER GEMS HERE ###
 
