@@ -1,0 +1,46 @@
+---
+driver:
+  name: docker
+  privileged: true
+  use_sudo: false
+
+transport:
+  name: sftp
+
+provisioner:
+  name: puppet apply
+  modulepath: /tmp/modules -e "include ::st2::profile::fullinstall"
+
+platforms:
+  # Ubuntu Trusty with Upstart
+  - name: ubuntu-14.04
+    driver_config:
+      image: stackstorm/packagingtest:trusty-upstart
+      platform: ubuntu
+      disable_upstart: false
+      run_command: /sbin/init
+  # Ubuntu Xenial with Systemd
+  - name: ubuntu-16.04
+    driver_config:
+      image: stackstorm/packagingtest:xenial-systemd
+      platform: ubuntu
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  # CentOS6 with sysV init
+  - name: centos-6
+    driver_config:
+      platform: centos
+      dockerfile: .kitchen-docker/centos6/Dockerfile
+      run_command: /usr/sbin/sshd -D
+  # CentOS7 with Systemd
+  - name: centos-7
+    driver_config:
+      platform: centos
+      dockerfile: .kitchen-docker/centos7/Dockerfile
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+
+suites:
+  - name: default

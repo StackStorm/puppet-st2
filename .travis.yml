@@ -1,28 +1,37 @@
 ---
+sudo: false
+dist: trusty
+services: docker
+
 branches:
   except:
   - gh-pages
-sudo: false
+
 language: ruby
+bundler_args: --without rake
+
 install: "script/ci_install.sh"
 script: "script/ci_build.sh"
-bundler_args: --without rake
+
 matrix:
   fast_finish: true
   include:
     - rvm: 1.8.7
       env:
         - BUILD_NAME="RHEL 6"
+        - DISTRO=centos-6
         - PUPPET_VERSION="~> 3.0"
         - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.8.7"
     - rvm: 2.0.0
       env:
         - BUILD_NAME="RHEL 7"
+        - DISTRO=centos-7
         - PUPPET_VERSION="~> 3.0"
         - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby2.0.0"
     - rvm: 1.9.3
       env:
         - BUILD_NAME="Ubuntu 14"
+        - DISTRO=ubuntu-14
         - PUPPET_VERSION="~> 3.0"
         - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.9.3"
     # Can't run our unittests against default puppet version on Ubuntu 16
@@ -34,6 +43,7 @@ matrix:
     - rvm: 2.3.1
       env:
         - BUILD_NAME="Ubuntu 16"
+        - DISTRO=ubuntu-16
         - PUPPET_VERSION="~> 4.0"
         - GEMFILE_LOCK="Gemfile.lock.4.10.5.ruby2.3.1"
     - rvm: 2.1.10
