@@ -13,7 +13,7 @@ bundler_args: --without rake
 install:
   - ln -s ${GEMFILE_LOCK} Gemfile.lock
   - bundle install --without rake
-  - gem install puppet_forge:2.2.6 r10k
+  - gem install r10k
   - r10k puppetfile install -v --moduledir=/tmp/modules --puppetfile=docs/Puppetfile
 
 script:
