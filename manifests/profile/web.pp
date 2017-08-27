@@ -47,8 +47,10 @@ class st2::profile::web(
 
   ## st2 nginx config
   file { "${st2::params::nginx_conf_d}/st2.conf":
-    ensure => 'present',
-    source => $st2::params::nginx_st2_conf,
+    ensure    => 'present',
+    source    => $st2::params::nginx_st2_conf,
+    subscribe => Package[$st2::params::st2_web_packages],
+    notify    => Service['nginx'],
   }
 
   ## Modify default nginx config

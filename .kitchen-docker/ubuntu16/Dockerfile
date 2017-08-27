@@ -1,3 +1,3 @@
 FROM stackstorm/packagingtest:xenial-systemd
 
-RUN sudo apt-get install puppet
+RUN sudo apt-get -y install puppet
