@@ -23,7 +23,7 @@ class st2::profile::nodejs {
       class { '::nodejs':
         manage_package_repo => false,
         npm_package_ensure  => 'present',
-        require             => Class['epel'],
+        require             => Class['::epel'],
       }
     }
     # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)

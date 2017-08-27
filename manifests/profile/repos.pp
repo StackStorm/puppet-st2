@@ -17,10 +17,10 @@
 class st2::profile::repos(
   $package_type = $st2::params::package_type
 ) {
-  require packagecloud
+  require ::packagecloud
 
   if $::osfamily == 'RedHat' {
-    require epel
+    require ::epel
   }
   packagecloud::repo { 'StackStorm/stable':
     type => $package_type
