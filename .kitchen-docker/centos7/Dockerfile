@@ -11,3 +11,5 @@ RUN touch /home/<%= @username %>/.ssh/authorized_keys
 RUN chown <%= @username %> /home/<%= @username %>/.ssh/authorized_keys
 RUN chmod 0600 /home/<%= @username %>/.ssh/authorized_keys
 RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys
+RUN yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm
+RUN yum -y install puppet
