@@ -17,15 +17,15 @@ platforms:
   # Ubuntu Trusty with Upstart
   - name: ubuntu-14.04
     driver_config:
-      image: stackstorm/packagingtest:trusty-upstart
       platform: ubuntu
+      dockerfile: .kitchen-docker/ubuntu14/Dockerfile
       disable_upstart: false
       run_command: /sbin/init
   # Ubuntu Xenial with Systemd
   - name: ubuntu-16.04
     driver_config:
-      image: stackstorm/packagingtest:xenial-systemd
       platform: ubuntu
+      dockerfile: .kitchen-docker/ubuntu16/Dockerfile
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
