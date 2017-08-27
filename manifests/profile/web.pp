@@ -49,7 +49,7 @@ class st2::profile::web(
   file { "${st2::params::nginx_conf_d}/st2.conf":
     ensure    => 'present',
     source    => $st2::params::nginx_st2_conf,
-    subscribe => Package[$st2::params::st2_web_packages],
+    subscribe => Package['st2'],
     notify    => Service['nginx'],
   }
 
