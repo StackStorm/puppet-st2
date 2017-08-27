@@ -14,7 +14,7 @@ install:
   - ln -s ${GEMFILE_LOCK} Gemfile.lock
   - bundle install --without rake
   - gem install puppet_forge:2.2.6 r10k
-  - r10k puppetfile install -v --moduledir=/tmp/modules --puppetfile=./Puppetfile
+  - r10k puppetfile install -v --moduledir=/tmp/modules --puppetfile=docs/Puppetfile
 
 script:
   - facter
@@ -31,20 +31,20 @@ matrix:
       env:
         - BUILD_NAME="RHEL 6"
         - PUPPET_VERSION="~> 3.0"
-        - GEMFILE_LOCK="./.travis-gemfile/Gemfile.lock.rhel6"
+        - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.rhel6"
         - TEST_KITCHEN_ENABLED="false"
     - rvm: 2.0.0
       env:
         - BUILD_NAME="RHEL 7"
         - DISTRO=centos-7
         - PUPPET_VERSION="~> 3.0"
-        - GEMFILE_LOCK="./.travis-gemfile/Gemfile.lock.rhel7"
+        - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.rhel7"
     - rvm: 1.9.3
       env:
         - BUILD_NAME="Ubuntu 14"
         - DISTRO=ubuntu-14
         - PUPPET_VERSION="~> 3.0"
-        - GEMFILE_LOCK="./.travis-gemfile/Gemfile.lock.ubuntu14"
+        - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.ubuntu14"
     # Can't run our unittests against default puppet version on Ubuntu 16
     # because it ships with a brand new version of Ruby (2.3.x) and an old
     # version of puppet (3.8.5) that is not compatible with new versions
@@ -56,18 +56,18 @@ matrix:
         - BUILD_NAME="Ubuntu 16"
         - DISTRO=ubuntu-16
         - PUPPET_VERSION="~> 4.0"
-        - GEMFILE_LOCK="./.travis-gemfile/Gemfile.lock.ubuntu16"
+        - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.ubuntu16"
     - rvm: 2.1.10
       env:
         - BUILD_NAME="Puppet 4 (generic)"
         - PUPPET_VERSION="~> 4.0"
-        - GEMFILE_LOCK="./.travis-gemfile/Gemfile.lock.puppet4"
+        - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.puppet4"
         - TEST_KITCHEN_ENABLED="false"
     - rvm: 2.4.1
       env:
         - BUILD_NAME="Puppet 5 (generic)"
         - PUPPET_VERSION="~> 5.0"
-        - GEMFILE_LOCK="./.travis-gemfile/Gemfile.lock.puppet5"
+        - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.puppet5"
         - TEST_KITCHEN_ENABLED="false"
 
 # Note: disabling notifications during initial kitchen ci testing
