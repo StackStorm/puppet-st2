@@ -45,6 +45,9 @@ matrix:
         - DISTRO=ubuntu-14
         - PUPPET_VERSION="~> 3.0"
         - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.ubuntu14"
+        # Need to lock kitchen sync version due to new versions not being
+        # compatible  with the version of ruby installed on ubuntu14
+        - KITCHEN_SYNC_VERSION="2.1.0"
     # Can't run our unittests against default puppet version on Ubuntu 16
     # because it ships with a brand new version of Ruby (2.3.x) and an old
     # version of puppet (3.8.5) that is not compatible with new versions

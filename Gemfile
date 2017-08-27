@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 puppet_version = ENV['PUPPET_VERSION']
 test_kitchen_enabled = ENV['TEST_KITCHEN_ENABLED']
 r10k_version = ENV['R10K_VERSION']
+kitchen_sync_version = ENV['KITCHEN_SYNC_VERSION']
 
 if puppet_version
   gem 'puppet', puppet_version, :require => false
@@ -30,7 +31,11 @@ if test_kitchen_enabled != 'false'
   gem 'librarian-puppet'
   gem 'kitchen-puppet'
   gem 'kitchen-docker'
-  gem 'kitchen-sync'
+  if kitchen_sync_version
+    gem 'kitchen-sync', kitchen_sync_version
+  else
+    gem 'kitchen-sync'
+  end
 end
 
 ### ADD USER GEMS HERE ###

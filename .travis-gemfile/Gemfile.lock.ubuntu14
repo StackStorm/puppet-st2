@@ -39,7 +39,7 @@ GEM
     kitchen-puppet (1.0.37)
       net-ssh (~> 2.0)
       test-kitchen (~> 1.4)
-    kitchen-sync (2.2.0)
+    kitchen-sync (2.1.0)
       net-sftp
       test-kitchen (>= 1.0.0)
     librarian-puppet (2.2.3)
