@@ -9,7 +9,7 @@ transport:
 
 provisioner:
   name: puppet_apply
-  module_path: /tmp/modules
+  modules_path: /tmp/modules
   manifests_path: ./manifests
   manifest: test/fullinstall.pp
 
