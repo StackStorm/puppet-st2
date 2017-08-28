@@ -30,6 +30,9 @@ class st2::profile::nodejs {
 
       Yumrepo['epel']
       -> Class['::nodejs']
+
+      Yumrepo['epel']
+      -> Package<| tag == 'nodesource_repo' |>
     }
     # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
     # In this old repo they hard-code some verifications about which versions

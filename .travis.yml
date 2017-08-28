@@ -1,6 +1,10 @@
 ---
 sudo: required
-dist: trusty
+dist: precise
+# Can't use ubuntu14 as host because of following error with kitchen
+# chpasswd: (user kitchen) pam_chauthtok() failed, error:
+# https://github.com/moby/moby/issues/5704
+#dist: trusty
 services: docker
 
 branches:
