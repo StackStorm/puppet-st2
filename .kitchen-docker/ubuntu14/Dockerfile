@@ -2,7 +2,7 @@ FROM stackstorm/packagingtest:trusty-upstart
 
 RUN mkdir -p /var/run/sshd
 RUN useradd -d /home/<%= @username %> -m -s /bin/bash <%= @username %>
-RUN echo <%= "#{@username}:#{@password}" %> | sudo chpasswd
+RUN sudo bash -c 'echo <%= "#{@username}:#{@password}" %> | chpasswd'
 RUN echo '<%= @username %> ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 RUN mkdir -p /home/<%= @username %>/.ssh
 RUN chown -R <%= @username %> /home/<%= @username %>/.ssh

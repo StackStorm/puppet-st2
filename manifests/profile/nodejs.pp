@@ -16,6 +16,7 @@
 #  include st2::profile::nodejs
 #
 class st2::profile::nodejs {
+  notify {"${::fqdn} - osfamily = ${::osfamily} major = ${::operatingsystemmajrelease}": withpath => true, }
   if $::osfamily == 'RedHat' {
     # Red Hat 7.x + already have NodeJS 6.x+ installed
     # trying to install from nodesource repos fails, so just use the builtin
