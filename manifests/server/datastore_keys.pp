@@ -25,7 +25,7 @@ class st2::server::datastore_keys(
     owner   => 'st2',
     group   => 'st2',
     mode    => '0600',
-    require => Package['st2']
+    require => Package['st2'],
   }
 
   ## Generate
@@ -38,11 +38,11 @@ class st2::server::datastore_keys(
 
   ## Permissions
   file { $key_path:
-    ensure  => present,
+    ensure  => file,
     owner   => 'st2',
     group   => 'st2',
     mode    => '0600',
-    require => Package['st2']
+    require => Package['st2'],
   }
 
   ## Config

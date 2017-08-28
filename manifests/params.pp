@@ -33,7 +33,7 @@ class st2::params(
   $subsystems = [
     'actionrunner', 'api', 'sensorcontainer',
     'rulesengine', 'garbagecollector', 'resultstracker', 'notifier',
-    'auth'
+    'auth',
   ]
 
   $component_map = {
