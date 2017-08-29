@@ -44,6 +44,9 @@ class st2::profile::source(
     source  => "${_repo_root}/conf/st2.prod.conf",
     replace => false,
     require => Vcsrepo[$_repo_root],
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 
   python::virtualenv { $_repo_root:

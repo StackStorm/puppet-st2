@@ -94,7 +94,7 @@ class st2::profile::server (
   ########################################
   ## Config
   file { '/etc/st2':
-    ensure => directory
+    ensure => directory,
   }
 
   ## SSH
