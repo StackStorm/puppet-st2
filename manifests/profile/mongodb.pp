@@ -46,7 +46,7 @@ class st2::profile::mongodb (
 
   if !defined(Class['::mongodb::server']) {
 
-    class { 'mongodb::globals':
+    class { '::mongodb::globals':
       manage_package      => true,
       manage_package_repo => true,
       version             => $mongodb_version,
@@ -54,9 +54,9 @@ class st2::profile::mongodb (
       manage_pidfile      => false, # mongo will not start if this is true
     }
 
-    class { 'mongodb::client': }
+    class { '::mongodb::client': }
 
-    class { 'mongodb::server':
+    class { '::mongodb::server':
       auth           => true,
       port           => $db_port,
       create_admin   => true,
@@ -96,7 +96,7 @@ class st2::profile::mongodb (
         # Debian's mongodb doesn't create PID file properly, so we need to
         # create it and set proper permissions
         file { '/var/run/mongod.pid':
-          ensure => present,
+          ensure => file,
           owner  => 'mongodb',
           group  => 'mongodb',
           mode   => '0644',

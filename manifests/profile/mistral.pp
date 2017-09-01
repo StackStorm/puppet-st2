@@ -34,7 +34,7 @@ class st2::profile::mistral(
   $db_username = 'mistral',
   $db_password = $st2::db_password,
 ) inherits st2 {
-  include st2::params
+  include ::st2::params
 
   ### Mistral Variables ###
   $mistral_root = '/opt/stackstorm/mistral'
