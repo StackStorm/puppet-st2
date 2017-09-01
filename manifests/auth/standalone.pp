@@ -43,7 +43,7 @@ class st2::auth::standalone(
   $_cli_password = $::st2::cli_password
 
   file { $htpasswd_file:
-    ensure => present,
+    ensure => file,
     owner  => 'st2',
     group  => 'st2',
     mode   => '0600',

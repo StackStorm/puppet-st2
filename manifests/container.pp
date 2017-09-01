@@ -62,6 +62,6 @@ class st2::container (
       "${code_dir}/${_component}/bin/st2${subsystem}",
       '--config-file',
       '/etc/st2/st2.conf',
-    ]
+    ],
   }
 }

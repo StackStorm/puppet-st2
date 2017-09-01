@@ -23,13 +23,13 @@ class st2::profile::postgresql(
 ) inherits st2 {
   if !defined(Class['postgresql::server']) {
     if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
-      class { 'postgresql::globals':
+      class { '::postgresql::globals':
         version             => '9.4',
         manage_package_repo => true,
       }
     }
 
-    class { 'postgresql::server':
+    class { '::postgresql::server':
       listen_addresses => $db_listen_addresses,
     }
   }

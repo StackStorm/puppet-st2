@@ -47,8 +47,11 @@ class st2::profile::web(
 
   ## st2 nginx config
   file { "${st2::params::nginx_conf_d}/st2.conf":
-    ensure => 'present',
+    ensure => 'file',
     source => $st2::params::nginx_st2_conf,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
   }
 
   ## Modify default nginx config
