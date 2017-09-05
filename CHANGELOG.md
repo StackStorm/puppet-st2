@@ -15,7 +15,7 @@
 - Added more puppet-lint checks. #181
   Contributed by @bdandoy
 
-- Added Slack notifications to https://stackstorm-community.slack.com #puppet-st2
+- Added Slack notifications to https://stackstorm-community.slack.com `#puppet`
   for Travis build failures. #180
   Contributed by @armab
 
