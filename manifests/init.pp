@@ -46,7 +46,9 @@
 #  [*mongodb_version*]    - Version of MongoDB to install. If not provided it
 #                           will be auto-calcuated based on $version
 #                           (default: undef)
-#  [*manage_repo*]        - Set this to false when you have your own repositories for nginx
+#  [*mongodb_manage_repo*]- Set this to false when you have your own repositories
+#                           for mongodb
+#  [*nginx_manage_repo*]  - Set this to false when you have your own repositories for nginx
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
@@ -101,6 +103,7 @@ class st2(
   $db_username              = $::st2::params::mongodb_st2_username,
   $db_password              = undef,
   $mongodb_version          = undef,
+  $mongodb_manage_repo      = true,
   $ng_init                  = true,
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
