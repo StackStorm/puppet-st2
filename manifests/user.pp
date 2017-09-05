@@ -86,7 +86,7 @@ define st2::user(
         command => "ssh-keygen -f ${_ssh_keygen_key_path} -t ${_ssh_keygen_type} -P ''",
         creates => $_ssh_keygen_key_path,
         path    => ['/usr/bin', '/sbin', '/bin'],
-        require => File[$_ssh_dir]
+        require => File[$_ssh_dir],
       }
     }
     else {

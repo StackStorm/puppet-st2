@@ -23,6 +23,6 @@ class st2::profile::repos(
     require ::epel
   }
   packagecloud::repo { 'StackStorm/stable':
-    type => $package_type
+    type => $package_type,
   }
 }

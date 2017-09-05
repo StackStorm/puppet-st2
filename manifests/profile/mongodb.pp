@@ -13,6 +13,7 @@
 #  [*db_bind_ips*] - Array of bind IP addresses for MongoDB to listen on
 #  [*version*]     - Version of MongoDB to install. If not provided it will be
 #                    auto-calcuated based on $st2::version
+#  [*manage_repo*] - Set this to false when you have your own repositories for mongodb
 #
 # === Variables
 #
@@ -28,7 +29,8 @@ class st2::profile::mongodb (
   $db_password = $st2::db_password,
   $db_port     = $st2::db_port,
   $db_bind_ips = $st2::db_bind_ips,
-  $version     = $st2::mongdb_version,
+  $version     = $st2::mongodb_version,
+  $manage_repo = $st2::mongodb_manage_repo,
 ) inherits st2 {
 
   # if user specified a version of MongoDB they want to use, then use that
@@ -46,17 +48,17 @@ class st2::profile::mongodb (
 
   if !defined(Class['::mongodb::server']) {
 
-    class { 'mongodb::globals':
+    class { '::mongodb::globals':
       manage_package      => true,
-      manage_package_repo => true,
+      manage_package_repo => $manage_repo,
       version             => $mongodb_version,
       bind_ip             => $db_bind_ips,
       manage_pidfile      => false, # mongo will not start if this is true
     }
 
-    class { 'mongodb::client': }
+    class { '::mongodb::client': }
 
-    class { 'mongodb::server':
+    class { '::mongodb::server':
       auth           => true,
       port           => $db_port,
       create_admin   => true,
@@ -96,7 +98,7 @@ class st2::profile::mongodb (
         # Debian's mongodb doesn't create PID file properly, so we need to
         # create it and set proper permissions
         file { '/var/run/mongod.pid':
-          ensure => present,
+          ensure => file,
           owner  => 'mongodb',
           group  => 'mongodb',
           mode   => '0644',

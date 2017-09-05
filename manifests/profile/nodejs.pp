@@ -20,7 +20,7 @@ class st2::profile::nodejs {
   if $::osfamily == 'RedHat' {
     # Red Hat 7.x + already have NodeJS 6.x+ installed
     # trying to install from nodesource repos fails, so just use the builtin
-    if $::operatingsystemmajrelease >= '7' {
+    if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
       class { '::nodejs':
         manage_package_repo => false,
         npm_package_ensure  => 'present',
