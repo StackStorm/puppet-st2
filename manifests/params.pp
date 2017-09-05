@@ -142,6 +142,8 @@ class st2::params(
   $st2web_ssl_key = "${st2web_ssl_dir}/st2.key"
 
   ## MongoDB Data
+  $mongodb_admin_username = 'admin'
+
   $mongodb_port = '27017'
   $mongodb_bind_ips = ['127.0.0.1']
 
