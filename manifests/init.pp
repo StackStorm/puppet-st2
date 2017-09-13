@@ -108,4 +108,6 @@ class st2(
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
   $nginx_manage_repo        = true,
+  $chatops_npm_packages     = {},
+  $chatops_adapter_config   = {},
 ) inherits st2::params {}
