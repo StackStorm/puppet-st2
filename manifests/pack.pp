@@ -3,8 +3,12 @@
 #  Installs StackStorm Packs to the system
 #
 # === Parameters
-#  [*pack*]     - Name of the pack to install
-#  [*repo_url*] - URL to install pack from (Default: github/StackStorm/st2contrib)
+#
+#  [*pack*]     - Name of the pack to install.
+#  [*repo_url*] - URL of the package to install when not installing from the exchange.
+#                 (default:  undef)
+#  [*config*]   - Hash that will be translated into YAML in the pack's config
+#                 file after installation.  
 #
 # === Examples
 #
@@ -20,28 +24,12 @@ define st2::pack (
   $ensure   = present,
   $pack     = $name,
   $repo_url = undef,
-  $register = undef,
-  $subtree  = undef,
   $config   = undef,
 ) {
   include ::st2
   $_cli_username = $::st2::cli_username
   $_cli_password = $::st2::cli_password
-  $_auth = $::st2::auth
   $_st2_packs_group = $::st2::params::packs_group_name
-
-  $_repo_url = $repo_url ? {
-    undef   => '',
-    default => "repo_url=${repo_url}",
-  }
-  $_register = $register ? {
-    undef   => '',
-    default => "register=${register}",
-  }
-  $_subtree = $subtree ? {
-    undef   => '',
-    default => "subtree=${subtree}",
-  }
 
   ensure_resource('group', $_st2_packs_group, {
     'ensure' => present,
@@ -70,12 +58,12 @@ define st2::pack (
     'tag'     => 'st2::subdirs',
   })
 
-  exec { "install-st2-pack-${pack}":
-    command   => "st2 run packs.install packs=${pack} ${_repo_url} ${_register} ${_subtree}",
-    creates   => "/opt/stackstorm/packs/${pack}",
-    path      => '/usr/sbin:/usr/bin:/sbin:/bin',
-    tries     => '5',
-    try_sleep => '3',
+  st2_pack { $pack:
+    ensure   => $ensure,
+    name     => $pack,
+    user     => $_cli_username,
+    password => $_cli_password,
+    source   => $repo_url,
   }
 
   if $config {
@@ -86,18 +74,17 @@ define st2::pack (
       owner   => 'st2',
       group   => 'root',
       content => template('st2/config.yaml.erb'),
-      require => [
-        Exec["install-st2-pack-${pack}"],
-        File['/opt/stackstorm/configs'],
-      ],
     }
 
-    File["/opt/stackstorm/configs/${pack}.yaml"] ~> Exec<| tag == 'st2::reload' |>
+    # Register package after it is downloaded and configured
+    St2_pack<| name == $pack |>
+    -> File["/opt/stackstorm/configs/${pack}.yaml"]
+    ~> Exec<| tag == 'st2::register-configs' |>
   }
 
   Group[$_st2_packs_group] -> File['/opt/stackstorm']
   File['/opt/stackstorm'] -> File<| tag == 'st2::subdirs' |>
   Package<| tag == 'st2::server::packages' |> -> File['/opt/stackstorm/packs']
-  Service<| tag == 'st2::service' |> -> Exec["install-st2-pack-${name}"]
-  Exec<| tag == 'st2::reload' |> ~> Exec["install-st2-pack-${name}"]
+  Service<| tag == 'st2::service' |> -> St2_pack<||>
+  Exec<| tag == 'st2::reload' |> -> St2_pack<||>
 }

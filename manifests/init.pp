@@ -30,6 +30,8 @@
 #  [*global_env*]           - Globally set the environment variables for ST2 API/Auth
 #                             Overwritten by local config or CLI arguments.
 #  [*workers*]              - Set the number of actionrunner processes to start
+#  [*packs*]                - Hash of st2 packages to be installed
+#  [*index_url*]            - Url to the StackStorm Exchange index file. (default undef)
 #  [*syslog*]               - Routes all log messages to syslog
 #  [*syslog_host*]          - Syslog host. Default: localhost
 #  [*syslog_protocol*]      - Syslog protocol. Default: udp
@@ -89,6 +91,8 @@ class st2(
   $cli_auth_url             = 'http://127.0.0.1:9100',
   $global_env               = false,
   $workers                  = 8,
+  $packs                    = {},
+  $index_url                = undef,
   $mistral_api_url          = undef,
   $mistral_api_port         = '8989',
   $mistral_api_service      = false,
@@ -112,4 +116,17 @@ class st2(
   $nginx_manage_repo        = true,
   $chatops_adapter          = $::st2::params::chatops_adapter,
   $chatops_adapter_conf     = $::st2::params::chatops_adapter_conf,
-) inherits st2::params {}
+) inherits st2::params {
+
+  ########################################
+  ## Control commands
+  exec {'/usr/bin/st2ctl reload --register-all':
+    tag         => 'st2::reload',
+    refreshonly => true,
+  }
+
+  exec {'/usr/bin/st2ctl reload --register-configs':
+    tag         => 'st2::register-configs',
+    refreshonly => true,
+  }
+}

@@ -20,6 +20,7 @@
 #  [*ssh_key_location*]       - Location on filesystem of Admin SSH key for remote runner
 #  [*db_username*]            - Username to connect to MongoDB with (default: 'stackstorm')
 #  [*db_password*]            - Password for 'stackstorm' user in MongDB.
+#  [*index_url*]              - Url to the StackStorm Exchange index file. (default undef)
 #
 # === Variables
 #
@@ -50,6 +51,7 @@ class st2::profile::server (
   $ng_init                = $::st2::ng_init,
   $db_username            = $::st2::db_username,
   $db_password            = $::st2::db_password,
+  $index_url              = $::st2::index_url,
 ) inherits st2 {
   include '::st2::notices'
   include '::st2::params'
@@ -287,6 +289,18 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
+  ## Exchange config
+  if $index_url {
+    ini_setting { 'exchange_index_url':
+      ensure  => present,
+      path    => '/etc/st2/st2.conf',
+      section => 'content',
+      setting => 'index_url',
+      value   => $index_url,
+      tag     => 'st2::config',
+    }
+  }
+
   ########################################
   ## Services
   service { $::st2::params::st2_services:
@@ -304,17 +318,10 @@ class st2::profile::server (
   class { '::st2::server::datastore_keys': }
 
   ########################################
-  ## Reload
-  exec {'/usr/bin/st2ctl reload --register-all':
-    tag         => 'st2::reload',
-    refreshonly => true,
-  }
-
-  ########################################
   ## Dependencies
   Package<| tag == 'st2::server::packages' |>
   -> Ini_setting<| tag == 'st2::config' |>
-  -> Service<| tag == 'st2::service' |>
+  ~> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>
   -> Class['::st2::server::datastore_keys']
