@@ -26,12 +26,12 @@
 
 class st2::profile::chatops (
   $version                      = $::st2::version,
-  $hubot_log_level              = 'debug',
-  $hubot_express_port           = '8081',
-  $tls_cert_reject_unauthorized = '0',
-  $hubot_name                   = 'hubot',
-  $npm_packages                 = $::st2::chatops_npm_packages,
-  $adapter_config               = $::st2::chatops_adapter_config,
+  $hubot_log_level              = $::st2::params::hubot_log_level,
+  $hubot_express_port           = $::st2::params::hubot_express_port,
+  $tls_cert_reject_unauthorized = $::st2::params::tls_cert_reject_unauthorized,
+  $hubot_name                   = $::st2::params::hubot_name,
+  $npm_packages                 = $::st2::chatops_adapter,
+  $adapter_config               = $::st2::chatops_adapter_conf,
 ) inherits st2 {
   include '::st2::params'
 
