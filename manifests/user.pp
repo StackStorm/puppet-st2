@@ -32,10 +32,6 @@ define st2::user(
   $_packs_group_name = $st2::params::packs_group_name
   $_ssh_dir = "/home/${name}/.ssh"
 
-  ensure_resource('group', $_packs_group_name, {
-    'ensure' => present,
-  })
-
   if $create_sudo_entry {
     if !defined(Class['::sudo']) and !defined(Class['sudo']) {
       class { '::sudo':
@@ -54,6 +50,14 @@ define st2::user(
       'content'  => template('st2/etc/sudoers.d/user.erb'),
     })
   }
+
+  ensure_resource('group', $_packs_group_name, {
+    'ensure' => present,
+  })
+
+  ensure_resource('group', $name, {
+    'ensure' => present,
+  })
 
   ensure_resource('user', $name, {
     'ensure'     => present,
