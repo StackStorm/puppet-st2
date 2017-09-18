@@ -15,6 +15,10 @@
 - Ensure group creation. #188 (Enhancement)
   Contributed by @bdandoy
   
+- Fixes issue #175 Pack install command has been updated to new install command.
+  Added new version option to install specific versions of pack. #190 (Enhancement)
+  Contributed by @bdandoy
+  
 - Added more puppet-lint checks. #181
   Contributed by @bdandoy
 
