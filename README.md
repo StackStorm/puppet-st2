@@ -114,15 +114,13 @@ st2::packs:
 
 Configuration via Hiera:
 ```yaml
-  # install and configure rocketchat adapter
-
-  # install the rocketchat adapter (hash)
+  # install and configure hubot adapter (rocketchat, nodejs module installed by ::nodejs)
   st2::chatops_adapter:
     hubot-adapter:
       package: 'hubot-rocketchat'
       source: 'git+ssh://git@git.company.com:npm/hubot-rocketchat#master'
 
-  # adapter configuration
+  # adapter configuration (hash)
   st2::chatops_adapter_config:
     HUBOT_ADAPTER: rocketchat
     ROCKETCHAT_URL: "https://chat.company.com:443"

@@ -50,7 +50,7 @@
 #                            for mongodb
 #  [*nginx_manage_repo*]    - Set this to false when you have your own repositories for nginx
 #  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
-#  [*chatops_adapter_conf*] - List of configuration parameters for Hubot adapter
+#  [*chatops_adapter_conf*] - Configuration parameters for Hubot adapter (hash)
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #

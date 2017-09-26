@@ -10,7 +10,7 @@
 #  [*tls_cert_reject_unauthorized*] - Set to 1 when using self signed certs
 #  [*hubot_name*]                   - Hubot's name
 #  [*npm_packages*]                 - Nodejs packages to be installed (hubot adapter)
-#  [*adapter_config*]               - Configuration for hubot adapter
+#  [*adapter_config*]               - Configuration parameters for Hubot adapter (hash)
 #
 # === Variables
 #
@@ -67,7 +67,7 @@ class st2::profile::chatops (
     tag     => 'st2::chatops::npm_package',
   }
 
-  create_resources('nodejs::npm', $npm_packages, $npm_package_defaults)
+  create_resources('::nodejs::npm', $npm_packages, $npm_package_defaults)
 
   ########################################
   ## Services
