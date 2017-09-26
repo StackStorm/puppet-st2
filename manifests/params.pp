@@ -155,4 +155,14 @@ class st2::params(
   $rabbitmq_port = 25672
   $rabbitmq_protocol = 'tcp'
   $rabbitmq_selinux_type = 'amqp_port_t'
+
+  ## chatops default config
+  $hubot_log_level = 'debug'
+  $hubot_express_port = '8081'
+  $tls_cert_reject_unauthorized = '0'
+  $hubot_name = 'hubot'
+  $chatops_adapter = {}
+  $chatops_adapter_conf = {}
+
+
 }

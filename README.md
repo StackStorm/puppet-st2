@@ -68,6 +68,7 @@ classes for use and configuration.
 * `st2::profile::rabbitmq` - st2 configured RabbitMQ installation
 * `st2::proflle::server` - st2 server components
 * `st2::profile::web` - st2 web components
+* `st2::profile::chatops` - st2 chatops components
 
 ### Installing and configuring Packs
 
@@ -107,6 +108,28 @@ st2::packs:
     config:
       post_message_action:
         webhook_url: XXX
+```
+
+### Configuring Hubot (ChatOps)
+
+Configuration via Hiera:
+```yaml
+  # install and configure hubot adapter (rocketchat, nodejs module installed by ::nodejs)
+  st2::chatops_adapter:
+    hubot-adapter:
+      package: 'hubot-rocketchat'
+      source: 'git+ssh://git@git.company.com:npm/hubot-rocketchat#master'
+
+  # adapter configuration (hash)
+  st2::chatops_adapter_config:
+    HUBOT_ADAPTER: rocketchat
+    ROCKETCHAT_URL: "https://chat.company.com:443"
+    ROCKETCHAT_ROOM: 'stackstorm'
+    LISTEN_ON_ALL_PUBLIC: true
+    ROCKETCHAT_USER: st2
+    ROCKETCHAT_PASSWORD: secret123
+    ROCKETCHAT_AUTH: password
+    RESPOND_TO_DM: true
 ```
 
 ## Known Limitations
