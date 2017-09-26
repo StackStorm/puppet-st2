@@ -16,6 +16,9 @@
   cached repos. #182
   Contributed by @ruriky
   
+- Ensure group creation. #188 (Enhancement)
+  Contributed by @bdandoy
+  
 - Added more puppet-lint checks. #181
   Contributed by @bdandoy
 
