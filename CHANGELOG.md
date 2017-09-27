@@ -16,6 +16,9 @@
   cached repos. #182
   Contributed by @ruriky
   
+- Make sure key type is defined for user public ssh key. #189 (Bugfix)
+  Contributed by @bdandoy
+  
 - Ensure group creation. #188 (Enhancement)
   Contributed by @bdandoy
   

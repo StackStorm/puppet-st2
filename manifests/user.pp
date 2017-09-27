@@ -108,7 +108,7 @@ define st2::user(
         owner   => $name,
         group   => 'root',
         mode    => '0644',
-        content => $ssh_public_key,
+        content => "${ssh_key_type} ${ssh_public_key}",
       }
     }
   }
