@@ -36,6 +36,7 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
   -> class { '::st2::profile::web': }
+  -> class { '::st2::profile::chatops': }
   -> Anchor['st2::end']
 
   # default pack

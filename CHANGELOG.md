@@ -2,6 +2,10 @@
 
 ## Development
 
+- Added a new class `chatops` to manage the chatops package, service and configuration.
+  Added new parameters `chatops_adapter` and `chatops_adapter_conf` to `::st2` for allowing user to manage the hubot adapter packages and configuration. #187
+  Contributed by @ruriky
+
 - Added new parameter `mongodb_manage_repo` to `::st2` so that the `mongodb` install
   will not manage the repository files, allowing for installations from locally
   cached repos. #184
