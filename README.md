@@ -121,7 +121,7 @@ Configuration via Hiera:
       source: 'git+ssh://git@git.company.com:npm/hubot-rocketchat#master'
 
   # adapter configuration (hash)
-  st2::chatops_adapter_config:
+  st2::chatops_adapter_conf:
     HUBOT_ADAPTER: rocketchat
     ROCKETCHAT_URL: "https://chat.company.com:443"
     ROCKETCHAT_ROOM: 'stackstorm'
