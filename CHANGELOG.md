@@ -2,6 +2,11 @@
 
 ## Development
 
+- New type and provider for managing st2 packs: `st2_pack`.
+  Added new parameter `index_url` to `::st2` allowing custom st2 Exchange
+  index file location.
+  Profile `fullinstall` does not force installation of package `st2` anymore.
+
 - Added a new class `chatops` to manage the chatops package, service and configuration.
   Added new parameters `chatops_adapter` and `chatops_adapter_conf` to `::st2` for allowing user to manage the hubot adapter packages and configuration. #187
   Contributed by @ruriky

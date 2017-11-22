@@ -1,6 +1,6 @@
 # == Class: st2::packs
 #
-#  Automatically loads packs and their configs from Hiera
+#  Install and configure st2 packages
 #
 #  See st2::pack and st2::pack::config for usage
 #
@@ -12,7 +12,8 @@
 #
 #  include st2::packs
 #
-class st2::packs {
-  $_packs = hiera_hash('st2::packs', {})
-  create_resources('st2::pack', $_packs)
+class st2::packs (
+  $packs = $::st2::packs,
+){
+  create_resources('::st2::pack', $packs)
 }
