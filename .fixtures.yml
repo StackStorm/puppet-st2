@@ -5,7 +5,9 @@ fixtures:
     apt: "puppetlabs/apt"
     concat: "puppetlabs/concat"
     stdlib:
-      # lock at 4.22.0 because RHEL6 build fails on 4.23.0
+      # Lock stdlib at 4.22.0 because RHEL6 build fails on 4.23.0
+      # A bug has been submitted to puppetlabs:
+      # https://tickets.puppetlabs.com/browse/MODULES-6104
       repo: "puppetlabs/stdlib"
       ref: "4.22.0"
     httpauth: "jamtur01/httpauth"
