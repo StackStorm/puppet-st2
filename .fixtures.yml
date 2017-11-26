@@ -4,7 +4,10 @@ fixtures:
   forge_modules:
     apt: "puppetlabs/apt"
     concat: "puppetlabs/concat"
-    stdlib: "puppetlabs/stdlib"
+    stdlib:
+      # lock at 4.22.0 because RHEL6 build fails on 4.23.0
+      repo: "puppetlabs/stdlib"
+      ref: "4.22.0"
     httpauth: "jamtur01/httpauth"
     staging: "nanliu/staging"
     git: "maestrodev/git"
