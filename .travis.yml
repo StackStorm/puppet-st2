@@ -15,6 +15,7 @@ matrix:
         - BUILD_NAME="RHEL 6"
         - PUPPET_VERSION="~> 3.0"
         - GEMFILE_LOCK="Gemfile.lock.3.8.7.ruby1.8.7"
+        - FIXTURES_YML=".fixtures.rhel6.yml"
     - rvm: 2.0.0
       env:
         - BUILD_NAME="RHEL 7"
