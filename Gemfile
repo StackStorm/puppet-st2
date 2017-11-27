@@ -5,6 +5,7 @@ test_kitchen_enabled = ENV['TEST_KITCHEN_ENABLED']
 r10k_version = ENV['R10K_VERSION']
 kitchen_sync_version = ENV['KITCHEN_SYNC_VERSION']
 puppetlabs_spec_helper_version = ENV['PUPPETLABS_SPEC_HELPER_VERSION']
+puppet_blacksmith_version = ENV['PUPPET_BLACKSMITH_VERSION']
 
 if puppet_version
   gem 'puppet', puppet_version, :require => false
@@ -34,7 +35,11 @@ gem 'puppet-lint-version_comparison-check',                      '>= 0.2.1'
 
 gem 'coveralls', :require => false
 
-gem 'puppet-blacksmith',                                         '>= 3.1.1'
+if puppet_blacksmith_version
+  gem 'puppet-blacksmith', puppet_blacksmith_version
+else
+  gem 'puppet-blacksmith',                                         '>= 3.1.1'
+end
 
 if r10k_version
   gem 'r10k', r10k_version
