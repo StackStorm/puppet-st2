@@ -4,6 +4,7 @@ puppet_version = ENV['PUPPET_VERSION']
 test_kitchen_enabled = ENV['TEST_KITCHEN_ENABLED']
 r10k_version = ENV['R10K_VERSION']
 kitchen_sync_version = ENV['KITCHEN_SYNC_VERSION']
+puppetlabs_spec_helper_version = ENV['PUPPETLABS_SPEC_HELPER_VERSION']
 
 if puppet_version
   gem 'puppet', puppet_version, :require => false
@@ -11,7 +12,11 @@ else
   gem 'puppet', :require => false
 end
 
-gem 'puppetlabs_spec_helper',                                    '>= 0.1.0'
+if puppetlabs_spec_helper_version
+  gem 'puppetlabs_spec_helper', puppetlabs_spec_helper_version
+else
+  gem 'puppetlabs_spec_helper',                                  '>= 0.1.0'
+end
 gem 'puppet-lint',                                               '>= 0.3.2'
 gem 'facter',                                                    '>= 1.7.0'
 gem 'puppet-lint-absolute_classname-check',                      '>= 0.2.4'
