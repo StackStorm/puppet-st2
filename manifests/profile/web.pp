@@ -53,7 +53,7 @@ class st2::profile::web(
     group     => 'root',
     mode      => '0644',
     source    => $::st2::params::nginx_st2_conf,
-    subscribe => Package[$::st2::params::st2_server_package],
+    subscribe => Package[$::st2::params::st2_server_packages],
     notify    => Service['nginx'],
   }
 
