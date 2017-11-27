@@ -282,7 +282,7 @@ puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
 ``` shell
 gem install bundler
 # ruby 1.8.7
-PUPPET_VERSION="~> 3.0" TEST_KITCHEN_ENABLED=false R10K_VERSION="~> 1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel6
+PUPPET_VERSION="~> 3.0" TEST_KITCHEN_ENABLED=false R10K_VERSION="~> 1.0" PUPPETLABS_SPEC_HELPER_VERSION="~> 1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel6
 # ruby 2.0.0
 PUPPET_VERSION="~> 3.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel7
 # ruby 1.9.3
