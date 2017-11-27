@@ -33,7 +33,7 @@ matrix:
         - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.rhel6"
         - TEST_KITCHEN_ENABLED="false"
         - R10K_VERSION="~> 1.0"
-        - PUPPETLABS_SPEC_HELPER_VERSION="~> 2.3.0"
+        - PUPPETLABS_SPEC_HELPER_VERSION="~> 1.2.0"
         - PUPPET_BLACKSMITH_VERSION="~> 3.1.0"
     - rvm: 2.0.0
       env:
