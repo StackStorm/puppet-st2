@@ -15,10 +15,10 @@
 #  class { '::st2::profile::web': }
 #
 class st2::profile::web(
-  $ssl_dir  = $st2::st2web_ssl_dir,
-  $ssl_cert = $st2::st2web_ssl_cert,
-  $ssl_key  = $st2::st2web_ssl_key,
-  $version  = $st2::version,
+  $ssl_dir  = $::st2::st2web_ssl_dir,
+  $ssl_cert = $::st2::st2web_ssl_cert,
+  $ssl_key  = $::st2::st2web_ssl_key,
+  $version  = $::st2::version,
 ) inherits st2 {
   # include nginx here only
   # if we include this in ::st2::profile::fullinstall Anchor['pre_reqs'] then
@@ -27,7 +27,7 @@ class st2::profile::web(
   include ::st2::profile::nginx
 
   ## Install the packages
-  package { $st2::params::st2_web_packages:
+  package { $::st2::params::st2_web_packages:
     ensure => $version,
     tag    => 'st2::web::packages',
   }
@@ -46,13 +46,13 @@ class st2::profile::web(
   }
 
   ## st2 nginx config
-  file { "${st2::params::nginx_conf_d}/st2.conf":
+  file { "${::st2::params::nginx_conf_d}/st2.conf":
     ensure    => 'file',
     owner     => 'root',
     group     => 'root',
     mode      => '0644',
-    source    => $st2::params::nginx_st2_conf,
-    subscribe => [Package['nginx'], Package['st2']],
+    source    => $::st2::params::nginx_st2_conf,
+    subscribe => Package[$::st2::params::st2_server_package],
     notify    => Service['nginx'],
   }
 
@@ -60,9 +60,9 @@ class st2::profile::web(
   case $::osfamily  {
     'RedHat': {
       # remove 'default_server' string from default nginx config
-      exec { $st2::params::nginx_default_conf:
-        command => "sed -i 's/default_server//g' ${st2::params::nginx_default_conf}",
-        unless  => "test `grep 'default_server' ${st2::params::nginx_default_conf} | wc -l` > 0",
+      exec { $::st2::params::nginx_default_conf:
+        command => "sed -i 's/default_server//g' ${::st2::params::nginx_default_conf}",
+        unless  => "test `grep 'default_server' ${::st2::params::nginx_default_conf} | wc -l` > 0",
         path    => ['/usr/bin', '/bin'],
         require => Package['nginx'],
         notify  => Service['nginx'],
@@ -70,7 +70,7 @@ class st2::profile::web(
     }
     'Debian': {
       # remove the default nginx config
-      file { $st2::params::nginx_default_conf:
+      file { $::st2::params::nginx_default_conf:
         ensure  => 'absent',
         require => Package['nginx'],
         notify  => Service['nginx'],
@@ -86,6 +86,6 @@ class st2::profile::web(
   -> Package<| tag == 'st2::web::packages' |>
   -> File[$ssl_dir]
   -> Exec["generate ssl cert ${ssl_cert}"]
-  -> File["${st2::params::nginx_conf_d}/st2.conf"]
+  -> File["${::st2::params::nginx_conf_d}/st2.conf"]
   ~> Service['nginx'] # notify to force a refresh
 }
