@@ -66,7 +66,7 @@ matrix:
         - PUPPET_VERSION="~> 4.0"
         - GEMFILE_LOCK=".travis-gemfile/Gemfile.lock.puppet4"
         - TEST_KITCHEN_ENABLED="false"
-    - rvm: 2.4.1
+    - rvm: 2.4.2
       env:
         - BUILD_NAME="Puppet 5 (generic)"
         - PUPPET_VERSION="~> 5.0"

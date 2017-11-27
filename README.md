@@ -281,7 +281,17 @@ puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
 
 ``` shell
 gem install bundler
-PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.puppet3.8.7
-PUPPET_VERSION="~> 4.0" bundle package; mv Gemfile.lock Gemfile.lock.puppet4
-PUPPET_VERSION="~> 5.0" bundle package; mv Gemfile.lock Gemfile.lock.puppet5
+# ruby 1.8.7
+PUPPET_VERSION="~> 3.0" TEST_KITCHEN_ENABLED=false R10K_VERSION="~> 1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel6
+# ruby 2.0.0
+PUPPET_VERSION="~> 3.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel7
+# ruby 1.9.3
+PUPPET_VERSION="~> 3.0" KITCHEN_SYNC_VERSION="2.1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.ubuntu14
+# ruby 2.3.1
+PUPPET_VERSION="~> 4.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.ubuntu16
+# ruby 2.1.x
+PUPPET_VERSION="~> 4.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet4
+# ruby 2.4.x
+PUPPET_VERSION="~> 5.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet5
+
 ```
