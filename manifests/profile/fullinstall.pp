@@ -36,14 +36,15 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::client': }
   -> class { '::st2::profile::server': }
   -> class { '::st2::profile::web': }
+  -> class { '::st2::profile::chatops': }
   -> Anchor['st2::end']
-
-  # default pack
-  if !defined(St2::Pack['st2']) {
-    st2::pack {'st2': }
-  }
 
   include ::st2::auth::standalone
   include ::st2::packs
   include ::st2::kvs
+
+  # If user has not defined a pack "st2", install it from the Exchange.
+  if ! defined(St2::Pack['st2']) {
+    ensure_resource('st2::pack', 'st2', {'ensure' => 'present'})
+  }
 }

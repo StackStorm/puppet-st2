@@ -5,50 +5,54 @@
 #
 # === Parameters
 #
-#  [*version*]            - Version of StackStorm to install
-#  [*revision*]           - Revision of StackStorm to install
-#  [*autoupdate*]         - Automatically update to latest stable. (default: false)
-#  [*mistral_git_branch*] - Tagged branch of Mistral to download/install
-#  [*repo_env*]           - Specify the environment of package repo (production, staging)
-#  [*conf_file*]          - The path where st2 config is stored
-#  [*use_ssl*]            - Enable/Disable SSL for all st2 APIs
-#  [*ssl_key*]            - The path to SSL key for all st2 APIs
-#  [*ssl_cert*]           - The path to SSL cert for all st2 APIs
-#  [*api_url*]            - URL where the StackStorm API lives (default: undef)
-#  [*api_logging_file*]   - Path to st2 API logging file (default: /etc/st2api/logging.conf)
-#  [*auth*]               - Toggle to enable/disable auth (Default: false)
-#  [*auth_url*]           - URL where the StackStorm WebUI lives (default: undef)
-#  [*flow_url*]           - URL Path where StackStorm Flow lives (default: undef)
-#  [*cli_base_url*]       - CLI config - Base URL lives
-#  [*cli_api_version*]    - CLI config - API Version
-#  [*cli_debug*]          - CLI config - Enable/Disable Debug
-#  [*cli_cache_token*]    - CLI config - True to cache auth token until expries
-#  [*cli_username*]       - CLI config - Auth Username
-#  [*cli_password*]       - CLI config - Auth Password
-#  [*cli_api_url*]        - CLI config - API URL
-#  [*cli_auth_url*]       - CLI config - Auth URL
-#  [*global_env*]         - Globally set the environment variables for ST2 API/Auth
-#                           Overwritten by local config or CLI arguments.
-#  [*workers*]            - Set the number of actionrunner processes to start
-#  [*syslog*]             - Routes all log messages to syslog
-#  [*syslog_host*]        - Syslog host. Default: localhost
-#  [*syslog_protocol*]    - Syslog protocol. Default: udp
-#  [*syslog_port*]        - Syslog port. Default: 514
-#  [*syslog_facility*]    - Syslog facility. Default: local7
-#  [*ssh_key_location*]   - Location on filesystem of Admin SSH key for remote runner
-#  [*db_host*]            - Hostname to talk to st2 db
-#  [*db_port*]            - Port for db server for st2 to talk to
-#  [*db_bind_ips*]        - Array of bind IP addresses for MongoDB to listen on
-#  [*db_name*]            - Name of db to connect to (default: 'st2')
-#  [*db_username*]        - Username to connect to db with (default: 'stackstorm')
-#  [*db_password*]        - Password for 'admin' and 'stackstorm' users in MongDB.
-#                           If 'undef' then use $cli_password
-#  [*mongodb_version*]    - Version of MongoDB to install. If not provided it
-#                           will be auto-calcuated based on $version
-#                           (default: undef)
-#  [*mongodb_manage_repo*]- Set this to false when you have your own repositories
-#                           for mongodb
-#  [*nginx_manage_repo*]  - Set this to false when you have your own repositories for nginx
+#  [*version*]              - Version of StackStorm to install
+#  [*revision*]             - Revision of StackStorm to install
+#  [*autoupdate*]           - Automatically update to latest stable. (default: false)
+#  [*mistral_git_branch*]   - Tagged branch of Mistral to download/install
+#  [*repo_env*]             - Specify the environment of package repo (production, staging)
+#  [*conf_file*]            - The path where st2 config is stored
+#  [*use_ssl*]              - Enable/Disable SSL for all st2 APIs
+#  [*ssl_key*]              - The path to SSL key for all st2 APIs
+#  [*ssl_cert*]             - The path to SSL cert for all st2 APIs
+#  [*api_url*]              - URL where the StackStorm API lives (default: undef)
+#  [*api_logging_file*]     - Path to st2 API logging file (default: /etc/st2api/logging.conf)
+#  [*auth*]                 - Toggle to enable/disable auth (Default: false)
+#  [*auth_url*]             - URL where the StackStorm WebUI lives (default: undef)
+#  [*flow_url*]             - URL Path where StackStorm Flow lives (default: undef)
+#  [*cli_base_url*]         - CLI config - Base URL lives
+#  [*cli_api_version*]      - CLI config - API Version
+#  [*cli_debug*]            - CLI config - Enable/Disable Debug
+#  [*cli_cache_token*]      - CLI config - True to cache auth token until expries
+#  [*cli_username*]         - CLI config - Auth Username
+#  [*cli_password*]         - CLI config - Auth Password
+#  [*cli_api_url*]          - CLI config - API URL
+#  [*cli_auth_url*]         - CLI config - Auth URL
+#  [*global_env*]           - Globally set the environment variables for ST2 API/Auth
+#                             Overwritten by local config or CLI arguments.
+#  [*workers*]              - Set the number of actionrunner processes to start
+#  [*packs*]                - Hash of st2 packages to be installed
+#  [*index_url*]            - Url to the StackStorm Exchange index file. (default undef)
+#  [*syslog*]               - Routes all log messages to syslog
+#  [*syslog_host*]          - Syslog host. Default: localhost
+#  [*syslog_protocol*]      - Syslog protocol. Default: udp
+#  [*syslog_port*]          - Syslog port. Default: 514
+#  [*syslog_facility*]      - Syslog facility. Default: local7
+#  [*ssh_key_location*]     - Location on filesystem of Admin SSH key for remote runner
+#  [*db_host*]              - Hostname to talk to st2 db
+#  [*db_port*]              - Port for db server for st2 to talk to
+#  [*db_bind_ips*]          - Array of bind IP addresses for MongoDB to listen on
+#  [*db_name*]              - Name of db to connect to (default: 'st2')
+#  [*db_username*]          - Username to connect to db with (default: 'stackstorm')
+#  [*db_password*]          - Password for 'admin' and 'stackstorm' users in MongDB.
+#                             If 'undef' then use $cli_password
+#  [*mongodb_version*]      - Version of MongoDB to install. If not provided it
+#                             will be auto-calcuated based on $version
+#                             (default: undef)
+#  [*mongodb_manage_repo*]  - Set this to false when you have your own repositories
+#                            for mongodb
+#  [*nginx_manage_repo*]    - Set this to false when you have your own repositories for nginx
+#  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
+#  [*chatops_adapter_conf*] - Configuration parameters for Hubot adapter (hash)
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
@@ -87,6 +91,8 @@ class st2(
   $cli_auth_url             = 'http://127.0.0.1:9100',
   $global_env               = false,
   $workers                  = 8,
+  $packs                    = {},
+  $index_url                = undef,
   $mistral_api_url          = undef,
   $mistral_api_port         = '8989',
   $mistral_api_service      = false,
@@ -108,4 +114,19 @@ class st2(
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
   $nginx_manage_repo        = true,
-) inherits st2::params {}
+  $chatops_adapter          = $::st2::params::chatops_adapter,
+  $chatops_adapter_conf     = $::st2::params::chatops_adapter_conf,
+) inherits st2::params {
+
+  ########################################
+  ## Control commands
+  exec {'/usr/bin/st2ctl reload --register-all':
+    tag         => 'st2::reload',
+    refreshonly => true,
+  }
+
+  exec {'/usr/bin/st2ctl reload --register-configs':
+    tag         => 'st2::register-configs',
+    refreshonly => true,
+  }
+}

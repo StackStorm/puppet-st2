@@ -1,5 +1,39 @@
 # Changelog
 
+## Development
+
+- New type and provider for managing st2 packs: `st2_pack`.
+  Added new parameter `index_url` to `::st2` allowing custom st2 Exchange
+  index file location.
+  Profile `fullinstall` does not force installation of package `st2` anymore.
+
+- Added a new class `chatops` to manage the chatops package, service and configuration.
+  Added new parameters `chatops_adapter` and `chatops_adapter_conf` to `::st2` for allowing user to manage the hubot adapter packages and configuration. #187
+  Contributed by @ruriky
+
+- Added new parameter `mongodb_manage_repo` to `::st2` so that the `mongodb` install
+  will not manage the repository files, allowing for installations from locally
+  cached repos. #184
+  Contributed by @ruriky
+  
+- Added new parameter `nginx_manage_repo` to `::st2` so that the `nginx` install
+  will not manage the repository files, allowing for installations from locally
+  cached repos. #182
+  Contributed by @ruriky
+  
+- Make sure key type is defined for user public ssh key. #189 (Bugfix)
+  Contributed by @bdandoy
+  
+- Ensure group creation. #188 (Enhancement)
+  Contributed by @bdandoy
+  
+- Added more puppet-lint checks. #181
+  Contributed by @bdandoy
+
+- Added Slack notifications to https://stackstorm-community.slack.com `#puppet`
+  for Travis build failures. #180
+  Contributed by @armab
+
 ## 1.0.0-beta (Aug 14, 2017)
 
 #### files/repo/nodesource/NODESOURCE-GPG-SIGNING-KEY-EL
