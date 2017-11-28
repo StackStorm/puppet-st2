@@ -40,19 +40,7 @@ class st2::profile::nodejs(
     default => $version,
   }
 
-  if $::osfamily == 'RedHat' {
-    # Red Hat 7.x + already have NodeJS 6.x+ installed
-    # trying to install from nodesource repos fails, so just use the builtin
-    if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
-      class { '::nodejs':
-        repo_url_suffix     => $nodejs_version,
-        manage_package_repo => $manage_repo,
-      }
-      # class { '::nodejs':
-      #   manage_package_repo => false,
-      #   npm_package_ensure  => 'present',
-      # }
-    }
+  if $::osfamily == 'RedHat'and versioncmp($::operatingsystemmajrelease, '6') == 0 {
     # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
     # In this old repo they hard-code some verifications about which versions
     # are allowed to be installed (at the time the module was released).
@@ -60,12 +48,10 @@ class st2::profile::nodejs(
     # RHEL 6.x. To fake this out we need to hard code the "repo_class"
     # to the same thing they use internally but without the leading "::"
     # to avoid their verification checks (ugh...).
-    else {
-      class { '::nodejs':
-        repo_url_suffix     => $nodejs_version,
-        repo_class          => 'nodejs::repo::nodesource',
-        manage_package_repo => $manage_repo,
-      }
+    class { '::nodejs':
+      repo_url_suffix     => $nodejs_version,
+      repo_class          => 'nodejs::repo::nodesource',
+      manage_package_repo => $manage_repo,
     }
   }
   else {
