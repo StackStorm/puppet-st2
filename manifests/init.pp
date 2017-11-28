@@ -49,10 +49,16 @@
 #                             will be auto-calcuated based on $version
 #                             (default: undef)
 #  [*mongodb_manage_repo*]  - Set this to false when you have your own repositories
-#                            for mongodb
+#                             for MongoDB (default: true)
 #  [*nginx_manage_repo*]    - Set this to false when you have your own repositories for nginx
+#                             (default: true)
 #  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
 #  [*chatops_adapter_conf*] - Configuration parameters for Hubot adapter (hash)
+#  [*nodejs_version*]       - Version of NodeJS to install. If not provided it
+#                             will be auto-calcuated based on $version
+#                             (default: undef)
+#  [*nodejs_manage_repo*]   - Set this to false when you have your own repositories
+#                             for NodeJS (default: true)
 #
 #  Variables can be set in Hiera and take advantage of automatic data bindings:
 #
@@ -116,6 +122,8 @@ class st2(
   $nginx_manage_repo        = true,
   $chatops_adapter          = $::st2::params::chatops_adapter,
   $chatops_adapter_conf     = $::st2::params::chatops_adapter_conf,
+  $nodejs_version           = undef,
+  $nodejs_manage_repo       = true,
 ) inherits st2::params {
 
   ########################################

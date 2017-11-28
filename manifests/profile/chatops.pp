@@ -43,7 +43,7 @@ class st2::profile::chatops (
   ## Packages
   package { $_chatops_packages:
     ensure => $version,
-    tag    => 'st2::chatops::packages',
+    tag    => ['st2::packages', 'st2::chatops::packages'],
   }
 
   ########################################
