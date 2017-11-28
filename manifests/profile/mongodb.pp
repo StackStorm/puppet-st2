@@ -36,20 +36,20 @@ class st2::profile::mongodb (
   # if the StackStorm version is 'latest' or >= 2.4.0 then use MongoDB 3.4
   # else use MongoDB 3.2
   if $::st2::version == 'latest' or versioncmp($::st2::version, '2.4.0') >= 0 {
-    $mongodb_version_default = '3.4'
+    $_mongodb_version_default = '3.4'
   }
   else {
-    $mongodb_version_default = '3.2'
+    $_mongodb_version_default = '3.2'
   }
 
   # if user specified a version of MongoDB they want to use, then use that
   # otherwise use the default version of mongo based off the StackStorm version
-  $mongodb_version = $version ? {
-    undef   => $mongodb_version_default,
+  $_mongodb_version = $version ? {
+    undef   => $_mongodb_version_default,
     default => $version,
   }
 
-  $mongo_db_password = $db_password ? {
+  $_mongo_db_password = $db_password ? {
     undef   => $::st2::cli_password,
     default => $db_password,
   }
@@ -59,7 +59,7 @@ class st2::profile::mongodb (
     class { '::mongodb::globals':
       manage_package      => true,
       manage_package_repo => $manage_repo,
-      version             => $mongodb_version,
+      version             => $_mongodb_version,
       bind_ip             => $db_bind_ips,
       manage_pidfile      => false, # mongo will not start if this is true
     }
@@ -72,7 +72,7 @@ class st2::profile::mongodb (
       create_admin   => true,
       store_creds    => true,
       admin_username => $::st2::params::mongodb_admin_username,
-      admin_password => $mongo_db_password,
+      admin_password => $_mongo_db_password,
     }
 
     Class['mongodb::globals']
@@ -129,7 +129,7 @@ class st2::profile::mongodb (
     # configure st2 database
     mongodb::db { $db_name:
       user     => $db_username,
-      password => $mongo_db_password,
+      password => $_mongo_db_password,
       roles    => $::st2::params::mongodb_st2_roles,
       require  => Class['::mongodb::server'],
     }

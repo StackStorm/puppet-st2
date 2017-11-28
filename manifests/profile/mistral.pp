@@ -56,7 +56,7 @@ class st2::profile::mistral(
 
   package { $st2::params::st2_mistral_packages:
     ensure => $version,
-    tag    => 'st2::mistral::packages',
+    tag    => ['st2::packages', 'st2::mistral::packages'],
   }
   ### End Mistral Packages ###
 
