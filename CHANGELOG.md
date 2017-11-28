@@ -3,6 +3,10 @@
 ## Development
 
 - Upgraded NodeJS to 6.x when installing StackStorm >= 2.4.0.
+  If you're currently running a version of StackStorm 2.4.0 with NodeJS 4.x
+  installed, the repo will be updated to point at 6.x. 
+  To upgrade NodeJS go through the normal upgrade process on your system,
+  example for RHEL: `yum clean all; yum upgrade -y`
   Contributed by @nmaludy
 
 - Upgraded MongoDB to 3.4 when installing StackStorm >= 2.4.0.
