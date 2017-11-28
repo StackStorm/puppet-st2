@@ -146,10 +146,11 @@ configured normally. Subsequent runs of puppet will not show this error.
 
 ### Ubuntu 16.04
 
-Due to a known bug in st2 [3290](https://github.com/StackStorm/st2/issues/3290) 
-when first running the installation with this puppet module the `st2` pack
+In StackStorm < `2.4.0` there is a known bug [#3290](https://github.com/StackStorm/st2/issues/3290) 
+that when first running the installation with this puppet module the `st2` pack
 will fail to install. Simply invoking puppet a second time will produce
-a fully running st2 installation with the `st2` pack installed.
+a fully running st2 installation with the `st2` pack installed. This has
+been fixed in st2 version `2.4.0`.
 
 
 ## Module Dependencies
