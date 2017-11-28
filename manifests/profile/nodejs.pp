@@ -19,7 +19,7 @@
 #
 #  include st2::profile::nodejs
 #
-class st2::profile::nodejs,
+class st2::profile::nodejs(
   $manage_repo = $::st2::nodejs_manage_repo,
   $version     = $::st2::nodejs_version,
 ) inherits st2 {
