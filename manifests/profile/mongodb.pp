@@ -33,12 +33,20 @@ class st2::profile::mongodb (
   $manage_repo = $st2::mongodb_manage_repo,
 ) inherits st2 {
 
+  # if the StackStorm version is 'latest' or >= 2.4.0 then use MongoDB 3.4
+  # else use MongoDB 3.2
+  if $::st2::version == 'latest' or versioncmp($::st2::version, '2.4.0') >= 0 {
+    $mongodb_version_default = '3.4'
+  }
+  else {
+    $mongodb_version_default = '3.2'
+  }
+
   # if user specified a version of MongoDB they want to use, then use that
-  # otherwise auto-determine the version to use (as of st2 v2.3 MongoDB = 3.2)
-  # TODO in the future use semantic version compare against $st2::version
+  # otherwise use the default version of mongo based off the StackStorm version
   $mongodb_version = $version ? {
-    undef   => '3.2',
-    default => $version,
+    undef    => $mongodb_version_default,
+    default  => $version,
   }
 
   $mongo_db_password = $db_password ? {
