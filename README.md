@@ -11,11 +11,6 @@ Module to manage [StackStorm](http://stackstorm.com)
 * Ubuntu 14.04/16.04
 * RHEL/Centos 6/7
 
-## Maintainers
-
-* James Fryman <james@stackstorm.com>
-* Patrick Hoolboom <patrick@stackstorm.com>
-
 ## Quick Start
 
 For a full installation on a single node, a profile already exists to
@@ -274,7 +269,6 @@ puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
 
 ```
 
-
 ### How to generate Gemfile.lock.x.y.x
 
 **TODO** Install and switch to the proper versions of ruby before each call (chruby)
@@ -285,3 +279,18 @@ PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.3.8.7
 PUPPET_VERSION=4.10 bundle package; mv Gemfile.lock Gemfile.lock.4.10
 PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
 ```
+
+## Maintainers
+
+* StackStorm <info@stackstorm.com>
+* James Fryman
+* Patrick Hoolboom
+* Nick Maludy [@nmaludy](https://github.com/nmaludy) <nick.maludy@encore.tech>
+
+## Help
+
+If you're in stuck, our community always ready to help, feel free to:
+* Ask questions in our [public Slack channel](https://stackstorm.com/community-signup) in channel `#puppet`
+* [Report bug](https://github.com/StackStorm/puppet-st2/issues), provide [feature request](https://github.com/StackStorm/puppet-st2/pulls) or just give us a ✮ star
+
+Your contribution is more than welcome!
