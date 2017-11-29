@@ -18,7 +18,7 @@ bundler_args: --without rake
 # otherwise if you specify >1 command here, travis will try to run them
 # all and if one fails it will ignore the failure and go onto the next
 script:
-  - script/ci_docker.sh
+  - script/ci_docker_unit.sh
   # TODO enable kitchen
   #- if [[ -n $DISTRO ]]; then kitchen test ${DISTRO}; else echo "Not running kitchenci because DISTRO is not set"; fi
 
