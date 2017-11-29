@@ -4,17 +4,13 @@
 [![Coverage Status](https://coveralls.io/repos/StackStorm/puppet-st2/badge.svg?branch=master&service=github)](https://coveralls.io/github/StackStorm/puppet-st2?branch=master)
 [![Puppet Forge Version](https://img.shields.io/puppetforge/v/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
 [![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
+[![Join our community Slack](https://stackstorm-community.herokuapp.com/badge.svg)](https://stackstorm.com/community-signup)
 
 Module to manage [StackStorm](http://stackstorm.com)
 
 ## Supported platforms
 * Ubuntu 14.04/16.04
 * RHEL/Centos 6/7
-
-## Maintainers
-
-* James Fryman <james@stackstorm.com>
-* Patrick Hoolboom <patrick@stackstorm.com>
 
 ## Quick Start
 
@@ -161,10 +157,11 @@ configured normally. Subsequent runs of puppet will not show this error.
 
 ### Ubuntu 16.04
 
-Due to a known bug in st2 [3290](https://github.com/StackStorm/st2/issues/3290) 
-when first running the installation with this puppet module the `st2` pack
+In StackStorm < `2.4.0` there is a known bug [#3290](https://github.com/StackStorm/st2/issues/3290) 
+that when first running the installation with this puppet module the `st2` pack
 will fail to install. Simply invoking puppet a second time will produce
-a fully running st2 installation with the `st2` pack installed.
+a fully running st2 installation with the `st2` pack installed. This has
+been fixed in st2 version `2.4.0`.
 
 
 ## Module Dependencies
@@ -284,7 +281,6 @@ puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
 
 ```
 
-
 ### How to generate Gemfile.lock.x.y.x
 
 **TODO** Install and switch to the proper versions of ruby before each call (chruby)
@@ -295,3 +291,18 @@ PUPPET_VERSION=3.8.7 bundle package; mv Gemfile.lock Gemfile.lock.3.8.7
 PUPPET_VERSION=4.10 bundle package; mv Gemfile.lock Gemfile.lock.4.10
 PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
 ```
+
+## Maintainers
+
+* Nick Maludy [@nmaludy](https://github.com/nmaludy) <nick.maludy@encore.tech>
+* StackStorm <info@stackstorm.com>
+* James Fryman
+* Patrick Hoolboom
+
+## Help
+
+If you're in stuck, our community always ready to help, feel free to:
+* Ask questions in our [public Slack channel](https://stackstorm.com/community-signup) in channel `#puppet`
+* [Report bug](https://github.com/StackStorm/puppet-st2/issues), provide [feature request](https://github.com/StackStorm/puppet-st2/pulls) or just give us a ✮ star
+
+Your contribution is more than welcome!
