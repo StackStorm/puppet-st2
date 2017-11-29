@@ -14,12 +14,11 @@ bundler_args: --without rake
 #install:
 #  - if [[ -n $DISTRO ]]; then r10k puppetfile install -v --moduledir=/tmp/modules --puppetfile=docs/Puppetfile; else echo "Not running r10k because DISTRO is not set"; fi
 
+# execute all commands in a single script with 'set -e' at the top
+# otherwise if you specify >1 command here, travis will try to run them
+# all and if one fails it will ignore the failure and go onto the next
 script:
-  - docker build -t stackstorm/puppet-st2-$DISTRO -f $BUILD_PATH/Dockerfile .
-  - docker run -dit --name stackstorm-puppet-st2-$DISTRO stackstorm/puppet-st2-$DISTRO
-  - docker exec stackstorm-puppet-st2-$DISTRO bash -c "bundle exec rake validate"
-  - docker exec stackstorm-puppet-st2-$DISTRO bash -c "bundle exec rake lint"
-  - docker exec stackstorm-puppet-st2-$DISTRO bash -c "bundle exec rake spec SPEC_OPTS='--format documentation'"
+  - script/ci_docker.sh
   # TODO enable kitchen
   #- if [[ -n $DISTRO ]]; then kitchen test ${DISTRO}; else echo "Not running kitchenci because DISTRO is not set"; fi
 
