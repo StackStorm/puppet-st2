@@ -49,17 +49,19 @@ class st2::profile::nodejs(
         npm_package_ensure  => 'present',
       }
     }
-    # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
-    # In this old repo they hard-code some verifications about which versions
-    # are allowed to be installed (at the time the module was released).
-    # This has changed and NodeJS 4.x is supported and can be installed on
-    # RHEL 6.x. To fake this out we need to hard code the "repo_class"
-    # to the same thing they use internally but without the leading "::"
-    # to avoid their verification checks (ugh...).
-    class { '::nodejs':
-      repo_url_suffix     => $nodejs_version,
-      repo_class          => 'nodejs::repo::nodesource',
-      manage_package_repo => $manage_repo,
+    else {
+      # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
+      # In this old repo they hard-code some verifications about which versions
+      # are allowed to be installed (at the time the module was released).
+      # This has changed and NodeJS 4.x is supported and can be installed on
+      # RHEL 6.x. To fake this out we need to hard code the "repo_class"
+      # to the same thing they use internally but without the leading "::"
+      # to avoid their verification checks (ugh...).
+      class { '::nodejs':
+        repo_url_suffix     => $nodejs_version,
+        repo_class          => 'nodejs::repo::nodesource',
+        manage_package_repo => $manage_repo,
+      }
     }
   }
   else {

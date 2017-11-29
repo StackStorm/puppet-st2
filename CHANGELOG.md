@@ -2,6 +2,10 @@
 
 ## Development
 
+- Migrated to voxpupuli puppet/rabbitmq module and puppet/mongodb modules as
+  the puppetlabs/rabbitmq and puppetlabs/mongodb modules are deprecated.
+  Contributed by @nmaludy
+
 - Upgraded NodeJS to 6.x when installing StackStorm >= 2.4.0.
   If you're currently running a version of StackStorm 2.4.0 with NodeJS 4.x
   installed, the repo will be updated to point at 6.x. 
