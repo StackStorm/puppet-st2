@@ -4,6 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/StackStorm/puppet-st2/badge.svg?branch=master&service=github)](https://coveralls.io/github/StackStorm/puppet-st2?branch=master)
 [![Puppet Forge Version](https://img.shields.io/puppetforge/v/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
 [![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
+[![Join our community Slack](https://stackstorm-community.herokuapp.com/badge.svg)](https://stackstorm.com/community-signup)
 
 Module to manage [StackStorm](http://stackstorm.com)
 
@@ -283,10 +284,10 @@ PUPPET_VERSION=5.0 bundle package; mv Gemfile.lock Gemfile.lock.5.0
 
 ## Maintainers
 
+* Nick Maludy [@nmaludy](https://github.com/nmaludy) <nick.maludy@encore.tech>
 * StackStorm <info@stackstorm.com>
 * James Fryman
 * Patrick Hoolboom
-* Nick Maludy [@nmaludy](https://github.com/nmaludy) <nick.maludy@encore.tech>
 
 ## Help
 
