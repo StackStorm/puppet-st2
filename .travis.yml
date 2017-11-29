@@ -20,7 +20,8 @@ script:
   - docker exec stackstorm-puppet-st2-$DISTRO bash -c "bundle exec rake validate"
   - docker exec stackstorm-puppet-st2-$DISTRO bash -c "bundle exec rake lint"
   - docker exec stackstorm-puppet-st2-$DISTRO bash -c "bundle exec rake spec SPEC_OPTS='--format documentation'"
-  - if [[ -n $DISTRO ]]; then kitchen test ${DISTRO}; else echo "Not running kitchenci because DISTRO is not set"; fi
+  # TODO enable kitchen
+  #- if [[ -n $DISTRO ]]; then kitchen test ${DISTRO}; else echo "Not running kitchenci because DISTRO is not set"; fi
 
 
 matrix:
@@ -54,11 +55,13 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="Puppet 4 (generic)"
+        - DISTRO=centos-7
         - BUILD_PATH="build/puppet4"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="Puppet 5 (generic)"
+        - DISTRO=centos-7
         - BUILD_PATH="build/puppet5"
 
 # Note: disabling notifications during initial kitchen ci testing
