@@ -216,6 +216,31 @@ mod 'puppet/nodejs', '2.3.0'
 mod 'puppetlabs/apt', '2.4.0'
 ```
 
+## Testing Matrix
+
+### Unit Testing (rspec, puppet-lint, etc)
+
+| OS           | Ruby  | Puppet |
+|--------------|-------|--------|
+| RHEL 6       | 1.8.7 | 3.8.7  |
+| RHEL 7       | 2.0.0 | 3.8.7  |
+| Ubuntu 14.04 | 1.9.3 | 3.8.7  |
+| Ubuntu 16.06 | 2.3.1 | 3.8.5  |
+
+
+### Integration Testing (test-kitchen)
+
+Note: "Base" specs are for the Travis CI container that test-kitchen is
+being run on. All other columns are details about the guest OS that is 
+created by test-kitchen that puppet-st2 is run against.
+
+| Base OS (travis) | Base Ruby | Guest OS     | Guest Ruby | Guest Puppet |
+|------------------|-----------|--------------|------------|--------------|
+| Ubuntu 14.04     | 2.4       | RHEL 6       | 1.8.7      | 3.8.7        |
+| Ubuntu 14.04     | 2.4       | RHEL 7       | 2.0.0      | 3.8.7        |
+| Ubuntu 14.04     | 2.4       | Ubuntu 14.04 | 1.9.3      | 3.8.7        |
+| Ubuntu 14.04     | 2.4       | Ubuntu 16.06 | 2.3.1      | 3.8.5        |
+
 ## Dev Notes
 
 ### Ubuntu dev environment

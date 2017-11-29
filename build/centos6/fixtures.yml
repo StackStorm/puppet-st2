@@ -1,0 +1,27 @@
+# override fixtures for puppetlabs_spec_helper
+# default is in puppet-st2/.fixtures.yml
+fixtures:
+  symlinks:
+    st2: "#{source_dir}"
+  forge_modules:
+    apt: "puppetlabs/apt"
+    concat: "puppetlabs/concat"
+    stdlib:
+      # Lock stdlib at 4.22.0 because RHEL6 build fails on 4.23.0
+      # A bug has been submitted to puppetlabs:
+      # https://tickets.puppetlabs.com/browse/MODULES-6104
+      repo: "puppetlabs/stdlib"
+      ref: "4.22.0"
+    httpauth: "jamtur01/httpauth"
+    staging: "nanliu/staging"
+    git: "maestrodev/git"
+    wget: "maestrodev/wget"
+    sudo: "saz/sudo"
+    python: "stankevich/python"
+    gcc: "puppetlabs/gcc"
+    inifile: "puppetlabs/inifile"
+    mongodb: "puppetlabs/mongodb"
+    mysql: "puppetlabs/mysql"
+    rabbitmq: "puppetlabs/rabbitmq"
+    vcsrepo: "puppetlabs/vcsrepo"
+    tiller: "jfryman/tiller"

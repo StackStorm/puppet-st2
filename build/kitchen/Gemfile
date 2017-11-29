@@ -1,0 +1,8 @@
+source 'https://rubygems.org'
+
+# Gems for kitchen ci
+gem 'kitchen-docker'
+gem 'kitchen-puppet'
+gem 'kitchen-sync'
+gem 'librarian-puppet'
+gem 'test-kitchen'
