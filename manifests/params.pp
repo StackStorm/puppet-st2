@@ -161,8 +161,9 @@ class st2::params(
   $hubot_express_port = '8081'
   $tls_cert_reject_unauthorized = '0'
   $hubot_name = 'hubot'
+  $hubot_alias = '!'
   $chatops_adapter = {}
   $chatops_adapter_conf = {}
-
+  $chatops_st2_api_key = "\${ST2_API_KEY}"
 
 }

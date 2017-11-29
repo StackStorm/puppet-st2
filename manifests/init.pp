@@ -122,6 +122,12 @@ class st2(
   $nginx_manage_repo        = true,
   $chatops_adapter          = $::st2::params::chatops_adapter,
   $chatops_adapter_conf     = $::st2::params::chatops_adapter_conf,
+  $chatops_hubot_log_level              = $::st2::params::hubot_log_level,
+  $chatops_hubot_express_port           = $::st2::params::hubot_express_port,
+  $chatops_tls_cert_reject_unauthorized = $::st2::params::tls_cert_reject_unauthorized,
+  $chatops_hubot_name                   = $::st2::params::hubot_name,
+  $chatops_hubot_alias                  = $::st2::params::hubot_alias,
+  $chatops_st2_api_key                  = $::st2::params::chatops_st2_api_key,
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
 ) inherits st2::params {
