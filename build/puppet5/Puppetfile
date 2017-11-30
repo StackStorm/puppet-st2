@@ -6,27 +6,27 @@
 # # create a new file ./Puppetfile with the contents of this file
 # r10k puppetfile install -v --moduledir=./modules --puppetfile=./Puppetfile
 # puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
+
 forge "https://forgeapi.puppetlabs.com"
 
-mod 'puppetlabs/concat', "2.2.1"
+mod 'puppetlabs/concat'
 mod 'puppetlabs/stdlib'
 mod 'jamtur01/httpauth'
 mod 'puppet/staging'
-mod 'puppetlabs/apt', '2.4.0'
+mod 'puppetlabs/apt'
 mod 'maestrodev/wget'
 mod 'saz/sudo'
 mod 'stankevich/python'
 mod 'puppetlabs/gcc'
 mod 'puppetlabs/inifile'
-mod 'puppetlabs/mongodb', '0.17.0'
-mod 'puppetlabs/postgresql', '4.9.0'
-mod 'puppetlabs/rabbitmq'
-mod 'puppetlabs/vcsrepo', '1.5.0'
+mod 'puppet/mongodb'
+mod 'puppetlabs/postgresql'
+mod 'puppet/rabbitmq'
+mod 'puppetlabs/vcsrepo'
 mod 'jfryman/tiller'
 mod 'stahnma/epel'
 mod 'ghoneycutt/facter'
 mod 'computology/packagecloud'
-mod "puppet/selinux", "0.8.0"
-mod 'puppet/nginx', '0.6.0'
-mod 'puppet/nodejs', '2.3.0'
-
+mod "puppet/selinux"
+mod 'puppet/nginx'
+mod 'puppet/nodejs'

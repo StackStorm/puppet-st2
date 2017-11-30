@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'coveralls'
+gem 'metadata-json-lint'
 gem 'puppet',                                                    '~> 4.0'
 gem 'puppet-blacksmith',                                         '>= 3.1.1'
 gem 'puppet-lint',                                               '>= 0.3.2'

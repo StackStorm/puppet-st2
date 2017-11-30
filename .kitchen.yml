@@ -3,6 +3,7 @@ driver:
   name: docker
   privileged: true
   use_sudo: false
+  require_chef_omnibus: false
 
 transport:
   name: sftp
@@ -15,35 +16,64 @@ provisioner:
   require_puppet_collections: false
 
 platforms:
+  # CentOS6 with sysV init
+  - name: centos6
+    driver:
+      platform: centos
+      dockerfile: build/centos6/Dockerfile.kitchen
+      run_command: /usr/sbin/sshd -D
+    provisioner:
+      puppetfile_path: build/centos6/Puppetfile
+  # CentOS7 with Systemd
+  - name: centos7
+    driver:
+      platform: centos
+      dockerfile: build/centos7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos7/Puppetfile
   # Ubuntu Trusty with Upstart
-  - name: ubuntu-14.04
-    driver_config:
+  - name: ubuntu14
+    driver:
       platform: ubuntu
-      dockerfile: .kitchen-docker/ubuntu14/Dockerfile
+      dockerfile: build/ubuntu14/Dockerfile.kitchen
       disable_upstart: false
       run_command: /sbin/init
+    provisioner:
+      puppetfile_path: build/centos14/Puppetfile
   # Ubuntu Xenial with Systemd
-  - name: ubuntu-16.04
-    driver_config:
+  - name: ubuntu16
+    driver:
       platform: ubuntu
-      dockerfile: .kitchen-docker/ubuntu16/Dockerfile
+      dockerfile: build/ubuntu16/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  # CentOS6 with sysV init
-  - name: centos-6
-    driver_config:
+    provisioner:
+      puppetfile_path: build/ubuntu16/Puppetfile
+  # Puppet4 on CentOS7 with Systemd
+  - name: puppet4
+    driver:
       platform: centos
-      dockerfile: .kitchen-docker/centos6/Dockerfile
-      run_command: /usr/sbin/sshd -D
-  # CentOS7 with Systemd
-  - name: centos-7
-    driver_config:
-      platform: centos
-      dockerfile: .kitchen-docker/centos7/Dockerfile
+      dockerfile: build/puppet4/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/puppet4/Puppetfile
+  # Puppet5 on CentOS7 with Systemd
+  - name: puppet5
+    driver:
+      platform: centos
+      dockerfile: build/puppet5/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/puppet5/Puppetfile
+
 
 suites:
   - name: default

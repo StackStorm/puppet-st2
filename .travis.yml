@@ -30,38 +30,32 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="RHEL/CentOS 6"
-        - DISTRO=centos-6
-        - BUILD_PATH="build/centos6"
+        - TEST_NAME="centos6"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="RHEL/CentOS 7"
-        - DISTRO=centos-7
-        - BUILD_PATH="build/centos7"
+        - TEST_NAME="centos7"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="Ubuntu 14"
-        - DISTRO=ubuntu-14
-        - BUILD_PATH="build/ubuntu14"
+        - TEST_NAME="ubuntu14"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="Ubuntu 16"
-        - DISTRO=ubuntu-16
-        - BUILD_PATH="build/ubuntu16"
+        - TEST_NAME="ubuntu16"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="Puppet 4 (generic)"
-        - DISTRO=centos-7
-        - BUILD_PATH="build/puppet4"
+        - TEST_NAME="puppet4"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="Puppet 5 (generic)"
-        - DISTRO=centos-7
-        - BUILD_PATH="build/puppet5"
+        - TEST_NAME="puppet5"
 
 # Note: disabling notifications during initial kitchen ci testing
 # notifications:
