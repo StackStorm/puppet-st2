@@ -43,6 +43,7 @@ platforms:
       run_command: /sbin/init
     provisioner:
       puppetfile_path: build/centos14/Puppetfile
+      modules_path: /etc/puppet/modules
   # Ubuntu Xenial with Systemd
   - name: ubuntu16
     driver:
@@ -64,6 +65,8 @@ platforms:
     provisioner:
       puppetfile_path: build/puppet4/Puppetfile
       puppet_no_sudo: true
+      puppet_environment: production
+      modules_path: /etc/puppetlabs/code/environments/production/modules
   # Puppet5 on CentOS7 with Systemd
   - name: puppet5
     driver:
@@ -75,6 +78,8 @@ platforms:
     provisioner:
       puppetfile_path: build/puppet5/Puppetfile
       puppet_no_sudo: true
+      puppet_environment: production
+      modules_path: /etc/puppetlabs/code/environments/production/modules
 
 
 suites:
