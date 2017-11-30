@@ -17,4 +17,16 @@
 #
 class st2::profile::rabbitmq {
   require ::rabbitmq
+
+  # RHEL needs EPEL installed prior to rabbitmq
+  if $::osfamily == 'RedHat' {
+    Class['::epel']
+    -> Class['::rabbitmq']
+
+    Yumrepo['epel']
+    -> Class['::rabbitmq']
+
+    Yumrepo['epel']
+    -> Package['rabbitmq-server']
+  }
 }
