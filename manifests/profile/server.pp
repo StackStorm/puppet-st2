@@ -83,7 +83,7 @@ class st2::profile::server (
 
   package { $_server_packages:
     ensure => $version,
-    tag    => 'st2::server::packages',
+    tag    => ['st2::packages', 'st2::server::packages'],
   }
 
   ensure_resource('file', '/opt/stackstorm', {

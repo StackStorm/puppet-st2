@@ -45,7 +45,7 @@
       "version_requirement": ">= 1.2.0"
     },
     {
-      "name": "puppetlabs/mongodb",
+      "name": "puppet/mongodb",
       "version_requirement": ">= 0.14.0"
     },
     {
@@ -53,7 +53,7 @@
       "version_requirement": ">= 4.4.2"
     },
     {
-      "name": "puppetlabs/rabbitmq",
+      "name": "puppet/rabbitmq",
       "version_requirement": ">= 4.1.0"
     },
     {

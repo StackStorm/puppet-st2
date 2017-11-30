@@ -30,7 +30,7 @@ class st2::profile::web(
   ## Install the packages
   package { $::st2::params::st2_web_packages:
     ensure => $version,
-    tag    => 'st2::web::packages',
+    tag    => ['st2::packages', 'st2::web::packages'],
   }
 
   ## Create ssl cert directory
