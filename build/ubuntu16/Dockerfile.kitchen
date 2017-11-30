@@ -15,6 +15,7 @@ RUN chmod 0600 /home/<%= @username %>/.ssh/authorized_keys
 RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys
 
 # install puppet
+RUN sudo apt-get -y update
 RUN sudo apt-get -y install puppet
 
 # print versions (ruby 2.3.1, puppet 3.8.5)

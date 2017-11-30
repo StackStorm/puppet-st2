@@ -63,6 +63,7 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/puppet4/Puppetfile
+      puppet_no_sudo: true
   # Puppet5 on CentOS7 with Systemd
   - name: puppet5
     driver:
@@ -73,6 +74,7 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/puppet5/Puppetfile
+      puppet_no_sudo: true
 
 
 suites:
