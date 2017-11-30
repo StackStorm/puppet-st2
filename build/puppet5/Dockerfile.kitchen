@@ -19,6 +19,10 @@ RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/auth
 RUN yum -y install https://yum.puppetlabs.com/puppet5/puppet-release-el-7.noarch.rpm
 RUN yum -y install puppet
 ENV PATH="/opt/puppetlabs/bin:${PATH}"
+RUN ln -s /opt/pupetlabs/bin/puppet/facter /usr/bin/
+RUN ln -s /opt/pupetlabs/bin/puppet/hiera /usr/bin/
+RUN ln -s /opt/pupetlabs/bin/puppet/mco /usr/bin/
+RUN ln -s /opt/pupetlabs/bin/puppet/puppet /usr/bin/
 
 # print versions (ruby 2.4.x, puppet 5.x)
 RUN puppet --version
