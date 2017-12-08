@@ -2,6 +2,24 @@
 
 ## Development
 
+- Migrated to voxpupuli puppet/rabbitmq module and puppet/mongodb modules as
+  the puppetlabs/rabbitmq and puppetlabs/mongodb modules are deprecated.
+  Contributed by @nmaludy
+
+- Upgraded NodeJS to 6.x when installing StackStorm >= 2.4.0.
+  If you're currently running a version of StackStorm 2.4.0 with NodeJS 4.x
+  installed, the repo will be updated to point at 6.x. 
+  To upgrade NodeJS go through the normal upgrade process on your system,
+  example for RHEL: `yum clean all; yum upgrade -y`
+  Contributed by @nmaludy
+
+- Upgraded MongoDB to 3.4 when installing StackStorm >= 2.4.0.
+  If you're currently running a version of StackStorm 2.4.0 with MongoDB 3.2
+  installed, the repo will be updated to point at 3.4. 
+  To upgrade MongoDB go through the normal upgrade process on your system,
+  example for RHEL: `yum clean all; yum upgrade -y`
+  Contributed by @nmaludy
+
 - New type and provider for managing st2 packs: `st2_pack`.
   Added new parameter `index_url` to `::st2` allowing custom st2 Exchange
   index file location.
