@@ -17,7 +17,10 @@ fixtures:
     sudo: "saz/sudo"
     python: "stankevich/python"
     gcc: "puppetlabs/gcc"
-    inifile: "puppetlabs/inifile"
+    inifile:
+      # Lock inifile at 1.6.0 because 2.0.0+ drops support for puppet 3.x
+      repo: "puppetlabs/inifile"
+      ref: "1.6.0"
     mongodb: "puppetlabs/mongodb"
     mysql: "puppetlabs/mysql"
     rabbitmq: "puppetlabs/rabbitmq"
