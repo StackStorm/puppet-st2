@@ -42,8 +42,8 @@ platforms:
       disable_upstart: false
       run_command: /sbin/init
     provisioner:
-      puppetfile_path: build/centos14/Puppetfile
-      modules_path: /etc/puppet/modules
+      puppetfile_path: build/ubuntu14/Puppetfile
+      require_chef_for_busser: false
   # Ubuntu Xenial with Systemd
   - name: ubuntu16
     driver:
