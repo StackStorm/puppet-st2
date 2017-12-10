@@ -67,11 +67,12 @@ class st2::profile::mongodb (
     class { '::mongodb::client': }
 
     class { '::mongodb::server':
-      auth           => true,
       port           => $db_port,
-      create_admin   => true,
-      admin_username => $::st2::params::mongodb_admin_username,
-      admin_password => $_mongo_db_password,
+      # auth           => true,
+      # create_admin   => true,
+      # store_creds    => true,
+      # admin_username => $::st2::params::mongodb_admin_username,
+      # admin_password => $_mongo_db_password,
     }
 
     Class['mongodb::globals']
@@ -123,7 +124,6 @@ class st2::profile::mongodb (
       default: {
       }
     }
-
 
     # configure st2 database
     mongodb::db { $db_name:
