@@ -79,6 +79,14 @@ class st2::profile::mongodb (
     -> Class['mongodb::client']
     -> Class['mongodb::server']
 
+    # Make sure admin database exists before mongodb creates the
+    # /root/.mongorc.js file.
+    # This prevents the error:
+    # Could not evaluate MongoDB shell command: load('/root/.mongorc.js'); printjson(db.getMongo().getDBs())
+    Mongodb::Db['admin']
+    -> File[$::mongodb::params::rcfile]
+    -> Mongodb::Db<| title != 'admin' |>
+
     case $::osfamily {
       'RedHat': {
         Package <| tag == 'mongodb' |> {
