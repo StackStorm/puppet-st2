@@ -15,11 +15,6 @@ RUN chown <%= @username %> /home/<%= @username %>/.ssh/authorized_keys
 RUN chmod 0600 /home/<%= @username %>/.ssh/authorized_keys
 RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys
 
-# install doc files (/usr/share/docs) when installing yum packages
-# otherwise /usr/share/docs/st2/conf/nginx/st2.conf won't be present
-# https://github.com/docker-library/docs/tree/master/centos#package-documentation
-RUN sed -i '/nodocs/d' /etc/yum.conf
-
 # install puppet
 RUN yum -y install https://yum.puppetlabs.com/puppetlabs-release-el-6.noarch.rpm
 RUN yum -y install puppet
@@ -27,3 +22,8 @@ RUN yum -y install puppet
 # print versions (ruby 1.8.7, puppet 3.8.7)
 RUN ruby --version
 RUN puppet --version
+
+# install doc files (/usr/share/docs) when installing yum packages
+# otherwise /usr/share/docs/st2/conf/nginx/st2.conf won't be present
+# https://github.com/docker-library/docs/tree/master/centos#package-documentation
+# RUN sed -i '/nodocs/d' /etc/yum.conf

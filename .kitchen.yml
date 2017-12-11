@@ -42,8 +42,6 @@ platforms:
       run_command: /usr/sbin/sshd -D
     provisioner:
       puppetfile_path: build/centos6/Puppetfile
-      # need to install Chef in CentOS 6 because of old version of ruby (< 1.9)
-      require_chef_for_busser: true
       
   # CentOS7 with Systemd
   - name: centos7
