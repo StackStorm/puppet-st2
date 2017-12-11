@@ -9,6 +9,7 @@
 
 forge "https://forgeapi.puppetlabs.com"
 
+mod 'puppet/rabbitmq', '5.6.1' # TODO: newest version doesn't work in puppet4 (for some reason)
 mod 'puppetlabs/concat'
 mod 'puppetlabs/stdlib'
 mod 'jamtur01/httpauth'
@@ -18,9 +19,8 @@ mod 'saz/sudo'
 mod 'stankevich/python'
 mod 'puppetlabs/gcc'
 mod 'puppetlabs/inifile'
-mod 'puppetlabs/mongodb', '0.17.0'
+mod 'puppet/mongodb'
 mod 'puppetlabs/postgresql'
-mod 'puppet/rabbitmq'
 mod 'puppetlabs/vcsrepo'
 mod 'jfryman/tiller'
 mod 'stahnma/epel'
