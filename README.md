@@ -9,6 +9,7 @@
 Module to manage [StackStorm](http://stackstorm.com)
 
 ## Supported platforms
+
 * Ubuntu 14.04/16.04
 * RHEL/Centos 6/7
 
@@ -19,22 +20,6 @@ get you setup and going with minimal effort. Simply:
 
 ```
 include ::st2::profile::fullinstall
-```
-
-### Ubuntu 14.04
-
-Because 14.04 ships with a very old version of puppet (3.4) and most puppet modules
-no longer support this version of puppet, we recommend upgrading to 3.8.7 at a
-minimum.
-
-``` shell
-# 14.04 trusty
-# By default this ships with puppet 3.4.x (very old), need a newer version to 
-# work with with of the required puppet module dependencies for this module. 
-wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
-sudo dpkg -i puppetlabs-release-trusty.deb
-sudo apt-get update
-sudo apt-get install puppet=3.8.7-1puppetlabs1
 ```
 
 ## Configuration
@@ -72,6 +57,7 @@ StackStorm packs can be installed and configured directly from Puppet. This
 can be done via the `st2::pack` and `st2::pack::config` defined types.
 
 Installation/Configuration via modules:
+
 ```ruby
   # install pack from the exchange
   st2::pack { 'linux': }
@@ -92,6 +78,7 @@ Installation/Configuration via modules:
 ```
 
 Installation/Configuration via Hiera:
+
 ```yaml
 st2::packs:
   linux:
@@ -109,6 +96,7 @@ st2::packs:
 ### Configuring Hubot (ChatOps)
 
 Configuration via Hiera:
+
 ```yaml
   # install and configure hubot adapter (rocketchat, nodejs module installed by ::nodejs)
   st2::chatops_adapter:
@@ -128,11 +116,28 @@ Configuration via Hiera:
     RESPOND_TO_DM: true
 ```
 
+## Module Dependencies
+
+This module installs and configures all of the components required for StackStorm.
+In order to not repeat others work, we've utilized many existing modules from the
+foge. We manage the module dependenies using a `Puppetfile` for each OS we support.
+These `Puppetfile` can be used both with [r10k](https://github.com/puppetlabs/r10k)
+and [librarian-puppet](http://librarian-puppet.com/).
+
+### Puppetfiles
+
+ * RHEL/CentOS 6 - [build/centos6/Puppetfile](build/centos6/Puppetfile)
+ * RHEL/CentOS 7 - [build/centos7/Puppetfile](build/centos7/Puppetfile)
+ * Puppet 4.0 - [build/puppet4/Puppetfile](build/puppet4/Puppetfile)
+ * Puppet 5.0 - [build/puppet5/Puppetfile](build/puppet5/Puppetfile)
+ * Ubuntu 14.04 - [build/ubuntu14/Puppetfile](build/ubuntu14/Puppetfile)
+ * Ubuntu 16.06 [build/ubuntu16/Puppetfile](build/ubuntu16/Puppetfile)
+
 ## Known Limitations
 
-### MongoDB (all OSes)
+### MongoDB (Puppet < 4.0)
 
-When running the initial install of st2 you will see an error from the 
+When running the initial install of `st2` you will see an error from the 
 MongoDB module :
 
 ```
@@ -144,6 +149,50 @@ in its prefetch step when authentication hasn't been configured yet on
 the database. The error can be safely ignored. Auth and databases will be 
 configured normally. Subsequent runs of puppet will not show this error.
 
+### MongoDB (Puppet >= 4.0)
+
+When running the initial install of `st2` you will see an error from the 
+MongoDB module :
+
+```
+Error: Could not prefetch mongodb_database provider 'mongodb': Could not evaluate MongoDB shell command: load('/root/.mongorc.js'); printjson(db.getMongo().getDBs())
+```
+
+This error is caused by a deficiency in this module trying to use authentication
+in its prefetch step when authentication hasn't been configured yet on
+the database. This results in a failure and stops processing.
+
+In these cases we need to disable auth for MongoDB using the `mondob_auth` variabe.
+This can be accomplished when declaring the `::st2` class:
+
+``` puppet
+class { '::st2':
+  mongodb_auth => false,
+}
+```
+
+Or in hiera:
+
+``` yaml
+st2:
+  mongodb_auth: false
+```
+
+### Ubuntu 14.04
+
+Because 14.04 ships with a very old version of puppet (3.4) and most puppet modules
+no longer support this version of puppet, we recommend upgrading to 3.8.7 at a
+minimum.
+
+``` shell
+# 14.04 trusty
+# By default this ships with puppet 3.4.x (very old), need a newer version to 
+# work with with of the required puppet module dependencies for this module. 
+wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
+sudo dpkg -i puppetlabs-release-trusty.deb
+sudo apt-get update
+sudo apt-get install puppet=3.8.7-1puppetlabs1
+```
 
 ### Ubuntu 16.04
 
@@ -154,172 +203,11 @@ a fully running st2 installation with the `st2` pack installed. This has
 been fixed in st2 version `2.4.0`.
 
 
-## Module Dependencies
-
-### RHEL 7 Notes (Ruby 2.0.0, Puppet 3.8.7)
-
-The following modules need to have their versions locked in your
-Puppetfile because future versions dropped support for Puppet 3.x.
-All other dependencies are compatible with Puppet 3 (as of 2017-08-03).
-``` ruby
-mod 'puppet/nginx', '0.6.0'
-mod 'puppetlabs/vcsrepo', '1.5.0'
-mod 'puppet/nodejs', '2.3.0'
-```
-
-
-### RHEL 6 Notes (Ruby 1.8.7, Puppet 3.8.6)
-
-The following modules need to have their versions locked in your
-Puppetfile because future versions dropped support for Puppet 3.x.
-All other dependencies are compatible with Puppet 3 (as of 2017-08-03).
-
-
-``` ruby
-mod 'puppet/nginx', '0.6.0'
-mod 'puppetlabs/vcsrepo', '1.5.0'
-mod 'puppet/nodejs', '1.3.0'
-```
-
-
-**Note** that `puppet/nodejs` is an older version than for RHEL 7. This is
-because 1.3.0 dropped compatibility with Ruby 1.8.7 in future versions.
-If you run a version >1.3.0 on with Ruby 1.8.7, then you'll encounter
-the following error.
-
-``` shell
-
-Error: Could not autoload puppet/provider/package/npm: /var/lib/puppet/lib/puppet/provider/package/npm.rb:3: syntax error, unexpected ':', expecting $end
-...package).provide :npm, parent: Puppet::Provider::Package do
-                              ^
-Error: Could not retrieve local facts: Could not autoload puppet/provider/package/npm: /var/lib/puppet/lib/puppet/provider/package/npm.rb:3: syntax error, unexpected ':', expecting $end
-...package).provide :npm, parent: Puppet::Provider::Package do
-                              ^
-Error: Failed to apply catalog: Could not retrieve local facts: Could not autoload puppet/provider/package/npm: /var/lib/puppet/lib/puppet/provider/package/npm.rb:3: syntax error, unexpected ':', expecting $end
-...package).provide :npm, parent: Puppet::Provider::Package do
-                              ^
-```
-
-### Ubuntu Notes (Puppet 3.8.7)
-
-The following modules need to have their versions locked in your
-Puppetfile because future versions dropped support for Puppet 3.x.
-All other dependencies are compatible with Puppet 3 (as of 2017-08-03).
-
-``` shell
-mod 'puppet/nginx', '0.6.0'
-mod 'puppetlabs/vcsrepo', '1.5.0'
-mod 'puppet/nodejs', '2.3.0'
-mod 'puppetlabs/apt', '2.4.0'
-```
-
-## Testing Matrix
-
-### Unit Testing (rspec, puppet-lint, etc)
-
-| OS           | Ruby  | Puppet |
-|--------------|-------|--------|
-| RHEL 6       | 1.8.7 | 3.8.7  |
-| RHEL 7       | 2.0.0 | 3.8.7  |
-| Ubuntu 14.04 | 1.9.3 | 3.8.7  |
-| Ubuntu 16.06 | 2.3.1 | 3.8.5  |
-
-
-### Integration Testing (test-kitchen)
-
-Note: "Base" specs are for the Travis CI container that test-kitchen is
-being run on. All other columns are details about the guest OS that is 
-created by test-kitchen that puppet-st2 is run against.
-
-| Base OS (travis) | Base Ruby | Guest OS     | Guest Ruby | Guest Puppet |
-|------------------|-----------|--------------|------------|--------------|
-| Ubuntu 14.04     | 2.4       | RHEL 6       | 1.8.7      | 3.8.7        |
-| Ubuntu 14.04     | 2.4       | RHEL 7       | 2.0.0      | 3.8.7        |
-| Ubuntu 14.04     | 2.4       | Ubuntu 14.04 | 1.9.3      | 3.8.7        |
-| Ubuntu 14.04     | 2.4       | Ubuntu 16.06 | 2.3.1      | 3.8.5        |
-
-## Dev Notes
-
-### Ubuntu dev environment
-
-``` shell
-sudo apt-get install ruby-dev git gcc g++ make
-gem install bundler
-
-# 14.04 trusty
-# By default this ships with puppet 3.4.x (very old), need a newer version to work
-# with any of the required puppet modules (minimum version = 3.8.x)
-wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
-sudo dpkg -i puppetlabs-release-trusty.deb
-sudo apt-get update
-sudo apt-get install puppet=3.8.7-1puppetlabs1
-
-# 16.04 xenial
-# Note: because the version of ruby shipped with Xenail is 2.3.x and the version
-# of puppet shipped (3.8.x) is incompatible, we have to run our tests using
-# a newer version of puppet (4.10 at a minimum) that supports the new version of
-# ruby.
-# Note - this is ONLY a unit testing deficiency, the usage of this module runs
-# just fine with the default version of puppet.
-wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb
-sudo dpkg -i puppetlabs-release-pc1-xenial.deb
-sudo apt-get update
-sudo apt-get install puppet-agent
-
-```
-
-### RHEL dev environment
-
-``` shell
-sudo yum -y install puppet ruby-devel git gcc g++ make
-gem install bundler
-```
-
-### Dev testing (standalone box)
-
-The file `docs/Puppetfile` is an r10k Puppetfile that downloads all of the
-dependencies required for this module and allows you to perform standalone
-testing without a puppet master. To utilize this file and form of testing
-perform the following
-
-``` shell
-# assuming you already have your dev environment setup from above (puppet must be installed)
-
-# install r10k
-gem install puppet_forge:2.2.6 r10k
-
-# run r10k to download all of our module dependencies defined in ./docs/Puppetfile
-r10k puppetfile install -v --moduledir=./modules --puppetfile=./docs/Puppetfile
-
-# run StackStorm full install using puppet
-puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
-
-```
-
-### How to generate Gemfile.lock.x.y.x
-
-**TODO** Install and switch to the proper versions of ruby before each call (chruby)
-
-``` shell
-gem install bundler
-# ruby 1.8.7
-PUPPET_VERSION="~> 3.0" TEST_KITCHEN_ENABLED=false R10K_VERSION="~> 1.0" PUPPETLABS_SPEC_HELPER_VERSION="~> 1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel6
-# ruby 2.0.0
-PUPPET_VERSION="~> 3.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel7
-# ruby 1.9.3
-PUPPET_VERSION="~> 3.0" KITCHEN_SYNC_VERSION="2.1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.ubuntu14
-# ruby 2.3.1
-PUPPET_VERSION="~> 4.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.ubuntu16
-# ruby 2.1.x
-PUPPET_VERSION="~> 4.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet4
-# ruby 2.4.x
-PUPPET_VERSION="~> 5.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet5
-
-```
-
 ## Maintainers
 
-* Nick Maludy [@nmaludy](https://github.com/nmaludy) <nick.maludy@encore.tech>
+* Nick Maludy 
+  * GitHub - [@nmaludy](https://github.com/nmaludy)
+  * Email - <nick.maludy@encore.tech>
 * StackStorm <info@stackstorm.com>
 * James Fryman
 * Patrick Hoolboom
