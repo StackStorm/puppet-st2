@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+# Gems for kitchen ci
+gem 'kitchen-docker'
+gem 'kitchen-puppet'
+gem 'kitchen-sync'
+gem 'librarian-puppet'
+gem 'puppet'
+gem 'mixlib-shellout', '2.2.7'
+gem 'test-kitchen',  '1.16.0'

@@ -1,7 +1,10 @@
-vendor
-bin
-pkg
-coverage
 *.swp
-.DS_Store
 .bundle
+.DS_Store
+.librarian
+.kitchen
+.tmp
+bin
+coverage
+pkg
+vendor

@@ -56,6 +56,10 @@
 #                             (default: undef)
 #  [*mongodb_manage_repo*]  - Set this to false when you have your own repositories
 #                             for MongoDB (default: true)
+#  [*mongodb_auth*]         - Boolean determining of auth should be enabled for
+#                             MongoDB. Note: On new versions of Puppet (4.0+)
+#                             you'll need to disable this setting.
+#                             (default: true)
 #  [*nginx_manage_repo*]    - Set this to false when you have your own repositories for nginx
 #                             (default: true)
 #  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
@@ -148,6 +152,7 @@ class st2(
   $db_password              = undef,
   $mongodb_version          = undef,
   $mongodb_manage_repo      = true,
+  $mongodb_auth             = true,
   $ng_init                  = true,
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",

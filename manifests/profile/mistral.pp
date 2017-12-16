@@ -67,6 +67,7 @@ class st2::profile::mistral(
     section => 'database',
     setting => 'connection',
     value   => "postgresql://${db_username}:${_db_password}@${db_server}/${db_name}",
+    tag     => 'mistral',
   }
 
   # TODO add extra config params

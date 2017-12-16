@@ -1,0 +1,101 @@
+---
+driver:
+  name: docker
+  privileged: true
+  use_sudo: false
+  require_chef_omnibus: false
+
+transport:
+  name: sftp
+
+provisioner:
+  # in the container, run: puppet apply
+  name: puppet_apply
+  # manifest to execute
+  manifest: test/fullinstall.pp
+  # unused, but required
+  modules_path: ./modules
+  # don't have kitchen-puppet install chef by default
+  require_chef_for_busser: false
+  # don't have kitchen-puppet install puppet by default (done in Dockerfile)
+  require_puppet_collections: false
+  # If you do not enable puppet_detailed_exitcodes, the provisioner only failes
+  # if the manifest can not be compiled. 
+  puppet_detailed_exitcodes: true
+  # Exit code details:
+  # https://github.com/neillturner/kitchen-puppet/blob/master/provisioner_options.md#checking-puppet-apply-success-with-puppet_detailed_exitcodes
+  #   0: The run succeeded with no changes or failures; the system was already in the desired state.
+  #   1: The run failed, or wasn't attempted due to another run already in progress.
+  #   2: The run succeeded, and some resources were changed.
+  #   4: The run succeeded, and some resources failed.
+  #   6: The run succeeded, and included both changes and failures.
+  puppet_whitelist_exit_code:
+    - 0
+    - 2
+    
+platforms:
+  # CentOS6 with sysV init
+  - name: centos6
+    driver:
+      platform: centos
+      dockerfile: build/centos6/Dockerfile.kitchen
+      run_command: /usr/sbin/sshd -D
+    provisioner:
+      puppetfile_path: build/centos6/Puppetfile
+      
+  # CentOS7 with Systemd
+  - name: centos7
+    driver:
+      platform: centos
+      dockerfile: build/centos7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos7/Puppetfile
+      
+  # Ubuntu Trusty with Upstart
+  - name: ubuntu14
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu14/Dockerfile.kitchen
+      disable_upstart: false
+      run_command: /sbin/init
+    provisioner:
+      puppetfile_path: build/ubuntu14/Puppetfile
+      
+  # Ubuntu Xenial with Systemd
+  - name: ubuntu16
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu16/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/ubuntu16/Puppetfile
+      
+  # Puppet4 on CentOS7 with Systemd
+  - name: puppet4
+    driver:
+      platform: centos
+      dockerfile: build/puppet4/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/puppet4/Puppetfile
+      
+  # Puppet5 on CentOS7 with Systemd
+  - name: puppet5
+    driver:
+      platform: centos
+      dockerfile: build/puppet5/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/puppet5/Puppetfile
+
+suites:
+  - name: default

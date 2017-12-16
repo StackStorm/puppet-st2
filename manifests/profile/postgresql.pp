@@ -21,7 +21,7 @@ class st2::profile::postgresql(
   $db_password = $st2::db_password,
   $db_listen_addresses = '127.0.0.1',
 ) inherits st2 {
-  if !defined(Class['postgresql::server']) {
+  if !defined(Class['::postgresql::server']) {
     if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
       class { '::postgresql::globals':
         version             => '9.4',

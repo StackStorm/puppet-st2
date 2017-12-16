@@ -14,6 +14,10 @@
 #  [*version*]     - Version of MongoDB to install. If not provided it will be
 #                    auto-calcuated based on $st2::version
 #  [*manage_repo*] - Set this to false when you have your own repositories for mongodb
+#  [*auth*]        - Boolean determining of auth should be enabled for
+#                    MongoDB. Note: On new versions of Puppet (4.0+)
+#                    you'll need to disable this setting.
+#                    (default: $st2::mongodb_auth)
 #
 # === Variables
 #
@@ -31,6 +35,7 @@ class st2::profile::mongodb (
   $db_bind_ips = $::st2::db_bind_ips,
   $version     = $::st2::mongodb_version,
   $manage_repo = $::st2::mongodb_manage_repo,
+  $auth        = $::st2::mongodb_auth,
 ) inherits st2 {
 
   # if the StackStorm version is 'latest' or >= 2.4.0 then use MongoDB 3.4
@@ -66,13 +71,20 @@ class st2::profile::mongodb (
 
     class { '::mongodb::client': }
 
-    class { '::mongodb::server':
-      auth           => true,
-      port           => $db_port,
-      create_admin   => true,
-      store_creds    => true,
-      admin_username => $::st2::params::mongodb_admin_username,
-      admin_password => $_mongo_db_password,
+    if $auth == true {
+      class { '::mongodb::server':
+        port           => $db_port,
+        auth           => true,
+        create_admin   => true,
+        store_creds    => true,
+        admin_username => $::st2::params::mongodb_admin_username,
+        admin_password => $_mongo_db_password,
+      }
+    }
+    else {
+      class { '::mongodb::server':
+        port => $db_port,
+      }
     }
 
     Class['mongodb::globals']
@@ -124,7 +136,6 @@ class st2::profile::mongodb (
       default: {
       }
     }
-
 
     # configure st2 database
     mongodb::db { $db_name:
