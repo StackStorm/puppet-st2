@@ -34,7 +34,7 @@ export ST2_AUTH_USERNAME="<%= @auth_username %>"
 export ST2_AUTH_PASSWORD="<%= @auth_password %>"
 <%- end -%>
 
-<%- if @st2_webui_url -%>
+<%- if @web_url -%>
 # Public URL of StackStorm instance: used it to offer links to execution details in a chat.
-export ST2_WEBUI_URL="<%= @st2_web_url %>"
+export ST2_WEBUI_URL="<%= @web_url %>"
 <%- end -%>

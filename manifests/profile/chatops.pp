@@ -59,7 +59,7 @@ class st2::profile::chatops (
   $adapter_config               = $::st2::chatops_adapter_conf,
   $api_key                      = $::st2::chatops_api_key,
   $st2_hostname                 = $::st2::chatops_st2_hostname,
-  $st2_web_url                  = $::st2::chatops_st2_web_url,
+  $web_url                      = $::st2::chatops_web_url,
   $api_url                      = $::st2::cli_api_url,
   $auth_url                     = $::st2::cli_auth_url,
   $auth_username                = $::st2::cli_username,

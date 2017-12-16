@@ -84,7 +84,7 @@
 #                                             API and Auth. If unspecified it will
 #                                             use the default in /opt/stackstorm/chatops/st2chatops.env
 #                                             (default: undef)
-#  [*chatops_st2_web_url*]                  - Public URL of StackStorm instance.
+#  [*chatops_web_url*]                      - Public URL of StackStorm instance.
 #                                             used by chatops to offer links to
 #                                             execution details in a chat.
 #                                             If unspecified it will use the
@@ -166,7 +166,7 @@ class st2(
   $chatops_hubot_alias                  = $::st2::params::hubot_alias,
   $chatops_api_key                      = undef,
   $chatops_st2_hostname                 = '127.0.0.1',
-  $chatops_st2_web_url                  = undef,
+  $chatops_web_url                      = undef,
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
 ) inherits st2::params {
