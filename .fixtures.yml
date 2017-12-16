@@ -1,3 +1,4 @@
+# Fixtures file for puppet_spec_helper in the task: rake spec
 fixtures:
   symlinks:
     st2: "#{source_dir}"

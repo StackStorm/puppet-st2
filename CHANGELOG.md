@@ -2,6 +2,11 @@
 
 ## Development
 
+- Complete rewrite of the build and testing system. Everything is now based on
+  Docker, running in an isolated environment. Implemented integration tests that
+  install StackStorm within a Docker container. #178 (Enhancement)
+  Contributed by @nmaludy
+
 - Migrated to voxpupuli puppet/rabbitmq module and puppet/mongodb modules as
   the puppetlabs/rabbitmq and puppetlabs/mongodb modules are deprecated.
   Contributed by @nmaludy

@@ -3,7 +3,7 @@
   "version": "1.0.0-beta",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/StackStorm/puppet-st2",
   "project_page": "https://github.com/StackStorm/puppet-st2",
   "issues_url": "https://github.com/StackStorm/puppet-st2/issues",

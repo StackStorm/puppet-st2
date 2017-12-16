@@ -1,3 +1,5 @@
+# override fixtures for puppetlabs_spec_helper
+# default is in puppet-st2/.fixtures.yml
 fixtures:
   symlinks:
     st2: "#{source_dir}"

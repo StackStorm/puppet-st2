@@ -6,27 +6,22 @@
   - All things in st2::profiles::xxx move to st2
   - Create sub folders for each "profile" (server, client, etc)
   - Decompose each "profile" into its parts (config, repo, install, service, etc)
+  - Decompose "server" profile into each st2 component (st2actionrunner, st2api, etc)
 - Ability to install different st2 versions
-- Chatops
-- Support MongoDB 3.4
-- Test alternate auth sources
+- Test existing alternate auth backends
   - mongodb
   - pam
   - proxy
-- Support alternate auth backends
+- Support additional alternate auth backends
   - LDAP
   - Keystone
 - Remove unused code
   - Tiller
   - Unused variables in this like st2::params
   - Unused class level parameters in things like ::st2
-- More unit tests
-- Figure out how to test different platforms via docker in Travis
-- Automated dev environment setup
-  - install different ruby versions with something like chruby
 - Cleanup class level comments
-- Create r10k repos with Puppetfiles detailing exact module versions for each supported OS
-  - RHEL 6
-  - RHEL 7
-  - Ubuntu 14.04
-  - Ubuntu 16.04
+- More unit tests
+- InSpec integration verification tests for kitchen
+- Play around with Beaker testing (in an effort to get this to be an "Approved" module)
+- More developer docs
+- More documentation for end users and a complete "Getting Started" guide
