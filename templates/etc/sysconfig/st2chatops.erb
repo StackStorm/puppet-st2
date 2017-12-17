@@ -6,35 +6,49 @@
 # This file allows overriding the ST2_* variables present in:
 # /opt/stackstorm/chatops/st2chatops.env
 
-<%- if @st2_hostname -%>
 # StackStorm hostname to be used in the settings below, or in the st2chatops.env file
-export ST2_HOSTNAME="<%= @st2_hostname %>"
+<%- if @st2_hostname -%>
+ST2_HOSTNAME="<%= @st2_hostname %>"
+<%- else ->
+# ST2_HOSTNAME=""
 <%- end -%>
 
-<%- if @api_url -%>
 # StackStorm API endpoint.
-export ST2_API="<%= @api_url %>"
+<%- if @api_url -%>
+ST2_API="<%= @api_url %>"
+<%- else ->
+# ST2_API=""
 <%- end -%>
 
-<%- if @auth_url -%>
 # StackStorm auth endpoint.
-export ST2_AUTH_URL="<%= @auth_url %>"
+<%- if @auth_url -%>
+ST2_AUTH_URL="<%= @auth_url %>"
+<%- else ->
+# ST2_AUTH_URL=""
 <%- end -%>
 
-<%- if @api_key -%>
 # StackStorm API key
-export ST2_API_KEY="<%= @api_key %>"
+<%- if @api_key -%>
+ST2_API_KEY="<%= @api_key %>"
+<%- else ->
+# ST2_API_KEY=""
 <%- end -%>
 
-<%- if @auth_username -%>
 # ST2 credentials. Fill in to use any stackstorm account.
-export ST2_AUTH_USERNAME="<%= @auth_username %>"
+<%- if @auth_username -%>
+ST2_AUTH_USERNAME="<%= @auth_username %>"
+<%- else ->
+# ST2_AUTH_USERNAME=""
 <%- end -%>
 <%- if @auth_password -%>
-export ST2_AUTH_PASSWORD="<%= @auth_password %>"
+ST2_AUTH_PASSWORD="<%= @auth_password %>"
+<%- else ->
+# ST2_AUTH_PASSWORD=""
 <%- end -%>
 
-<%- if @web_url -%>
 # Public URL of StackStorm instance: used it to offer links to execution details in a chat.
-export ST2_WEBUI_URL="<%= @web_url %>"
+<%- if @web_url -%>
+ST2_WEBUI_URL="<%= @web_url %>"
+<%- else ->
+# ST2_WEBUI_URL=""
 <%- end -%>
