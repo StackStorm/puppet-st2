@@ -1,0 +1,54 @@
+## This file is maintained by Puppet
+
+######################################################################
+# StackStorm settings
+
+# This file allows overriding the ST2_* variables present in:
+# /opt/stackstorm/chatops/st2chatops.env
+
+# StackStorm hostname to be used in the settings below, or in the st2chatops.env file
+<%- if @st2_hostname -%>
+ST2_HOSTNAME="<%= @st2_hostname %>"
+<%- else -%>
+# ST2_HOSTNAME=""
+<%- end -%>
+
+# StackStorm API endpoint.
+<%- if @api_url -%>
+ST2_API="<%= @api_url %>"
+<%- else -%>
+# ST2_API=""
+<%- end -%>
+
+# StackStorm auth endpoint.
+<%- if @auth_url -%>
+ST2_AUTH_URL="<%= @auth_url %>"
+<%- else -%>
+# ST2_AUTH_URL=""
+<%- end -%>
+
+# StackStorm API key
+<%- if @api_key -%>
+ST2_API_KEY="<%= @api_key %>"
+<%- else -%>
+# ST2_API_KEY=""
+<%- end -%>
+
+# ST2 credentials. Fill in to use any stackstorm account.
+<%- if @auth_username -%>
+ST2_AUTH_USERNAME="<%= @auth_username %>"
+<%- else -%>
+# ST2_AUTH_USERNAME=""
+<%- end -%>
+<%- if @auth_password -%>
+ST2_AUTH_PASSWORD="<%= @auth_password %>"
+<%- else -%>
+# ST2_AUTH_PASSWORD=""
+<%- end -%>
+
+# Public URL of StackStorm instance: used it to offer links to execution details in a chat.
+<%- if @web_url -%>
+ST2_WEBUI_URL="<%= @web_url %>"
+<%- else -%>
+# ST2_WEBUI_URL=""
+<%- end -%>

@@ -157,12 +157,17 @@ class st2::params(
   $rabbitmq_selinux_type = 'amqp_port_t'
 
   ## chatops default config
+  $st2_chatops_dir  = '/opt/stackstorm/chatops'
+  $st2_chatops_global_env_file = $::osfamily ? {
+    'Debian' => '/etc/default/st2chatops',
+    'RedHat' => '/etc/sysconfig/st2chatops',
+  }
+
   $hubot_log_level = 'debug'
   $hubot_express_port = '8081'
   $tls_cert_reject_unauthorized = '0'
-  $hubot_name = 'hubot'
+  $hubot_name = '"hubot"'
+  $hubot_alias = "'!'"
   $chatops_adapter = {}
   $chatops_adapter_conf = {}
-
-
 }
