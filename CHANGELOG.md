@@ -2,6 +2,9 @@
 
 ## Development
 
+
+## 1.0.0-rc (Dec 19, 2017)
+
 - Added new chatops parameters to `::st` and `::st2::profile::chataops`.
   A majority of the settings in chatops are now configurable.
    * chatops_hubot_log_level - Logging level for hubot (string)
