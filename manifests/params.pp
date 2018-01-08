@@ -144,7 +144,7 @@ class st2::params(
   ## MongoDB Data
   $mongodb_admin_username = 'admin'
 
-  $mongodb_port = '27017'
+  $mongodb_port = 27017
   $mongodb_bind_ips = ['127.0.0.1']
 
   $mongodb_st2_db = 'st2'

@@ -2,6 +2,10 @@
 
 ## Development
 
+- Changed the MongoDB port value from a String to an Integer. This makes it
+  compatible with the latest version of the `puppet-mongodb` module in Puppet 4
+  and Puppet 5. (Bugfix)
+  Contributed by @nmaludy
 
 ## 1.0.0-rc (Dec 19, 2017)
 
