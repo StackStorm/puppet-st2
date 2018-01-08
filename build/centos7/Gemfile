@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'coveralls'
 gem 'metadata-json-lint'
+gem 'public_suffix',                                             '~> 2.0' # 3.0.0 requires ruby 2.1+
 gem 'puppet',                                                    '~> 3.0' # 3.8.7
 gem 'puppet-blacksmith',                                         '>= 3.1.1'
 gem 'puppet-lint',                                               '>= 0.3.2'
