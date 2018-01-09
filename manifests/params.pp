@@ -29,6 +29,7 @@
 
 class st2::params(
   $packs_group_name = 'st2packs',
+  $hostname         = '127.0.0.1',
 ) {
   $subsystems = [
     'actionrunner', 'api', 'sensorcontainer',
@@ -64,6 +65,10 @@ class st2::params(
   # Auth settings
   $auth_mode = standalone
   $auth_backend = pam
+  $auth_port = 9100
+
+  # API settings
+  $api_port = 9101
 
   # Non-user configurable parameters
   $conf_dir = '/etc/st2'

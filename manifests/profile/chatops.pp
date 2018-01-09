@@ -60,8 +60,8 @@ class st2::profile::chatops (
   $api_key                      = $::st2::chatops_api_key,
   $st2_hostname                 = $::st2::chatops_st2_hostname,
   $web_url                      = $::st2::chatops_web_url,
-  $api_url                      = $::st2::cli_api_url,
-  $auth_url                     = $::st2::cli_auth_url,
+  $api_url                      = $::st2::chatops_api_url,
+  $auth_url                     = $::st2::chatops_auth_url,
   $auth_username                = $::st2::cli_username,
   $auth_password                = $::st2::cli_password,
 ) inherits st2 {
