@@ -2,6 +2,13 @@
 
 ## Development
 
+
+## 1.0.0-rc2 (Jan 9, 2018)
+
+- Fixed a bug in st2chatops configuration where the wrong URLs for ST2_API and
+  ST2_AUTH were specified. (Bugfix)
+  Contributed by @nmaludy
+
 - Changed the MongoDB port value from a String to an Integer. This makes it
   compatible with the latest version of the `puppet-mongodb` module in Puppet 4
   and Puppet 5. (Bugfix)
