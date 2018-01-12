@@ -15,7 +15,7 @@ mod 'jamtur01/httpauth'
 mod 'puppet/staging',        '1.0.7'
 mod 'puppetlabs/apt',   '2.4.0'
 mod 'maestrodev/wget'
-mod 'saz/sudo'
+mod 'saz/sudo',         '4.2.0' # for puppet 3 support (last available version)
 mod 'stankevich/python'
 mod 'puppetlabs/gcc'
 mod 'puppetlabs/inifile'
