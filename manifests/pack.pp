@@ -8,7 +8,7 @@
 #  [*repo_url*] - URL of the package to install when not installing from the exchange.
 #                 (default:  undef)
 #  [*config*]   - Hash that will be translated into YAML in the pack's config
-#                 file after installation.  
+#                 file after installation.
 #
 # === Examples
 #
@@ -58,6 +58,15 @@ define st2::pack (
     'tag'     => 'st2::subdirs',
   })
 
+  ensure_resource('file', '/opt/stackstorm/virtualenvs', {
+    'ensure'  => 'directory',
+    'owner'   => 'root',
+    'group'   => $_st2_packs_group,
+    'mode'    => '0755',
+    'tag'     => 'st2::subdirs',
+  })
+
+
   st2_pack { $pack:
     ensure   => $ensure,
     name     => $pack,
@@ -82,9 +91,10 @@ define st2::pack (
     ~> Exec<| tag == 'st2::register-configs' |>
   }
 
-  Group[$_st2_packs_group] -> File['/opt/stackstorm']
-  File['/opt/stackstorm'] -> File<| tag == 'st2::subdirs' |>
-  Package<| tag == 'st2::server::packages' |> -> File['/opt/stackstorm/packs']
+  Group[$_st2_packs_group]
+  -> File['/opt/stackstorm']
+  -> File<| tag == 'st2::subdirs' |>
+
   Service<| tag == 'st2::service' |> -> St2_pack<||>
   Exec<| tag == 'st2::reload' |> -> St2_pack<||>
 }
