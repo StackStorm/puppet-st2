@@ -62,9 +62,19 @@ class st2::params(
   $repo_base = 'https://downloads.stackstorm.net'
   $repo_env = 'production'
 
+  # SSL settings
+  $use_ssl  = false
+  $ssl_dir  = '/etc/ssl/st2'
+  $ssl_cert = '/etc/ssl/st2/st2.crt'
+  $ssl_key  = '/etc/ssl/st2/st2.key'
+
   # Auth settings
   $auth_mode = standalone
-  $auth_backend = pam
+  $auth_backend = flat_file
+  $auth_htpasswd_file = '/etc/st2/htpasswd'
+  $auth_backend_config = {
+    $htpasswd_file = $auth_htpasswd_file,
+  }
   $auth_port = 9100
 
   # API settings

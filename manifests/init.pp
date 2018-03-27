@@ -22,8 +22,22 @@
 #                             be generated. (default: /etc/ssl/st2/st2.key)
 #  [*api_url*]              - URL where the StackStorm API lives (default: undef)
 #  [*api_logging_file*]     - Path to st2 API logging file (default: /etc/st2api/logging.conf)
-#  [*auth*]                 - Toggle to enable/disable auth (Default: false)
+#  [*auth*]                 - Toggle to enable/disable auth (Default: true)
+#  [*auth_debug*]           - Toggle to enable/disable auth debugging (Default: false)
 #  [*auth_url*]             - URL where the StackStorm Auth lives (default: undef)
+#  [*auth_mode*]            - Auth mode, either 'standalone' or 'backend (default: 'standalone')
+#  [*auth_backend*          - Determines which auth backend to configure. (default: flat_file)
+#                             Available backends:
+#                              - flat_file
+#                              - keystone
+#                              - ldap
+#                              - mongodb
+#                              - pam
+# [*auth_backend_config*]   - Hash of parameters to pass to the auth backend
+#                             class when it's instantiated. This will be different
+#                             for every backend. Please see the corresponding
+#                             backend class to determine what the config options
+#                             should be.
 #  [*flow_url*]             - URL Path where StackStorm Flow lives (default: undef)
 #  [*cli_base_url*]         - CLI config - Base URL lives
 #  [*cli_api_version*]      - CLI config - API Version
@@ -109,18 +123,17 @@ class st2(
   $repo_env                 = $::st2::params::repo_env,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
-  $use_ssl                  = false,
-  $ssl_cert                 = '/etc/ssl/cert.crt',
-  $ssl_key                  = '/etc/ssl/cert.key',
-  $st2web_ssl_dir           = '/etc/ssl/st2',
-  $st2web_ssl_cert          = '/etc/ssl/st2/st2.crt',
-  $st2web_ssl_key           = '/etc/ssl/st2/st2.key',
+  $use_ssl                  = $::st2::params::use_ssl,
+  $ssl_dir                  = $::st2::params::ssl_dir,
+  $ssl_cert                 = $::st2::params::ssl_cert,
+  $ssl_key                  = $::st2::params::ssl_key,
   $api_url                  = undef,
-  $api_logging_file         = '/etc/st2api/logging.conf',
   $auth                     = true,
+  $auth_debug               = false,
   $auth_url                 = undef,
-  $auth_mode                = 'standalone',
-  $auth_logging_file        = '/etc/st2auth/logging.conf',
+  $auth_mode                = $::st2::params::auth_mode,
+  $auth_backend             = $::st2::params::auth_backend,
+  $auth_backend_config      = $::st2::params::auth_backend_config,
   $flow_url                 = undef,
   $cli_base_url             = "http://${::st2::params::hostname}",
   $cli_api_version          = 'v1',

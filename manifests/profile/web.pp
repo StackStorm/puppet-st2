@@ -15,9 +15,9 @@
 #  class { '::st2::profile::web': }
 #
 class st2::profile::web(
-  $ssl_dir  = $::st2::st2web_ssl_dir,
-  $ssl_cert = $::st2::st2web_ssl_cert,
-  $ssl_key  = $::st2::st2web_ssl_key,
+  $ssl_dir  = $::st2::ssl_dir,
+  $ssl_cert = $::st2::ssl_cert,
+  $ssl_key  = $::st2::ssl_key,
   $version  = $::st2::version,
 ) inherits st2 {
   # include nginx here only

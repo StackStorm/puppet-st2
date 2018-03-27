@@ -4,53 +4,31 @@
 #
 # Parameters:
 #
-# [*debug*] - Enable Debug (default: false)
 # [*db_host*] - MongoDB Host to connect to (default: 127.0.0.1)
 # [*db_port*] - MongoDB Port to connect to (default: 27017)
 # [*db_name*] - MongoDB DB storing credentials (default: st2auth)
-# [*ssl*] - Enable SSL (default: false)
-# [*ssl_cert*] - Path to SSL Certificate file
-# [*ssl_key*] - Path to SSL Key file
-# [*logging_file*] - Path to logging configuration file
 #
 # Usage:
 #
+#  # basic usage, accepting all defaults in ::st2::auth
 #  include ::st2::auth::mongodb
 #
-#  class { 'st2::auth::mongodb':
-#    db_host  => 'mongodb.stackstorm.net',
-#    ssl      => true,
-#    ssl_cert => '/etc/ssl/cert.crt',
-#    ssl_key  => '/etc/ssl/cert.key',
+#  # advanced usage for overriding defaults in ::st2::auth
+#  class { '::st2::auth':
+#    backend        => 'mongodb',
+#    backend_config => {
+#      db_host => 'mongodb.stackstorm.net',
+#      db_port => '1234',
+#      db_name => 'myauthdb',
+#    },
 #  }
 class st2::auth::mongodb (
-  $debug         = false,
-  $db_host       = '127.0.0.1',
-  $db_port       = '27017',
-  $db_name       = 'st2auth',
-  $ssl           = false,
-  $ssl_cert      = undef,
-  $ssl_key       = undef,
-  $logging_file  = '/etc/st2api/logging.conf',
+  $db_host = $::st2::db_host,
+  $db_port = $::st2::db_port,
+  $db_name = 'st2auth',
 ) {
-  $_debug = $debug ? {
-    true    => 'True',
-    default => 'False',
-  }
-  $_ssl = $ssl ? {
-    true    => 'True',
-    default => 'False',
-  }
-  $_api_url = $::st2::api_url
+  include ::st2::auth
 
-  ini_setting { 'auth_mode':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'mode',
-    value   => 'standalone',
-    tag     => 'st2::config',
-  }
   ini_setting { 'auth_backend':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
@@ -68,60 +46,19 @@ class st2::auth::mongodb (
      \"db_name\": \"${db_name}\"}",
     tag     => 'st2::config',
   }
-  ini_setting { 'auth_debug':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'debug',
-    value   => $_debug,
-    tag     => 'st2::config',
-  }
-  ini_setting { 'auth_ssl':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'use_ssl',
-    value   => $_ssl,
-    tag     => 'st2::config',
-  }
-  ini_setting { 'auth_api_url':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'api_url',
-    value   => $_api_url,
-    tag     => 'st2::config',
-  }
-  ini_setting { 'auth_logging_file':
-    ensure  => present,
-    path    => '/etc/st2/st2.conf',
-    section => 'auth',
-    setting => 'logging',
-    value   => $logging_file,
-    tag     => 'st2::config',
+
+  # install the backend package
+  python::pip { 'st2-auth-backend-mongodb':
+    ensure     => 'latest',
+    pkgname    => 'st2-auth-backend-mongodb',
+    url        => 'git+https://github.com/StackStorm/st2-auth-backend-mongodb.git@master#egg=st2_auth_backend_mongodb',
+    owner      => 'root',
+    virtualenv => '/opt/stackstorm/st2/bin',
+    timeout    => 1800,
   }
 
-  # SSL Settings
-  if $ssl {
-    if !$ssl_cert or !$ssl_key {
-      fail('[st2::auth::standalone] Missing $ssl_cert or $ssl_key to enable SSL')
-    }
-
-    ini_setting { 'auth_ssl_cert':
-      ensure  => present,
-      path    => '/etc/st2/st2.conf',
-      section => 'auth',
-      setting => 'cert',
-      value   => $ssl_cert,
-      tag     => 'st2::config',
-    }
-    ini_setting { 'auth_ssl_key':
-      ensure  => present,
-      path    => '/etc/st2/st2.conf',
-      section => 'auth',
-      setting => 'key',
-      value   => $ssl_key,
-      tag     => 'st2::config',
-    }
-  }
+  # dependencies
+  Package<| tag == 'st2::server::packages' |>
+  -> Python::Pip['st2-auth-backend-ldap']
+  ~> Service['st2auth']
 }
