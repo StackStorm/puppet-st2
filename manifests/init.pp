@@ -70,7 +70,7 @@
 #                             (default: undef)
 #  [*mongodb_manage_repo*]  - Set this to false when you have your own repositories
 #                             for MongoDB (default: true)
-#  [*mongodb_auth*]         - Boolean determining of auth should be enabled for
+#  [*mongodb_auth*]         - Boolean determining if auth should be enabled for
 #                             MongoDB. Note: On new versions of Puppet (4.0+)
 #                             you'll need to disable this setting.
 #                             (default: true)
@@ -140,8 +140,8 @@ class st2(
   $cli_debug                = false,
   $cli_cache_token          = true,
   $cli_silence_ssl_warnings = false,
-  $cli_username             = 'st2admin',
-  $cli_password             = 'Ch@ngeMe',
+  $cli_username             = $::st2::params::admin_username,
+  $cli_password             = $::st2::params::admin_password,
   $cli_api_url              = "http://${::st2::params::hostname}:${::st2::params::api_port}",
   $cli_auth_url             = "http://${::st2::params::hostname}:${::st2::params::auth_port}",
   $global_env               = false,
@@ -162,7 +162,7 @@ class st2(
   $db_bind_ips              = $::st2::params::mongodb_bind_ips,
   $db_name                  = $::st2::params::mongodb_st2_db,
   $db_username              = $::st2::params::mongodb_st2_username,
-  $db_password              = undef,
+  $db_password              = $::st2::params::admin_password,
   $mongodb_version          = undef,
   $mongodb_manage_repo      = true,
   $mongodb_auth             = true,

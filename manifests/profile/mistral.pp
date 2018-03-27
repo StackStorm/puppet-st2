@@ -39,11 +39,6 @@ class st2::profile::mistral(
   ### Mistral Variables ###
   $mistral_root = '/opt/stackstorm/mistral'
   $mistral_config = '/etc/mistral/mistral.conf'
-
-  $_db_password = $db_password ? {
-    undef   => $st2::cli_password,
-    default => $db_password,
-  }
   ### End Mistral Variables ###
 
   ### Mistral Packages ###
@@ -66,7 +61,7 @@ class st2::profile::mistral(
     path    => $mistral_config,
     section => 'database',
     setting => 'connection',
-    value   => "postgresql://${db_username}:${_db_password}@${db_server}/${db_name}",
+    value   => "postgresql://${db_username}:${db_password}@${db_server}/${db_name}",
     tag     => 'mistral',
   }
 
@@ -77,7 +72,7 @@ class st2::profile::mistral(
 
   ### Setup Mistral Database ###
   postgresql::server::role { $db_username:
-    password_hash => postgresql_password($db_username, $_db_password),
+    password_hash => postgresql_password($db_username, $db_password),
     createdb      => true,
     before        => Postgresql::Server::Database[$db_name],
   }

@@ -1,12 +1,45 @@
 # Class: st2::auth::ldap
 #
-#  Auth class to configure and setup Ldap Based Authentication
+#  Auth class to configure and setup LDAP Based Authentication
+#
+#  For information on parameters see the backend documentation:
+#   https://github.com/StackStorm/st2-auth-backend-ldap#configuration-options
 #
 # Parameters:
 #
-# [*db_host*] - Ldap Host to connect to (default: 127.0.0.1)
-# [*db_port*] - Ldap Port to connect to (default: 27017)
-# [*db_name*] - Ldap DB storing credentials (default: st2auth)
+#  [*ldap_uri*] - URI of the LDAP server.
+#                 Format: <protocol>://<hostname>[:port](Protocol: ldap or ldaps)
+#  [*use_tls*]         - Boolean parameter to set if tls is required.
+#                        Should be set to false using ldaps in the uri.
+#                        (default: false)
+#  [*bind_dn*]         - DN user to bind to LDAP. If an empty string, an
+#                        anonymous bind is performed. To use the user supplied
+#                        username in the bind_dn, use the {username} placeholder
+#                        in string.
+#  [*bind_pw*]         - DN password. Use the {password} placeholder in the
+#                        string to use the user supplied password.
+#  [*user*]            - Search parameters for user authentication. see user
+#                        table below (default: undef)
+#  [*group*]           - Search parameters for user's group membership. see
+#                        group table below (default: undef)
+#  [*chase_referrals*] - Boolean parameter to set whether to chase referrals.
+#                        (default: true)
+#  [*ref_hop_limit*]   - The maximum number to refer Referrals recursively
+#                        (default: 0)
+#
+# [*user] Parameters:
+#  [*base_dn*]	     - Base DN on the LDAP server to be used when looking up the user account.
+#  [*search_filter*] - LDAP search filter for finding the user in the directory.
+#                      Should contain the placeholder {username} for the username.
+#  [*scope*]         - The scope of the search to be performed.
+#                      Available choices: base, onelevel, subtree
+#
+# [*group*] Parameters:
+#  [*base_dn*]	     - Base DN on the LDAP server to be used when looking up the group.
+#  [*search_filter*] - LDAP search filter for finding the group in the directory.
+#                      Should contain the placeholder {username} for the username.
+#  [*scope*]         - The scope of the search to be performed.
+#                      Available choices: base, onelevel, subtree
 #
 # Usage:
 #
@@ -14,17 +47,24 @@
 #  include ::st2::auth::ldap
 #
 #  # advanced usage for overriding defaults in ::st2::auth
+#  # this example shows how to auth with Active Directory
 #  class { '::st2::auth':
 #    backend        => 'ldap',
 #    backend_config => {
-#      db_host => 'ldap.stackstorm.net',
-#      db_port => '1234',
-#      db_name => 'myauthdb',
+#      ldap_uri      => 'ldaps://ldap.domain.tld',
+#      bind_dn       => 'cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld',
+#      bind_pw       => 'some_password',
+#      ref_hop_limit => 100,
+#      user          => {
+#        base_dn       => "ou=domain_users,dc=domain,dc=tld",
+#        search_filter => "(&(objectClass=user)(sAMAccountName={username})(memberOf=cn=stackstorm_users,ou=groups,dc=domain,dc=tld))",
+#        scope         => "subtree"
+#      },
 #    },
 #  }
 class st2::auth::ldap (
   $ldap_uri        = '',
-  $use_tls         = true,
+  $use_tls         = false,
   $bind_dn         = '',
   $bind_pw         = '',
   $user            = undef,
@@ -69,6 +109,9 @@ class st2::auth::ldap (
       \"group\": {\"base_dn\": \"${group['base_dn']}\", \
       \"search_filter\": \"${group['search_filter']}\", \
       \"scope\": \"${group['scope']}\"}}"
+  }
+  else {
+    fail('[st2::auth::ldap] You must specify either "user" or "group"')
   }
 
   # config

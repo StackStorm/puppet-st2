@@ -54,11 +54,6 @@ class st2::profile::mongodb (
     default => $version,
   }
 
-  $_mongo_db_password = $db_password ? {
-    undef   => $::st2::cli_password,
-    default => $db_password,
-  }
-
   if !defined(Class['::mongodb::server']) {
 
     class { '::mongodb::globals':
@@ -78,7 +73,7 @@ class st2::profile::mongodb (
         create_admin   => true,
         store_creds    => true,
         admin_username => $::st2::params::mongodb_admin_username,
-        admin_password => $_mongo_db_password,
+        admin_password => $db_password,
       }
     }
     else {
@@ -140,7 +135,7 @@ class st2::profile::mongodb (
     # configure st2 database
     mongodb::db { $db_name:
       user     => $db_username,
-      password => $_mongo_db_password,
+      password => $db_password,
       roles    => $::st2::params::mongodb_st2_roles,
       require  => Class['::mongodb::server'],
     }

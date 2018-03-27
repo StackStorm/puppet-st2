@@ -2,10 +2,13 @@
 #
 #  Auth class to configure and setup Keystone Based Authentication
 #
+#  For information on parameters see the backend documentation:
+#   https://github.com/StackStorm/st2-auth-backend-keystone#configuration-options
+#
 # Parameters:
 #
-# [*keystone_url*]     - Keystone URL to connect to (default: 127.0.0.1)
-# [*keystone_version*] - Keystone version
+# [*keystone_url*]     - Keystone URL to connect to (default: '127.0.0.1')
+# [*keystone_version*] - Keystone API version (default: '2')
 #
 # Usage:
 #

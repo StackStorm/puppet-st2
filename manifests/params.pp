@@ -135,6 +135,10 @@ class st2::params(
     'st2chatops',
   ]
 
+  ## StackStorm default credentials (change these!)
+  $admin_username = 'st2admin',
+  $admin_password = 'Ch@ngeMe',
+
   ## nginx default config
   $nginx_default_conf = $::osfamily ? {
     'Debian' => '/etc/nginx/conf.d/default.conf',

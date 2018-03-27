@@ -2,11 +2,16 @@
 #
 #  Auth class to configure and setup MongoDB Based Authentication
 #
+#  For information on parameters see the backend documentation:
+#   https://github.com/StackStorm/st2-auth-backend-mongodb#configuration-options
+#
 # Parameters:
 #
-# [*db_host*] - MongoDB Host to connect to (default: 127.0.0.1)
-# [*db_port*] - MongoDB Port to connect to (default: 27017)
-# [*db_name*] - MongoDB DB storing credentials (default: st2auth)
+# [*db_host*]     - Hostname for the MongoDB server (default: 127.0.0.1)
+# [*db_port*]     - Port for the MongoDB server (default: 27017)
+# [*db_name*]     - Database name in MongoDB (default: st2auth)
+# [*db_username*] - Username for MongoDB login (default: st2auth)
+# [*db_password*] - MongoDB DB storing credentials (default: st2auth)
 #
 # Usage:
 #
@@ -26,8 +31,21 @@ class st2::auth::mongodb (
   $db_host = $::st2::db_host,
   $db_port = $::st2::db_port,
   $db_name = 'st2auth',
+  $db_auth = $::st2::mongodb_auth,
+  $db_username = $::st2::db_username,
+  $db_password = $::st2::db_password,
 ) {
   include ::st2::auth
+
+  if $db_auth {
+    $_kwargs = "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\",\
+      \"db_name\": \"${db_name}\", \"db_username\": \"${db_username}\", \
+      \"db_password\": \"${db_password}\"}"
+  }
+  else {
+    $_kwargs = "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\",\
+      \"db_name\": \"${db_name}\"}"
+  }
 
   ini_setting { 'auth_backend':
     ensure  => present,
@@ -42,8 +60,7 @@ class st2::auth::mongodb (
     path    => '/etc/st2/st2.conf',
     section => 'auth',
     setting => 'backend_kwargs',
-    value   => "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\",\
-     \"db_name\": \"${db_name}\"}",
+    value   => $_kwargs,
     tag     => 'st2::config',
   }
 
