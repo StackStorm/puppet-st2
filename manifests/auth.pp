@@ -45,7 +45,7 @@ class st2::auth (
   $use_ssl        = $::st2::use_ssl,
   $ssl_cert       = $::st2::ssl_cert,
   $ssl_key        = $::st2::ssl_key,
-) {
+) inherits ::st2 {
   $_debug = $debug ? {
     true    => 'True',
     default => 'False',
@@ -53,7 +53,10 @@ class st2::auth (
   $_mode = $mode ? {
     'standalone' => 'standalone',
     'proxy'      => 'proxy',
-    default      => fail("[st2::auth] Unsupported mode: ${mode}")
+    default      => undef,
+  }
+  if $_mode == undef {
+    fail("[st2::auth] Unsupported mode: ${mode}")
   }
   $_use_ssl = $use_ssl ? {
     true    => 'True',
@@ -125,7 +128,10 @@ class st2::auth (
     'ldap'      => '::st2::auth::ldap',
     'mongodb'   => '::st2::auth::mongodb',
     'pam'       => '::st2::auth::pam',
-    default     => fail("[st2::auth] Unknown backend: ${backend}"),
+    default     => undef,
+  }
+  if $_backend_class == undef {
+    fail("[st2::auth] Unknown backend: ${backend}")
   }
   ensure_resource('class', $_backend_class, $backend_config)
 }
