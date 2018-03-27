@@ -44,31 +44,31 @@ class st2::auth::ldap (
   }
 
   if $user != undef and $group != undef {
-    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, "\
-      "\"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", "\
-      "\"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, "\
-      "\"user\": {\"base_dn\": \"${user['base_dn']}\", "\
-      "\"search_filter\": \"${user['search_filter']}\", "\
-      "\"scope\": \"${user['scope']}\"}, "\
-      "\"group\": {\"base_dn\": \"${group['base_dn']}\", "\
-      "\"search_filter\": \"${group['search_filter']}\", "\
-      "\"scope\": \"${group['scope']}\"}}"
+    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, \
+      \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
+      \"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, \
+      \"user\": {\"base_dn\": \"${user['base_dn']}\", \
+      \"search_filter\": \"${user['search_filter']}\", \
+      \"scope\": \"${user['scope']}\"}, \
+      \"group\": {\"base_dn\": \"${group['base_dn']}\", \
+      \"search_filter\": \"${group['search_filter']}\", \
+      \"scope\": \"${group['scope']}\"}}"
   }
   elsif $user != undef {
-    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, "\
-      "\"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", "\
-      "\"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, "\
-      "\"user\": {\"base_dn\": \"${user['base_dn']}\", "\
-      "\"search_filter\": \"${user['search_filter']}\", "\
-      "\"scope\": \"${user['scope']}\"}}"
+    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, \
+      \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
+      \"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, \
+      \"user\": {\"base_dn\": \"${user['base_dn']}\", \
+      \"search_filter\": \"${user['search_filter']}\", \
+      \"scope\": \"${user['scope']}\"}}"
   }
   elsif $group != undef {
-    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, "\
-      "\"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", "\
-      "\"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, "\
-      "\"group\": {\"base_dn\": \"${group['base_dn']}\", "\
-      "\"search_filter\": \"${group['search_filter']}\", "\
-      "\"scope\": \"${group['scope']}\"}}"
+    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, \
+      \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
+      \"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, \
+      \"group\": {\"base_dn\": \"${group['base_dn']}\", \
+      \"search_filter\": \"${group['search_filter']}\", \
+      \"scope\": \"${group['scope']}\"}}"
   }
 
   # config
