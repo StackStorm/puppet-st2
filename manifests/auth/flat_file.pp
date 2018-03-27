@@ -1,4 +1,4 @@
-# Class: st2::auth::standalone
+# Class: st2::auth::flat_file
 #
 #  Auth class to configure and setup Flat File (htpasswd) Authentication
 #
