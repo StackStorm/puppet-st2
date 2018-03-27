@@ -127,6 +127,5 @@ class st2::auth (
     'pam'       => '::st2::auth::pam',
     default     => fail("[st2::auth] Unknown backend: ${backend}"),
   }
-
-  ensure_resources('class', $_backend_class, $backend_config)
+  ensure_resource('class', $_backend_class, $backend_config)
 }
