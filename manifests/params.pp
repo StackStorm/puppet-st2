@@ -136,8 +136,8 @@ class st2::params(
   ]
 
   ## StackStorm default credentials (change these!)
-  $admin_username = 'st2admin',
-  $admin_password = 'Ch@ngeMe',
+  $admin_username = 'st2admin'
+  $admin_password = 'Ch@ngeMe'
 
   ## nginx default config
   $nginx_default_conf = $::osfamily ? {
