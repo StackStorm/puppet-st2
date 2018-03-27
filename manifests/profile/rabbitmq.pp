@@ -16,7 +16,17 @@
 #  include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq {
-  require ::rabbitmq
+
+  if versioncmp($::puppetversion, '4') >= 0 {
+    # In new versions of the RabbitMQ module we need to explicitly turn off
+    # the ranch TCP settings so that Kombu can connect via AMQP
+    class { '::rabbitmq' :
+      config_ranch => false,
+    }
+  }
+  else {
+    class { '::rabbitmq': }
+  }
 
   # RHEL needs EPEL installed prior to rabbitmq
   if $::osfamily == 'RedHat' {
