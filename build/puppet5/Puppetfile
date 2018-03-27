@@ -9,7 +9,7 @@
 
 forge "https://forgeapi.puppetlabs.com"
 
-mod 'puppet/rabbitmq', '5.6.1' # TODO: newest version doesn't work in puppet5 (for some reason)
+mod 'puppet/rabbitmq'
 mod 'puppetlabs/concat'
 mod 'puppetlabs/stdlib'
 mod 'jamtur01/httpauth'
