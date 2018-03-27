@@ -73,7 +73,7 @@ class st2::params(
   $auth_backend = flat_file
   $auth_htpasswd_file = '/etc/st2/htpasswd'
   $auth_backend_config = {
-    $htpasswd_file = $auth_htpasswd_file,
+    htpasswd_file => $auth_htpasswd_file,
   }
   $auth_port = 9100
 
