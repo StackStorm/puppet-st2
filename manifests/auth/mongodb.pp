@@ -34,7 +34,7 @@ class st2::auth::mongodb (
   $db_auth = $::st2::mongodb_auth,
   $db_username = $::st2::db_username,
   $db_password = $::st2::db_password,
-) {
+) inherits ::st2 {
   include ::st2::auth
 
   if $db_auth {

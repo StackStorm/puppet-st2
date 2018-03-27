@@ -21,7 +21,7 @@
 #
 class st2::auth::flat_file(
   $htpasswd_file = $::st2::params::auth_htpasswd_file,
-) {
+) inherits ::st2 {
   include ::st2::auth
 
   $_auth_users   = hiera_hash('st2::auth_users', {})

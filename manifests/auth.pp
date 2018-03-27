@@ -133,5 +133,7 @@ class st2::auth (
   if $_backend_class == undef {
     fail("[st2::auth] Unknown backend: ${backend}")
   }
-  ensure_resource('class', $_backend_class, $backend_config)
+  if !defined(Class[$_backend_class]) {
+    create_resources('class', {$_backend_class => $backend_config})
+  }
 }
