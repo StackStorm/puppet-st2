@@ -39,7 +39,7 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::chatops': }
   -> Anchor['st2::end']
 
-  include ::st2::auth::flat_file
+  include ::st2::auth
   include ::st2::packs
   include ::st2::kvs
 
