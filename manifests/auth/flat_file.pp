@@ -8,16 +8,18 @@
 #
 # Usage:
 #
-#  # basic usage, accepting all defaults in ::st2::auth
-#  include ::st2::auth::flat_file
-#
-#  # advanced usage for overriding defaults in ::st2::auth
-#  class { 'st2::auth':
-#    backend        => 'flat_file',
-#    backend_config => {
+#  # Instantiate via ::st2
+#  class { '::st2':
+#    auth_backend        => 'flat_file',
+#    auth_backend_config => {
 #      htpasswd_file => '/etc/something/htpasswd',
 #    },
 #  }
+#
+#  # Instantiate via Hiera
+#  st2::auth_backend: "flat_file"
+#  st2::auth_backend_config"
+#    htpasswd_file: "/etc/something/htpasswd"
 #
 class st2::auth::flat_file(
   $htpasswd_file = $::st2::params::auth_htpasswd_file,

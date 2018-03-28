@@ -15,18 +15,23 @@
 #
 # Usage:
 #
-#  # basic usage, accepting all defaults in ::st2::auth
-#  include ::st2::auth::mongodb
-#
-#  # advanced usage for overriding defaults in ::st2::auth
-#  class { '::st2::auth':
-#    backend        => 'mongodb',
-#    backend_config => {
+#  # Instantiate via ::st2
+#  class { '::st2':
+#    auth_backend        => 'mongodb',
+#    auth_backend_config => {
 #      db_host => 'mongodb.stackstorm.net',
 #      db_port => '1234',
 #      db_name => 'myauthdb',
 #    },
 #  }
+#
+#  # Instantiate via Hiera
+#  st2::auth_backend: "mongodb"
+#  st2::auth_backend_config:
+#    db_host: "mongodb.stackstorm.net"
+#    db_port: "1234"
+#    db_name: "myauthdb"
+#
 class st2::auth::mongodb (
   $db_host = $::st2::db_host,
   $db_port = $::st2::db_port,
@@ -70,7 +75,7 @@ class st2::auth::mongodb (
     pkgname    => 'st2-auth-backend-mongodb',
     url        => 'git+https://github.com/StackStorm/st2-auth-backend-mongodb.git@master#egg=st2_auth_backend_mongodb',
     owner      => 'root',
-    virtualenv => '/opt/stackstorm/st2/bin',
+    virtualenv => '/opt/stackstorm/st2',
     timeout    => 1800,
   }
 

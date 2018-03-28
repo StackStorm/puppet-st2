@@ -43,14 +43,11 @@
 #
 # Usage:
 #
-#  # basic usage, accepting all defaults in ::st2::auth
-#  include ::st2::auth::ldap
-#
-#  # advanced usage for overriding defaults in ::st2::auth
+#  # Instantiate via ::st2
 #  # this example shows how to auth with Active Directory
-#  class { '::st2::auth':
-#    backend        => 'ldap',
-#    backend_config => {
+#  class { '::st2':
+#    auth_backend        => 'ldap',
+#    auth_backend_config => {
 #      ldap_uri      => 'ldaps://ldap.domain.tld',
 #      bind_dn       => 'cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld',
 #      bind_pw       => 'some_password',
@@ -62,6 +59,19 @@
 #      },
 #    },
 #  }
+#
+#  # Instantiate via Hiera
+#  st2::auth_backend: "ldap"
+#  st2::auth_backend_config:
+#    ldap_uri: "ldaps://ldap.domain.tld"
+#    bind_dn: "cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld"
+#    bind_pw: "some_password"
+#    ref_hop_limit: 100
+#    user:
+#      base_dn: "ou=domain_users,dc=domain,dc=tld"
+#      search_filter: "(&(objectClass=user)(sAMAccountName={username})(memberOf=cn=stackstorm_users,ou=groups,dc=domain,dc=tld))"
+#      scope: "subtree"
+#
 class st2::auth::ldap (
   $ldap_uri        = '',
   $use_tls         = false,
@@ -150,7 +160,7 @@ class st2::auth::ldap (
     pkgname    => 'st2-auth-backend-ldap',
     url        => 'git+https://github.com/StackStorm/st2-auth-backend-ldap.git@master#egg=st2_auth_backend_ldap',
     owner      => 'root',
-    virtualenv => '/opt/stackstorm/st2/bin',
+    virtualenv => '/opt/stackstorm/st2',
     timeout    => 1800,
   }
 

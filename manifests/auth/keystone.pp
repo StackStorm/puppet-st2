@@ -12,17 +12,20 @@
 #
 # Usage:
 #
-#  # basic usage, accepting all defaults in ::st2::auth
-#  include ::st2::auth::keystone
-#
-#  # advanced usage for overriding defaults in ::st2::auth
-#  class { '::st2::auth':
-#    backend        => 'keystone',
-#    backend_config => {
+#  # Instantiate via ::st2
+#  class { '::st2':
+#    auth_backend        => 'keystone',
+#    auth_backend_config => {
 #      keystone_url     => 'http://keystone.domain.tld:5000',
 #      keystone_version => '3',
 #    },
 #  }
+#
+#  # Instantiate via Hiera
+#  st2::auth_backend: "keystone"
+#  st2::auth_backend_config:
+#    keystone_url: "http://keystone.domain.tld:5000"
+#    keystone_version: "3"
 #
 class st2::auth::keystone (
   $keystone_url     = 'http://127.0.0.1:5000',
@@ -55,7 +58,7 @@ class st2::auth::keystone (
     pkgname    => 'st2-auth-backend-keystone',
     url        => 'git+https://github.com/StackStorm/st2-auth-backend-keystone.git@master#egg=st2_auth_backend_keystone',
     owner      => 'root',
-    virtualenv => '/opt/stackstorm/st2/bin',
+    virtualenv => '/opt/stackstorm/st2',
     timeout    => 1800,
   }
 

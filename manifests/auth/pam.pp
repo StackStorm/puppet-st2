@@ -8,13 +8,13 @@
 #
 # Usage:
 #
-#  # basic usage, accepting all defaults in ::st2::auth
-#  include ::st2::auth::pam
-#
-#  # advanced usage for overriding defaults in ::st2::auth
-#  class { '::st2::auth':
+#  # Instantiate via ::st2
+#  class { '::st2':
 #    backend => 'pam',
 #  }
+#
+#  # Instantiate via Hiera
+#  st2::auth_backend: "pam"
 #
 class st2::auth::pam() {
   include ::st2::auth::common
@@ -47,7 +47,7 @@ class st2::auth::pam() {
     pkgname    => 'st2-auth-backend-pam',
     url        => 'git+https://github.com/StackStorm/st2-auth-backend-pam.git@master#egg=st2_auth_backend_pam',
     owner      => 'root',
-    virtualenv => '/opt/stackstorm/st2/bin',
+    virtualenv => '/opt/stackstorm/st2',
     timeout    => 1800,
   }
 

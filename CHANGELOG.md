@@ -2,6 +2,11 @@
 
 ## Development
 
+- Added an implementation for every auth backend available (at the time).
+  All auth backends can be configured with every parameter detailed on their
+  GitHub page. The following backends are supported: `flat_file` (default),
+  `keystone`, `ldap`, `mongodb`, `pam`. (Feature)
+  Contributed by @nmaludy
 
 ## 1.0.0-rc2 (Jan 9, 2018)
 

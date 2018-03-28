@@ -93,7 +93,82 @@ st2::packs:
         webhook_url: XXX
 ```
 
-### Configuring Hubot (ChatOps)
+### Configuring Authentication (st2auth)
+
+StackStorm uses a pluggable authentication system where auth is delegated to
+an external service called a "backend". The `st2auth` service can be configured
+to use various backends (only one active). For more information on StackStorm
+authentication see the
+[authentication documentation](https://docs.stackstorm.com/authentication.html)
+page.
+
+The following backends are currently available:
+
+* `flat_file` - Authenticates against an htpasswd file (default) [link](https://github.com/StackStorm/st2-auth-backend-flat-file)
+* `keystone` - Authenticates against an OpenStack Keystone service [link](https://github.com/StackStorm/st2-auth-backend-keystone)
+* `ldap` - Authenticates against an LDAP server such as OpenLDAP or Active Directory 
+          [link](https://github.com/StackStorm/st2-auth-backend-ldap)
+* `mongodb` - Authenticates against a collection named `users` in MongoDB [link](https://github.com/StackStorm/st2-auth-backend-mongodb)
+* `pam` - Authenticates against the PAM Linux service [link](https://github.com/StackStorm/st2-auth-backend-pam)
+
+
+By default the `flat_file` backend is used. To change this you can configure it
+when instantiating the `::st2` class in a manifest file:
+
+``` ruby
+class { '::st2':
+  auth_backend => 'ldap',
+}
+```
+
+Or in Hiera:
+
+``` yaml
+st2::auth_backend: ldap
+```
+
+
+Each backend has their own custom configuration settings. The settings can be
+found by looking at the backend class in the `manifests/st2/auth/` directory.
+These parameters map 1-for-1 to the configuration options defined in each
+backends GitHub page (links above). Backend configurations are passed in as a hash
+using the `auth_backend_config` option. This option can be changed when instantiating
+the `::st2` class in a manifest file:
+
+``` ruby
+class { '::st2':
+  auth_backend        => 'ldap',
+  auth_backend_config => {
+    ldap_uri      => 'ldaps://ldap.domain.tld',
+    bind_dn       => 'cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld',
+    bind_pw       => 'some_password',
+    ref_hop_limit => 100,
+    user          => {
+      base_dn       => 'ou=domain_users,dc=domain,dc=tld',
+      search_filter => '(&(objectClass=user)(sAMAccountName={username})(memberOf=cn=stackstorm_users,ou=groups,dc=domain,dc=tld))',
+      scope         => 'subtree'
+    },
+  },
+}
+```
+
+Or in Hiera:
+
+``` yaml
+st2::auth_backend: ldap
+st2::auth_backend_config:
+  ldap_uri: "ldaps://ldap.domain.tld"
+  bind_dn: "cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld"
+  bind_pw: "some_password"
+  ref_hop_limit: 100
+  user:
+    base_dn: "ou=domain_users,dc=domain,dc=tld"
+    search_filter: "(&(objectClass=user)(sAMAccountName={username})(memberOf=cn=stackstorm_users,ou=groups,dc=domain,dc=tld))"
+    scope: "subtree"
+```
+
+
+### Configuring ChatOps (Hubot)
 
 Configuration via Hiera:
 
