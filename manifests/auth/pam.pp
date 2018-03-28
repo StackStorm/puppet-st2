@@ -29,6 +29,14 @@ class st2::auth::pam() {
     value   => 'pam',
     tag     => 'st2::config',
   }
+  ini_setting { 'auth_backend_kwargs':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'backend_kwargs',
+    value   => '',
+    tag     => 'st2::config',
+  }
 
   # install package dependency
   $_dep_pkgs = $::osfamily ? {
