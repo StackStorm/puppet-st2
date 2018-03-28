@@ -1,51 +1,74 @@
 # Class: st2::auth::pam
 #
-#  ** BROKEN **
-#  TODO: Fix this.
-#  Auth class to configure and setup PAM authentication
+#  Auth class to configure and setup PAM authentication.
+#
+#  Note: This backend will NOT allow you to auth with PAM for the 'root' user.
+#        You will need to auth a non-root user on the Linux host.
 #
 # Parameters:
 #
-# [*version*] - version of PAM module
+#  None
 #
 # Usage:
 #
-#  include ::st2::auth::pam
+#  # Instantiate via ::st2
+#  class { '::st2':
+#    backend => 'pam',
+#  }
 #
-class st2::auth::pam(
-  $version = '0.1.0',
-  $host_ip = '127.0.0.1',
-) {
-  $_st2api_port = '9101'
-  $_api_url = "https://${host_ip}:${_st2api_port}"
+#  # Instantiate via Hiera
+#  st2::auth_backend: "pam"
+#  st2::auth_backend_config: {}
+#
+# TODO:
+#   Need to configure st2auth service to run as root
+#
+class st2::auth::pam() {
+  include ::st2::auth::common
 
-  # TODO: This belongs in a package
-  $distro_path = $::osfamily ? {
-    'Debian' => "apt/${::lsbdistcodename}",
-    'Ubuntu' => "apt/${::lsbdistcodename}",
-    'RedHat' => "yum/el/${::operatingsystemmajrelease}"
+  # config
+  ini_setting { 'auth_backend':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'backend',
+    value   => 'pam',
+    tag     => 'st2::config',
+  }
+  ini_setting { 'auth_backend_kwargs':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'auth',
+    setting => 'backend_kwargs',
+    value   => '',
+    tag     => 'st2::config',
   }
 
-  wget::fetch { 'Download auth pam backend':
-    source             => "${::st2::repo_base}/st2community/${distro_path}/auth_backends/st2_auth_backend_pam-${version}-py2.7.egg",
-    cache_dir          => '/var/cache/wget',
-    nocheckcertificate => true,
-    destination        => "/tmp/st2_auth_backend_pam-${version}-py2.7.egg",
+  # install package dependency
+  $_dep_pkgs = $::osfamily ? {
+    'Debian' => 'libpam0g',
+    'RedHat' => 'pam-devel',
+    default  => undef,
+  }
+  ensure_packages($_dep_pkgs,
+                  {
+                    'ensure' => 'present',
+                    'tag'    => 'st2::auth::ldap',
+                  })
+
+  # install the backend package
+  python::pip { 'st2-auth-backend-pam':
+    ensure     => present,
+    pkgname    => 'st2-auth-backend-pam',
+    url        => 'git+https://github.com/StackStorm/st2-auth-backend-pam.git@master#egg=st2_auth_backend_pam',
+    owner      => 'root',
+    virtualenv => '/opt/stackstorm/st2',
+    timeout    => 1800,
   }
 
-  exec { 'install pam auth backend':
-    command => "easy_install-2.7 \
-                /tmp/st2_auth_backend_pam-${version}-py2.7.egg",
-    path    => '/usr/bin:/usr/sbin:/bin:/sbin:/usr/local/bin',
-    require => Wget::Fetch['Download auth pam backend'],
-    before  => Class['::st2::helper::auth_manager'],
-  }
-
-  class { '::st2::helper::auth_manager':
-    auth_mode    => 'standalone',
-    auth_backend => 'pam',
-    debug        => false,
-    syslog       => true,
-    api_url      => $_api_url,
-  }
+  # dependencies
+  Package<| tag == 'st2::server::packages' |>
+  -> Package[$_dep_pkgs]
+  -> Python::Pip['st2-auth-backend-pam']
+  ~> Service['st2auth']
 }

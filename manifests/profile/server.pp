@@ -67,10 +67,6 @@ class st2::profile::server (
     true    => 'syslog',
     default => 'logging',
   }
-  $_db_password = $db_password ? {
-    undef   => $st2::cli_password,
-    default => $db_password,
-  }
 
   ########################################
   ## Packages
@@ -201,7 +197,7 @@ class st2::profile::server (
     path    => '/etc/st2/st2.conf',
     section => 'database',
     setting => 'password',
-    value   => $_db_password,
+    value   => $db_password,
     tag     => 'st2::config',
   }
 

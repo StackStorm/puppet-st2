@@ -1,6 +1,6 @@
 # Definition: st2::auth_user
 #
-#  Creates and manages StackStorm application users (standalone auth only)
+#  Creates and manages StackStorm application users (flat_file auth only)
 #
 # Usage
 #
@@ -8,15 +8,12 @@
 #    password => 'neato!',
 #  }
 #
-# TODO
-#   Allow this method to be used for other types of auth
-#
 define st2::auth_user(
   $ensure   = present,
   $password = undef,
 ) {
-  include ::st2::auth::standalone
-  $_htpasswd_file = $::st2::auth::standalone::htpasswd_file
+  include ::st2::auth::flat_file
+  $_htpasswd_file = $::st2::auth::flat_file::htpasswd_file
 
   httpauth { $name:
     ensure    => $ensure,
