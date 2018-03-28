@@ -2,8 +2,8 @@
 #
 #  Auth class to configure and setup PAM authentication.
 #
-#  Note: This backend will NOT allow you to auth as PAM for the 'root' user.
-#        You will need to auth as another user on the Linux host.
+#  Note: This backend will NOT allow you to auth with PAM for the 'root' user.
+#        You will need to auth a non-root user on the Linux host.
 #
 # Parameters:
 #
