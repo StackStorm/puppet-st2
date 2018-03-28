@@ -15,6 +15,7 @@
 #
 #  # Instantiate via Hiera
 #  st2::auth_backend: "pam"
+#  st2::auth_backend_config: {}
 #
 class st2::auth::pam() {
   include ::st2::auth::common
