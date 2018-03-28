@@ -84,14 +84,8 @@ class st2::auth::ldap (
 ) {
   include ::st2::auth::common
 
-  $_use_tls = $use_tls ? {
-    true  => 'True',
-    false => 'False',
-  }
-  $_chase_refs = $chase_referrals ? {
-    true  => 'True',
-    false => 'False',
-  }
+  $_use_tls = bool2str($use_tls)
+  $_chase_refs = bool2str($chase_referrals)
 
   if $user != undef and $group != undef {
     $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, \
