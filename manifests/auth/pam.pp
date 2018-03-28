@@ -1,6 +1,9 @@
 # Class: st2::auth::pam
 #
-#  Auth class to configure and setup PAM authentication
+#  Auth class to configure and setup PAM authentication.
+#
+#  Note: This backend will NOT allow you to auth as PAM for the 'root' user.
+#        You will need to auth as another user on the Linux host.
 #
 # Parameters:
 #
@@ -16,6 +19,9 @@
 #  # Instantiate via Hiera
 #  st2::auth_backend: "pam"
 #  st2::auth_backend_config: {}
+#
+# TODO:
+#   Need to configure st2auth service to run as root
 #
 class st2::auth::pam() {
   include ::st2::auth::common

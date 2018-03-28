@@ -8,13 +8,6 @@
   - Decompose each "profile" into its parts (config, repo, install, service, etc)
   - Decompose "server" profile into each st2 component (st2actionrunner, st2api, etc)
 - Ability to install different st2 versions
-- Test existing alternate auth backends
-  - mongodb
-  - pam
-  - proxy
-- Support additional alternate auth backends
-  - LDAP
-  - Keystone
 - Remove unused code
   - Tiller
   - Unused variables in this like st2::params
@@ -25,3 +18,4 @@
 - Play around with Beaker testing (in an effort to get this to be an "Approved" module)
 - More developer docs
 - More documentation for end users and a complete "Getting Started" guide
+- For PAM auth backend, configure `st2auth` service to run as root
