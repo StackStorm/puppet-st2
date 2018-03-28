@@ -81,6 +81,6 @@ class st2::auth::mongodb (
 
   # dependencies
   Package<| tag == 'st2::server::packages' |>
-  -> Python::Pip['st2-auth-backend-ldap']
+  -> Python::Pip['st2-auth-backend-mongodb']
   ~> Service['st2auth']
 }
