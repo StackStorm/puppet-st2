@@ -22,7 +22,7 @@
 class st2::auth::flat_file(
   $htpasswd_file = $::st2::params::auth_htpasswd_file,
 ) inherits ::st2 {
-  include ::st2::auth
+  include ::st2::auth::common
 
   $_auth_users   = hiera_hash('st2::auth_users', {})
   $_cli_username = $::st2::cli_username

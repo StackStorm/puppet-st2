@@ -17,7 +17,7 @@
 #  }
 #
 class st2::auth::pam() {
-  include ::st2::auth
+  include ::st2::auth::common
 
   # config
   ini_setting { 'auth_backend':

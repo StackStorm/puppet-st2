@@ -35,7 +35,7 @@ class st2::auth::mongodb (
   $db_username = $::st2::db_username,
   $db_password = $::st2::db_password,
 ) inherits ::st2 {
-  include ::st2::auth
+  include ::st2::auth::common
 
   if $db_auth {
     $_kwargs = "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\",\

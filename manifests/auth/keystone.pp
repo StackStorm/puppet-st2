@@ -28,7 +28,7 @@ class st2::auth::keystone (
   $keystone_url     = 'http://127.0.0.1:5000',
   $keystone_version = '2',
 ) {
-  include ::st2::auth
+  include ::st2::auth::common
 
   # config
   ini_setting { 'auth_backend':

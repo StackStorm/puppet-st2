@@ -72,7 +72,7 @@ class st2::auth::ldap (
   $chase_referrals = true,
   $ref_hop_limit   = 0,
 ) {
-  include ::st2::auth
+  include ::st2::auth::common
 
   $_use_tls = $use_tls ? {
     true  => 'True',
