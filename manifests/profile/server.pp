@@ -53,8 +53,8 @@ class st2::profile::server (
   $db_password            = $::st2::db_password,
   $index_url              = $::st2::index_url,
 ) inherits st2 {
-  include '::st2::notices'
-  include '::st2::params'
+  include ::st2::notices
+  include ::st2::params
 
   $_server_packages = $::st2::params::st2_server_packages
   $_conf_dir = $::st2::params::conf_dir
@@ -72,7 +72,7 @@ class st2::profile::server (
   ## Packages
   if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
     package { 'libffi-devel':
-      ensure => 'latest',
+      ensure => present,
       before => Package[$_server_packages],
     }
   }

@@ -5,9 +5,9 @@
 #
 # === Parameters
 #
-#  [*version*]              - Version of StackStorm to install
-#  [*revision*]             - Revision of StackStorm to install
-#  [*autoupdate*]           - Automatically update to latest stable. (default: false)
+#  [*version*]              - Version of StackStorm package to install (default = 'present')
+#                             See the package 'ensure' property:
+#                             https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
 #  [*mistral_git_branch*]   - Tagged branch of Mistral to download/install
 #  [*repo_env*]             - Specify the environment of package repo (production, staging)
 #  [*conf_file*]            - The path where st2 config is stored
@@ -116,8 +116,7 @@
 #    st2::version: 0.6.0
 #
 class st2(
-  $version                  = 'latest',
-  $autoupdate               = false,
+  $version                  = 'present',
   $mistral_git_branch       = 'st2-1.2.0',
   $repo_base                = $::st2::params::repo_base,
   $repo_env                 = $::st2::params::repo_env,

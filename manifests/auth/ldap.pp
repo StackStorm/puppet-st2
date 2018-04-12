@@ -150,7 +150,7 @@ class st2::auth::ldap (
 
   # install the backend package
   python::pip { 'st2-auth-backend-ldap':
-    ensure     => 'latest',
+    ensure     => present,
     pkgname    => 'st2-auth-backend-ldap',
     url        => 'git+https://github.com/StackStorm/st2-auth-backend-ldap.git@master#egg=st2_auth_backend_ldap',
     owner      => 'root',
