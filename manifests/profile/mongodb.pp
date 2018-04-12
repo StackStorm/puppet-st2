@@ -43,7 +43,7 @@ class st2::profile::mongodb (
   if ($::st2::version == 'latest' or
       $::st2::version == 'present' or
       $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.4.0') >= 0 {
+      versioncmp($::st2::version, '2.4.0') >= 0) {
     $_mongodb_version_default = '3.4'
   }
   else {
