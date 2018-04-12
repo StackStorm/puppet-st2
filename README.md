@@ -227,6 +227,15 @@ and [librarian-puppet](http://librarian-puppet.com/).
  * Ubuntu 14.04 - [build/ubuntu14/Puppetfile](build/ubuntu14/Puppetfile)
  * Ubuntu 16.06 [build/ubuntu16/Puppetfile](build/ubuntu16/Puppetfile)
 
+## Upgrading StackStorm
+
+By default this module does NOT handle upgrades of StackStorm. It is the 
+responsiblity of the end user to upgrade StackStorm according to the 
+[upgrade documenation](https://docs.stackstorm.com/install/upgrades.html).
+
+In a future release a Puppet task may be included to perform these update 
+on demand using [bolt](https://github.com/puppetlabs/bolt).
+
 ## Known Limitations
 
 ### MongoDB (Puppet < 4.0)
