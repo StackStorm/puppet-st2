@@ -33,7 +33,13 @@ or use to compose your own site-specific profile for StackStorm installation.
 Configuration can be done directly via code composition, or set via
 Hiera data bindings. A few notable parameters to take note of:
 
-* `st2::version` - Version of ST2 to install. (Latest version w/o value)
+* `st2::version` - Version of ST2 to install. This will be set as the `ensure`
+  value on the `st2` packages. The default is `present` resulting in the most
+  up to date packages being installed initially. If you would like to hard code
+  to an older version you can specify that here (ex: `2.6.0`).
+  **Note** Setting this to `latest` is NOT recommended. It will cause the 
+  StackStorm packages to be automatically updated without the proper upgrade steps
+  being taken (proper steps detailed here: https://docs.stackstorm.com/install/upgrades.html)
 
 All other classes are documented with Puppetdoc. Please refer to specific
 classes for use and configuration.
