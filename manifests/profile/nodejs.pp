@@ -26,7 +26,10 @@ class st2::profile::nodejs(
 
   # if the StackStorm version is 'latest' or >= 2.4.0 then use NodeJS 6.x
   # else use MongoDB 4.x
-  if $::st2::version == 'latest' or versioncmp($::st2::version, '2.4.0') >= 0 {
+  if ($::st2::version == 'latest' or
+      $::st2::version == 'present' or
+      $::st2::version == 'installed' or
+      versioncmp($::st2::version, '2.4.0') >= 0) {
     $nodejs_version_default = '6.x'
   }
   else {

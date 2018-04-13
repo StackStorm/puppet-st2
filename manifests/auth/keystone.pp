@@ -54,7 +54,7 @@ class st2::auth::keystone (
 
   # install the backend package
   python::pip { 'st2-auth-backend-keystone':
-    ensure     => 'latest',
+    ensure     => present,
     pkgname    => 'st2-auth-backend-keystone',
     url        => 'git+https://github.com/StackStorm/st2-auth-backend-keystone.git@master#egg=st2_auth_backend_keystone',
     owner      => 'root',

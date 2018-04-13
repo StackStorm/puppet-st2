@@ -4,7 +4,6 @@
 #
 # === Parameters
 #
-#  [*version*]              - Version of StackStorm to install
 #  [*base_url*]             - CLI config - Base URL lives
 #  [*api_version*]          - CLI config - API Version
 #  [*debug*]                - CLI config - Enable/Disable Debug

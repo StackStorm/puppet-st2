@@ -40,7 +40,10 @@ class st2::profile::mongodb (
 
   # if the StackStorm version is 'latest' or >= 2.4.0 then use MongoDB 3.4
   # else use MongoDB 3.2
-  if $::st2::version == 'latest' or versioncmp($::st2::version, '2.4.0') >= 0 {
+  if ($::st2::version == 'latest' or
+      $::st2::version == 'present' or
+      $::st2::version == 'installed' or
+      versioncmp($::st2::version, '2.4.0') >= 0) {
     $_mongodb_version_default = '3.4'
   }
   else {

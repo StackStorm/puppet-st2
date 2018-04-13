@@ -25,7 +25,7 @@ class st2::profile::web(
   # a dependency cycle is created because we must modify the nginx config
   # in this profile.
   include ::st2::profile::nginx
-  include '::st2::params'
+  include ::st2::params
 
   ## Install the packages
   package { $::st2::params::st2_web_packages:

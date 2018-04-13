@@ -71,7 +71,7 @@ class st2::auth::mongodb (
 
   # install the backend package
   python::pip { 'st2-auth-backend-mongodb':
-    ensure     => 'latest',
+    ensure     => present,
     pkgname    => 'st2-auth-backend-mongodb',
     url        => 'git+https://github.com/StackStorm/st2-auth-backend-mongodb.git@master#egg=st2_auth_backend_mongodb',
     owner      => 'root',

@@ -18,13 +18,13 @@
 class st2::profile::python {
   if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
     package {'python27':
-      ensure => 'latest',
+      ensure => present,
     }
     package {'python27-virtualenv':
-      ensure => 'latest',
+      ensure => present,
     }
     package {'python27-devel':
-      ensure => 'latest',
+      ensure => present,
     }
     exec {'install_pip27':
       path    => '/usr/bin:/usr/sbin:/bin:/sbin',
@@ -35,7 +35,7 @@ class st2::profile::python {
     if !defined(Class['::python']) {
       class { '::python':
         version    => 'system',
-        pip        => latest,
+        pip        => present,
         dev        => true,
         virtualenv => present,
         provider   => 'pip',

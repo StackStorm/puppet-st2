@@ -7,6 +7,11 @@
   GitHub page. The following backends are supported: `flat_file` (default),
   `keystone`, `ldap`, `mongodb`, `pam`. (Feature)
   Contributed by @nmaludy
+- Changed the behavior of `st2` packages. Previously they were automatically 
+  updating due to the package resources having `ensure => latest` set. Going
+  forward, packages will have `ensure => present` set by default  and it will be
+  the responsibility of the end user to update the packages. (Change)
+  Contributed by @nmaludy
 
 ## 1.0.0-rc2 (Jan 9, 2018)
 
