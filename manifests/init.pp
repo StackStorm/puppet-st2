@@ -8,23 +8,19 @@
 #  [*version*]              - Version of StackStorm package to install (default = 'present')
 #                             See the package 'ensure' property:
 #                             https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
-#  [*mistral_git_branch*]   - Tagged branch of Mistral to download/install
-#  [*repo_env*]             - Specify the environment of package repo (production, staging)
+#  [*conf_dir*]             - The directory where st2 configs are stored
 #  [*conf_file*]            - The path where st2 config is stored
 #  [*use_ssl*]              - Enable/Disable SSL for all st2 APIs
-#  [*ssl_key*]              - The path to SSL key for all st2 APIs
-#  [*ssl_cert*]             - The path to SSL cert for all st2 APIs
-#  [*st2web_ssl_dir*]       - Directory where st2web will look for its SSL info.
+#  [*ssl_dir*]              - Directory where st2web will look for its SSL info.
 #                             (default: /etc/ssl/st2)
-#  [*st2web_ssl_cert*]      - Path to the file where the StackStorm SSL cert will
+#  [*ssl_cert*]             - Path to the file where the StackStorm SSL cert will
 #                             be generated. (default: /etc/ssl/st2/st2.crt)
-#  [*st2web_ssl_key*]       - Path to the file where the StackStorm SSL key will
+#  [*ssl_key*]              - Path to the file where the StackStorm SSL key will
 #                             be generated. (default: /etc/ssl/st2/st2.key)
-#  [*api_url*]              - URL where the StackStorm API lives (default: undef)
-#  [*api_logging_file*]     - Path to st2 API logging file (default: /etc/st2api/logging.conf)
 #  [*auth*]                 - Toggle to enable/disable auth (Default: true)
+#  [*auth_api_url*]         - URL where StackStorm auth service will communicate
+#                             with the StackStorm API service
 #  [*auth_debug*]           - Toggle to enable/disable auth debugging (Default: false)
-#  [*auth_url*]             - URL where the StackStorm Auth lives (default: undef)
 #  [*auth_mode*]            - Auth mode, either 'standalone' or 'backend (default: 'standalone')
 #  [*auth_backend*          - Determines which auth backend to configure. (default: flat_file)
 #                             Available backends:
@@ -38,7 +34,6 @@
 #                             for every backend. Please see the corresponding
 #                             backend class to determine what the config options
 #                             should be.
-#  [*flow_url*]             - URL Path where StackStorm Flow lives (default: undef)
 #  [*cli_base_url*]         - CLI config - Base URL lives
 #  [*cli_api_version*]      - CLI config - API Version
 #  [*cli_debug*]            - CLI config - Enable/Disable Debug
@@ -47,9 +42,7 @@
 #  [*cli_password*]         - CLI config - Auth Password
 #  [*cli_api_url*]          - CLI config - API URL
 #  [*cli_auth_url*]         - CLI config - Auth URL
-#  [*global_env*]           - Globally set the environment variables for ST2 API/Auth
-#                             Overwritten by local config or CLI arguments.
-#  [*workers*]              - Set the number of actionrunner processes to start
+#  [*actionrunner_workers*] - Set the number of actionrunner processes to start
 #  [*packs*]                - Hash of st2 packages to be installed
 #  [*index_url*]            - Url to the StackStorm Exchange index file. (default undef)
 #  [*syslog*]               - Routes all log messages to syslog
@@ -98,6 +91,9 @@
 #                                             API and Auth. If unspecified it will
 #                                             use the default in /opt/stackstorm/chatops/st2chatops.env
 #                                             (default: undef)
+
+#  [*chatops_api_url*]                      - ChatOps config - API URL
+#  [*chatops_auth_url*]                     - ChatOps config - Auth URL
 #  [*chatops_web_url*]                      - Public URL of StackStorm instance.
 #                                             used by chatops to offer links to
 #                                             execution details in a chat.
@@ -117,23 +113,18 @@
 #
 class st2(
   $version                  = 'present',
-  $mistral_git_branch       = 'st2-1.2.0',
-  $repo_base                = $::st2::params::repo_base,
-  $repo_env                 = $::st2::params::repo_env,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = $::st2::params::use_ssl,
   $ssl_dir                  = $::st2::params::ssl_dir,
   $ssl_cert                 = $::st2::params::ssl_cert,
   $ssl_key                  = $::st2::params::ssl_key,
-  $api_url                  = undef,
   $auth                     = true,
+  $auth_api_url             = "http://${::st2::params::hostname}:${::st2::params::api_port}",
   $auth_debug               = false,
-  $auth_url                 = undef,
   $auth_mode                = $::st2::params::auth_mode,
   $auth_backend             = $::st2::params::auth_backend,
   $auth_backend_config      = $::st2::params::auth_backend_config,
-  $flow_url                 = undef,
   $cli_base_url             = "http://${::st2::params::hostname}",
   $cli_api_version          = 'v1',
   $cli_debug                = false,
@@ -143,8 +134,7 @@ class st2(
   $cli_password             = $::st2::params::admin_password,
   $cli_api_url              = "http://${::st2::params::hostname}:${::st2::params::api_port}",
   $cli_auth_url             = "http://${::st2::params::hostname}:${::st2::params::auth_port}",
-  $global_env               = false,
-  $workers                  = 8,
+  $actionrunner_workers     = $::st2::params::actionrunner_workers,
   $packs                    = {},
   $index_url                = undef,
   $mistral_api_url          = undef,

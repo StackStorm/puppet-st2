@@ -4,23 +4,27 @@
 #
 # Parameters:
 #
-# [*debug*]    - Enable Debug (default: false)
-# [*mode*]     - Authentication mode, either 'standalone' or 'proxy'
-#                (default: standalone)
-# [*use_ssl*]  - Enable SSL (default: false)
-# [*ssl_cert*] - Path to SSL Certificate file (default: '/etc/ssl/st2/st2.crt')
-# [*ssl_key*]  - Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
+# [*api_url*]   - URL to the StackStorm API
+# [*conf_file*] - The path where st2 config is stored
+# [*debug*]     - Enable Debug (default: false)
+# [*mode*]      - Authentication mode, either 'standalone' or 'proxy'
+#                 (default: standalone)
+# [*use_ssl*]   - Enable SSL (default: false)
+# [*ssl_cert*]  - Path to SSL Certificate file (default: '/etc/ssl/st2/st2.crt')
+# [*ssl_key*]   - Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
 #
 # Usage:
 #
 #   Don't use directly
 #
 class st2::auth::common (
-  $debug    = $::st2::auth_debug,
-  $mode     = $::st2::auth_mode,
-  $use_ssl  = $::st2::use_ssl,
-  $ssl_cert = $::st2::ssl_cert,
-  $ssl_key  = $::st2::ssl_key,
+  $api_url   = $::st2::auth_api_url,
+  $conf_file = $::st2::conf_file,
+  $debug     = $::st2::auth_debug,
+  $mode      = $::st2::auth_mode,
+  $use_ssl   = $::st2::use_ssl,
+  $ssl_cert  = $::st2::ssl_cert,
+  $ssl_key   = $::st2::ssl_key,
 ) inherits ::st2 {
 
   $_debug = $debug ? {
@@ -39,11 +43,10 @@ class st2::auth::common (
     true    => 'True',
     default => 'False',
   }
-  $_api_url = $::st2::api_url
 
   ini_setting { 'auth_mode':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'mode',
     value   => $_mode,
@@ -51,7 +54,7 @@ class st2::auth::common (
   }
   ini_setting { 'auth_debug':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'debug',
     value   => $_debug,
@@ -59,7 +62,7 @@ class st2::auth::common (
   }
   ini_setting { 'auth_ssl':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'use_ssl',
     value   => $_use_ssl,
@@ -67,10 +70,10 @@ class st2::auth::common (
   }
   ini_setting { 'auth_api_url':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'api_url',
-    value   => $_api_url,
+    value   => $api_url,
     tag     => 'st2::config',
   }
 
@@ -82,7 +85,7 @@ class st2::auth::common (
 
     ini_setting { 'auth_ssl_cert':
       ensure  => present,
-      path    => '/etc/st2/st2.conf',
+      path    => $conf_file,
       section => 'auth',
       setting => 'cert',
       value   => $ssl_cert,
@@ -90,7 +93,7 @@ class st2::auth::common (
     }
     ini_setting { 'auth_ssl_key':
       ensure  => present,
-      path    => '/etc/st2/st2.conf',
+      path    => $conf_file,
       section => 'auth',
       setting => 'key',
       value   => $ssl_key,

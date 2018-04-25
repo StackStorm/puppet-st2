@@ -1,12 +1,13 @@
-# Class: st2::auth::ldap
+# == Class: st2::auth::ldap
 #
 #  Auth class to configure and setup LDAP Based Authentication
 #
 #  For information on parameters see the backend documentation:
 #   https://github.com/StackStorm/st2-auth-backend-ldap#configuration-options
 #
-# Parameters:
+# === Parameters:
 #
+#  [*conf_file*]        - The path where st2 config is stored
 #  [*ldap_uri*] - URI of the LDAP server.
 #                 Format: <protocol>://<hostname>[:port](Protocol: ldap or ldaps)
 #  [*use_tls*]         - Boolean parameter to set if tls is required.
@@ -41,7 +42,7 @@
 #  [*scope*]         - The scope of the search to be performed.
 #                      Available choices: base, onelevel, subtree
 #
-# Usage:
+# === Usage:
 #
 #  # Instantiate via ::st2
 #  # this example shows how to auth with Active Directory
@@ -73,6 +74,7 @@
 #      scope: "subtree"
 #
 class st2::auth::ldap (
+  $conf_file       = $::st2::conf_file,
   $ldap_uri        = '',
   $use_tls         = false,
   $bind_dn         = '',
@@ -81,7 +83,7 @@ class st2::auth::ldap (
   $group           = undef,
   $chase_referrals = true,
   $ref_hop_limit   = 0,
-) {
+) inherits ::st2 {
   include ::st2::auth::common
 
   $_use_tls = bool2str($use_tls)
@@ -121,7 +123,7 @@ class st2::auth::ldap (
   # config
   ini_setting { 'auth_backend':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend',
     value   => 'ldap',
@@ -129,7 +131,7 @@ class st2::auth::ldap (
   }
   ini_setting { 'auth_backend_kwargs':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend_kwargs',
     value   => $_kwargs,

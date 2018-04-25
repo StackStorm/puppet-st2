@@ -5,9 +5,10 @@
 # === Parameters
 #
 #  [*version*]                - Version of StackStorm to install
+#  [*conf_dir*]               - The directory where st2 configs are stored
+#  [*conf_file*]              - The path where st2 config is stored
 #  [*auth*]                   - Toggle Auth
-#  [*workers*]                - Set the number of actionrunner processes to
-#                               start
+#  [*actionrunner_workers*]   - Set the number of actionrunner processes to start
 #  [*st2api_listen_ip*]       - Listen IP for st2api process
 #  [*st2api_listen_port*]     - Listen port for st2api process
 #  [*st2auth_listen_ip*]      - Listen IP for st2auth process
@@ -22,22 +23,17 @@
 #  [*db_password*]            - Password for 'stackstorm' user in MongDB.
 #  [*index_url*]              - Url to the StackStorm Exchange index file. (default undef)
 #
-# === Variables
-#
-#  [*_server_packages*] - Local scoped variable to store st2 server packages.
-#                         Sources from st2::params
-#  [*_conf_dir*]        - Local scoped variable config directory for st2.
-#                         Sources from st2::params
-#
 # === Examples
 #
-#  include st2::profile::client
+#  include st2::profile::server
 #
 
 class st2::profile::server (
   $version                = $::st2::version,
+  $conf_dir               = $::st2::conf_dir,
+  $conf_file              = $::st2::conf_file,
   $auth                   = $::st2::auth,
-  $workers                = $::st2::workers,
+  $actionrunner_workers   = $::st2::actionrunner_workers,
   $syslog                 = $::st2::syslog,
   $syslog_host            = $::st2::syslog_host,
   $syslog_port            = $::st2::syslog_port,
@@ -56,9 +52,6 @@ class st2::profile::server (
   include ::st2::notices
   include ::st2::params
 
-  $_server_packages = $::st2::params::st2_server_packages
-  $_conf_dir = $::st2::params::conf_dir
-
   $_enable_auth = $auth ? {
     true    => 'True',
     default => 'False',
@@ -73,11 +66,11 @@ class st2::profile::server (
   if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
     package { 'libffi-devel':
       ensure => present,
-      before => Package[$_server_packages],
+      before => Package[$::st2::params::st2_server_packages],
     }
   }
 
-  package { $_server_packages:
+  package { $::st2::params::st2_server_packages:
     ensure => $version,
     tag    => ['st2::packages', 'st2::server::packages'],
   }
@@ -91,14 +84,14 @@ class st2::profile::server (
 
   ########################################
   ## Config
-  file { '/etc/st2':
+  file { $conf_dir:
     ensure => directory,
   }
 
   ## SSH
   ini_setting { 'ssh_key_stanley':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'system_user',
     setting => 'ssh_key_file',
     value   => $ssh_key_location,
@@ -108,17 +101,26 @@ class st2::profile::server (
   ## ActionRunner settings
   ini_setting { 'actionrunner_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'actionrunner',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.actionrunner.conf",
     tag     => 'st2::config',
   }
 
+  file { $::st2::params::actionrunner_global_env_file:
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('st2/etc/sysconfig/st2actionrunner.erb'),
+    tag     => 'st2::config',
+  }
+
   ## API Settings
   ini_setting { 'api_listen_ip':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'api',
     setting => 'host',
     value   => $st2api_listen_ip,
@@ -126,7 +128,7 @@ class st2::profile::server (
   }
   ini_setting { 'api_listen_port':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'api',
     setting => 'port',
     value   => $st2api_listen_port,
@@ -134,7 +136,7 @@ class st2::profile::server (
   }
   ini_setting { 'api_allow_origin':
     ensure  => 'present',
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'api',
     setting => 'allow_origin',
     value   => '*',
@@ -142,7 +144,7 @@ class st2::profile::server (
   }
   ini_setting { 'api_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'api',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.api.conf",
@@ -152,7 +154,7 @@ class st2::profile::server (
   ## Authentication Settings
   ini_setting { 'auth':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'enable',
     value   => $_enable_auth,
@@ -160,7 +162,7 @@ class st2::profile::server (
   }
   ini_setting { 'auth_listen_port':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'port',
     value   => $st2auth_listen_port,
@@ -168,7 +170,7 @@ class st2::profile::server (
   }
   ini_setting { 'auth_listen_ip':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'host',
     value   => $st2auth_listen_ip,
@@ -176,7 +178,7 @@ class st2::profile::server (
   }
   ini_setting { 'auth_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.auth.conf",
@@ -186,7 +188,7 @@ class st2::profile::server (
   ## Database settings
   ini_setting { 'database_username':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'database',
     setting => 'username',
     value   => $db_username,
@@ -194,7 +196,7 @@ class st2::profile::server (
   }
   ini_setting { 'database_password':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'database',
     setting => 'password',
     value   => $db_password,
@@ -204,7 +206,7 @@ class st2::profile::server (
   ## Notifier Settings
   ini_setting { 'notifier_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'notifier',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.notifier.conf",
@@ -214,7 +216,7 @@ class st2::profile::server (
   ## Resultstracker Settings
   ini_setting { 'resultstracker_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'resultstracker',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.resultstracker.conf",
@@ -224,7 +226,7 @@ class st2::profile::server (
   ## Rules Engine Settings
   ini_setting { 'rulesengine_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'rulesengine',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.rulesengine.conf",
@@ -234,7 +236,7 @@ class st2::profile::server (
   ## Garbage collector Settings
   ini_setting { 'garbagecollector_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'garbagecollector',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.garbagecollector.conf",
@@ -244,7 +246,7 @@ class st2::profile::server (
   ## Sensor container Settings
   ini_setting { 'sensorcontainer_logging':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'sensorcontainer',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.sensorcontainer.conf",
@@ -254,7 +256,7 @@ class st2::profile::server (
   ## Syslog Settings
   ini_setting { 'syslog_host':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'syslog',
     setting => 'host',
     value   => $syslog_host,
@@ -262,7 +264,7 @@ class st2::profile::server (
   }
   ini_setting { 'syslog_protocol':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'syslog',
     setting => 'protocol',
     value   => $syslog_protocol,
@@ -270,7 +272,7 @@ class st2::profile::server (
   }
   ini_setting { 'syslog_port':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'syslog',
     setting => 'port',
     value   => $syslog_port,
@@ -278,7 +280,7 @@ class st2::profile::server (
   }
   ini_setting { 'syslog_facility':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'syslog',
     setting => 'facility',
     value   => $syslog_facility,
@@ -289,7 +291,7 @@ class st2::profile::server (
   if $index_url {
     ini_setting { 'exchange_index_url':
       ensure  => present,
-      path    => '/etc/st2/st2.conf',
+      path    => $conf_file,
       section => 'content',
       setting => 'index_url',
       value   => $index_url,

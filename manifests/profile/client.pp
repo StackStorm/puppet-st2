@@ -30,7 +30,6 @@ class st2::profile::client (
   $debug                = $::st2::cli_debug,
   $cache_token          = $::st2::cli_cache_token,
   $silence_ssl_warnings = $::st2::cli_silence_ssl_warnings,
-  $global_env           = $::st2::global_env,
 ) inherits ::st2 {
 
   # Setup st2client settings for Root user by default
@@ -50,13 +49,11 @@ class st2::profile::client (
   }
 
   # Setup global environment variables:
-  if $global_env {
-    file { '/etc/profile.d/st2.sh':
-      ensure  => file,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      content => template('st2/etc/profile.d/st2.sh.erb'),
-    }
+  file { '/etc/profile.d/st2.sh':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    content => template('st2/etc/profile.d/st2.sh.erb'),
   }
 }

@@ -1,19 +1,20 @@
-# Class: st2::auth::mongodb
+# == Class: st2::auth::mongodb
 #
 #  Auth class to configure and setup MongoDB Based Authentication
 #
 #  For information on parameters see the backend documentation:
 #   https://github.com/StackStorm/st2-auth-backend-mongodb#configuration-options
 #
-# Parameters:
+# === Parameters:
 #
-# [*db_host*]     - Hostname for the MongoDB server (default: 127.0.0.1)
-# [*db_port*]     - Port for the MongoDB server (default: 27017)
-# [*db_name*]     - Database name in MongoDB (default: st2auth)
-# [*db_username*] - Username for MongoDB login (default: st2auth)
-# [*db_password*] - MongoDB DB storing credentials (default: st2auth)
+#  [*conf_file*]        - The path where st2 config is stored
+#  [*db_host*]     - Hostname for the MongoDB server (default: 127.0.0.1)
+#  [*db_port*]     - Port for the MongoDB server (default: 27017)
+#  [*db_name*]     - Database name in MongoDB (default: st2auth)
+#  [*db_username*] - Username for MongoDB login (default: st2auth)
+#  [*db_password*] - MongoDB DB storing credentials (default: st2auth)
 #
-# Usage:
+# === Usage:
 #
 #  # Instantiate via ::st2
 #  class { '::st2':
@@ -33,10 +34,11 @@
 #    db_name: "myauthdb"
 #
 class st2::auth::mongodb (
-  $db_host = $::st2::db_host,
-  $db_port = $::st2::db_port,
-  $db_name = 'st2auth',
-  $db_auth = $::st2::mongodb_auth,
+  $conf_file   = $::st2::conf_file,
+  $db_host     = $::st2::db_host,
+  $db_port     = $::st2::db_port,
+  $db_name     = 'st2auth',
+  $db_auth     = $::st2::mongodb_auth,
   $db_username = $::st2::db_username,
   $db_password = $::st2::db_password,
 ) inherits ::st2 {
@@ -54,7 +56,7 @@ class st2::auth::mongodb (
 
   ini_setting { 'auth_backend':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend',
     value   => 'mongodb',
@@ -62,7 +64,7 @@ class st2::auth::mongodb (
   }
   ini_setting { 'auth_backend_kwargs':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend_kwargs',
     value   => $_kwargs,

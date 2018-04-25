@@ -1,16 +1,17 @@
-# Class: st2::auth::keystone
+# == Class: st2::auth::keystone
 #
 #  Auth class to configure and setup Keystone Based Authentication
 #
 #  For information on parameters see the backend documentation:
 #   https://github.com/StackStorm/st2-auth-backend-keystone#configuration-options
 #
-# Parameters:
+# === Parameters:
 #
-# [*keystone_url*]     - Keystone URL to connect to (default: '127.0.0.1')
-# [*keystone_version*] - Keystone API version (default: '2')
+#  [*conf_file*]        - The path where st2 config is stored
+#  [*keystone_url*]     - Keystone URL to connect to (default: '127.0.0.1')
+#  [*keystone_version*] - Keystone API version (default: '2')
 #
-# Usage:
+# === Usage:
 #
 #  # Instantiate via ::st2
 #  class { '::st2':
@@ -28,15 +29,16 @@
 #    keystone_version: "3"
 #
 class st2::auth::keystone (
+  $conf_file        = $::st2::conf_file,
   $keystone_url     = 'http://127.0.0.1:5000',
   $keystone_version = '2',
-) {
+) inherits ::st2 {
   include ::st2::auth::common
 
   # config
   ini_setting { 'auth_backend':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend',
     value   => 'keystone',
@@ -44,7 +46,7 @@ class st2::auth::keystone (
   }
   ini_setting { 'auth_backend_kwargs':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend_kwargs',
     value   => "{\"keystone_url\": \"${keystone_url}\", \

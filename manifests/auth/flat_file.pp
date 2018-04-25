@@ -1,12 +1,15 @@
-# Class: st2::auth::flat_file
+# == Class: st2::auth::flat_file
 #
 #  Auth class to configure and setup Flat File (htpasswd) Authentication
 #
-# Parameters:
+# === Parameters:
 #
-# [*htpasswd_file*] - Path to htpasswd file (default: /etc/st2/htpasswd)
+#  [*cli_username*]         - CLI config - Auth Username
+#  [*cli_password*]         - CLI config - Auth Password
+#  [*conf_file*] - The path where st2 config is stored
+#  [*htpasswd_file*] - Path to htpasswd file (default: /etc/st2/htpasswd)
 #
-# Usage:
+# === Usage:
 #
 #  # Instantiate via ::st2
 #  class { '::st2':
@@ -22,13 +25,14 @@
 #    htpasswd_file: "/etc/something/htpasswd"
 #
 class st2::auth::flat_file(
+  $cli_username  = $::st2::cli_username,
+  $cli_password  = $::st2::cli_password,
+  $conf_file     = $::st2::conf_file,
   $htpasswd_file = $::st2::params::auth_htpasswd_file,
 ) inherits ::st2 {
   include ::st2::auth::common
 
-  $_auth_users   = hiera_hash('st2::auth_users', {})
-  $_cli_username = $::st2::cli_username
-  $_cli_password = $::st2::cli_password
+  $_auth_users = hiera_hash('st2::auth_users', {})
 
   file { $htpasswd_file:
     ensure => file,
@@ -39,7 +43,7 @@ class st2::auth::flat_file(
 
   ini_setting { 'auth_backend':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend',
     value   => 'flat_file',
@@ -47,7 +51,7 @@ class st2::auth::flat_file(
   }
   ini_setting { 'auth_backend_kwargs':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend_kwargs',
     value   => "{\"file_path\": \"${htpasswd_file}\"}",
@@ -55,8 +59,8 @@ class st2::auth::flat_file(
   }
 
   # System Users
-  st2::auth_user { $_cli_username:
-    password => $_cli_password,
+  st2::auth_user { $cli_username:
+    password => $cli_password,
   }
 
   # Automatically generate users from Hiera

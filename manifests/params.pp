@@ -6,7 +6,6 @@
 #  [*packs_group_name*] - The name of the group created to hold the st2 admin user
 #
 # === Variables
-#  [*repo_env*] - Specify the environment of package repo (production, staging)
 #  [*conf_dir*] - The local directory where st2 config is stored
 #  [*subsystems*] - Different executable subsystems within StackStorm
 #  [*component_map*] - Hash table of mappings of Subsystems -> Components
@@ -58,9 +57,6 @@ class st2::params(
     st2garbagecollector => 'st2reactor',
     st2web              => 'st2common',
   }
-
-  $repo_base = 'https://downloads.stackstorm.net'
-  $repo_env = 'production'
 
   # SSL settings
   $use_ssl  = false
@@ -174,6 +170,13 @@ class st2::params(
   $rabbitmq_port = 25672
   $rabbitmq_protocol = 'tcp'
   $rabbitmq_selinux_type = 'amqp_port_t'
+
+  ## actionrunner config
+  $actionrunner_workers = 10
+  $actionrunner_global_env_file = $::osfamily ? {
+    'Debian' => '/etc/default/st2actionrunner',
+    'RedHat' => '/etc/sysconfig/st2actionrunner',
+  }
 
   ## chatops default config
   $st2_chatops_dir  = '/opt/stackstorm/chatops'

@@ -1,15 +1,15 @@
-# Class: st2::auth::pam
+# == Class: st2::auth::pam
 #
 #  Auth class to configure and setup PAM authentication.
 #
 #  Note: This backend will NOT allow you to auth with PAM for the 'root' user.
 #        You will need to auth a non-root user on the Linux host.
 #
-# Parameters:
+# === Parameters:
 #
-#  None
+#  [*conf_file*] - The path where st2 config is stored
 #
-# Usage:
+# === Usage:
 #
 #  # Instantiate via ::st2
 #  class { '::st2':
@@ -23,13 +23,15 @@
 # TODO:
 #   Need to configure st2auth service to run as root
 #
-class st2::auth::pam() {
+class st2::auth::pam(
+  $conf_file = $::st2::conf_file,
+) inherits ::st2 {
   include ::st2::auth::common
 
   # config
   ini_setting { 'auth_backend':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend',
     value   => 'pam',
@@ -37,7 +39,7 @@ class st2::auth::pam() {
   }
   ini_setting { 'auth_backend_kwargs':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'auth',
     setting => 'backend_kwargs',
     value   => '',
