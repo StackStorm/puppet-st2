@@ -38,7 +38,6 @@ provisioner:
   custom_post_apply_command: |
     cat /var/log/st2/st2auth.log
     /usr/sbin/service st2auth start
-    echo $?
     cat /var/log/st2/st2auth.log
     
 platforms:
