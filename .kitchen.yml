@@ -34,6 +34,11 @@ provisioner:
     - 2
   # enable/disable puppet debug mode
   puppet_debug: true
+  # print out st2auth log file to help debug
+  custom_post_apply_command: |
+    cat /var/log/st2/st2api.log
+    service st2auth start
+    cat /var/log/st2/st2api.log
     
 platforms:
   # CentOS6 with sysV init
