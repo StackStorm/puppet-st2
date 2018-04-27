@@ -29,6 +29,9 @@
 class st2::params(
   $packs_group_name = 'st2packs',
   $hostname         = '127.0.0.1',
+  ## StackStorm default credentials (change these!)
+  $admin_username   = 'st2admin',
+  $admin_password   = 'Ch@ngeMe',
 ) {
   $subsystems = [
     'actionrunner', 'api', 'sensorcontainer',
@@ -130,10 +133,6 @@ class st2::params(
   $st2_chatops_services = [
     'st2chatops',
   ]
-
-  ## StackStorm default credentials (change these!)
-  $admin_username = 'st2admin'
-  $admin_password = 'Ch@ngeMe'
 
   ## nginx default config
   $nginx_default_conf = $::osfamily ? {

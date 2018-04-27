@@ -6,7 +6,7 @@
 # === Parameters
 #  [*git_branch*]          - Tagged branch of Mistral to download/install
 #  [*db_password*]         - Mistral user password in PostgreSQL
-#  [*db_server*]           - Server hosting Mistral DB
+#  [*db_host*]             - Server hosting Mistral Postgres DB
 #  [*db_database*]         - Database storing Mistral Data
 #  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
 #  [*db_max_overflow*]     - Max DB overload for Mistral Connections
@@ -29,9 +29,9 @@
 #
 class st2::profile::mistral(
   $version     = $st2::version,
-  $db_server   = '127.0.0.1',
-  $db_name     = 'mistral',
-  $db_username = 'mistral',
+  $db_host     = $st2::mistral_db_host,
+  $db_name     = $st2::mistral_db_name,
+  $db_username = $st2::mistral_db_username,
   $db_password = $st2::db_password,
 ) inherits st2 {
   include ::st2::params
@@ -61,7 +61,7 @@ class st2::profile::mistral(
     path    => $mistral_config,
     section => 'database',
     setting => 'connection',
-    value   => "postgresql://${db_username}:${db_password}@${db_server}/${db_name}",
+    value   => "postgresql://${db_username}:${db_password}@${db_host}/${db_name}",
     tag     => 'mistral',
   }
 
