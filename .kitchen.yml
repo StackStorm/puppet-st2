@@ -37,6 +37,7 @@ provisioner:
   # print out st2auth log file to help debug
   custom_post_apply_command: |
     cat /var/log/st2/st2auth.log
+    /sbin/service st2auth stop
     /sbin/service st2auth start
     cat /var/log/st2/st2auth.log
     
