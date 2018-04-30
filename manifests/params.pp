@@ -150,6 +150,8 @@ class st2::params(
   # nginx config for StackStorm (installed with the st2 packages)
   $nginx_st2_conf = '/usr/share/doc/st2/conf/nginx/st2.conf'
 
+  # syslog
+
   # st2web certs
   $st2web_ssl_dir = '/etc/ssl/st2'
   $st2web_ssl_cert = "${st2web_ssl_dir}/st2.crt"
@@ -164,6 +166,11 @@ class st2::params(
   $mongodb_st2_db = 'st2'
   $mongodb_st2_username = 'stackstorm'
   $mongodb_st2_roles = ['readWrite']
+
+  ## Mistral data
+  $mistral_db_name = 'mistral'
+  $mistral_db_username = 'mistral'
+  $mistral_db_bind_ips = '127.0.0.1'
 
   ## RabbitMQ
   $rabbitmq_port = 25672

@@ -16,9 +16,7 @@
 #  include st2::profile::postgresql
 #
 class st2::profile::postgresql(
-  $db_name     = 'mistral',
-  $db_username = 'mistral',
-  $db_password = $st2::db_password,
+  $db_password         = $st2::mistral_db_password,
   $db_listen_addresses = '127.0.0.1',
 ) inherits st2 {
   if !defined(Class['::postgresql::server']) {

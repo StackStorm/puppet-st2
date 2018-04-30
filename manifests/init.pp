@@ -45,6 +45,12 @@
 #  [*actionrunner_workers*] - Set the number of actionrunner processes to start
 #  [*packs*]                - Hash of st2 packages to be installed
 #  [*index_url*]            - Url to the StackStorm Exchange index file. (default undef)
+#  [*mistral_db_host*]      - Hostname/IP of the Mistral Postgres database
+#  [*mistral_db_name*]      - Database name of the Mistral Postgres database
+#  [*mistral_db_username*]  - Username for authentication to the Mistral Postgres database
+#  [*mistral_db_password*]  - Password for authentication to the Mistral Postgres database
+#  [*mistral_db_bind_ips*]  - String of IPs (csv) that the Mistral Postgres database
+#                             will accept connections on (default: 127.0.0.1)
 #  [*syslog*]               - Routes all log messages to syslog
 #  [*syslog_host*]          - Syslog host. Default: localhost
 #  [*syslog_protocol*]      - Syslog protocol. Default: udp
@@ -138,9 +144,10 @@ class st2(
   $packs                    = {},
   $index_url                = undef,
   $mistral_db_host          = $::st2::params::hostname,
-  $mistral_db_name          = 'mistral',
-  $mistral_db_username      = 'mistral',
+  $mistral_db_name          = $::st2::params::mistral_db_name,
+  $mistral_db_username      = $::st2::params::mistral_db_username,
   $mistral_db_password      = $::st2::params::admin_password,
+  $mistral_db_bind_ips      = $::st2::params::mistral_bind_ips,
   $syslog                   = false,
   $syslog_host              = 'localhost',
   $syslog_protocol          = 'udp',
