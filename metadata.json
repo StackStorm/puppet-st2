@@ -57,14 +57,6 @@
       "version_requirement": ">= 4.1.0"
     },
     {
-      "name": "puppetlabs/vcsrepo",
-      "version_requirement": ">= 1.2.0"
-    },
-    {
-      "name": "jfryman/tiller",
-      "version_requirement": ">= 0.1.0"
-    },
-    {
       "name": "stahnma/epel",
       "version_requirement": ">= 1.1.0"
     },

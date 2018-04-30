@@ -12,6 +12,11 @@
   forward, packages will have `ensure => present` set by default  and it will be
   the responsibility of the end user to update the packages. (Change)
   Contributed by @nmaludy
+- Removed `manifests/container.pp` and `manifests/profile/source.pp`. These files
+  were unused and unmaintained. Also removed module dependencies 
+  `puppetlabs/vcsrepo` and `jfryman/tiller` that are no longer used because
+  these two files have been removed. (Change)
+  Contributed by @nmaludy
 
 ## 1.0.0-rc2 (Jan 9, 2018)
 
