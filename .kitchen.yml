@@ -34,11 +34,18 @@ provisioner:
     - 2
   puppet_debug: true
   custom_post_apply_command: |
+    echo "##########################################################"
+    echo "##########################################################"
+    echo "##########################################################"
     cat /var/log/st2/st2auth.log
     echo "##########################################################"
+    echo "# Starting st2auth#"
+    echo "##########################################################"
+    /opt/stackstorm/st2/bin/gunicorn st2auth.wsgi:application -k eventlet -b 127.0.0.1:9100 --workers 1 --threads 1 --graceful-timeout 10 --timeout 30 --pid /var/run/st2/st2auth.pid
     echo "##########################################################"
     echo "##########################################################"
-    cat /var/log/messages
+    echo "##########################################################"
+    cat /var/log/st2/st2auth.log
     
 platforms:
   # CentOS6 with sysV init
