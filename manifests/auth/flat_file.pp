@@ -68,5 +68,5 @@ class st2::auth::flat_file(
   # -> Service['st2auth']
 
   File[$htpasswd_file]
-  -> Exec['service_st2auth']
+  -> Exec<| title == 'service_st2auth' |>
 }
