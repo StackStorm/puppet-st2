@@ -33,9 +33,12 @@ provisioner:
     - 0
     - 2
   puppet_debug: true
-     custom_post_apply_command: |
-       cat /var/log/st2/st2auth.log
-       cat /var/log/messages
+  custom_post_apply_command: |
+    cat /var/log/st2/st2auth.log
+    echo "##########################################################"
+    echo "##########################################################"
+    echo "##########################################################"
+    cat /var/log/messages
     
 platforms:
   # CentOS6 with sysV init
