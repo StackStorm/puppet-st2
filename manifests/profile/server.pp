@@ -314,6 +314,13 @@ class st2::profile::server (
     tag      => 'st2::service',
   }
 
+  exec { 'service_st2auth':
+    command   => "/opt/stackstorm/st2/bin/gunicorn st2auth.wsgi:application \
+-k eventlet -b 127.0.0.1:9100 --workers 1 --threads 1 --graceful-timeout 10 \
+--timeout 30 --pid /var/run/st2/st2auth.pid",
+    logoutput => true,
+  }
+
   ########################################
   ## st2 user (stanley)
   class { '::st2::stanley': }
@@ -328,18 +335,38 @@ class st2::profile::server (
   -> Ini_setting<| tag == 'st2::config' |>
   ~> Service<| tag == 'st2::service' |>
 
+  # st2auth
+  Ini_setting<| tag == 'st2::config' |>
+  ~> Exec['service_st2auth']
+
   Package<| tag == 'st2::server::packages' |>
   -> Class['::st2::server::datastore_keys']
   -> Service<| tag == 'st2::service' |>
+
+  # st2auth
+  Class['::st2::server::datastore_keys']
+  ~> Exec['service_st2auth']
 
   Package<| tag == 'st2::server::packages' |>
   -> Class['::st2::stanley']
   -> Service<| tag == 'st2::service' |>
 
+  # st2auth
+  Class['::st2::stanley']
+  ~> Exec['service_st2auth']
+
   Package<| tag == 'st2::server::packages' |>
   -> File<| tag == 'st2::server' |>
   -> Service<| tag == 'st2::service' |>
 
+  # st2auth
+  File<| tag == 'st2::server' |>
+  ~> Exec['service_st2auth']
+
   Service<| tag == 'st2::service' |>
+  ~> Exec<| tag == 'st2::reload' |>
+
+  # st2auth
+  Exec['service_st2auth']
   ~> Exec<| tag == 'st2::reload' |>
 }
