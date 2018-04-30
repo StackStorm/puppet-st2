@@ -89,6 +89,14 @@ class st2::profile::server (
     'mode'   => '0755',
   })
 
+  ensure_resource('file', '/var/run/st2', {
+    'ensure' => 'directory',
+    'owner'  => 'st2',
+    'group'  => 'root',
+    'mode'   => '0755',
+    'tag'    => 'st2::server',
+  })
+
   ########################################
   ## Config
   file { '/etc/st2':
@@ -325,6 +333,10 @@ class st2::profile::server (
 
   Package<| tag == 'st2::server::packages' |>
   -> Class['::st2::stanley']
+  -> Service<| tag == 'st2::service' |>
+
+  Package<| tag == 'st2::server::packages' |>
+  -> File<| tag == 'st2::server' |>
   -> Service<| tag == 'st2::service' |>
 
   Service<| tag == 'st2::service' |>
