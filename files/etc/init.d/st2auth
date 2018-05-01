@@ -46,8 +46,9 @@ start() {
     echo -n $"Starting $NAME: "
     echo "Starting $NAME" >>/logs/init.log 2>&1
     daemon --backgroundwithlogs --check=${NAME} --user=${RUNAS_USER} \
-        $DAEMON $DAEMON_ARGS
-    echo "Deamon $NAME started, waiting for PID" >>/logs/init.log 2>&1
+           $DAEMON $DAEMON_ARGS
+    daemon_pid=$(cat $PIDFILE)
+    echo "Deamon $NAME started, waiting for PID: $daemon_pid" >>/logs/init.log 2>&1
     waitforpid --pidfile=${PIDFILE}
     retval=$?
     echo "waitforpid got return value: $retval" >>/logs/init.log 2>&1

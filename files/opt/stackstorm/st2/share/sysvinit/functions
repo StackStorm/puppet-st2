@@ -206,7 +206,6 @@ pgrep_waitforpid() {
     failure $"$base startup"
   fi
 }
-
 # Waits for a process startup and when it writes the pidfile.
 waitforpid() {
   local pid= pid_file= base= timeout="3.0"
@@ -247,8 +246,17 @@ waitforpid() {
     if [ -f "$pid_file" ]; then
       # In case process dies or anything, we keep iterating
       pid=$(cat $pid_file)
-      sleep 0.1; checkpid $pid && break || continue
+      echo "pidfile $pidfile has PID: $pid" >>/logs/init.log 2>&1
+      sleep 0.1;
+      if checkpid $pid; then
+        echo "PID $pid in pidfile $pid_file is RUNNING" >>/logs/init.log 2>&1
+        break
+      else
+        echo "PID $pid in pidfile $pid_file is DOWN" >>/logs/init.log 2>&1
+        continue
+      fi
     else
+      echo "pidfile doesn't exist: $pid_file" >>/logs/init.log 2>&1
       sleep 0.1
     fi
   done
