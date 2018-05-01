@@ -335,12 +335,12 @@ class st2::profile::server (
     }
 
     file {'/etc/init.d/st2auth':
-      ensure  => file,
-      source  => 'puppet:///modules/st2/etc/init.d/st2auth',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      tag     => 'st2::server',
+      ensure => file,
+      source => 'puppet:///modules/st2/etc/init.d/st2auth',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      tag    => 'st2::server',
     }
   }
 
