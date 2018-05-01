@@ -316,11 +316,14 @@ class st2::profile::server (
 
   if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
     file_line { 'st2auth_daemon':
-      path   => '/etc/init.d/st2auth',
-      match  => '^DAEMON=/opt/stackstorm/st2/bin/gunicorn$',
-      line   => 'DAEMON=/etc/st2/st2auth.sh',
-      notify => Service['st2auth'],
+      path  => '/etc/init.d/st2auth',
+      match => '^DAEMON=/opt/stackstorm/st2/bin/gunicorn$',
+      line  => 'DAEMON=/etc/st2/st2auth.sh',
     }
+    Package<| tag == 'st2::server::packages' |>
+    -> File_line['st2auth_daemon']
+    ~> Service['st2auth']
+
     file { '/etc/st2/st2auth.sh':
       ensure  => file,
       content => "#!/bin/sh\
@@ -328,7 +331,7 @@ class st2::profile::server (
       owner   => 'st2',
       group   => 'root',
       mode    => '0775',
-      notify  => Service['st2auth'],
+      tag     => 'st2::server',
     }
   }
 
