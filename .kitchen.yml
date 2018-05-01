@@ -35,9 +35,14 @@ provisioner:
   puppet_debug: true
   custom_post_apply_command: |
     echo "##########################################################"
-    echo "##############st2authstart################################"
+    echo "##############gunicorn####################################"
     echo "##########################################################"
-    cat /var/log/st2/st2authstart.log
+    /opt/stackstorm/st2/bin/gunicorn -k eventlet -b 127.0.0.1:9100 --workers 1 --threads 1 --graceful-timeout 10 --timeout 30 --pid /var/run/st2/st2auth.pid >>/var/log/st2/st2authpostapply.log 2>&1
+    echo "retval=$?"
+    echo "##########################################################"
+    echo "##############st2authpostapply############################"
+    echo "##########################################################"
+    cat /var/log/st2/st2authpostapply.log
     echo "##########################################################"
     echo "##############st2auth#####################################"
     echo "##########################################################"

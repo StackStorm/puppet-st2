@@ -121,7 +121,7 @@ class st2::params(
   $st2_services = [
     'st2actionrunner',
     'st2api',
-    'st2auth',
+    #'st2auth',
     'st2garbagecollector',
     'st2notifier',
     'st2resultstracker',

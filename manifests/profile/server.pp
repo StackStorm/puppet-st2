@@ -324,24 +324,24 @@ class st2::profile::server (
     # -> File_line['st2auth_daemon']
     # ~> Service['st2auth']
 
-    file { '/etc/st2/st2auth.sh':
-      ensure  => file,
-      content => "#!/bin/sh\
-/opt/stackstorm/st2/bin/gunicorn \"$@\" >>/var/log/st2/st2authstart.log 2>&1",
-      owner   => 'st2',
-      group   => 'root',
-      mode    => '0775',
-      tag     => 'st2::server',
-    }
+#     file { '/etc/st2/st2auth.sh':
+#       ensure  => file,
+#       content => "#!/bin/sh\
+# /opt/stackstorm/st2/bin/gunicorn \"$@\" >>/var/log/st2/st2authstart.log 2>&1",
+#       owner   => 'st2',
+#       group   => 'root',
+#       mode    => '0775',
+#       tag     => 'st2::server',
+#     }
 
-    file {'/etc/init.d/st2auth':
-      ensure => file,
-      source => 'puppet:///modules/st2/etc/init.d/st2auth',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-      tag    => 'st2::server',
-    }
+#     file {'/etc/init.d/st2auth':
+#       ensure => file,
+#       source => 'puppet:///modules/st2/etc/init.d/st2auth',
+#       owner  => 'root',
+#       group  => 'root',
+#       mode   => '0755',
+#       tag    => 'st2::server',
+#     }
   }
 
 
