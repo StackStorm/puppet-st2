@@ -334,7 +334,7 @@ class st2::profile::server (
       tag     => 'st2::server',
     }
 
-    file {'/etc/init.d/st2auth',
+    file {'/etc/init.d/st2auth':
       ensure  => file,
       source  => 'puppet:///modules/st2/etc/init.d/st2auth',
       owner   => 'root',
