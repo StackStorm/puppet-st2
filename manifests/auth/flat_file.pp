@@ -65,5 +65,5 @@ class st2::auth::flat_file(
   ##############
   # Dependencies
   File[$htpasswd_file]
-  -> Service['st2auth']
+  -> Service<| title == 'st2auth' |>
 }
