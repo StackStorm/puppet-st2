@@ -109,11 +109,16 @@ daemon() {
         fi
 
         # Wrap daemon command call with nohup, if background options is given.
-        [ -z "$background" ] && daemoncmd="$*" ||
+        daemoncmd="$*"
+        if [ -z "$background" ]; then
+        else
             daemoncmd="nohup </dev/null 1>/dev/null 2>&1 $* &"
+        fi
         
-        [ -z "$backgroundwithlogs" ] && daemoncmd="$*" ||
+        if [ -z "$backgroundwithlogs" ]; then
+        else
             daemoncmd="nohup </dev/null >>/logs/daemon.log 2>&1 $* &"
+        fi
         
         # And start it up.
         : ${user:=root}
