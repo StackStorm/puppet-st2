@@ -49,7 +49,7 @@ start() {
            $DAEMON $DAEMON_ARGS
     daemon_pid=$(cat $PIDFILE)
     echo "Deamon $NAME started, waiting for PID: $daemon_pid" >>/logs/init.log 2>&1
-    waitforpid --pidfile=${PIDFILE}
+    waitforpid --pidfile=${PIDFILE} --timeout=10.0
     retval=$?
     echo "waitforpid got return value: $retval" >>/logs/init.log 2>&1
     [ $retval -ne 0 ] && return $retval
