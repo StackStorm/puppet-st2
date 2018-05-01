@@ -37,7 +37,7 @@ provisioner:
     echo "##########################################################"
     echo "##############gunicorn####################################"
     echo "##########################################################"
-    /opt/stackstorm/st2/bin/gunicorn -k eventlet -b 127.0.0.1:9100 --workers 1 --threads 1 --graceful-timeout 10 --timeout 30 --pid /var/run/st2/st2auth.pid >>/var/log/st2/st2authpostapply.log 2>&1
+    runuser -s /bin/bash st2 -c "/opt/stackstorm/st2/bin/gunicorn -k eventlet -b 127.0.0.1:9100 --workers 1 --threads 1 --graceful-timeout 10 --timeout 30 --pid /var/run/st2/st2auth.pid >>/var/log/st2/st2authpostapply.log 2>&1"
     echo "retval=$?"
     echo "##########################################################"
     echo "##############st2authpostapply############################"
