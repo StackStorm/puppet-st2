@@ -45,7 +45,7 @@ DAEMON_ARGS="st2auth.wsgi:application ${DAEMON_ARGS}"
 start() {
     echo -n $"Starting $NAME: "
     echo "Starting $NAME" >>/logs/init.log 2>&1
-    daemon --background --check=${NAME} --user=${RUNAS_USER} \
+    daemon --backgroundwithlogs --check=${NAME} --user=${RUNAS_USER} \
         $DAEMON $DAEMON_ARGS
     echo "Deamon $NAME started, waiting for PID" >>/logs/init.log 2>&1
     waitforpid --pidfile=${PIDFILE}

@@ -9,7 +9,7 @@ daemon() {
         local pid base= user= nice= bg= pid_file=
         local cgroup=
         local group= group_opts= suppgroup_opts=
-        local background= daemoncmd=
+        local background= daemoncmd= backgroundwithlogs=
         nicelevel=0
         while [ "$1" != "${1##[-+]}" ]; do
           case $1 in
@@ -55,6 +55,10 @@ daemon() {
                    ;;
             --background)
                    background="yes"
+                   shift
+                   ;;
+            --backgroundwithlogs)
+                   backgroundwithlogs="yes"
                    shift
                    ;;
             [-+][0-9]*)
@@ -108,6 +112,9 @@ daemon() {
         [ -z "$background" ] && daemoncmd="$*" ||
             daemoncmd="nohup </dev/null 1>/dev/null 2>&1 $* &"
         
+        [ -z "$backgroundwithlogs" ] && daemoncmd="$*" ||
+            daemoncmd="nohup </dev/null >>/logs/daemon.log 2>&1 $* &"
+        
         # And start it up.
         : ${user:=root}
         
@@ -115,7 +122,7 @@ daemon() {
         chmod a+rwx /logs
         echo "Starting up: $daemoncmd" >>/logs/init.log
         $cgroup $nice runuser $group_opts $suppgroup_opts $user \
-            -s /bin/bash -c "$corelimit >/dev/null 2>&1 ; $daemoncmd >>/logs/daemon.log 2>&1" >>/logs/init.log 2>&1
+            -s /bin/bash -c "$corelimit >/dev/null 2>&1 ; $daemoncmd" >>/logs/init.log 2>&1
 
         # Write completion message only when starting a real daemon.
         if [ -z "$background" ]; then
