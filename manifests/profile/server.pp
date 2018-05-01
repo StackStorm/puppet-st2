@@ -334,14 +334,23 @@ class st2::profile::server (
 #       tag     => 'st2::server',
 #     }
 
-#     file {'/etc/init.d/st2auth':
-#       ensure => file,
-#       source => 'puppet:///modules/st2/etc/init.d/st2auth',
-#       owner  => 'root',
-#       group  => 'root',
-#       mode   => '0755',
-#       tag    => 'st2::server',
-#     }
+    file {'/etc/init.d/st2auth':
+      ensure => file,
+      source => 'puppet:///modules/st2/etc/init.d/st2auth',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      tag    => 'st2::server',
+    }
+
+    file {'/opt/stackstorm/st2/share/sysvinit/functions':
+      ensure => file,
+      source => 'puppet:///modules/st2/opt/stackstorm/st2/share/sysvinit/functions',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      tag    => 'st2::server',
+    }
   }
 
 
