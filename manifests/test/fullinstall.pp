@@ -7,6 +7,7 @@ else {
 }
 
 class { '::st2':
+  version              => '2.6.0-1',
   mongodb_auth         => $_mongodb_auth,
   chatops_adapter_conf => {
     'HUBOT_ADAPTER' => 'slack',
