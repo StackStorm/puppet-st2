@@ -53,7 +53,7 @@
 #  [*packs*]                - Hash of st2 packages to be installed
 #  [*index_url*]            - Url to the StackStorm Exchange index file. (default undef)
 #  [*syslog*]               - Routes all log messages to syslog
-#  [*syslog_host*]          - Syslog host. Default: localhost
+#  [*syslog_host*]          - Syslog host. Default: 127.0.0.1
 #  [*syslog_protocol*]      - Syslog protocol. Default: udp
 #  [*syslog_port*]          - Syslog port. Default: 514
 #  [*syslog_facility*]      - Syslog facility. Default: local7
@@ -151,7 +151,7 @@ class st2(
   $mistral_api_port         = '8989',
   $mistral_api_service      = false,
   $syslog                   = false,
-  $syslog_host              = 'localhost',
+  $syslog_host              = '127.0.0.1',
   $syslog_protocol          = 'udp',
   $syslog_port              = 514,
   $syslog_facility          = 'local7',

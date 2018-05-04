@@ -89,6 +89,14 @@ class st2::profile::server (
     'mode'   => '0755',
   })
 
+  ensure_resource('file', '/var/run/st2', {
+    'ensure' => 'directory',
+    'owner'  => 'st2',
+    'group'  => 'root',
+    'mode'   => '0755',
+    'tag'    => 'st2::server',
+  })
+
   ########################################
   ## Config
   file { '/etc/st2':
@@ -300,10 +308,51 @@ class st2::profile::server (
   ########################################
   ## Services
   service { $::st2::params::st2_services:
-    ensure => 'running',
-    enable => true,
-    tag    => 'st2::service',
+    ensure   => 'running',
+    enable   => true,
+    loglevel => 'debug',
+    tag      => 'st2::service',
   }
+
+  if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
+    # file_line { 'st2auth_daemon':
+    #   path  => '/etc/init.d/st2auth',
+    #   match => '^DAEMON=/opt/stackstorm/st2/bin/gunicorn$',
+    #   line  => 'DAEMON=/etc/st2/st2auth.sh',
+    # }
+    # Package<| tag == 'st2::server::packages' |>
+    # -> File_line['st2auth_daemon']
+    # ~> Service['st2auth']
+
+#     file { '/etc/st2/st2auth.sh':
+#       ensure  => file,
+#       content => "#!/bin/sh\
+# /opt/stackstorm/st2/bin/gunicorn \"$@\" >>/var/log/st2/st2authstart.log 2>&1",
+#       owner   => 'st2',
+#       group   => 'root',
+#       mode    => '0775',
+#       tag     => 'st2::server',
+#     }
+
+    file {'/etc/init.d/st2auth':
+      ensure => file,
+      source => 'puppet:///modules/st2/etc/init.d/st2auth',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      tag    => 'st2::server',
+    }
+
+    file {'/opt/stackstorm/st2/share/sysvinit/functions':
+      ensure => file,
+      source => 'puppet:///modules/st2/opt/stackstorm/st2/share/sysvinit/functions',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+      tag    => 'st2::server',
+    }
+  }
+
 
   ########################################
   ## st2 user (stanley)
@@ -325,6 +374,10 @@ class st2::profile::server (
 
   Package<| tag == 'st2::server::packages' |>
   -> Class['::st2::stanley']
+  -> Service<| tag == 'st2::service' |>
+
+  Package<| tag == 'st2::server::packages' |>
+  -> File<| tag == 'st2::server' |>
   -> Service<| tag == 'st2::service' |>
 
   Service<| tag == 'st2::service' |>
