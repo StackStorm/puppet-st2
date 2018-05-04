@@ -151,7 +151,7 @@ class st2(
   $mistral_api_port         = '8989',
   $mistral_api_service      = false,
   $syslog                   = false,
-  $syslog_host              = '127.0.0.1',
+  $syslog_host              = 'localhost',
   $syslog_protocol          = 'udp',
   $syslog_port              = 514,
   $syslog_facility          = 'local7',
