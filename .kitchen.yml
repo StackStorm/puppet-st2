@@ -6,7 +6,9 @@ driver:
   require_chef_omnibus: false
 
 transport:
-  name: sftp
+  #name: sftp
+  # using ssh instead of sftp because of inspec verifier
+  name: ssh
 
 provisioner:
   # in the container, run: puppet apply
@@ -99,3 +101,9 @@ platforms:
 
 suites:
   - name: default
+
+verifier:
+  name: inspec
+  inspec_tests:
+    - path: test/integration/1-system
+    - path: test/integration/2-stackstorm
