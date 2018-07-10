@@ -3,6 +3,11 @@
 
 FROM stackstorm/packagingtest:centos7-systemd
 
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+RUN localectl set-locale LANG=en_US.UTF-8
+
 RUN mkdir -p /var/run/sshd
 RUN useradd -d /home/<%= @username %> -m -s /bin/bash <%= @username %>
 RUN echo <%= "#{@username}:#{@password}" %> | chpasswd
