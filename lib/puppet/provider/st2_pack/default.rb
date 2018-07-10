@@ -7,17 +7,17 @@ Puppet::Type.type(:st2_pack).provide(:default) do
 
     def list_installed_packs
         token = st2_authenticate
-        output = st2('pack', 'list', '-a', 'name', '-j', '-t', token)
+        output = exec_st2('pack', 'list', '-a', 'name', '-j', '-t', token)
         parse_output_json(output)
     end
 
-    # Get admin token 
+    # Get admin token
     def st2_authenticate
         # Reuse previous token
         if @token
             return @token
         else
-            @token = st2('auth', resource[:user], '-t', '-p', resource[:password]).chomp
+            @token = exec_st2('auth', resource[:user], '-t', '-p', resource[:password]).chomp
         end
     end
 
@@ -28,12 +28,12 @@ Puppet::Type.type(:st2_pack).provide(:default) do
         else
             source = @resource[:name]
         end
-        st2('pack', 'install', '-t', token, source)
+        exec_st2('pack', 'install', '-t', token, source)
     end
 
     def destroy
         token = st2_authenticate
-        st2('pack', 'remove', '-t', token, @resource[:name])
+        exec_st2('pack', 'remove', '-t', token, @resource[:name])
     end
 
     def exists?
@@ -50,5 +50,13 @@ Puppet::Type.type(:st2_pack).provide(:default) do
         debug("Installed packs: #{result}")
         result
     end
-end
 
+    private
+
+    # execute the st2 command and use the system locale (UTF8)
+    # so that the st2 CLI doesn't complain and throw errors
+    def exec_st2(*args)
+      Puppet::Util::Execution.execute([command(:st2)] + args,
+                                      {:override_locale => false})
+    end
+end
