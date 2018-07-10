@@ -3,12 +3,6 @@
 
 FROM stackstorm/packagingtest:trusty-upstart
 
-# Set the locale
-RUN sed -i 's/LANG=.*/LANG="en_US.UTF-8"/g' /etc/default/locale
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8
-
 RUN mkdir -p /var/run/sshd
 RUN useradd -d /home/<%= @username %> -m -s /bin/bash <%= @username %>
 RUN echo '<%= @username %> ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
