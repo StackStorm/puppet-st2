@@ -75,6 +75,7 @@ class st2::profile::mistral(
     password_hash => postgresql_password($db_username, $db_password),
     createdb      => true,
     before        => Postgresql::Server::Database[$db_name],
+    require       => Class['::postgresql::server'],
   }
 
   postgresql::server::database { $db_name:
