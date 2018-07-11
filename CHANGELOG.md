@@ -12,6 +12,11 @@
   forward, packages will have `ensure => present` set by default  and it will be
   the responsibility of the end user to update the packages. (Change)
   Contributed by @nmaludy
+- Fixed `st2_pack` type to properly pass the locale settings of the system
+  to the `st2` CLI command. (Bugfix)
+  Contributed by @nmaludy
+- Added support for new `st2workflowengine` (Orchestra) service (Feature)!
+  Contributed by @nmaludy
 
 ## 1.0.0-rc2 (Jan 9, 2018)
 
