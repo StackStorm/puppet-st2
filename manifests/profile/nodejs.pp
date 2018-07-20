@@ -50,7 +50,7 @@ class st2::profile::nodejs(
       class { '::nodejs':
         manage_package_repo => false,
         npm_package_ensure  => 'present',
-        require             => Class['::epel']
+        require             => Class['::epel'],
       }
 
       # TODO remove all of this when we remove support for Puppet 3
