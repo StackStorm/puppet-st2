@@ -7,10 +7,26 @@
   GitHub page. The following backends are supported: `flat_file` (default),
   `keystone`, `ldap`, `mongodb`, `pam`. (Feature)
   Contributed by @nmaludy
+  
 - Changed the behavior of `st2` packages. Previously they were automatically 
   updating due to the package resources having `ensure => latest` set. Going
   forward, packages will have `ensure => present` set by default  and it will be
   the responsibility of the end user to update the packages. (Change)
+  Contributed by @nmaludy
+  
+- Fixed `st2_pack` type to properly pass the locale settings of the system
+  to the `st2` CLI command. (Bugfix)
+  Contributed by @nmaludy
+  
+- Added support for new `st2workflowengine` (Orchestra) service (Feature)!
+  Contributed by @nmaludy
+
+- Fixed bug where CentOS 7 would sometimes fail to install NodeJS properly.
+  (Bugfix)
+  Contributed by @nmaludy
+
+- DEPRECATION WARNING - Support for Puppet 3 will be dropped in the next
+  minor release!
   Contributed by @nmaludy
 
 ## 1.0.0-rc2 (Jan 9, 2018)
