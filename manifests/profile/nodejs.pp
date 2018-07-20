@@ -50,15 +50,17 @@ class st2::profile::nodejs(
       class { '::nodejs':
         manage_package_repo => false,
         npm_package_ensure  => 'present',
+        require             => Class['::epel'],
       }
+
+      # TODO remove all of this when we remove support for Puppet 3
+      #   the following is required because of a bug in the verison of
+      #   puppet-nodejs that we're required to use for Puppet 3.
+      #   This bug is fixed in newer versions and only exposes itself
+      #   when `manage_manage_repo` is set to false, like we have here
+      #   for CentOS 7.
       Class['::epel']
-      -> Class['::nodejs']
-
-      Yumrepo['epel']
-      -> Class['::nodejs']
-
-      Yumrepo['epel']
-      -> Package<| tag == 'nodesource_repo' |>
+      -> Class['::nodejs::install']
     }
     else {
       # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
