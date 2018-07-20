@@ -64,8 +64,14 @@ class st2::profile::nodejs(
       File['/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7']
       -> Class['::nodejs']
 
+      File['/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7']
+      -> Package<| tag == 'nodesource_repo' |>
+
       Epel::Rpm_gpg_key['EPEL-7']
       -> Class['::nodejs']
+
+      Epel::Rpm_gpg_key['EPEL-7']
+      -> Package<| tag == 'nodesource_repo' |>
     }
     else {
       # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
