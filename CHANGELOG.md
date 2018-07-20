@@ -21,6 +21,10 @@
 - Added support for new `st2workflowengine` (Orchestra) service (Feature)!
   Contributed by @nmaludy
 
+- Fixed bug where CentOS 7 would sometimes fail to install NodeJS properly.
+  (Bugfix)
+  Contributed by @nmaludy
+
 - DEPRECATION WARNING - Support for Puppet 3 will be dropped in the next
   minor release!
   Contributed by @nmaludy
