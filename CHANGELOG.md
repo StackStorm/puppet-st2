@@ -2,6 +2,9 @@
 
 ## Development
 
+
+## 1.0.0 (Jul 20, 2018)
+
 - Added an implementation for every auth backend available (at the time).
   All auth backends can be configured with every parameter detailed on their
   GitHub page. The following backends are supported: `flat_file` (default),
