@@ -24,13 +24,11 @@ get you setup and going with minimal effort. Simply:
 include ::st2::profile::fullinstall
 ```
 
-## Deprecation Warning - Puppet 3
+## :warning: Deprecation Warning - Puppet 3
 
-<aside class="warning">
-Puppet 3 was end of life on 12/31/2016. This serves as the official deprecation
+**Puppet 3 was end of life on 12/31/2016. This serves as the official deprecation
 warning notice. The next minor release of this module WILL drop support for
-Puppet 3.
-</aside>
+Puppet 3.**
 
 ## Configuration
 
