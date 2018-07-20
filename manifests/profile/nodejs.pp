@@ -50,8 +50,22 @@ class st2::profile::nodejs(
       class { '::nodejs':
         manage_package_repo => false,
         npm_package_ensure  => 'present',
-        require             => Class['::epel'],
+        require             => Class['::epel']
       }
+
+      # TODO remove all of this when we remove support for Puppet 3
+      # the following is required because of Puppet 3's ordering guarnatees
+      Yumrepo['epel']
+      -> Class['::nodejs']
+
+      Yumrepo['epel']
+      -> Package<| tag == 'nodesource_repo' |>
+
+      File['/etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7']
+      -> Class['::nodejs']
+
+      Epel::Rpm_gpg_key['EPEL-7']
+      -> Class['::nodejs']
     }
     else {
       # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
