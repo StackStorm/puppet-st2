@@ -11,9 +11,9 @@ license: Apache-2.0
 version: 0.1.0
 supports:
   - os-name: centos
-    release: 6
+    release: 6.*
   - os-name: centos
-    release: 7
+    release: 7.*
   - os-name: ubuntu
     release: 14.04
   - os-name: ubuntu
