@@ -87,14 +87,14 @@ control 'st2web' do
 
   describe http('https://localhost/', ssl_verify: false, enable_remote_worker: true) do
     its('status') { should cmp 200 }
-    its('body') { should match /st2constants/ }
+    its('body') { should match (/st2constants/) }
   end
 
   # StackStorm API URL endpoints check, defined in nginx
   %w(api auth stream).each do |service|
     describe http("https://localhost/#{service}/", ssl_verify: false, enable_remote_worker: true) do
       its('headers.content-type') { should cmp 'application/json' }
-      its('headers.access-control-allow-headers') { should match /St2-Api-Key/ }
+      its('headers.access-control-allow-headers') { should match (/St2-Api-Key/) }
     end
   end
 end

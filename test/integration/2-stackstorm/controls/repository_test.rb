@@ -5,15 +5,28 @@
 control 'st2-repo' do
   title 'StackStorm apt repository check'
   desc '
-    Ensure that stackstorm apt package repository is installed, enabled and actually works.
+    Ensure that StackStorm package repository (apt or yum) is installed, enabled and actually works.
   '
 
-  describe file '/etc/apt/sources.list.d/StackStorm_stable.list' do
-    it { should exist }
+  if os.debian?
+    describe file '/etc/apt/sources.list.d/StackStorm_stable.list' do
+      it { should exist }
+    end
+  elsif os.redhat?
+    describe file '/etc/yum.repos.d/StackStorm_stable.repo' do
+      it { should exist }
+    end
   end
 
-  describe apt('https://packagecloud.io/StackStorm/stable/ubuntu/') do
-    it { should exist }
-    it { should be_enabled }
+  if os.debian?
+    describe apt('https://packagecloud.io/StackStorm/stable/ubuntu') do
+      it { should exist }
+      it { should be_enabled }
+    end
+  elsif os.redhat?
+    describe yum.repo('StackStorm_stable') do
+      it { should exist }
+      it { should be_enabled }
+    end
   end
 end

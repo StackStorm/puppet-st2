@@ -28,3 +28,4 @@ clean-bundler:
 	@echo
 	rm -rf build/kitchen/.bundle
 	rm -rf build/kitchen/vendor
+	rm -rf /tmp/puppet-st2/build

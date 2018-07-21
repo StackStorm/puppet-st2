@@ -35,7 +35,7 @@ control 'st2-user' do
     it { should_not be_executable.by('group') }
   end
 
-  describe file('/home/stanley/.ssh/stanley_rsa') do
+  describe file('/home/stanley/.ssh/st2_stanley_key') do
     it { should exist }
     its('owner') { should eq 'stanley' }
     its('group') { should eq 'stanley' }
@@ -48,7 +48,7 @@ control 'st2-user' do
     it { should_not be_executable }
   end
 
-  describe file('/home/stanley/.ssh/stanley_rsa.pub') do
+  describe file('/home/stanley/.ssh/st2_stanley_key.pub') do
     it { should exist }
     its('owner') { should eq 'stanley' }
     its('group') { should eq 'stanley' }
@@ -74,7 +74,7 @@ control 'st2-user' do
     it { should_not be_executable }
   end
 
-  describe file('/etc/sudoers.d/st2') do
+  describe file('/etc/sudoers.d/10_stanley') do
     it { should exist }
     its('content') { should match(%r{stanley\s.*?ALL\=\(ALL\)\s.*?NOPASSWD:\s.*?SETENV:\s.*?ALL}) }
   end

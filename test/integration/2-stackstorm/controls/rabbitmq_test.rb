@@ -16,7 +16,7 @@ control 'rabbitmq' do
     it { should exist }
     # RabbitMQ should listen on localhost only
     # @link: https://github.com/StackStorm/st2-packages/blob/a93701d98a130f50f7cb551e842889212ece3b11/scripts/st2bootstrap-deb.sh#L425-L426
-    its('content') { should match /^RABBITMQ_NODE_IP_ADDRESS=127.0.0.1$/ }
+    its('content') { should match (/^RABBITMQ_NODE_IP_ADDRESS=127.0.0.1$/) }
   end
 
   describe service('rabbitmq-server') do
@@ -28,7 +28,7 @@ control 'rabbitmq' do
   describe port(5672) do
     it { should be_listening }
     its('processes') { should include 'beam.smp' }
-    its('addresses') { should eq ['127.0.0.1'] }
+    its('addresses') { should be_in ['127.0.0.1', '::'] }
     its('protocols') { should cmp 'tcp' }
   end
 

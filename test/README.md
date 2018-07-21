@@ -14,3 +14,25 @@ This might be useful during development.
 
 > Please don't forget to include respective tests for every new critical feature of the system!<br>
 > See existing `/tests` examples which make it easy to add more tests.
+
+
+## Running inspect against an existing container (if kitchen failed)
+
+``` shell
+export BUNDLE_GEMFILE=build/kitchen/Gemfile
+bundle config --local path build/kitchen/vendor/cache
+bundle install
+bundle exec inspec exec --sudo --sudo-command="sudo -i" -i .kitchen/docker_id_rsa -t ssh://kitchen@localhost:32769 test/integration/2-stackstorm
+```
+
+``` shell
+export KITCHEN_PORT=$(grep 'port:' .kitchen/default-ubuntu16.yml | awk '{print $2}')
+bundle exec inspec exec --sudo --sudo-command="sudo -i" -i .kitchen/docker_id_rsa -t ssh://kitchen@localhost:$KITCHEN_PORT test/integration/2-stackstorm/
+```
+
+ssh -oPort=32769 -i .kitchen/docker_id_rsa kitchen@localhost
+
+scp -r -oPort=32769 -i .kitchen/docker_id_rsa manifests/* kitchen@localhost:/tmp/kitchen/manifests/
+
+
+export MANIFESTDIR='/tmp/kitchen/manifests'; sudo -E puppet apply /tmp/kitchen/manifests/test/fullinstall.pp --modulepath=/tmp/kitchen/modules --fileserverconfig=/tmp/kitchen/fileserver.conf      --detailed-exitcodes
