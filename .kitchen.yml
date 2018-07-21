@@ -40,7 +40,7 @@ platforms:
   - name: centos6
     driver:
       platform: centos
-      dockerfile7: build/centos6/Dockerfile.kitchen
+      dockerfile: build/centos6/Dockerfile.kitchen
       run_command: /usr/sbin/sshd -D
     provisioner:
       puppetfile_path: build/centos6/Puppetfile
