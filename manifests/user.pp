@@ -98,14 +98,14 @@ define st2::user(
         ensure => file,
         owner  => $name,
         group  => $name,
-        mode   => '0600'
+        mode   => '0600',
       }
 
       file { "${ssh_dir}/st2_${name}_key.pub":
         ensure => file,
         owner  => $name,
         group  => $name,
-        mode   => '0644'
+        mode   => '0644',
       }
     }
     else {
