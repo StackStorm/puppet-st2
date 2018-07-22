@@ -260,35 +260,6 @@ in its prefetch step when authentication hasn't been configured yet on
 the database. The error can be safely ignored. Auth and databases will be 
 configured normally. Subsequent runs of puppet will not show this error.
 
-### MongoDB (Puppet >= 4.0)
-
-When running the initial install of `st2` you will see an error from the 
-MongoDB module :
-
-```
-Error: Could not prefetch mongodb_database provider 'mongodb': Could not evaluate MongoDB shell command: load('/root/.mongorc.js'); printjson(db.getMongo().getDBs())
-```
-
-This error is caused by a deficiency in this module trying to use authentication
-in its prefetch step when authentication hasn't been configured yet on
-the database. This results in a failure and stops processing.
-
-In these cases we need to disable auth for MongoDB using the `mondob_auth` variabe.
-This can be accomplished when declaring the `::st2` class:
-
-``` puppet
-class { '::st2':
-  mongodb_auth => false,
-}
-```
-
-Or in hiera:
-
-``` yaml
-st2:
-  mongodb_auth: false
-```
-
 ### Ubuntu 14.04
 
 Because 14.04 ships with a very old version of puppet (3.4) and most puppet modules
