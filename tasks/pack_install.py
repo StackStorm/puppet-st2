@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 #
 # Testing:
+#  # need to create a symlink because puppet-st2 doesn't match the module name
+#  ln -s ~/src/git/puppet-st2 ~/tmp/bolt/st2
 #  bolt task run --modulepath ~/tmp/bolt/ st2::pack_install pack="git" username="st2admin" password="xxx" --noop --nodes stackstorm.domain.tld --no-host-key-check
-#
-# TODO:
-#  Figure out how to handle the non-UTF-8 error
 #
 import json
 import subprocess
@@ -39,7 +38,10 @@ def make_error(msg):
 def check_output(*popenargs, **kwargs):
     if 'stdout' in kwargs:
         raise ValueError('stdout argument not allowed, it will be overridden.')
-    process = subprocess.Popen(stdout=PIPE, stderr=PIPE, *popenargs, **kwargs)
+    process = subprocess.Popen(stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE,
+                               *popenargs,
+                               **kwargs)
     stdout, stderr = process.communicate()
     retcode = process.poll()
     if retcode:
@@ -48,7 +50,6 @@ def check_output(*popenargs, **kwargs):
             cmd = popenargs[0]
         raise subprocess.CalledProcessError(retcode, cmd, output=(stdout + stderr))
     return (stdout, stderr)
-
 
 result = {}
 try:
@@ -66,9 +67,8 @@ try:
             raise ValueError("'password' must be specified if not providing 'api_key' or 'auth_token'")
 
         # auth on the command line, reuse the auth token for all subsequent calls
-        output = subprocess.check_output(['st2', 'auth', '--only-token', '-p', password, username],
-                                         stderr=subprocess.STDOUT)
-        env['ST2_AUTH_TOKEN'] = output
+        stdout, stderr = check_output(['st2', 'auth', '--only-token', '-p', password, username])
+        env['ST2_AUTH_TOKEN'] = stdout.rstrip()
 
     if noop:
         result['_noop'] = True
@@ -77,15 +77,16 @@ try:
         if is_url:
             result['url'] = True
         else:
-            output = subprocess.check_output(['st2', 'pack', 'show', '--json', pack],
-                                             stderr=subprocess.STDOUT,
-                                             env=env)
-            result.update(json.loads(output))
+            stdout, stderr = check_output(['st2', 'pack', 'show', '--json', pack],
+                                          env=env)
+            result.update(json.loads(stdout))
     else:
-        output = subprocess.check_output(['st2', 'pack', 'install', '--json', pack],
-                                         stderr=subprocess.STDOUT,
-                                         env=env)
-        result = json.loads(output)
+        stdout, stderr = check_output(['st2', 'pack', 'install', '--json', pack],
+                                      env=env)
+        # unfortunately `st2 pack install` doesn't output pure JSON
+        # so we have to return just the raw output as a string
+        # https://github.com/StackStorm/st2/issues/4260
+        result.update({'stdout': stdout, 'stderr': stderr})
 
 except subprocess.CalledProcessError as e:
     exitcode = 1
