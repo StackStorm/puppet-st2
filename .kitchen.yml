@@ -110,4 +110,4 @@ verifier:
   # via inspec
   sudo_options: "HOME=/root -u root"
   inspec_tests:
-    - path: test/integration/1-stackstorm
+    - path: test/integration/stackstorm
