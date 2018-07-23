@@ -27,14 +27,28 @@ pack = params['pack']
 exitcode = 0
 
 def make_error(msg):
-  error = {
-      "_error": {
-          "kind": "file_error",
-          "msg": msg,
-          "details": {},
-      }
-  }
-  return error
+    error = {
+        "_error": {
+            "kind": "file_error",
+            "msg": msg,
+            "details": {},
+        }
+    }
+    return error
+
+def check_output(*popenargs, **kwargs):
+    if 'stdout' in kwargs:
+        raise ValueError('stdout argument not allowed, it will be overridden.')
+    process = subprocess.Popen(stdout=PIPE, stderr=PIPE, *popenargs, **kwargs)
+    stdout, stderr = process.communicate()
+    retcode = process.poll()
+    if retcode:
+        cmd = kwargs.get("args")
+        if cmd is None:
+            cmd = popenargs[0]
+        raise subprocess.CalledProcessError(retcode, cmd, output=(stdout + stderr))
+    return (stdout, stderr)
+
 
 result = {}
 try:
