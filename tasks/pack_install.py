@@ -8,6 +8,8 @@
 import json
 import subprocess
 import sys
+import os
+
 try:
     # python 2
     from urlparse import urlparse
@@ -35,25 +37,11 @@ def make_error(msg):
     }
     return error
 
-def check_output(*popenargs, **kwargs):
-    if 'stdout' in kwargs:
-        raise ValueError('stdout argument not allowed, it will be overridden.')
-    process = subprocess.Popen(stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE,
-                               *popenargs,
-                               **kwargs)
-    stdout, stderr = process.communicate()
-    retcode = process.poll()
-    if retcode:
-        cmd = kwargs.get("args")
-        if cmd is None:
-            cmd = popenargs[0]
-        raise subprocess.CalledProcessError(retcode, cmd, output=(stdout + stderr))
-    return (stdout, stderr)
-
 result = {}
 try:
-    env = {}
+    # inherit environment variables from the Bolt context to preserve things
+    # like locale... otherwise we get errors from the StackStorm client.
+    env = os.environ
 
     # prefer API key over auth tokens
     if api_key:
@@ -70,6 +58,7 @@ try:
         stdout, stderr = check_output(['st2', 'auth', '--only-token', '-p', password, username])
         env['ST2_AUTH_TOKEN'] = stdout.rstrip()
 
+    # st2 pack install specific stuff
     if noop:
         result['_noop'] = True
 
@@ -77,16 +66,18 @@ try:
         if is_url:
             result['url'] = True
         else:
-            stdout, stderr = check_output(['st2', 'pack', 'show', '--json', pack],
-                                          env=env)
+            stdout = subprocess.check_output(['st2', 'pack', 'show', '--json', pack],
+                                             stderr=subprocess.STDOUT,
+                                             env=env)
             result.update(json.loads(stdout))
     else:
-        stdout, stderr = check_output(['st2', 'pack', 'install', '--json', pack],
-                                      env=env)
+        stdout = subprocess.check_output(['st2', 'pack', 'install', '--json', pack],
+                                         stderr=subprocess.STDOUT,
+                                         env=env)
         # unfortunately `st2 pack install` doesn't output pure JSON
         # so we have to return just the raw output as a string
         # https://github.com/StackStorm/st2/issues/4260
-        result.update({'stdout': stdout, 'stderr': stderr})
+        result.update({'stdout': stdout})
 
 except subprocess.CalledProcessError as e:
     exitcode = 1
