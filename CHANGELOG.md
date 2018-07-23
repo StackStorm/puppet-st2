@@ -29,6 +29,26 @@
   minor release!
   Contributed by @nmaludy
 
+- Added integration tests using InSpec.
+  Contributed by @nmaludy
+  
+- Added ability to utilize MongoDB auth with Puppet >= 4.0.
+  Contributed by @nmaludy
+  
+- Changed facts for Mistral and now MongoDB to use ghoneycutt/facter. This
+  moves the fact for Mistral from `/etc/facter/facts.d/mistral_bootstrapped.txt`
+  to `/etc/facter/facts.d/facts.txt`.
+  Contributed by @nmaludy
+  
+- Added RabbitMQ not listen address to be `127.0.0.1`.
+  Contributed by @nmaludy
+  
+- Fixed `st2::user` so that it properly create `~/.ssh/authorized_keys`.
+  Contributed by @nmaludy
+  
+- Fixed group ownership of `st2::user` SSH keys to be `$name` instead of `root`.
+  Contributed by @nmaludy
+
 ## 1.0.0-rc2 (Jan 9, 2018)
 
 - Fixed a bug in st2chatops configuration where the wrong URLs for ST2_API and
