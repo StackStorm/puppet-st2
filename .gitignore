@@ -8,3 +8,4 @@ bin
 coverage
 pkg
 vendor
+Puppetfile.lock
