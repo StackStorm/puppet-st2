@@ -1,0 +1,27 @@
+{
+  "puppet_task_version": 1,
+  "supports_noop": true,
+  "description": "Install a StackStorm pack. Requires --tty",
+  "parameters": {
+    "pack": {
+      "description": "Name of the pack in Exchange, or a git repo URL.",
+      "type": "String[1]"
+    },
+    "api_key": {
+      "description": "StackStorm API key to use for authentication (prefer this over username/password).",
+      "type": "Optional[Sensitive[String]]"
+    },
+    "auth_token": {
+      "description": "StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.",
+      "type": "Optional[Sensitive[String]]"
+    },
+    "username": {
+      "description": "Username to use for StackStorm authentication.",
+      "type": "Optional[String]"
+    },
+    "password": {
+      "description": "Password to use for StackStorm authentication.",
+      "type": "Optional[String]"
+    }
+  }
+}
