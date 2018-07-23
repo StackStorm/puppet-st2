@@ -1,4 +1,11 @@
 #!/usr/bin/env python
+#
+# Testing:
+#  bolt task run --modulepath ~/tmp/bolt/ st2::pack_install pack="git" username="st2admin" password="xxx" --noop --nodes stackstorm.domain.tld --no-host-key-check
+#
+# TODO:
+#  Figure out how to handle the non-UTF-8 error
+#
 import json
 import subprocess
 import sys
