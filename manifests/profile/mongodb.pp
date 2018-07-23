@@ -78,6 +78,91 @@ class st2::profile::mongodb (
         admin_username => $::st2::params::mongodb_admin_username,
         admin_password => $db_password,
       }
+
+      # Fix mongodb auth for puppet >= 4
+      # In puppet-mongodb module, latest versions used with Puppet >= 4, the
+      # auth parameter is broken and doesn't work properly on the first run.
+      # https://github.com/voxpupuli/puppet-mongodb/issues/437
+      #
+      # The problem is because Puppet enables auth before setting the password
+      # on the admin database.
+      #
+      # The code below fixes this by first disabling auth, then creates the
+      # database, the re-enables auth.
+      #
+      # To prevent this from running every time we've create a puppet fact
+      # called $::mongodb_auth_init that is set when
+      if versioncmp( $::puppetversion, '4.0.0') >= 0 and !$::mongodb_auth_init {
+
+        # unfortinately there is no way to synchronously force a service restart
+        # in Puppet, so we have to revert to exec... sorry
+        include ::mongodb::params
+        if (($::osfamily == 'Debian' and $::operatingsystemmajrelease == '14.04') or
+            ($::osfamily == 'RedHat' and $::operatingsystemmajrelease == '6')) {
+          $_mongodb_stop_cmd = "service ${::mongodb::params::service_name} stop"
+          $_mongodb_start_cmd = "service ${::mongodb::params::service_name} start"
+          $_mongodb_restart_cmd = "service ${::mongodb::params::service_name} restart"
+        }
+        else {
+          $_mongodb_stop_cmd = "systemctl stop ${::mongodb::params::service_name}"
+          $_mongodb_start_cmd = "systemctl start ${::mongodb::params::service_name}"
+          $_mongodb_restart_cmd = "systemctl restart ${::mongodb::params::service_name}"
+        }
+        $_mongodb_exec_path = ['/usr/sbin', '/usr/bin', '/sbin', '/bin']
+
+        # stop mongodb; disable auth
+        exec { 'mongodb - stop service':
+          command => $_mongodb_stop_cmd,
+          unless  => 'grep "^security.authorization: disabled" /etc/mongod.conf',
+          path    => $_mongodb_exec_path,
+        }
+        exec { 'mongodb - disable auth':
+          command     => 'sed -i \'s/security.authorization: enabled/security.authorization: disabled/g\' /etc/mongod.conf',
+          refreshonly => true,
+          path        => $_mongodb_exec_path,
+        }
+        facter::fact { 'mongodb_auth_init':
+          value => bool2str(true),
+        }
+
+        # start mongodb with auth disabled
+        exec { 'mongodb - start service':
+          command     => $_mongodb_start_cmd,
+          refreshonly => true,
+          path        => $_mongodb_exec_path,
+        }
+
+        # create mongodb admin database with auth disabled
+
+        # enable auth
+        exec { 'mongodb - enable auth':
+          command => 'sed -i \'s/security.authorization: disabled/security.authorization: enabled/g\' /etc/mongod.conf',
+          unless  => 'grep "^security.authorization: enabled" /etc/mongod.conf',
+          path    => $_mongodb_exec_path,
+        }
+        exec { 'mongodb - restart service':
+          command     => $_mongodb_restart_cmd,
+          refreshonly => true,
+          path        => $_mongodb_exec_path,
+        }
+
+        # ensure MongoDB config is present and service is running
+        Class['mongodb::server::config']
+        -> Class['mongodb::server::service']
+        # stop mongodb; disable auth
+        -> Exec['mongodb - stop service']
+        ~> Exec['mongodb - disable auth']
+        ~> Facter::Fact['mongodb_auth_init']
+        # start mongodb with auth disabled
+        ~> Exec['mongodb - start service']
+        # create mongodb admin database with auth disabled
+        -> Mongodb::Db['admin']
+        # enable auth
+        ~> Exec['mongodb - enable auth']
+        ~> Exec['mongodb - restart service']
+        # create other databases
+        -> Mongodb::Db <| title != 'admin' |>
+      }
     }
     else {
       class { '::mongodb::server':
@@ -85,10 +170,12 @@ class st2::profile::mongodb (
       }
     }
 
+    # setup proper ordering
     Class['mongodb::globals']
     -> Class['mongodb::client']
     -> Class['mongodb::server']
 
+    # Handle more special cases of things that didn't work properly...
     case $::osfamily {
       'RedHat': {
         Package <| tag == 'mongodb' |> {

@@ -117,3 +117,29 @@ The `kitchen` configuration can be found in the `.kitchen.yml` file.
    to use for that OS. The `Puppetfile` is different for each OS because different
    modules versions are required for different old versions of `puppet` and `ruby`.
  * `suites` : Our test suite. In our case this is just `default`
+
+
+## Testing environment setup
+
+The following will install ruby 2.4 for testing purposes, then execute
+all of the unit tests (rspec), execution tests (kitchen) and integration tests
+(InSpec).
+
+```shell
+# install rbenv
+git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+cd ~/.rbenv && src/configure && make -C src
+echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+source ~/.bash_profile
+
+# install ruby-build so we can use: rbenv install
+mkdir -p "$(rbenv root)"/plugins
+git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+
+# install a modern version of ruby
+rbenv install 2.4.4
+
+# set the version of ruby in the current shell
+rbenv shell 2.4.4
+```

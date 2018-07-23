@@ -99,3 +99,15 @@ platforms:
 
 suites:
   - name: default
+
+verifier:
+  name: inspec
+  sudo: true
+  # by default `sudo` doesn't set many of the environment variables.
+  # we need to tell sudo to set the $HOME env var to /root.
+  # this way it picks up ~/.st2/config for the root user, configured by Puppet
+  # this ~/.st2/config contains auth credentials to test out st2 comamnds
+  # via inspec
+  sudo_options: "HOME=/root -u root"
+  inspec_tests:
+    - path: test/integration/stackstorm

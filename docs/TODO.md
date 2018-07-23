@@ -25,3 +25,4 @@
 - Bolt Task for upgrading StackStorm
 - Tasks for various CLI commands
 - Proper provider implementation for key/value pairs
+- StackStorm facts
