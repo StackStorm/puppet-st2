@@ -7,8 +7,6 @@ driver:
 
 transport:
   name: sftp
-  # using ssh instead of sftp because of inspec verifier
-  #name: ssh
 
 provisioner:
   # in the container, run: puppet apply
@@ -112,4 +110,4 @@ verifier:
   # via inspec
   sudo_options: "HOME=/root -u root"
   inspec_tests:
-    - path: test/integration/2-stackstorm
+    - path: test/integration/stackstorm
