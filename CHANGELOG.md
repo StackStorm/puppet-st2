@@ -2,6 +2,12 @@
 
 ## Development
 
+- Re-ordered dependencies in the Puppetfile for Puppet 4 and Puppet 5.
+  `puppetlabs/stdlib` and `puppetlabs/concat` are now at the bottom in order to
+  let `librarian-puppet` choose the version of these based on other dependencies
+  defined throughout the rest of the file. (Bugfix)
+  Contributed by @nmaludy
+  
 
 ## 1.0.0 (Jul 23, 2018)
 

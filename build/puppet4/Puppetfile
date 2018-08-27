@@ -10,8 +10,6 @@
 forge "https://forgeapi.puppetlabs.com"
 
 mod 'puppet/rabbitmq'
-mod 'puppetlabs/concat'
-mod 'puppetlabs/stdlib'
 mod 'jamtur01/httpauth'
 mod 'puppet/staging'
 mod 'maestrodev/wget'
@@ -30,3 +28,5 @@ mod "puppet/selinux"
 mod 'puppet/nginx'
 mod 'puppet/nodejs'
 mod 'puppetlabs/apt'
+mod 'puppetlabs/concat'
+mod 'puppetlabs/stdlib'
