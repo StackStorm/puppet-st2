@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'coveralls'
 gem 'metadata-json-lint'
-gem 'puppet',                                                    '~> 5.0'
+gem 'puppet',                                                    '~> 4.0'
 gem 'puppet-blacksmith',                                         '>= 3.1.1'
 gem 'puppet-lint',                                               '>= 0.3.2'
 gem 'puppet-lint-absolute_classname-check',                      '>= 0.2.4'
