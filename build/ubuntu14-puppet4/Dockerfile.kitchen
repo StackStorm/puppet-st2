@@ -14,6 +14,11 @@ RUN chown <%= @username %> /home/<%= @username %>/.ssh/authorized_keys
 RUN chmod 0600 /home/<%= @username %>/.ssh/authorized_keys
 RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys
 
+# clean apt-cache before installing puppet, otherwise apt-get update failes
+# later in the run with weird errors
+RUN sudo apt-get -y clean
+RUN sudo apt-get -y update
+
 # install puppet
 # https://puppet.com/docs/puppet/4.10/puppet_collections.html#apt-based-systems
 RUN wget https://apt.puppetlabs.com/puppetlabs-release-pc1-trusty.deb
