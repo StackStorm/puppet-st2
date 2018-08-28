@@ -1,8 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 set -o xtrace
 
-SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 echo $SCRIPT_DIR
 
 export TEST_NAME="$TEST_NAME"
