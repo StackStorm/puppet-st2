@@ -62,17 +62,17 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - BUILD_NAME="Ubuntu 14 - Puppet 5"
-        - TEST_NAME="ubuntu14-puppet4"
-    # - rvm: 2.4
-    #   gemfile: build/kitchen/Gemfile
-    #   env:
-    #     - BUILD_NAME="Ubuntu 16 - Puppet 4"
-    #     - TEST_NAME="ubuntu16-puppet4"
-    # - rvm: 2.4
-    #   gemfile: build/kitchen/Gemfile
-    #   env:
-    #     - BUILD_NAME="Ubuntu 16 - Puppet 5"
-    #     - TEST_NAME="ubuntu16-puppet5"
+        - TEST_NAME="ubuntu14-puppet5"
+    - rvm: 2.4
+      gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Ubuntu 16 - Puppet 4"
+        - TEST_NAME="ubuntu16-puppet4"
+    - rvm: 2.4
+      gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Ubuntu 16 - Puppet 5"
+        - TEST_NAME="ubuntu16-puppet5"
 
 Note: disabling notifications during initial kitchen ci testing
 notifications:
