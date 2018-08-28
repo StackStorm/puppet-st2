@@ -19,11 +19,19 @@ script:
 matrix:
   fast_finish: true
   include:
-    - rvm: 2.4
-      gemfile: build/kitchen/Gemfile
+    - rvm: 2.1
+      # no Gemfile needed for unit testing since we do it inside Docker
+      # gemfile: build/kitchen/Gemfile
       env:
-        - BUILD_NAME="Unit Testing (CentOS 7)"
+        - BUILD_NAME="Unit Testing - Puppet 4 "
         - TEST_NAME="centos7-puppet4"
+        - UNIT_TEST="true"
+    - rvm: 2.4
+      # no Gemfile needed for unit testing since we do it inside Docker
+      # gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Unit Testing - Puppet 5"
+        - TEST_NAME="centos7-puppet5"
         - UNIT_TEST="true"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile

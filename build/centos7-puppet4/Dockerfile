@@ -30,7 +30,7 @@ WORKDIR $APP_HOME
 COPY . $APP_HOME
 
 # use bundler to install our gems
-ENV BUNDLE_GEMFILE=$APP_HOME/build/puppet4/Gemfile \
+ENV BUNDLE_GEMFILE=$APP_HOME/build/centos7-puppet4/Gemfile \
   BUNDLE_JOBS=2 \
   BUNDLE_PATH=/bundle
 RUN cat $BUNDLE_GEMFILE
