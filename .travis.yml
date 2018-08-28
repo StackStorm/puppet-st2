@@ -53,16 +53,16 @@ matrix:
       env:
         - BUILD_NAME="RHEL/CentOS 7 - Puppet 5"
         - TEST_NAME="centos7-puppet5"
-    # - rvm: 2.4
-    #   gemfile: build/kitchen/Gemfile
-    #   env:
-    #     - BUILD_NAME="Ubuntu 14 - Puppet 4"
-    #     - TEST_NAME="ubuntu14-puppet4"
-    # - rvm: 2.4
-    #   gemfile: build/kitchen/Gemfile
-    #   env:
-    #     - BUILD_NAME="Ubuntu 14 - Puppet 5"
-    #     - TEST_NAME="ubuntu14-puppet4"
+    - rvm: 2.4
+      gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Ubuntu 14 - Puppet 4"
+        - TEST_NAME="ubuntu14-puppet4"
+    - rvm: 2.4
+      gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Ubuntu 14 - Puppet 5"
+        - TEST_NAME="ubuntu14-puppet4"
     # - rvm: 2.4
     #   gemfile: build/kitchen/Gemfile
     #   env:
