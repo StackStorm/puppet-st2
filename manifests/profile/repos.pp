@@ -25,4 +25,15 @@ class st2::profile::repos(
   packagecloud::repo { 'StackStorm/stable':
     type => $package_type,
   }
+
+  # On ubuntu 14, the packagecloud repo addition corrupts the apt-cache...
+  # this cleans it out and refreshes it
+  if ($::osfamily == 'Debian' and
+      versioncmp($::operatingsystemmajrelease, '14.04') == 0) {
+    exec { 'Refresh apt-cache after packagecloud':
+      command =>  'rm -rf /var/lib/apt/lists/*; apt-get update',
+      path    => ['/usr/bin/', '/bin/'],
+      require => Packagecloud::Repo['StackStorm/stable'],
+    }
+  }
 }
