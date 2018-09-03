@@ -34,7 +34,7 @@ class st2::profile::repos(
       command     =>  'rm -rf /var/lib/apt/lists/*; apt-get update',
       path        => ['/usr/bin/', '/bin/'],
       refreshonly => true,
-      require     => Packagecloud::Repo['StackStorm/stable'],
+      subscribe   => Packagecloud::Repo['StackStorm/stable'],
     }
   }
 }
