@@ -1,5 +1,5 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-ubuntu16 -f build/ubuntu16/Dockerfile.kitchen .
+# docker build -t stackstorm/puppet-st2-ubuntu16-puppet5 -f build/ubuntu16-puppet5/Dockerfile.kitchen .
 
 FROM stackstorm/packagingtest:xenial-systemd
 
