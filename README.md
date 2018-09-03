@@ -21,14 +21,13 @@ For a full installation on a single node, a profile already exists to
 get you setup and going with minimal effort. Simply:
 
 ```
-include ::st2::profile::fullinstall
+puppet module install stackstorm-st2
+puppet apply -e "include ::st2::profile::fullinstall"
 ```
 
 ## :warning: Deprecation Warning - Puppet 3
 
-**Puppet 3 was end of life on 12/31/2016. This serves as the official deprecation
-warning notice. The next minor release of this module WILL drop support for
-Puppet 3.**
+**Puppet 3 was end of life on 12/31/2016. This module no longer supports Puppet 3 as of version `1.1`**
 
 ## Configuration
 

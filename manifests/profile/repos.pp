@@ -31,9 +31,10 @@ class st2::profile::repos(
   if ($::osfamily == 'Debian' and
       versioncmp($::operatingsystemmajrelease, '14.04') == 0) {
     exec { 'Refresh apt-cache after packagecloud':
-      command =>  'rm -rf /var/lib/apt/lists/*; apt-get update',
-      path    => ['/usr/bin/', '/bin/'],
-      require => Packagecloud::Repo['StackStorm/stable'],
+      command     =>  'rm -rf /var/lib/apt/lists/*; apt-get update',
+      path        => ['/usr/bin/', '/bin/'],
+      refreshonly => true,
+      require     => Packagecloud::Repo['StackStorm/stable'],
     }
   }
 }
