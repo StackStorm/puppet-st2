@@ -83,29 +83,29 @@ RUN chown <%= @username %> /home/<%= @username %>/.ssh/authorized_keys
 RUN chmod 0600 /home/<%= @username %>/.ssh/authorized_keys
 RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/authorized_keys
 
-# clean apt-cache before installing puppet, otherwise apt-get update failes
-# later in the run with weird errors
-RUN sudo apt-get -y clean
-RUN sudo apt-get -y update
-RUN sudo apt-get -y upgrade
+# Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+# we need to install Puppet once the container has started.
+# Do NOT run the following install commands on Ubuntu14, instead let kitchen-puppet
+# install Puppet after the container is built.
 
-# install puppet
-# https://puppet.com/docs/puppet/5.5/puppet_platform.html#apt-based-systems
-RUN wget https://apt.puppetlabs.com/puppet5-release-trusty.deb
-RUN sudo dpkg -i puppet5-release-trusty.deb
-RUN sudo apt-get -y update
-RUN sudo apt-get -y install puppet-agent
+# # install puppet
+# # https://puppet.com/docs/puppet/5.5/puppet_platform.html#apt-based-systems
+# RUN wget https://apt.puppetlabs.com/puppet5-release-trusty.deb
+# RUN sudo dpkg -i puppet5-release-trusty.deb
+# RUN sudo apt-get update
+# RUN sudo apt-get -y install puppet-agent
+# RUN sudo apt-get clean
 
-# put puppet in our path
-ENV PATH="/opt/puppetlabs/bin:${PATH}"
-RUN ln -s /opt/puppetlabs/bin/facter /usr/bin/
-RUN ln -s /opt/puppetlabs/bin/hiera /usr/bin/
-RUN ln -s /opt/puppetlabs/bin/mco /usr/bin/
-RUN ln -s /opt/puppetlabs/bin/puppet /usr/bin/
+# # put puppet in our path
+# ENV PATH="/opt/puppetlabs/bin:${PATH}"
+# RUN ln -s /opt/puppetlabs/bin/facter /usr/bin/
+# RUN ln -s /opt/puppetlabs/bin/hiera /usr/bin/
+# RUN ln -s /opt/puppetlabs/bin/mco /usr/bin/
+# RUN ln -s /opt/puppetlabs/bin/puppet /usr/bin/
 
-# print versions (ruby 2.4.x, puppet 5.x)
-RUN puppet --version
-RUN sudo -E puppet --version
+# # print versions (ruby 2.4.x, puppet 5.x)
+# RUN puppet --version
+# RUN sudo -E puppet --version
 
 # we can have SSH
 EXPOSE 22

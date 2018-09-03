@@ -73,8 +73,8 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/centos7-puppet5/Puppetfile
-
-  # Ubuntu Trusty with Upstart - Puppet4
+      
+  # Ubuntu Trusty with Upstart - Puppet 4
   - name: ubuntu14-puppet4
     driver:
       platform: ubuntu
@@ -83,6 +83,13 @@ platforms:
       run_command: /sbin/init
     provisioner:
       puppetfile_path: build/ubuntu14-puppet4/Puppetfile
+      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+      # we need to install Puppet once the container has started.
+      # Good news, kitchen-puppet supports this with the following commands:
+      require_puppet_omnibus: true
+      require_puppet_collections: true
+      require_puppet_repo: false
+      puppet_omnibus_url: https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_agent.sh
 
   # Ubuntu Trusty with Upstart - Puppet 5
   - name: ubuntu14-puppet5
@@ -93,6 +100,13 @@ platforms:
       run_command: /sbin/init
     provisioner:
       puppetfile_path: build/ubuntu14-puppet5/Puppetfile
+      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+      # we need to install Puppet once the container has started.
+      # Good news, kitchen-puppet supports this with the following commands:
+      require_puppet_omnibus: true
+      require_puppet_collections: true
+      require_puppet_repo: false
+      puppet_omnibus_url: https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_5_agent.sh
 
   # Ubuntu Xenial with Systemd - Puppet 4
   - name: ubuntu16-puppet4
