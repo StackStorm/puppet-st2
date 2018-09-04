@@ -1,0 +1,8 @@
+---
+.gitignore:
+  paths:
+    - .librarian
+    - .kitchen
+    - .tmp
+    - Puppetfile.lock
+    
