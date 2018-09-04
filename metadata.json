@@ -110,5 +110,8 @@
       "name": "puppet",
       "version_requirement": ">= 3.8.5 < 6.0.0"
     }
-  ]
+  ],
+  "pdk-version": "1.7.0",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
+  "template-ref": "1.7.0-0-g57412ed"
 }
