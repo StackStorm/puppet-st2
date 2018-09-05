@@ -25,4 +25,5 @@
 .librarian
 .kitchen
 .tmp
+.bundle
 Puppetfile.lock

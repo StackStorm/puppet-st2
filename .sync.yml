@@ -4,6 +4,7 @@
     - .librarian
     - .kitchen
     - .tmp
+    - .bundle
     - Puppetfile.lock
 .travis.yml:
   # we keep our own .travis.yml because of integration testing
