@@ -29,6 +29,10 @@
   complete cleaned and rebuilt. (Bugfix)
   Contributed by @nmaludy
   
+- Converted module over to PDK (Puppet Development Kit) for unit testing
+  and module templating. (Enhancement)
+  Contributed by @nmaludy
+  
 
 ## 1.0.0 (Jul 23, 2018)
 
