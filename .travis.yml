@@ -14,41 +14,65 @@ bundler_args: --without rake
 # otherwise if you specify >1 command here, travis will try to run them
 # all and if one fails it will ignore the failure and go onto the next
 script:
-  - build/scripts/ci_docker_unit.sh
+  - build/scripts/ci_docker.sh
 
 matrix:
   fast_finish: true
   include:
+    - rvm: 2.1
+      # no Gemfile needed for unit testing since we do it inside Docker
+      # gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Unit Testing - Puppet 4 "
+        - TEST_NAME="centos7-puppet4"
+        - UNIT_TEST="true"
+    - rvm: 2.4
+      # no Gemfile needed for unit testing since we do it inside Docker
+      # gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Unit Testing - Puppet 5"
+        - TEST_NAME="centos7-puppet5"
+        - UNIT_TEST="true"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
-        - BUILD_NAME="RHEL/CentOS 6"
-        - TEST_NAME="centos6"
+        - BUILD_NAME="RHEL/CentOS 6 - Puppet 4"
+        - TEST_NAME="centos6-puppet4"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
-        - BUILD_NAME="RHEL/CentOS 7"
-        - TEST_NAME="centos7"
+        - BUILD_NAME="RHEL/CentOS 6 - Puppet 5"
+        - TEST_NAME="centos6-puppet5"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
-        - BUILD_NAME="Ubuntu 14"
-        - TEST_NAME="ubuntu14"
+        - BUILD_NAME="RHEL/CentOS 7 - Puppet 4"
+        - TEST_NAME="centos7-puppet4"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
-        - BUILD_NAME="Ubuntu 16"
-        - TEST_NAME="ubuntu16"
+        - BUILD_NAME="RHEL/CentOS 7 - Puppet 5"
+        - TEST_NAME="centos7-puppet5"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
-        - BUILD_NAME="Puppet 4 (generic)"
-        - TEST_NAME="puppet4"
+        - BUILD_NAME="Ubuntu 14 - Puppet 4"
+        - TEST_NAME="ubuntu14-puppet4"
     - rvm: 2.4
       gemfile: build/kitchen/Gemfile
       env:
-        - BUILD_NAME="Puppet 5 (generic)"
-        - TEST_NAME="puppet5"
+        - BUILD_NAME="Ubuntu 14 - Puppet 5"
+        - TEST_NAME="ubuntu14-puppet5"
+    - rvm: 2.4
+      gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Ubuntu 16 - Puppet 4"
+        - TEST_NAME="ubuntu16-puppet4"
+    - rvm: 2.4
+      gemfile: build/kitchen/Gemfile
+      env:
+        - BUILD_NAME="Ubuntu 16 - Puppet 5"
+        - TEST_NAME="ubuntu16-puppet5"
 
 Note: disabling notifications during initial kitchen ci testing
 notifications:

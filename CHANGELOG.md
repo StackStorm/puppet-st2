@@ -2,10 +2,31 @@
 
 ## Development
 
+- DEPRECATION WARNING - Dropped support for Puppet 3. (Enhancement)
+  Contributed by @nmaludy
+  
+- Added tests for Puppet 4 and Puppet 5 on all platforms:
+  - RHEL/CentOS 6
+  - RHEL/CentOS 7
+  - Ubunut 14.04
+  - Ubunut 16.04
+  Contributed by @nmaludy
+  
 - Re-ordered dependencies in the Puppetfile for Puppet 4 and Puppet 5.
   `puppetlabs/stdlib` and `puppetlabs/concat` are now at the bottom in order to
   let `librarian-puppet` choose the version of these based on other dependencies
   defined throughout the rest of the file. (Bugfix)
+  Contributed by @nmaludy
+
+- Fixed MongoDB race condition when enabling auth. Now we try to establish
+  a connection to the database in a loop (using `mongodb_conn_validator`).
+  Once the database connection is established the provisioning continues. 
+  (Bugfix)
+  Contributed by @nmaludy
+  
+- Fixed Ubuntu 14 issue where adding the PackageCloud repo corrupted the
+  `apt` cache. Now, after the PackageCloud repo is added, the apt-cache is
+  complete cleaned and rebuilt. (Bugfix)
   Contributed by @nmaludy
   
 

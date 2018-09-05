@@ -146,6 +146,19 @@ class st2::profile::mongodb (
           path        => $_mongodb_exec_path,
         }
 
+        # wait for MongoDB restart by trying to establish a connection
+        if $db_bind_ips[0] == '0.0.0.0' {
+          $_mongodb_bind_ip = '127.0.0.1'
+        } else {
+          $_mongodb_bind_ip = $db_bind_ips[0]
+        }
+        mongodb_conn_validator { 'mongodb - wait for restart':
+          server  => $_mongodb_bind_ip,
+          port    => $db_port,
+          timeout => '240',
+        }
+
+
         # ensure MongoDB config is present and service is running
         Class['mongodb::server::config']
         -> Class['mongodb::server::service']
@@ -160,6 +173,8 @@ class st2::profile::mongodb (
         # enable auth
         ~> Exec['mongodb - enable auth']
         ~> Exec['mongodb - restart service']
+        # wait for MongoDB restart
+        ~> Mongodb_conn_validator['mongodb - wait for restart']
         # create other databases
         -> Mongodb::Db <| title != 'admin' |>
       }
