@@ -30,9 +30,15 @@ WORKDIR $APP_HOME
 COPY . $APP_HOME
 
 # use bundler to install our gems
-ENV BUNDLE_GEMFILE=$APP_HOME/build/centos7-puppet4/Gemfile \
+ENV PUPPET_GEM_VERSION "~> 4.0"
+ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
   BUNDLE_JOBS=2 \
   BUNDLE_PATH=/bundle
+RUN /bin/bash -l -c "bundle -v"
+RUN /bin/bash -l -c "rm -f ${APP_HOME}/Gemfile.lock"
+RUN /bin/bash -l -c "gem update --system"
+RUN /bin/bash -l -c "gem --version"
+RUN /bin/bash -l -c "bundle -v"
 RUN cat $BUNDLE_GEMFILE
-RUN /bin/bash -l -c "bundle install"
+RUN /bin/bash -l -c "bundle install --without system_tests"
 RUN cat $BUNDLE_GEMFILE.lock

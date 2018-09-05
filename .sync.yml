@@ -5,6 +5,9 @@
     - .kitchen
     - .tmp
     - Puppetfile.lock
+.travis.yml:
+  # we keep our own .travis.yml because of integration testing
+  unmanaged: true
 Gemfile:
   required:
     ':development':
