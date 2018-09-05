@@ -1,6 +1,6 @@
 # puppet-st2
 
-[![Build Status](https://travis-ci.org/StackStorm/puppet-st2.svg)](https://travis-ci.org/StackStorm/puppet-st2)
+[![Build Status](https://travis-ci.org/StackStorm/puppet-st2.svg?branch=master)](https://travis-ci.org/StackStorm/puppet-st2.svg?branch=master)
 [![Coverage Status](https://coveralls.io/repos/StackStorm/puppet-st2/badge.svg?branch=master&service=github)](https://coveralls.io/github/StackStorm/puppet-st2?branch=master)
 [![Puppet Forge Version](https://img.shields.io/puppetforge/v/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
 [![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
@@ -10,8 +10,10 @@ Module to manage [StackStorm](http://stackstorm.com)
 
 ## Supported platforms
 
-* Ubuntu 14.04/16.04
-* RHEL/Centos 6/7
+* Ubuntu 14.04
+* Ubuntu 16.04
+* RHEL/CentOS 6
+* RHEL/CentOS 7
 
 ## Quick Start
 
@@ -19,8 +21,13 @@ For a full installation on a single node, a profile already exists to
 get you setup and going with minimal effort. Simply:
 
 ```
-include ::st2::profile::fullinstall
+puppet module install stackstorm-st2
+puppet apply -e "include ::st2::profile::fullinstall"
 ```
+
+## :warning: Deprecation Warning - Puppet 3
+
+**Puppet 3 was end of life on 12/31/2016. This module no longer supports Puppet 3 as of version `1.1`**
 
 ## Configuration
 
@@ -251,35 +258,6 @@ This error is caused by a deficiency in this module trying to use authentication
 in its prefetch step when authentication hasn't been configured yet on
 the database. The error can be safely ignored. Auth and databases will be 
 configured normally. Subsequent runs of puppet will not show this error.
-
-### MongoDB (Puppet >= 4.0)
-
-When running the initial install of `st2` you will see an error from the 
-MongoDB module :
-
-```
-Error: Could not prefetch mongodb_database provider 'mongodb': Could not evaluate MongoDB shell command: load('/root/.mongorc.js'); printjson(db.getMongo().getDBs())
-```
-
-This error is caused by a deficiency in this module trying to use authentication
-in its prefetch step when authentication hasn't been configured yet on
-the database. This results in a failure and stops processing.
-
-In these cases we need to disable auth for MongoDB using the `mondob_auth` variabe.
-This can be accomplished when declaring the `::st2` class:
-
-``` puppet
-class { '::st2':
-  mongodb_auth => false,
-}
-```
-
-Or in hiera:
-
-``` yaml
-st2:
-  mongodb_auth: false
-```
 
 ### Ubuntu 14.04
 

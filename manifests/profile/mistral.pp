@@ -75,6 +75,7 @@ class st2::profile::mistral(
     password_hash => postgresql_password($db_username, $db_password),
     createdb      => true,
     before        => Postgresql::Server::Database[$db_name],
+    require       => Class['::postgresql::server'],
   }
 
   postgresql::server::database { $db_name:
@@ -89,7 +90,7 @@ class st2::profile::mistral(
       require     => [Postgresql::Server::Role[$db_username],
                       Ini_Setting['database_connection']],
       subscribe   => Postgresql::Server::Database[$db_name],
-      before      => File['/etc/facter/facts.d/mistral_bootstrapped.txt'],
+      before      => Facter::Fact['mistral_bootstrapped'],
       notify      => [Exec['populate mistral database'],
                       Service['mistral']],
     }
@@ -99,19 +100,15 @@ class st2::profile::mistral(
       refreshonly => true,
       path        => ["${mistral_root}/bin"],
       subscribe   => Exec['setup mistral database'],
-      before      => File['/etc/facter/facts.d/mistral_bootstrapped.txt'],
+      before      => Facter::Fact['mistral_bootstrapped'],
       notify      => Service['mistral'],
     }
   }
   ### End Mistral Database ###
 
   # Once everything is done, let the system know so we can avoid some future processing
-  file { '/etc/facter/facts.d/mistral_bootstrapped.txt':
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0444',
-    content => 'mistral_bootstrapped=true',
+  facter::fact { 'mistral_bootstrapped':
+    value => bool2str(true),
   }
 
   ### Setup Mistral Service ###
@@ -132,7 +129,7 @@ class st2::profile::mistral(
   Package<| tag == 'st2::mistral::packages' |>
   -> Ini_setting <| tag == 'mistral' |>
   -> Postgresql::Server::Database[$db_name]
-  -> File['/etc/facter/facts.d/mistral_bootstrapped.txt']
+  -> Facter::Fact['mistral_bootstrapped']
   -> Service['mistral']
 
   ### End Dependencies ###

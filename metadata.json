@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "1.0.0-rc2",
+  "version": "1.1.0",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache-2.0",
@@ -17,7 +17,7 @@
       "version_requirement": ">= 4.6.0"
     },
     {
-      "name": "nanliu/staging",
+      "name": "puppet/staging",
       "version_requirement": ">= 1.0.2"
     },
     {
@@ -25,7 +25,7 @@
       "version_requirement": ">= 1.7.0"
     },
     {
-      "name": "maestrodev/wget",
+      "name": "puppet/wget",
       "version_requirement": ">= 1.5.6"
     },
     {
@@ -33,7 +33,7 @@
       "version_requirement": ">= 3.0.9"
     },
     {
-      "name": "stankevich/python",
+      "name": "puppet/python",
       "version_requirement": ">= 1.10.0"
     },
     {
@@ -100,7 +100,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 3.8.5 < 6.0.0"
+      "version_requirement": ">= 4.7.0 < 6.0.0"
     }
   ]
 }

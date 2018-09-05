@@ -2,20 +2,107 @@
 
 ## Development
 
+- BREAKING CHANGE - Dropped support for Puppet 3. (Enhancement)
+  Contributed by @nmaludy
+  
+- Added tests for Puppet 4 and Puppet 5 on all platforms:
+  - RHEL/CentOS 6
+  - RHEL/CentOS 7
+  - Ubunut 14.04
+  - Ubunut 16.04
+  Contributed by @nmaludy
+  
+- Re-ordered dependencies in the Puppetfile for Puppet 4 and Puppet 5.
+  `puppetlabs/stdlib` and `puppetlabs/concat` are now at the bottom in order to
+  let `librarian-puppet` choose the version of these based on other dependencies
+  defined throughout the rest of the file. (Bugfix)
+  Contributed by @nmaludy
+
+- Fixed MongoDB race condition when enabling auth. Now we try to establish
+  a connection to the database in a loop (using `mongodb_conn_validator`).
+  Once the database connection is established the provisioning continues. 
+  (Bugfix)
+  Contributed by @nmaludy
+  
+- Fixed Ubuntu 14 issue where adding the PackageCloud repo corrupted the
+  `apt` cache. Now, after the PackageCloud repo is added, the apt-cache is
+  complete cleaned and rebuilt. (Bugfix)
+  Contributed by @nmaludy
+  
+- Removed `manifests/container.pp` and `manifests/profile/source.pp`. These files
+  were unused and unmaintained. Also removed module dependencies 
+  `puppetlabs/vcsrepo` and `jfryman/tiller` that are no longer used because
+  these two files have been removed. (Change)
+  Contributed by @nmaludy
+
+## 1.0.0 (Jul 23, 2018)
+
 - Added an implementation for every auth backend available (at the time).
   All auth backends can be configured with every parameter detailed on their
   GitHub page. The following backends are supported: `flat_file` (default),
   `keystone`, `ldap`, `mongodb`, `pam`. (Feature)
   Contributed by @nmaludy
+  
 - Changed the behavior of `st2` packages. Previously they were automatically 
   updating due to the package resources having `ensure => latest` set. Going
   forward, packages will have `ensure => present` set by default  and it will be
   the responsibility of the end user to update the packages. (Change)
   Contributed by @nmaludy
-- Removed `manifests/container.pp` and `manifests/profile/source.pp`. These files
-  were unused and unmaintained. Also removed module dependencies 
-  `puppetlabs/vcsrepo` and `jfryman/tiller` that are no longer used because
-  these two files have been removed. (Change)
+  
+- Fixed `st2_pack` type to properly pass the locale settings of the system
+  to the `st2` CLI command. (Bugfix)
+  Contributed by @nmaludy
+  
+- Added support for new `st2workflowengine` (Orchestra) service (Feature)!
+  Contributed by @nmaludy
+
+- Fixed bug where CentOS 7 would sometimes fail to install NodeJS properly.
+  (Bugfix)
+  Contributed by @nmaludy
+
+- DEPRECATION WARNING - Support for Puppet 3 will be dropped in the next
+  minor release!
+  Contributed by @nmaludy
+  
+- Added integration tests using InSpec.
+  Contributed by @nmaludy
+  
+- Added ability to utilize MongoDB auth with Puppet >= 4.0.
+  Contributed by @nmaludy
+  
+- Changed facts for Mistral and now MongoDB to use ghoneycutt/facter. This
+  moves the fact for Mistral from `/etc/facter/facts.d/mistral_bootstrapped.txt`
+  to `/etc/facter/facts.d/facts.txt`.
+  Contributed by @nmaludy
+  
+- Added RabbitMQ not listen address to be `127.0.0.1`.
+  Contributed by @nmaludy
+  
+- Fixed `st2::user` so that it properly create `~/.ssh/authorized_keys`.
+  Contributed by @nmaludy
+  
+- Fixed group ownership of `st2::user` SSH keys to be `$name` instead of `root`.
+  Contributed by @nmaludy
+
+
+- Added integration tests using InSpec.
+  Contributed by @nmaludy
+  
+- Added ability to utilize MongoDB auth with Puppet >= 4.0.
+  Contributed by @nmaludy
+  
+- Changed facts for Mistral and now MongoDB to use ghoneycutt/facter. This
+  moves the fact for Mistral from `/etc/facter/facts.d/mistral_bootstrapped.txt`
+  to `/etc/facter/facts.d/facts.txt`.
+  Contributed by @nmaludy
+  
+- Added RabbitMQ not listen address to be `127.0.0.1`.
+  Contributed by @nmaludy
+  
+- Fixed `st2::user` so that it properly create `~/.ssh/authorized_keys`.
+  Contributed by @nmaludy
+  
+- Fixed group ownership of `st2::user` SSH keys to be `$name` instead of `root`.
   Contributed by @nmaludy
 
 ## 1.0.0-rc2 (Jan 9, 2018)

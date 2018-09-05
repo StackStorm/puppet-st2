@@ -68,6 +68,20 @@ class st2::profile::server (
     default => 'logging',
   }
 
+  # Workflow Engine was introduced in 2.8.0
+  if ($::st2::version == 'latest' or
+      $::st2::version == 'present' or
+      $::st2::version == 'installed' or
+      versioncmp($::st2::version, '2.8.0') >= 0) {
+    $_st2_services = concat($::st2::params::st2_services,
+                            $::st2::params::st2_workflowengine_services)
+    $_has_workflowengine = true
+  }
+  else {
+    $_st2_services = $::st2::params::st2_services
+    $_has_workflowengine = false
+  }
+
   ########################################
   ## Packages
   if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
@@ -251,6 +265,18 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
+  ## Workflow Engine settings (Orchestra)
+  if $_has_workflowengine {
+    ini_setting { 'workflow_engine_logging':
+      ensure  => present,
+      path    => '/etc/st2/st2.conf',
+      section => 'workflow_engine',
+      setting => 'logging',
+      value   => "/etc/st2/${_logger_config}.workflowengine.conf",
+      tag     => 'st2::config',
+    }
+  }
+
   ## Syslog Settings
   ini_setting { 'syslog_host':
     ensure  => present,
@@ -299,7 +325,7 @@ class st2::profile::server (
 
   ########################################
   ## Services
-  service { $::st2::params::st2_services:
+  service { $_st2_services:
     ensure => 'running',
     enable => true,
     tag    => 'st2::service',

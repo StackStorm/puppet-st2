@@ -34,68 +34,113 @@ provisioner:
     - 2
     
 platforms:
-  # CentOS6 with sysV init
-  - name: centos6
+  # CentOS6 with sysV init - Puppet 4
+  - name: centos6-puppet4
     driver:
       platform: centos
-      dockerfile: build/centos6/Dockerfile.kitchen
+      dockerfile: build/centos6-puppet4/Dockerfile.kitchen
       run_command: /usr/sbin/sshd -D
     provisioner:
-      puppetfile_path: build/centos6/Puppetfile
+      puppetfile_path: build/centos6-puppet4/Puppetfile
       
-  # CentOS7 with Systemd
-  - name: centos7
+  # CentOS6 with sysV init - Puppet 5
+  - name: centos6-puppet5
     driver:
       platform: centos
-      dockerfile: build/centos7/Dockerfile.kitchen
+      dockerfile: build/centos6-puppet5/Dockerfile.kitchen
+      run_command: /usr/sbin/sshd -D
+    provisioner:
+      puppetfile_path: build/centos6-puppet5/Puppetfile
+      
+  # CentOS7 with Systemd - Puppet 4
+  - name: centos7-puppet4
+    driver:
+      platform: centos
+      dockerfile: build/centos7-puppet4/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/centos7/Puppetfile
+      puppetfile_path: build/centos7-puppet4/Puppetfile
+
+  # CentOS7 with Systemd - Puppet 5
+  - name: centos7-puppet5
+    driver:
+      platform: centos
+      dockerfile: build/centos7-puppet5/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos7-puppet5/Puppetfile
       
-  # Ubuntu Trusty with Upstart
-  - name: ubuntu14
+  # Ubuntu Trusty with Upstart - Puppet 4
+  - name: ubuntu14-puppet4
     driver:
       platform: ubuntu
-      dockerfile: build/ubuntu14/Dockerfile.kitchen
+      dockerfile: build/ubuntu14-puppet4/Dockerfile.kitchen
       disable_upstart: false
       run_command: /sbin/init
     provisioner:
-      puppetfile_path: build/ubuntu14/Puppetfile
-      
-  # Ubuntu Xenial with Systemd
-  - name: ubuntu16
+      puppetfile_path: build/ubuntu14-puppet4/Puppetfile
+      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+      # we need to install Puppet once the container has started.
+      # Good news, kitchen-puppet supports this with the following commands:
+      require_puppet_omnibus: true
+      require_puppet_collections: true
+      require_puppet_repo: false
+      puppet_omnibus_url: https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_agent.sh
+
+  # Ubuntu Trusty with Upstart - Puppet 5
+  - name: ubuntu14-puppet5
     driver:
       platform: ubuntu
-      dockerfile: build/ubuntu16/Dockerfile.kitchen
+      dockerfile: build/ubuntu14-puppet5/Dockerfile.kitchen
+      disable_upstart: false
       run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/ubuntu16/Puppetfile
-      
-  # Puppet4 on CentOS7 with Systemd
-  - name: puppet4
+      puppetfile_path: build/ubuntu14-puppet5/Puppetfile
+      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+      # we need to install Puppet once the container has started.
+      # Good news, kitchen-puppet supports this with the following commands:
+      require_puppet_omnibus: true
+      require_puppet_collections: true
+      require_puppet_repo: false
+      puppet_omnibus_url: https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_5_agent.sh
+
+  # Ubuntu Xenial with Systemd - Puppet 4
+  - name: ubuntu16-puppet4
     driver:
-      platform: centos
-      dockerfile: build/puppet4/Dockerfile.kitchen
+      platform: ubuntu
+      dockerfile: build/ubuntu16-puppet4/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/puppet4/Puppetfile
-      
-  # Puppet5 on CentOS7 with Systemd
-  - name: puppet5
+      puppetfile_path: build/ubuntu16-puppet4/Puppetfile
+
+  # Ubuntu Xenial with Systemd - Puppet 5
+  - name: ubuntu16-puppet5
     driver:
-      platform: centos
-      dockerfile: build/puppet5/Dockerfile.kitchen
+      platform: ubuntu
+      dockerfile: build/ubuntu16-puppet5/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/puppet5/Puppetfile
+      puppetfile_path: build/ubuntu16-puppet5/Puppetfile
 
 suites:
   - name: default
+
+verifier:
+  name: inspec
+  sudo: true
+  # by default `sudo` doesn't set many of the environment variables.
+  # we need to tell sudo to set the $HOME env var to /root.
+  # this way it picks up ~/.st2/config for the root user, configured by Puppet
+  # this ~/.st2/config contains auth credentials to test out st2 comamnds
+  # via inspec
+  sudo_options: "HOME=/root -u root"
+  inspec_tests:
+    - path: test/integration/stackstorm

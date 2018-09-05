@@ -102,6 +102,11 @@ class st2::params(
     'st2chatops',
   ]
 
+  ## StackStorm Workflow Engine (Orchestra)
+  $st2_workflowengine_services = [
+    'st2workflowengine',
+  ]
+
   ## StackStorm default credentials (change these!)
   $admin_username = 'st2admin'
   $admin_password = 'Ch@ngeMe'
