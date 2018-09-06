@@ -28,4 +28,7 @@ clean-bundler:
 	@echo
 	rm -rf build/kitchen/.bundle
 	rm -rf build/kitchen/vendor
+	rm -rf .bundle
+	rm -rf Gemfile.lock
+	rm -rf vendor
 	rm -rf /tmp/puppet-st2/build
