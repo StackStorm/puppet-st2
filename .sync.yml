@@ -6,8 +6,14 @@
     - .tmp
     - .bundle
     - Puppetfile.lock
+.gitlab-ci.yml:
+  # we don't use GitLab
+  unmanaged: true
 .travis.yml:
   # we keep our own .travis.yml because of integration testing
+  unmanaged: true
+appveyor.yml:
+  # we don't use Appveyor
   unmanaged: true
 Gemfile:
   required:

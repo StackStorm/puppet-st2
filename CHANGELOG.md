@@ -33,6 +33,11 @@
   and module templating. (Enhancement)
   Contributed by @nmaludy
   
+- Rubocop linting is now enforced. As part of the conversion to PDK we're
+  now running the standard testing and verification tasks, which includes 
+  Rubocop. (Enhancement)
+  Contributed by @nmaludy
+  
 
 ## 1.0.0 (Jul 23, 2018)
 
