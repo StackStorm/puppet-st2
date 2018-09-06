@@ -1,9 +1,10 @@
 # puppet-st2
 
-[![Build Status](https://travis-ci.org/StackStorm/puppet-st2.svg?branch=master)](https://travis-ci.org/StackStorm/puppet-st2.svg?branch=master)
+[![Build Status](https://travis-ci.org/StackStorm/puppet-st2.svg?branch=master)](https://travis-ci.org/StackStorm/puppet-st2?branch=master)
 [![Coverage Status](https://coveralls.io/repos/StackStorm/puppet-st2/badge.svg?branch=master&service=github)](https://coveralls.io/github/StackStorm/puppet-st2?branch=master)
 [![Puppet Forge Version](https://img.shields.io/puppetforge/v/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
 [![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
+[![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/m/stackstorm-st2)
 [![Join our community Slack](https://stackstorm-community.herokuapp.com/badge.svg)](https://stackstorm.com/community-signup)
 
 Module to manage [StackStorm](http://stackstorm.com)
@@ -25,9 +26,9 @@ puppet module install stackstorm-st2
 puppet apply -e "include ::st2::profile::fullinstall"
 ```
 
-## :warning: Deprecation Warning - Puppet 3
+## :warning: Deprecation Notice - Puppet 3
 
-**Puppet 3 was end of life on 12/31/2016. This module no longer supports Puppet 3 as of version `1.1`**
+**This module no longer supports Puppet 3 as of version `1.1`**
 
 ## Configuration
 
@@ -227,12 +228,14 @@ and [librarian-puppet](http://librarian-puppet.com/).
 
 ### Puppetfiles
 
- * RHEL/CentOS 6 - [build/centos6/Puppetfile](build/centos6/Puppetfile)
- * RHEL/CentOS 7 - [build/centos7/Puppetfile](build/centos7/Puppetfile)
- * Puppet 4.0 - [build/puppet4/Puppetfile](build/puppet4/Puppetfile)
- * Puppet 5.0 - [build/puppet5/Puppetfile](build/puppet5/Puppetfile)
- * Ubuntu 14.04 - [build/ubuntu14/Puppetfile](build/ubuntu14/Puppetfile)
- * Ubuntu 16.06 [build/ubuntu16/Puppetfile](build/ubuntu16/Puppetfile)
+ * RHEL/CentOS 6 - Puppet 4 - [build/centos6-puppet4/Puppetfile](build/centos6-puppet4/Puppetfile)
+ * RHEL/CentOS 6 - Puppet 5 - [build/centos6-puppet5/Puppetfile](build/centos6-puppet5/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 4 - [build/centos7-puppet4/Puppetfile](build/centos7-puppet4/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
+ * Ubuntu 14.04 - Puppet 4 - [build/ubuntu14-puppet4/Puppetfile](build/ubuntu14-puppet4/Puppetfile)
+ * Ubuntu 14.04 - Puppet 5 - [build/ubuntu14-puppet5/Puppetfile](build/ubuntu14-puppet5/Puppetfile)
+ * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet4/Puppetfile](build/ubuntu16-puppet4/Puppetfile)
+ * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
 
 ## Upgrading StackStorm
 
@@ -245,44 +248,12 @@ on demand using [bolt](https://github.com/puppetlabs/bolt).
 
 ## Known Limitations
 
-### MongoDB (Puppet < 4.0)
-
-When running the initial install of `st2` you will see an error from the 
-MongoDB module :
-
-```
-Error: Could not prefetch mongodb_database provider 'mongodb': Could not evaluate MongoDB shell command: load('/root/.mongorc.js'); printjson(db.getMongo().getDBs())
-```
-
-This error is caused by a deficiency in this module trying to use authentication
-in its prefetch step when authentication hasn't been configured yet on
-the database. The error can be safely ignored. Auth and databases will be 
-configured normally. Subsequent runs of puppet will not show this error.
-
-### Ubuntu 14.04
-
-Because 14.04 ships with a very old version of puppet (3.4) and most puppet modules
-no longer support this version of puppet, we recommend upgrading to 3.8.7 at a
-minimum.
-
-``` shell
-# 14.04 trusty
-# By default this ships with puppet 3.4.x (very old), need a newer version to 
-# work with with of the required puppet module dependencies for this module. 
-wget https://apt.puppetlabs.com/puppetlabs-release-trusty.deb
-sudo dpkg -i puppetlabs-release-trusty.deb
-sudo apt-get update
-sudo apt-get install puppet=3.8.7-1puppetlabs1
-```
-
 ### Ubuntu 16.04
 
-In StackStorm < `2.4.0` there is a known bug [#3290](https://github.com/StackStorm/st2/issues/3290) 
-that when first running the installation with this puppet module the `st2` pack
-will fail to install. Simply invoking puppet a second time will produce
-a fully running st2 installation with the `st2` pack installed. This has
-been fixed in st2 version `2.4.0`.
-
+In StackStorm `< 2.4.0` there is a known bug [#3290](https://github.com/StackStorm/st2/issues/3290) 
+where the first puppet run fails to install the `st2` pack. Simply invoking puppet
+a second time will produce a fully functional installation with the `st2` pack 
+installed. This was an upstream but and has been fixed in StackStorm version `2.4.0`.
 
 ## Maintainers
 

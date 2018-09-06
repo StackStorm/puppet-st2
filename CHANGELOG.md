@@ -28,7 +28,13 @@
   `apt` cache. Now, after the PackageCloud repo is added, the apt-cache is
   complete cleaned and rebuilt. (Bugfix)
   Contributed by @nmaludy
-  
+
+- Added `puppetmodule.info` badge to README. (Enhancement)
+  Contributed by @nmaludy
+
+- Removed Puppet 3 references from README. (Enhancement)
+  Contributed by @nmaludy
+
 - Converted module over to PDK (Puppet Development Kit) for unit testing
   and module templating. (Enhancement)
   Contributed by @nmaludy
