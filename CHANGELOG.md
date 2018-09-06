@@ -2,6 +2,9 @@
 
 ## Development
 
+
+## 1.1.0 (Sep 07, 2018)
+
 - DEPRECATION WARNING - Dropped support for Puppet 3. (Enhancement)
   Contributed by @nmaludy
   
