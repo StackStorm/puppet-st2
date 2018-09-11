@@ -2,6 +2,8 @@
 
 ## Development
 
+- Removed archived build files from Puppet 3. (Clean up)
+  Contributed by @nmaludy
 
 ## 1.1.0 (Sep 07, 2018)
 
