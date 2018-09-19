@@ -24,7 +24,7 @@ RUN yum -y upgrade
 RUN sed -i '/nodocs/d' /etc/yum.conf
 
 # install puppet
-RUN yum -y install https://yum.puppetlabs.com/puppet5/puppet-release-el-6.noarch.rpm
+RUN yum -y install https://yum.puppetlabs.com/puppet5/puppet6-release-el-6.noarch.rpm
 RUN yum -y install puppet-agent
 ENV PATH="/opt/puppetlabs/bin:${PATH}"
 RUN ln -s /opt/puppetlabs/bin/facter /usr/bin/
