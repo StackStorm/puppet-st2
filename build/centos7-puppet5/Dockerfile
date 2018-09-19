@@ -14,7 +14,7 @@ RUN /bin/bash -l -c "gem install bundler --no-rdoc --no-ri"
 
 # install puppet
 RUN yum -y install https://yum.puppetlabs.com/puppet5/puppet-release-el-7.noarch.rpm
-RUN yum -y install puppet
+RUN yum -y install puppet-agent
 ENV PATH="/opt/puppetlabs/bin:${PATH}"
 
 # print versions (ruby 2.4.x, puppet 5.x)
