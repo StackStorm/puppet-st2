@@ -1,5 +1,5 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-puppet5 -f build/puppet5/Dockerfile.kitchen .
+# docker build -t stackstorm/puppet-st2-puppet6 -f build/puppet6/Dockerfile.kitchen .
 
 FROM stackstorm/packagingtest:centos7-systemd
 
@@ -24,7 +24,7 @@ RUN yum -y upgrade
 RUN sed -i '/nodocs/d' /etc/yum.conf
 
 # install puppet
-RUN yum -y install https://yum.puppet.com/puppet5/puppet5-release-el-7.noarch.rpm
+RUN yum -y install https://yum.puppet.com/puppet6/puppet6-release-el-7.noarch.rpm
 RUN yum -y install puppet-agent
 ENV PATH="/opt/puppetlabs/bin:${PATH}"
 RUN ln -s /opt/puppetlabs/bin/facter /usr/bin/
@@ -32,6 +32,6 @@ RUN ln -s /opt/puppetlabs/bin/hiera /usr/bin/
 RUN ln -s /opt/puppetlabs/bin/mco /usr/bin/
 RUN ln -s /opt/puppetlabs/bin/puppet /usr/bin/
 
-# print versions (ruby 2.4.x, puppet 5.x)
+# print versions (ruby 2.5.x, puppet 6.x)
 RUN puppet --version
 RUN sudo -E puppet --version
