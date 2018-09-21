@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 # The Inspec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec_reference.html
 
@@ -16,7 +17,7 @@ control 'rabbitmq' do
     it { should exist }
     # RabbitMQ should listen on localhost only
     # @link: https://github.com/StackStorm/st2-packages/blob/a93701d98a130f50f7cb551e842889212ece3b11/scripts/st2bootstrap-deb.sh#L425-L426
-    its('content') { should match (/^RABBITMQ_NODE_IP_ADDRESS=127.0.0.1$/) }
+    its('content') { should match %r{^RABBITMQ_NODE_IP_ADDRESS=127.0.0.1$} }
   end
 
   describe service('rabbitmq-server') do

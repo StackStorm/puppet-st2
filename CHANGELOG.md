@@ -2,7 +2,21 @@
 
 ## Development
 
-- BREAKING CHANGE - Dropped support for Puppet 3. (Enhancement)
+- Removed `manifests/container.pp` and `manifests/profile/source.pp`. These files
+  were unused and unmaintained. Also removed module dependencies 
+  `puppetlabs/vcsrepo` and `jfryman/tiller` that are no longer used because
+  these two files have been removed. (Change)
+  Contributed by @nmaludy
+
+- Removed archived build files from Puppet 3. (Clean up)
+  Contributed by @nmaludy
+  
+- Added support for Puppet 6 on all platforms. (Enhancement)
+  Contributed by @nmaludy
+
+## 1.1.0 (Sep 07, 2018)
+
+- DEPRECATION WARNING - Dropped support for Puppet 3. (Enhancement)
   Contributed by @nmaludy
   
 - Added tests for Puppet 4 and Puppet 5 on all platforms:
@@ -28,12 +42,22 @@
   `apt` cache. Now, after the PackageCloud repo is added, the apt-cache is
   complete cleaned and rebuilt. (Bugfix)
   Contributed by @nmaludy
-  
-- Removed `manifests/container.pp` and `manifests/profile/source.pp`. These files
-  were unused and unmaintained. Also removed module dependencies 
-  `puppetlabs/vcsrepo` and `jfryman/tiller` that are no longer used because
-  these two files have been removed. (Change)
+
+- Added `puppetmodule.info` badge to README. (Enhancement)
   Contributed by @nmaludy
+
+- Removed Puppet 3 references from README. (Enhancement)
+  Contributed by @nmaludy
+
+- Converted module over to PDK (Puppet Development Kit) for unit testing
+  and module templating. (Enhancement)
+  Contributed by @nmaludy
+  
+- Rubocop linting is now enforced. As part of the conversion to PDK we're
+  now running the standard testing and verification tasks, which includes 
+  Rubocop. (Enhancement)
+  Contributed by @nmaludy
+  
 
 ## 1.0.0 (Jul 23, 2018)
 

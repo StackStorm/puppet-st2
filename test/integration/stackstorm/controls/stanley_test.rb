@@ -1,4 +1,5 @@
 # encoding: utf-8
+
 # The Inspec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec_reference.html
 
@@ -19,7 +20,7 @@ control 'st2-user' do
     its('home') { should eq '/home/stanley' }
   end
 
-  describe passwd.users(/stanley/) do
+  describe passwd.users(%r{stanley}) do
     its('homes') { should eq ['/home/stanley'] }
   end
 
