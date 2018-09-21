@@ -7,6 +7,11 @@
   
 - Added support for Puppet 6 on all platforms. (Enhancement)
   Contributed by @nmaludy
+  
+- Added default ChatOps config (`'HUBOT_ADAPTER' => 'slack'`), so that the ChatOps
+  service starts cleanly without the user needing to provide any variables into
+  the `::st2` class. #233 (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.1.0 (Sep 07, 2018)
 
