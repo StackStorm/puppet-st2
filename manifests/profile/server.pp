@@ -69,17 +69,27 @@ class st2::profile::server (
   }
 
   # Workflow Engine was introduced in 2.8.0
+  # Timers Engine was introduced in 2.9.0
   if ($::st2::version == 'latest' or
       $::st2::version == 'present' or
       $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.8.0') >= 0) {
+      versioncmp($::st2::version, '2.9.0') >= 0) {
     $_st2_services = concat($::st2::params::st2_services,
-                            $::st2::params::st2_workflowengine_services)
+                            $::st2::params::st2workflowengine_services,
+                            $::st2::params::st2timersengine_services)
     $_has_workflowengine = true
+    $_has_timersengine = true
+  }
+  elsif versioncmp($::st2::version, '2.8.0') >= 0) {
+    $_st2_services = concat($::st2::params::st2_services,
+                            $::st2::params::st2workflowengine_services)
+    $_has_workflowengine = true
+    $_has_timersengine = false
   }
   else {
     $_st2_services = $::st2::params::st2_services
     $_has_workflowengine = false
+    $_has_timersengine = false
   }
 
   ########################################
@@ -273,6 +283,36 @@ class st2::profile::server (
       section => 'workflow_engine',
       setting => 'logging',
       value   => "/etc/st2/${_logger_config}.workflowengine.conf",
+      tag     => 'st2::config',
+    }
+  }
+
+  ## Timers Engine settings
+  if $_has_timersengine {
+    ini_setting { 'timersengine_logging':
+      ensure  => present,
+      path    => '/etc/st2/st2.conf',
+      section => 'timersengine',
+      setting => 'logging',
+      value   => "/etc/st2/${_logger_config}.timersengine.conf",
+      tag     => 'st2::config',
+    }
+
+    ini_setting { 'timersengine_enabled':
+      ensure  => present,
+      path    => '/etc/st2/st2.conf',
+      section => 'timersengine',
+      setting => 'enabled',
+      value   => $::st2::timersengine_enabled,
+      tag     => 'st2::config',
+    }
+
+    ini_setting { 'timersengine_local_timezone':
+      ensure  => present,
+      path    => '/etc/st2/st2.conf',
+      section => 'timersengine',
+      setting => 'local_timezone',
+      value   => $::st2::timersengine_timezone,
       tag     => 'st2::config',
     }
   }

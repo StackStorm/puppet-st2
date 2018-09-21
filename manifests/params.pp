@@ -136,9 +136,16 @@ class st2::params(
   ]
 
   ## StackStorm Workflow Engine (Orchestra)
-  $st2_workflowengine_services = [
+  $st2workflowengine_services = [
     'st2workflowengine',
   ]
+
+  ## StackStorm Timers Engine
+  $st2timersengine_services = [
+    'st2timersengine',
+  ]
+  $st2timersengine_enabled = true
+  $st2timersengine_timezone = 'America/Los_Angeles'
 
   ## StackStorm default credentials (change these!)
   $admin_username = 'st2admin'

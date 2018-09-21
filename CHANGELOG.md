@@ -8,6 +8,19 @@
 - Added support for Puppet 6 on all platforms. (Enhancement)
   Contributed by @nmaludy
 
+- Added support for `st2timersengine` service on StackStorm >= `2.9.0`.
+  Two new options were added to `::st2`:
+    - `timersengine_enabled`  - Set to true if the st2timersengine service should 
+       be enabled on this node (default: true)
+    - `timersengine_timezone` - The local timezone for this node. 
+       (default: 'America/Los_Angeles')
+  #221 (Enhancement)
+  Contributed by @nmaludy
+  
+- Changed integration tests to test for HTTP `308` redirect on Ubuntu 
+  when redirecting from http:// to https:// (Enhancement)
+  Contributed by @nmaludy
+
 ## 1.1.0 (Sep 07, 2018)
 
 - DEPRECATION WARNING - Dropped support for Puppet 3. (Enhancement)

@@ -85,11 +85,12 @@ control 'st2web' do
   end
 
   if os.debian?
+    # on Debian/Ubuntu nginx redirects by returning a 308
     describe http('http://localhost/', enable_remote_worker: true) do
-      its('status') { should eq 301 }
+      its('status') { should eq 308 }
     end
   elsif os.redhat?
-    # on RHEL nginx redirects to https and returns 200
+    # on RHEL nginx automatically redirects to https and returns 200
     describe http('http://localhost/', enable_remote_worker: true) do
       its('status') { should eq 200 }
     end
