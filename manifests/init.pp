@@ -9,7 +9,6 @@
 #                             See the package 'ensure' property:
 #                             https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
 #  [*mistral_git_branch*]   - Tagged branch of Mistral to download/install
-#  [*repo_env*]             - Specify the environment of package repo (production, staging)
 #  [*conf_file*]            - The path where st2 config is stored
 #  [*use_ssl*]              - Enable/Disable SSL for all st2 APIs
 #  [*ssl_key*]              - The path to SSL key for all st2 APIs
@@ -121,8 +120,6 @@
 class st2(
   $version                  = 'present',
   $mistral_git_branch       = 'st2-1.2.0',
-  $repo_base                = $::st2::params::repo_base,
-  $repo_env                 = $::st2::params::repo_env,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = $::st2::params::use_ssl,
