@@ -136,9 +136,16 @@ class st2::params(
   ]
 
   ## StackStorm Workflow Engine (Orchestra)
-  $st2_workflowengine_services = [
+  $st2workflowengine_services = [
     'st2workflowengine',
   ]
+
+  ## StackStorm Timers Engine
+  $st2timersengine_services = [
+    'st2timersengine',
+  ]
+  $st2timersengine_enabled = true
+  $st2timersengine_timezone = 'America/Los_Angeles'
 
   ## StackStorm default credentials (change these!)
   $admin_username = 'st2admin'
@@ -147,10 +154,7 @@ class st2::params(
   ## nginx default config
   $nginx_default_conf = $::osfamily ? {
     'Debian' => '/etc/nginx/conf.d/default.conf',
-    'RedHat' => $::operatingsystemmajrelease ? {
-      '6'     => '/etc/nginx/conf.d/default.conf',
-      default => '/etc/nginx/nginx.conf',
-    }
+    'RedHat' => '/etc/nginx/conf.d/default.conf',
   }
   ## nginx conf.d directory in /etc
   $nginx_conf_d = $::osfamily ? {

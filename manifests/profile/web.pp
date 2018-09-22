@@ -57,29 +57,11 @@ class st2::profile::web(
     notify    => Service['nginx'],
   }
 
-  ## Modify default nginx config
-  case $::osfamily  {
-    'RedHat': {
-      # remove 'default_server' string from default nginx config
-      exec { $::st2::params::nginx_default_conf:
-        command => "sed -i 's/default_server//g' ${::st2::params::nginx_default_conf}",
-        unless  => "test `grep 'default_server' ${::st2::params::nginx_default_conf} | wc -l` > 0",
-        path    => ['/usr/bin', '/bin'],
-        require => Package['nginx'],
-        notify  => Service['nginx'],
-      }
-    }
-    'Debian': {
-      # remove the default nginx config
-      file { $::st2::params::nginx_default_conf:
-        ensure  => 'absent',
-        require => Package['nginx'],
-        notify  => Service['nginx'],
-      }
-    }
-    default : {
-      notify{'Unsupported OS': }
-    }
+  ## Remove the default nginx config
+  file { $::st2::params::nginx_default_conf:
+    ensure  => 'absent',
+    require => Package['nginx'],
+    notify  => Service['nginx'],
   }
 
   ## Dependencies
