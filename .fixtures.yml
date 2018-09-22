@@ -16,8 +16,6 @@ fixtures:
     mongodb: "puppet/mongodb"
     postgresql: "puppetlabs/postgresql"
     rabbitmq: "puppet/rabbitmq"
-    vcsrepo: "puppetlabs/vcsrepo"
-    tiller: "jfryman/tiller"
     epel: "stahnma/epel"
     packagecloud: "computology/packagecloud"
     selinux: "puppet/selinux"
