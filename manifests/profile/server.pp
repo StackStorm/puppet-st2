@@ -80,7 +80,7 @@ class st2::profile::server (
     $_has_workflowengine = true
     $_has_timersengine = true
   }
-  elsif versioncmp($::st2::version, '2.8.0') >= 0) {
+  elsif versioncmp($::st2::version, '2.8.0') >= 0 {
     $_st2_services = concat($::st2::params::st2_services,
                             $::st2::params::st2workflowengine_services)
     $_has_workflowengine = true
