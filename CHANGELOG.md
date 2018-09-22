@@ -10,22 +10,39 @@
 
 - Removed archived build files from Puppet 3. (Clean up)
   Contributed by @nmaludy
-  
+
 - Added support for Puppet 6 on all platforms. (Enhancement)
+  Contributed by @nmaludy
+
+- Added support for `st2timersengine` service on StackStorm >= `2.9.0`.
+  Two new options were added to `::st2`:
+    - `timersengine_enabled`  - Set to true if the st2timersengine service should
+       be enabled on this node (default: true)
+    - `timersengine_timezone` - The local timezone for this node.
+       (default: 'America/Los_Angeles')
+  #221 (Enhancement)
+  Contributed by @nmaludy
+
+- Changed integration tests to test for HTTP `308` redirect on
+  when redirecting from http:// to https:// (Enhancement)
+  Contributed by @nmaludy
+
+- Fixed bug where the default nginx splash page was not being removed
+  on RHEL/CentOS installs. (Bugfix)
   Contributed by @nmaludy
 
 ## 1.1.0 (Sep 07, 2018)
 
 - DEPRECATION WARNING - Dropped support for Puppet 3. (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added tests for Puppet 4 and Puppet 5 on all platforms:
   - RHEL/CentOS 6
   - RHEL/CentOS 7
   - Ubunut 14.04
   - Ubunut 16.04
   Contributed by @nmaludy
-  
+
 - Re-ordered dependencies in the Puppetfile for Puppet 4 and Puppet 5.
   `puppetlabs/stdlib` and `puppetlabs/concat` are now at the bottom in order to
   let `librarian-puppet` choose the version of these based on other dependencies
@@ -34,10 +51,10 @@
 
 - Fixed MongoDB race condition when enabling auth. Now we try to establish
   a connection to the database in a loop (using `mongodb_conn_validator`).
-  Once the database connection is established the provisioning continues. 
+  Once the database connection is established the provisioning continues.
   (Bugfix)
   Contributed by @nmaludy
-  
+
 - Fixed Ubuntu 14 issue where adding the PackageCloud repo corrupted the
   `apt` cache. Now, after the PackageCloud repo is added, the apt-cache is
   complete cleaned and rebuilt. (Bugfix)
@@ -52,12 +69,12 @@
 - Converted module over to PDK (Puppet Development Kit) for unit testing
   and module templating. (Enhancement)
   Contributed by @nmaludy
-  
+
 - Rubocop linting is now enforced. As part of the conversion to PDK we're
-  now running the standard testing and verification tasks, which includes 
+  now running the standard testing and verification tasks, which includes
   Rubocop. (Enhancement)
   Contributed by @nmaludy
-  
+
 
 ## 1.0.0 (Jul 23, 2018)
 
@@ -66,17 +83,17 @@
   GitHub page. The following backends are supported: `flat_file` (default),
   `keystone`, `ldap`, `mongodb`, `pam`. (Feature)
   Contributed by @nmaludy
-  
-- Changed the behavior of `st2` packages. Previously they were automatically 
+
+- Changed the behavior of `st2` packages. Previously they were automatically
   updating due to the package resources having `ensure => latest` set. Going
   forward, packages will have `ensure => present` set by default  and it will be
   the responsibility of the end user to update the packages. (Change)
   Contributed by @nmaludy
-  
+
 - Fixed `st2_pack` type to properly pass the locale settings of the system
   to the `st2` CLI command. (Bugfix)
   Contributed by @nmaludy
-  
+
 - Added support for new `st2workflowengine` (Orchestra) service (Feature)!
   Contributed by @nmaludy
 
@@ -87,45 +104,45 @@
 - DEPRECATION WARNING - Support for Puppet 3 will be dropped in the next
   minor release!
   Contributed by @nmaludy
-  
+
 - Added integration tests using InSpec.
   Contributed by @nmaludy
-  
+
 - Added ability to utilize MongoDB auth with Puppet >= 4.0.
   Contributed by @nmaludy
-  
+
 - Changed facts for Mistral and now MongoDB to use ghoneycutt/facter. This
   moves the fact for Mistral from `/etc/facter/facts.d/mistral_bootstrapped.txt`
   to `/etc/facter/facts.d/facts.txt`.
   Contributed by @nmaludy
-  
+
 - Added RabbitMQ not listen address to be `127.0.0.1`.
   Contributed by @nmaludy
-  
+
 - Fixed `st2::user` so that it properly create `~/.ssh/authorized_keys`.
   Contributed by @nmaludy
-  
+
 - Fixed group ownership of `st2::user` SSH keys to be `$name` instead of `root`.
   Contributed by @nmaludy
 
 
 - Added integration tests using InSpec.
   Contributed by @nmaludy
-  
+
 - Added ability to utilize MongoDB auth with Puppet >= 4.0.
   Contributed by @nmaludy
-  
+
 - Changed facts for Mistral and now MongoDB to use ghoneycutt/facter. This
   moves the fact for Mistral from `/etc/facter/facts.d/mistral_bootstrapped.txt`
   to `/etc/facter/facts.d/facts.txt`.
   Contributed by @nmaludy
-  
+
 - Added RabbitMQ not listen address to be `127.0.0.1`.
   Contributed by @nmaludy
-  
+
 - Fixed `st2::user` so that it properly create `~/.ssh/authorized_keys`.
   Contributed by @nmaludy
-  
+
 - Fixed group ownership of `st2::user` SSH keys to be `$name` instead of `root`.
   Contributed by @nmaludy
 
@@ -145,20 +162,20 @@
 - Added new chatops parameters to `::st` and `::st2::profile::chataops`.
   A majority of the settings in chatops are now configurable.
    * chatops_hubot_log_level - Logging level for hubot (string)
-   * chatops_hubot_express_port - Port that hubot operates on (integer or 
+   * chatops_hubot_express_port - Port that hubot operates on (integer or
      string)
-   * chatops_tls_cert_reject_unauthorized - Should hubot validate SSL certs. 
+   * chatops_tls_cert_reject_unauthorized - Should hubot validate SSL certs.
      Set to 1 when using self signed certs
    * chatops_hubot_name - Name of the bot in chat. Should be properly quoted if
      it has special characters, example: '"MyBot!"'
-   * chatops_hubot_alias - Character to trigger the bot at the beginning of a 
-     message. Must be properly quoted of it's a special character, 
+   * chatops_hubot_alias - Character to trigger the bot at the beginning of a
+     message. Must be properly quoted of it's a special character,
      example: "'!'"
-   * chatops_api_key - API key generated by `st2 apikey create` that hubot will 
+   * chatops_api_key - API key generated by `st2 apikey create` that hubot will
      use to post data back to StackStorm.
-   * chatops_st2_hostname - Hostname of the StackStorm instance that chatops 
+   * chatops_st2_hostname - Hostname of the StackStorm instance that chatops
      will connect to for API and Auth
-   * chatops_web_url - Public URL of StackStorm WebUI instance used by chatops 
+   * chatops_web_url - Public URL of StackStorm WebUI instance used by chatops
      to offer links to execution details in a chat.
 
   Contributed by @nmaludy
@@ -174,14 +191,14 @@
 
 - Upgraded NodeJS to 6.x when installing StackStorm >= 2.4.0.
   If you're currently running a version of StackStorm 2.4.0 with NodeJS 4.x
-  installed, the repo will be updated to point at 6.x. 
+  installed, the repo will be updated to point at 6.x.
   To upgrade NodeJS go through the normal upgrade process on your system,
   example for RHEL: `yum clean all; yum upgrade -y`
   Contributed by @nmaludy
 
 - Upgraded MongoDB to 3.4 when installing StackStorm >= 2.4.0.
   If you're currently running a version of StackStorm 2.4.0 with MongoDB 3.2
-  installed, the repo will be updated to point at 3.4. 
+  installed, the repo will be updated to point at 3.4.
   To upgrade MongoDB go through the normal upgrade process on your system,
   example for RHEL: `yum clean all; yum upgrade -y`
   Contributed by @nmaludy
@@ -191,29 +208,29 @@
   index file location.
   Profile `fullinstall` does not force installation of package `st2` anymore.
 
-- Added a new class `chatops` to manage the chatops package, service and 
+- Added a new class `chatops` to manage the chatops package, service and
   configuration.
-  Added new parameters `chatops_adapter` and `chatops_adapter_conf` to `::st2` 
+  Added new parameters `chatops_adapter` and `chatops_adapter_conf` to `::st2`
   for allowing user to manage the hubot adapter packages and configuration. #187
   Contributed by @ruriky
 
-- Added new parameter `mongodb_manage_repo` to `::st2` so that the `mongodb` 
+- Added new parameter `mongodb_manage_repo` to `::st2` so that the `mongodb`
   install
   will not manage the repository files, allowing for installations from locally
   cached repos. #184
   Contributed by @ruriky
-  
+
 - Added new parameter `nginx_manage_repo` to `::st2` so that the `nginx` install
   will not manage the repository files, allowing for installations from locally
   cached repos. #182
   Contributed by @ruriky
-  
+
 - Make sure key type is defined for user public ssh key. #189 (Bugfix)
   Contributed by @bdandoy
-  
+
 - Ensure group creation. #188 (Enhancement)
   Contributed by @bdandoy
-  
+
 - Added more puppet-lint checks. #181
   Contributed by @bdandoy
 
@@ -372,7 +389,7 @@
   - templates/etc/systemd/system/st2service_multi.service.erb
   - templates/etc/systemd/system/st2service_single.service.erb
   - templates/opt/st2web/config.js.erb
-    
+
 
 ## 0.14.1 (Jan 15, 2015)
 * Fix typo - st2garbagecollector is part of st2reactor package.

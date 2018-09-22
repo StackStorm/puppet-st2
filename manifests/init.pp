@@ -75,6 +75,9 @@
 #                             (default: true)
 #  [*nginx_manage_repo*]    - Set this to false when you have your own repositories for nginx
 #                             (default: true)
+#  [*timersengine_enabled*]  - Set to true if the st2timersengine service should be enabled
+#                              on this node (default: true)
+#  [*timersengine_timezone*] - The local timezone for this node. (default: 'America/Los_Angeles')
 #  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
 #  [*chatops_adapter_conf*] - Configuration parameters for Hubot adapter (hash)
 #  [*chatops_hubot_log_level*]              - Logging level for hubot (string)
@@ -166,6 +169,8 @@ class st2(
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
   $nginx_manage_repo        = true,
+  $timersengine_enabled     = $::st2::params::st2timersengine_enabled,
+  $timersengine_timezone    = $::st2::params::st2timersengine_timezone,
   $chatops_adapter          = $::st2::params::chatops_adapter,
   $chatops_adapter_conf     = $::st2::params::chatops_adapter_conf,
   $chatops_hubot_log_level              = $::st2::params::hubot_log_level,
