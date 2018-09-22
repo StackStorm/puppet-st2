@@ -84,16 +84,8 @@ control 'st2web' do
     its('content') { should match 'include /etc/nginx/conf.d/\*.conf;' }
   end
 
-  if os.debian?
-    # on Debian/Ubuntu nginx redirects by returning a 308
-    describe http('http://localhost/', enable_remote_worker: true) do
-      its('status') { should eq 308 }
-    end
-  elsif os.redhat?
-    # on RHEL nginx automatically redirects to https and returns 200
-    describe http('http://localhost/', enable_remote_worker: true) do
-      its('status') { should eq 200 }
-    end
+  describe http('http://localhost/', enable_remote_worker: true) do
+    its('status') { should eq 308 }
   end
 
   describe http('https://localhost/', ssl_verify: false, enable_remote_worker: true) do
