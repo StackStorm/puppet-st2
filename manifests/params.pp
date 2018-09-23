@@ -167,5 +167,7 @@ class st2::params(
   $hubot_name = '"hubot"'
   $hubot_alias = "'!'"
   $chatops_adapter = {}
-  $chatops_adapter_conf = {}
+  $chatops_adapter_conf = {
+    'HUBOT_ADAPTER' => 'slack',
+  }
 }
