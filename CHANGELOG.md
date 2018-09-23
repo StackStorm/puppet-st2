@@ -39,6 +39,10 @@
   and Mistral services as the new password is applied. (Feature)
   Contributed by @nmaludy
   
+- Remove the insecure RabbitMQ default `guest` user on RabbitMQ instances. 
+  Note: this will remove this user on new AND existing instances. (Enhancement)
+  Contributed by @nmaludy
+  
 - Added support for additional RabbitMQ configuration options:
     - `rabbitmq_hostname` : Hostname of the RabbitMQ server (default: `127.0.0.1`)
     - `rabbitmq_port` : Port to connect to the RabbitMQ server (default: `5672`)
