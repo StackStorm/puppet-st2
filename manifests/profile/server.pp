@@ -51,6 +51,11 @@ class st2::profile::server (
   $ng_init                = $::st2::ng_init,
   $db_username            = $::st2::db_username,
   $db_password            = $::st2::db_password,
+  $rabbitmq_username      = $::st2::rabbitmq_username,
+  $rabbitmq_password      = $::st2::rabbitmq_password,
+  $rabbitmq_hostname      = $::st2::rabbitmq_hostname,
+  $rabbitmq_port          = $::st2::rabbitmq_port,
+  $rabbitmq_vhost         = $::st2::rabbitmq_vhost,
   $index_url              = $::st2::index_url,
 ) inherits st2 {
   include ::st2::notices
@@ -207,7 +212,7 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
-  ## Database settings
+  ## Database settings (MongoDB)
   ini_setting { 'database_username':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
@@ -222,6 +227,20 @@ class st2::profile::server (
     section => 'database',
     setting => 'password',
     value   => $db_password,
+    tag     => 'st2::config',
+  }
+
+  ## Messaging Settings (RabbitMQ)
+
+  # URL encode the RabbitMQ password, in case it contains special characters that
+  # can mess up the URL in the config.
+  $_rabbitmq_pass = st2::urlencode($rabbitmq_password)
+  ini_setting { 'messaging_url':
+    ensure  => present,
+    path    => '/etc/st2/st2.conf',
+    section => 'messaging',
+    setting => 'url',
+    value   => "amqp://${rabbitmq_username}:${_rabbitmq_pass}@${rabbitmq_hostname}:${rabbitmq_port}/${rabbitmq_vhost}",
     tag     => 'st2::config',
   }
 

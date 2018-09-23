@@ -33,5 +33,20 @@ control 'rabbitmq' do
     its('protocols') { should cmp 'tcp' }
   end
 
+  # check that the st2admin user was created
+  describe command('rabbitmqctl list_users') do
+    its(:stdout) { should match %r{st2admin} }
+  end
+  
+  # check that the guest user was removed
+  describe command('rabbitmqctl list_users') do
+    its(:stdout) { should_not match %r{guest} }
+  end
+
+  # check that the permissions of the st2admin user
+  describe command('rabbitmqctl list_user_permissions st2admin') do
+    its(:stdout) { should match %r{/\s+\.\*\s+\.\*\s+\.\*} }
+  end
+
   # TODO: Security check that 'beam.smp' is not listening on any other ports & IPs
 end

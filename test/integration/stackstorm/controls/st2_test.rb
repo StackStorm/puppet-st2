@@ -33,6 +33,8 @@ control 'st2' do
     it { should exist }
     its('owner') { should eq 'root' }
     its('group') { should eq 'root' }
+    # ensure that passwords with special characters are escaped for RabbitMQ URL
+    its('content') { should match %r{url = amqp://st2admin:Ch%40ngeMe@127.0.0.1:5672/} }
   end
 
   describe file('/etc/st2/htpasswd') do

@@ -30,7 +30,23 @@
 - Fixed bug where the default nginx splash page was not being removed
   on RHEL/CentOS installs. (Bugfix)
   Contributed by @nmaludy
-
+  
+- Added authentication for RabbitMQ, by default.
+  The authentication options are available in the `::st2` class:
+    - `rabbitmq_username` : Username for the new RabbitMQ user (default: `st2admin`)
+    - `rabbitmq_password` : Password for the new RabbitMQ user (default: `Ch@ngMe`)
+  When upgrading to this new version, this will force a restart of all StackStorm
+  and Mistral services as the new password is applied. (Feature)
+  Contributed by @nmaludy
+  
+- Added support for additional RabbitMQ configuration options:
+    - `rabbitmq_hostname` : Hostname of the RabbitMQ server (default: `127.0.0.1`)
+    - `rabbitmq_port` : Port to connect to the RabbitMQ server (default: `5672`)
+    - `rabbitmq_bind_ip` : IP address to bind the RabbitMQ server to (default: `127.0.0.1`)
+    - `rabbitmq_vhost` : Virtual Host for the StackStorm content on RabbitMQ (default: `/`)
+  (Feature)
+  Contributed by @nmaludy
+  
 ## 1.1.0 (Sep 07, 2018)
 
 - DEPRECATION WARNING - Dropped support for Puppet 3. (Enhancement)
