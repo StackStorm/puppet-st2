@@ -37,7 +37,7 @@ control 'rabbitmq' do
   describe command('rabbitmqctl list_users') do
     its(:stdout) { should match %r{st2admin} }
   end
-  
+
   # check that the guest user was removed
   describe command('rabbitmqctl list_users') do
     its(:stdout) { should_not match %r{guest} }
