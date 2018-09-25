@@ -2,6 +2,10 @@
 
 ## Development
 
+
+
+## 1.2.0 (Sep 25, 2018)
+
 - Removed `manifests/container.pp` and `manifests/profile/source.pp`. These files
   were unused and unmaintained. Also removed module dependencies 
   `puppetlabs/vcsrepo` and `jfryman/tiller` that are no longer used because
