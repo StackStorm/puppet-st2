@@ -1,23 +1,22 @@
 Puppet::Type.newtype(:st2_pack) do
-    @doc = 'Manage st2 packs'
+  @doc = 'Manage st2 packs'
 
-    ensurable
+  ensurable
 
-    newparam(:name) do
-        desc "Name of the pack."
+  newparam(:name) do
+    desc 'Name of the pack.'
+    isnamevar
+  end
 
-        isnamevar
-    end
+  newparam(:user) do
+    desc 'St2 cli user'
+  end
 
-    newparam(:user) do
-        desc "St2 cli user"
-    end
+  newparam(:password) do
+    desc 'St2 cli password'
+  end
 
-    newparam(:password) do
-        desc "St2 cli password"
-    end
-
-    newparam(:source) do
-        desc "Git URL for st2 pack"
-    end
+  newparam(:source) do
+    desc 'Git URL for st2 pack'
+  end
 end

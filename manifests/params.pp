@@ -6,10 +6,7 @@
 #  [*packs_group_name*] - The name of the group created to hold the st2 admin user
 #
 # === Variables
-#  [*repo_env*] - Specify the environment of package repo (production, staging)
 #  [*conf_dir*] - The local directory where st2 config is stored
-#  [*subsystems*] - Different executable subsystems within StackStorm
-#  [*component_map*] - Hash table of mappings of Subsystems -> Components
 #  [*st2_server_packages*] - A list of all upstream server packages to grab from upstream package server
 #  [*st2_client_packages*] - A list of all upstream client packages to grab from upstream package server
 #  [*debian_dependencies*] - Any dependencies needed to successfully run st2 server on the Debian OS Family
@@ -31,36 +28,6 @@ class st2::params(
   $packs_group_name = 'st2packs',
   $hostname         = '127.0.0.1',
 ) {
-  $subsystems = [
-    'actionrunner', 'api', 'sensorcontainer',
-    'rulesengine', 'garbagecollector', 'resultstracker', 'notifier',
-    'auth',
-  ]
-
-  $component_map = {
-    actionrunner        => 'st2actions',
-    api                 => 'st2api',
-    auth                => 'st2auth',
-    notifier            => 'st2actions',
-    resultstracker      => 'st2actions',
-    rulesengine         => 'st2reactor',
-    sensorcontainer     => 'st2reactor',
-    garbagecollector    => 'st2reactor',
-    web                 => 'st2common',
-
-    st2actionrunner     => 'st2actions',
-    st2api              => 'st2api',
-    st2auth             => 'st2auth',
-    st2notifier         => 'st2actions',
-    st2resultstracker   => 'st2actions',
-    st2rulesengine      => 'st2reactor',
-    st2sensorcontainer  => 'st2reactor',
-    st2garbagecollector => 'st2reactor',
-    st2web              => 'st2common',
-  }
-
-  $repo_base = 'https://downloads.stackstorm.net'
-  $repo_env = 'production'
 
   # SSL settings
   $use_ssl  = false
@@ -136,9 +103,16 @@ class st2::params(
   ]
 
   ## StackStorm Workflow Engine (Orchestra)
-  $st2_workflowengine_services = [
+  $st2workflowengine_services = [
     'st2workflowengine',
   ]
+
+  ## StackStorm Timers Engine
+  $st2timersengine_services = [
+    'st2timersengine',
+  ]
+  $st2timersengine_enabled = true
+  $st2timersengine_timezone = 'America/Los_Angeles'
 
   ## StackStorm default credentials (change these!)
   $admin_username = 'st2admin'
@@ -147,10 +121,7 @@ class st2::params(
   ## nginx default config
   $nginx_default_conf = $::osfamily ? {
     'Debian' => '/etc/nginx/conf.d/default.conf',
-    'RedHat' => $::operatingsystemmajrelease ? {
-      '6'     => '/etc/nginx/conf.d/default.conf',
-      default => '/etc/nginx/nginx.conf',
-    }
+    'RedHat' => '/etc/nginx/conf.d/default.conf',
   }
   ## nginx conf.d directory in /etc
   $nginx_conf_d = $::osfamily ? {
@@ -193,5 +164,7 @@ class st2::params(
   $hubot_name = '"hubot"'
   $hubot_alias = "'!'"
   $chatops_adapter = {}
-  $chatops_adapter_conf = {}
+  $chatops_adapter_conf = {
+    'HUBOT_ADAPTER' => 'slack',
+  }
 }

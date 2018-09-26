@@ -9,7 +9,6 @@
 #                             See the package 'ensure' property:
 #                             https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
 #  [*mistral_git_branch*]   - Tagged branch of Mistral to download/install
-#  [*repo_env*]             - Specify the environment of package repo (production, staging)
 #  [*conf_file*]            - The path where st2 config is stored
 #  [*use_ssl*]              - Enable/Disable SSL for all st2 APIs
 #  [*ssl_key*]              - The path to SSL key for all st2 APIs
@@ -76,6 +75,9 @@
 #                             (default: true)
 #  [*nginx_manage_repo*]    - Set this to false when you have your own repositories for nginx
 #                             (default: true)
+#  [*timersengine_enabled*]  - Set to true if the st2timersengine service should be enabled
+#                              on this node (default: true)
+#  [*timersengine_timezone*] - The local timezone for this node. (default: 'America/Los_Angeles')
 #  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
 #  [*chatops_adapter_conf*] - Configuration parameters for Hubot adapter (hash)
 #  [*chatops_hubot_log_level*]              - Logging level for hubot (string)
@@ -118,8 +120,6 @@
 class st2(
   $version                  = 'present',
   $mistral_git_branch       = 'st2-1.2.0',
-  $repo_base                = $::st2::params::repo_base,
-  $repo_env                 = $::st2::params::repo_env,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = $::st2::params::use_ssl,
@@ -169,6 +169,8 @@ class st2(
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
   $nginx_manage_repo        = true,
+  $timersengine_enabled     = $::st2::params::st2timersengine_enabled,
+  $timersengine_timezone    = $::st2::params::st2timersengine_timezone,
   $chatops_adapter          = $::st2::params::chatops_adapter,
   $chatops_adapter_conf     = $::st2::params::chatops_adapter_conf,
   $chatops_hubot_log_level              = $::st2::params::hubot_log_level,

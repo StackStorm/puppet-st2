@@ -1,15 +1,14 @@
 # encoding: utf-8
+
 # The Inspec reference, with examples and extensive documentation, can be
 # found at https://docs.chef.io/inspec_reference.html
 
 # List of available `st2` services:
 # https://github.com/StackStorm/st2/blob/master/st2common/bin/st2ctl#L5
-ST2_SERVICES = %w(
-  st2actionrunner st2api st2stream
-  st2auth st2garbagecollector st2notifier
-  st2resultstracker st2rulesengine st2sensorcontainer
-  st2workflowengine
-).freeze
+ST2_SERVICES = ['st2actionrunner', 'st2api', 'st2stream',
+                'st2auth', 'st2garbagecollector', 'st2notifier',
+                'st2resultstracker', 'st2rulesengine', 'st2sensorcontainer',
+                'st2workflowengine', 'st2timersengine'].freeze
 
 control 'st2-services' do
   title 'verify stackstorm services'
