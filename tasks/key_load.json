@@ -1,9 +1,13 @@
 {
-  "description": "Install a list of packs",
+  "description": "Load a list of a StackStorm key/value pairs into the datastore",
   "parameters": {
-    "packs": {
-      "type": "Array[String]",
-      "description": "List of packs to install. This can either be the name of a pack to install from the exchange, a URL to a pack to install from git://user@domain/pack.git or https://github.com/org/pack.git, or the path to a local git repo file:///path/to/local/pack"
+    "keys": {
+      "type": "Array[Hash]",
+      "description": "List of key value pairs"
+    },
+    "convert": {
+      "type": "Optional[Boolean]",
+      "description": "Convert non-string types (hash, array, boolean, int, float) to a JSON string before loading it into the datastore."
     },
     "api_key": {
       "description": "StackStorm API key to use for authentication (prefer this over username/password).",
