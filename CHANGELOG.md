@@ -2,7 +2,16 @@
 
 ## Development
 
-
+- Added new tasks to communicate with the StackStorm CLI. The naming standard and parameters
+  are modeled after the `st2` CLI command and must be run on the StackStorm node:
+   - `key_decrypt` - Decrypts an encrypted key/value pair
+   - `key_get` - Retrieves the value for a key from the datastore
+   - `key_load` - Loads a list of key/value pairs into the datastore
+   - `pack_install` - Installs a list of packs
+   - `pack_remove` - Removes a list of packs
+  (Feature)
+  Contributed by @nmaludy
+  
 
 ## 1.2.0 (Sep 25, 2018)
 

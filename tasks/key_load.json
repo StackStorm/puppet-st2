@@ -11,11 +11,13 @@
     },
     "api_key": {
       "description": "StackStorm API key to use for authentication (prefer this over username/password).",
-      "type": "Optional[Sensitive[String]]"
+      "type": "Optional[String]",
+      "sensitive": true
     },
     "auth_token": {
       "description": "StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.",
-      "type": "Optional[Sensitive[String]]"
+      "type": "Optional[String]",
+      "sensitive": true
     },
     "username": {
       "description": "Username to use for StackStorm authentication.",
@@ -23,7 +25,8 @@
     },
     "password": {
       "description": "Password to use for StackStorm authentication.",
-      "type": "Optional[String]"
+      "type": "Optional[String]",
+      "sensitive": true
     }
   },
   "implementations": [

@@ -230,12 +230,108 @@ and [librarian-puppet](http://librarian-puppet.com/).
 
  * RHEL/CentOS 6 - Puppet 4 - [build/centos6-puppet4/Puppetfile](build/centos6-puppet4/Puppetfile)
  * RHEL/CentOS 6 - Puppet 5 - [build/centos6-puppet5/Puppetfile](build/centos6-puppet5/Puppetfile)
+ * RHEL/CentOS 6 - Puppet 6 - [build/centos6-puppet6/Puppetfile](build/centos6-puppet6/Puppetfile)
  * RHEL/CentOS 7 - Puppet 4 - [build/centos7-puppet4/Puppetfile](build/centos7-puppet4/Puppetfile)
  * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
  * Ubuntu 14.04 - Puppet 4 - [build/ubuntu14-puppet4/Puppetfile](build/ubuntu14-puppet4/Puppetfile)
  * Ubuntu 14.04 - Puppet 5 - [build/ubuntu14-puppet5/Puppetfile](build/ubuntu14-puppet5/Puppetfile)
+ * Ubuntu 14.04 - Puppet 6 - [build/ubuntu14-puppet6/Puppetfile](build/ubuntu14-puppet6/Puppetfile)
  * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet4/Puppetfile](build/ubuntu16-puppet4/Puppetfile)
- * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * Ubuntu 16.06 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * Ubuntu 16.06 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
+ 
+ 
+## Tasks
+
+This module provides several tasks for interacting with StackStorm. These tasks
+are modeled after the `st2` CLI command, names of the tasks and parameters reflect this.
+Under the hood, the tasks invoke the `st2` CLI command so they must be executed on
+a node where StackStorm is installed.
+
+### Tasks List
+
+- `st2::key_decrypt` - Decrypts an encrypted key/value pair
+- `st2::key_get` - Retrieves the value for a key from the datastore
+- `st2::key_load` - Loads a list of key/value pairs into the datastore
+- `st2::pack_install` - Installs a list of packs
+- `st2::pack_remove` - Removes a list of packs
+  
+### Task Usage
+
+Tasks that interact with the `st2` CLI command require authentication with the StackStorm
+instance. There are three options for authentication:
+
+- API Key
+- Auth token
+- Username/password
+
+#### Task Usage - API Key
+
+API keys are the recommended way for systems to authenticate with StackStorm.
+To do this via a task, you would first create an API key in StackStorm:
+
+``` shell
+$ st2 apikey create -m '{"used_by": "bolt"}'
+```
+
+Copy the API `key` parameter in the output, and then use it when invoking one of
+the tasks in this module via the `api_key` parameter:
+
+Usage via command line:
+``` shell
+
+bolt task run st2::key_get key="testkey" api_key='xyz123'
+```
+
+Usage in a plan:
+``` puppet
+$res = run_task('st2::key_get', $stackstorm_target,
+                key        => 'testkey',
+                api_key    => $api_key)
+```
+
+#### Task Usage - Auth tokens
+
+Auth tokens can be used by `bolt` to communicate with StackStorm. First, the user
+needs to create an auth token, then pass it in via the `auth_token` parameter
+
+``` shell
+$ st2 auth myuser
+```
+
+Copy the auth token in the output, and then use it when invoking one of
+the tasks in this module:
+
+Usage via command line:
+``` shell
+bolt task run st2::key_get key="testkey" auth_token='xyz123'
+```
+
+Usage in a plan:
+``` puppet
+$res = run_task('st2::key_get', $stackstorm_target,
+                key        => 'testkey',
+                auth_token => $auth_token)
+```
+
+#### Task Usage - Username/Password
+
+Finally `bolt` can accept username/passwords to communicate with StackStorm.
+
+Usage via command line:
+``` shell
+bolt task run st2::key_get key="testkey" username="myuser" password="xyz123"
+```
+
+Usage in a plan:
+``` puppet
+$res = run_task('st2::key_get', $stackstorm_target,
+                key      => 'testkey',
+                username => $username,
+                password => $password)
+```
+
 
 ## Upgrading StackStorm
 
