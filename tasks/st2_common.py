@@ -165,6 +165,7 @@ class KeyLoad(St2Base):
             cmd = ['st2', 'key', 'load', '--json']
             if convert:
                 cmd += ['--convert']
+            cmd += [temp_path]
 
             # run
             return self._exec_cmd(cmd, 'load keys')

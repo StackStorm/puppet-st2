@@ -3,7 +3,7 @@
   "parameters": {
     "keys": {
       "type": "Array[Hash]",
-      "description": "List of key value pairs"
+      "description": "List of key value pairs. Each hash should have a 'name' and 'value' key. Example: {'name': 'mydatastorkey', 'value': 'valueinthedatastore'} . For more details , see: https://docs.stackstorm.com/datastore.html#loading-key-value-pairs-from-a-file"
     },
     "convert": {
       "type": "Optional[Boolean]",
