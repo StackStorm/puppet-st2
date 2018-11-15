@@ -235,7 +235,7 @@ and [librarian-puppet](http://librarian-puppet.com/).
  * Ubuntu 14.04 - Puppet 4 - [build/ubuntu14-puppet4/Puppetfile](build/ubuntu14-puppet4/Puppetfile)
  * Ubuntu 14.04 - Puppet 5 - [build/ubuntu14-puppet5/Puppetfile](build/ubuntu14-puppet5/Puppetfile)
  * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet4/Puppetfile](build/ubuntu16-puppet4/Puppetfile)
- * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * Ubuntu 16.06 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
 
 ## Upgrading StackStorm
 
