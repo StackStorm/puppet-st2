@@ -2,7 +2,12 @@
 
 ## Development
 
-
+- Added new parameter to `::st2` class `release` that allows configuring a different
+  release repository for Yum/Apt. Available options are:
+      - `'stable'` (default)
+      - `'unstable'`
+  (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.2.0 (Sep 25, 2018)
 

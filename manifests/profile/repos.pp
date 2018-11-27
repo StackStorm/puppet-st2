@@ -15,14 +15,16 @@
 #  include st2::profile::repos
 #
 class st2::profile::repos(
-  $package_type = $st2::params::package_type
-) {
+  $release      = $::st2::release,
+  $package_type = $::st2::params::package_type,
+) inherits st2 {
   require ::packagecloud
 
   if $::osfamily == 'RedHat' {
     require ::epel
   }
-  packagecloud::repo { 'StackStorm/stable':
+  $_packagecloud_repo = "StackStorm/${release}"
+  packagecloud::repo { $_packagecloud_repo:
     type => $package_type,
   }
 
@@ -34,7 +36,7 @@ class st2::profile::repos(
       command     =>  'rm -rf /var/lib/apt/lists/*; apt-get update',
       path        => ['/usr/bin/', '/bin/'],
       refreshonly => true,
-      subscribe   => Packagecloud::Repo['StackStorm/stable'],
+      subscribe   => Packagecloud::Repo[$_packagecloud_repo],
     }
   }
 }
