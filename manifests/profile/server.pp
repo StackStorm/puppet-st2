@@ -327,7 +327,7 @@ class st2::profile::server (
 
   contain ::st2::scheduler
   contain ::st2::timersengine
-  contain ::st2::workflowsengine
+  contain ::st2::workflowengine
 
   ########################################
   ## st2 user (stanley)
