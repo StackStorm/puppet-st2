@@ -148,9 +148,12 @@ class st2::params(
   $mongodb_st2_roles = ['readWrite']
 
   ## RabbitMQ
-  $rabbitmq_port = 25672
-  $rabbitmq_protocol = 'tcp'
-  $rabbitmq_selinux_type = 'amqp_port_t'
+  $rabbitmq_username = $admin_username
+  $rabbitmq_password = $admin_password
+  $rabbitmq_hostname = '127.0.0.1'
+  $rabbitmq_port = 5672
+  $rabbitmq_bind_ip = '127.0.0.1'
+  $rabbitmq_vhost = '/'
 
   ## chatops default config
   $st2_chatops_dir  = '/opt/stackstorm/chatops'
