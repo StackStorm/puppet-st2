@@ -28,11 +28,16 @@
 #  }
 #
 class st2::profile::mistral(
-  $version     = $st2::version,
-  $db_server   = '127.0.0.1',
-  $db_name     = 'mistral',
-  $db_username = 'mistral',
-  $db_password = $st2::db_password,
+  $version           = $st2::version,
+  $db_server         = '127.0.0.1',
+  $db_name           = 'mistral',
+  $db_username       = 'mistral',
+  $db_password       = $st2::db_password,
+  $rabbitmq_username = $::st2::rabbitmq_username,
+  $rabbitmq_password = $::st2::rabbitmq_password,
+  $rabbitmq_hostname = $::st2::rabbitmq_hostname,
+  $rabbitmq_port     = $::st2::rabbitmq_port,
+  $rabbitmq_vhost    = $::st2::rabbitmq_vhost,
 ) inherits st2 {
   include ::st2::params
 
@@ -64,6 +69,19 @@ class st2::profile::mistral(
     value   => "postgresql://${db_username}:${db_password}@${db_server}/${db_name}",
     tag     => 'mistral',
   }
+
+  # URL encode the RabbitMQ password, in case it contains special characters that
+  # can mess up the URL.
+  $_rabbitmq_pass = st2::urlencode($rabbitmq_password)
+  ini_setting { 'DEFAULT_transport_url':
+    ensure  => present,
+    path    => $mistral_config,
+    section => 'DEFAULT',
+    setting => 'transport_url',
+    value   => "rabbit://${rabbitmq_username}:${_rabbitmq_pass}@${rabbitmq_hostname}:${rabbitmq_port}/${rabbitmq_vhost}",
+    tag     => 'mistral',
+  }
+
 
   # TODO add extra config params
   # https://forge.puppet.com/puppetlabs/inifile

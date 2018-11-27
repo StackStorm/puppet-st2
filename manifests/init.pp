@@ -169,6 +169,12 @@ class st2(
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
   $nginx_manage_repo        = true,
+  $rabbitmq_username        = $::st2::params::rabbitmq_username,
+  $rabbitmq_password        = $::st2::params::rabbitmq_password,
+  $rabbitmq_hostname        = $::st2::params::rabbitmq_hostname,
+  $rabbitmq_port            = $::st2::params::rabbitmq_port,
+  $rabbitmq_bind_ip         = $::st2::params::rabbitmq_bind_ip,
+  $rabbitmq_vhost           = $::st2::params::rabbitmq_vhost,
   $timersengine_enabled     = $::st2::params::st2timersengine_enabled,
   $timersengine_timezone    = $::st2::params::st2timersengine_timezone,
   $chatops_adapter          = $::st2::params::chatops_adapter,
@@ -186,7 +192,6 @@ class st2(
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
 ) inherits st2::params {
-
   ########################################
   ## Control commands
   exec {'/usr/bin/st2ctl reload --register-all':

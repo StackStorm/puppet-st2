@@ -2,7 +2,7 @@ THIS_FILE := $(lastword $(MAKEFILE_LIST))
 ROOT_DIR := $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: clean
-clean: clean-kitchen clean-puppet-librarian clean-bundler
+clean: clean-kitchen clean-puppet-librarian clean-bundler clean-pkg
 
 # Clean kitchen build files
 .PHONY: clean-kitchen
@@ -26,9 +26,17 @@ clean-bundler:
 	@echo
 	@echo "== clean-bundler ======================================"
 	@echo
-	rm -rf build/kitchen/.bundle
-	rm -rf build/kitchen/vendor
-	rm -rf .bundle
-	rm -rf Gemfile.lock
-	rm -rf vendor
+	rm -rf ${ROOT_DIR}/build/kitchen/.bundle
+	rm -rf ${ROOT_DIR}/build/kitchen/vendor
+	rm -rf ${ROOT_DIR}/.bundle
+	rm -rf ${ROOT_DIR}/Gemfile.lock
+	rm -rf ${ROOT_DIR}/vendor
 	rm -rf /tmp/puppet-st2/build
+
+# Clean packages
+.PHONY: clean-pkg
+clean-pkg:
+	@echo
+	@echo "== clean-pkg ======================================"
+	@echo
+	rm -rf ${ROOT_DIR}/pkg
