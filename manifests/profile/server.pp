@@ -68,6 +68,10 @@ class st2::profile::server (
     true    => 'True',
     default => 'False',
   }
+  $_enable_timersengine = $::st2::timersengine_enabled ? {
+    true    => 'True',
+    default => 'False',
+  }
   $_logger_config = $syslog ? {
     true    => 'syslog',
     default => 'logging',
@@ -322,7 +326,7 @@ class st2::profile::server (
       path    => '/etc/st2/st2.conf',
       section => 'timersengine',
       setting => 'enabled',
-      value   => $::st2::timersengine_enabled,
+      value   => $_enable_timersengine,
       tag     => 'st2::config',
     }
 
