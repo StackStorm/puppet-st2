@@ -62,43 +62,16 @@ class st2::profile::server (
   include ::st2::params
 
   $_server_packages = $::st2::params::st2_server_packages
+  $_services = $::st2::params::st2_services
   $_conf_dir = $::st2::params::conf_dir
 
   $_enable_auth = $auth ? {
     true    => 'True',
     default => 'False',
   }
-  $_enable_timersengine = $::st2::timersengine_enabled ? {
-    true    => 'True',
-    default => 'False',
-  }
   $_logger_config = $syslog ? {
     true    => 'syslog',
     default => 'logging',
-  }
-
-  # Workflow Engine was introduced in 2.8.0
-  # Timers Engine was introduced in 2.9.0
-  if ($::st2::version == 'latest' or
-      $::st2::version == 'present' or
-      $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.9.0') >= 0) {
-    $_st2_services = concat($::st2::params::st2_services,
-                            $::st2::params::st2workflowengine_services,
-                            $::st2::params::st2timersengine_services)
-    $_has_workflowengine = true
-    $_has_timersengine = true
-  }
-  elsif versioncmp($::st2::version, '2.8.0') >= 0 {
-    $_st2_services = concat($::st2::params::st2_services,
-                            $::st2::params::st2workflowengine_services)
-    $_has_workflowengine = true
-    $_has_timersengine = false
-  }
-  else {
-    $_st2_services = $::st2::params::st2_services
-    $_has_workflowengine = false
-    $_has_timersengine = false
   }
 
   ########################################
@@ -298,48 +271,6 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
-  ## Workflow Engine settings (Orchestra)
-  if $_has_workflowengine {
-    ini_setting { 'workflow_engine_logging':
-      ensure  => present,
-      path    => '/etc/st2/st2.conf',
-      section => 'workflow_engine',
-      setting => 'logging',
-      value   => "/etc/st2/${_logger_config}.workflowengine.conf",
-      tag     => 'st2::config',
-    }
-  }
-
-  ## Timers Engine settings
-  if $_has_timersengine {
-    ini_setting { 'timersengine_logging':
-      ensure  => present,
-      path    => '/etc/st2/st2.conf',
-      section => 'timersengine',
-      setting => 'logging',
-      value   => "/etc/st2/${_logger_config}.timersengine.conf",
-      tag     => 'st2::config',
-    }
-
-    ini_setting { 'timersengine_enabled':
-      ensure  => present,
-      path    => '/etc/st2/st2.conf',
-      section => 'timersengine',
-      setting => 'enabled',
-      value   => $_enable_timersengine,
-      tag     => 'st2::config',
-    }
-
-    ini_setting { 'timersengine_local_timezone':
-      ensure  => present,
-      path    => '/etc/st2/st2.conf',
-      section => 'timersengine',
-      setting => 'local_timezone',
-      value   => $::st2::timersengine_timezone,
-      tag     => 'st2::config',
-    }
-  }
-
   ## Syslog Settings
   ini_setting { 'syslog_host':
     ensure  => present,
@@ -388,11 +319,15 @@ class st2::profile::server (
 
   ########################################
   ## Services
-  service { $_st2_services:
+  service { $_services:
     ensure => 'running',
     enable => true,
     tag    => 'st2::service',
   }
+
+  contain ::st2::scheduler
+  contain ::st2::timersengine
+  contain ::st2::workflowsengine
 
   ########################################
   ## st2 user (stanley)

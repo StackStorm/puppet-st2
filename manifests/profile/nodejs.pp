@@ -24,16 +24,22 @@ class st2::profile::nodejs(
   $version     = $::st2::nodejs_version,
 ) inherits st2 {
 
-  # if the StackStorm version is 'latest' or >= 2.4.0 then use NodeJS 6.x
-  # else use MongoDB 4.x
+  # if the StackStorm version is 'latest' or >= 3.0.0 then use NodeJS 10.x
+  # if the StackStorm version is 3.0.0 < and >= 2.4.0 then use NodeJS 6.x
+  # else use NodeJS 4.x
   if ($::st2::version == 'latest' or
       $::st2::version == 'present' or
       $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.4.0') >= 0) {
+      versioncmp($::st2::version, '3.0.0') >= 0) {
+    $nodejs_version_default = '10.x'
+  }
+  elsif versioncmp($::st2::version, '2.4.0') >= 0 {
     $nodejs_version_default = '6.x'
+    $use_rhel7_builtin = true
   }
   else {
     $nodejs_version_default = '4.x'
+    $use_rhel7_builtin = true
   }
 
   # if user specified a version of NodeJS they want to use, then use that
@@ -43,38 +49,14 @@ class st2::profile::nodejs(
     default => $version,
   }
 
-  if $::osfamily == 'RedHat' {
-    # Red Hat 7.x + already have NodeJS 6.x+ installed
-    # trying to install from nodesource repos fails, so just use the builtin
-    if versioncmp($::operatingsystemmajrelease, '7') >= 0 {
-      class { '::nodejs':
-        manage_package_repo => false,
-        npm_package_ensure  => 'present',
-        require             => Class['::epel'],
-      }
-
-      # TODO remove all of this when we remove support for Puppet 3
-      #   the following is required because of a bug in the verison of
-      #   puppet-nodejs that we're required to use for Puppet 3.
-      #   This bug is fixed in newer versions and only exposes itself
-      #   when `manage_manage_repo` is set to false, like we have here
-      #   for CentOS 7.
-      Class['::epel']
-      -> Class['::nodejs::install']
-    }
-    else {
-      # Red Hat 6.x requires us to use an OLD version of puppet/nodejs (1.3.0)
-      # In this old repo they hard-code some verifications about which versions
-      # are allowed to be installed (at the time the module was released).
-      # This has changed and NodeJS 4.x is supported and can be installed on
-      # RHEL 6.x. To fake this out we need to hard code the "repo_class"
-      # to the same thing they use internally but without the leading "::"
-      # to avoid their verification checks (ugh...).
-      class { '::nodejs':
-        repo_url_suffix     => $nodejs_version,
-        repo_class          => 'nodejs::repo::nodesource',
-        manage_package_repo => $manage_repo,
-      }
+  # Red Hat 7.x + already have NodeJS 6.x installed
+  # trying to install from nodesource repos fails, so just use the builtin
+  if ($use_rhel7_builtin and
+      $::osfamily == 'RedHat' and
+      versioncmp($::operatingsystemmajrelease, '7') >= 0) {
+    class { '::nodejs':
+      manage_package_repo => false,
+      npm_package_ensure  => 'present',
     }
   }
   else {
