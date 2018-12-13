@@ -62,7 +62,13 @@ class st2::profile::nodejs(
         repo_url_suffix     => $nodejs_version,
         manage_package_repo => $manage_repo,
       }
-      # in RHEL7+ we no longer want the npm package installed
+      # When upgrading from NodeJS 6 installed with EPEL to NodeJS 10+
+      # from the NodeSource repo, we need to remove the npm package.
+      # npm is now installed with the nodejs package.
+      # To do this we need to tell the rpm provider "force" uninstall
+      # because the npm package from EPEL has dependencies on the nodejs
+      # and st2chatops package.
+      # This allows us go upgrade RHEL7 clients from NodeJS 6 -> 10
       Package<| title == $::nodejs::npm_package_name |> {
         uninstall_options => ['--nodeps'],
         provider          => 'rpm',
