@@ -49,16 +49,28 @@ class st2::profile::nodejs(
 
   # Red Hat 7.x + already have NodeJS 6.x installed
   # trying to install from nodesource repos fails, so just use the builtin
-  if ($use_rhel7_builtin and
-      $::osfamily == 'RedHat' and
+  if ($::osfamily == 'RedHat' and
       versioncmp($::operatingsystemmajrelease, '7') >= 0) {
-    class { '::nodejs':
-      manage_package_repo => false,
-      npm_package_ensure  => 'present',
+    if $use_rhel7_builtin {
+      class { '::nodejs':
+        manage_package_repo => false,
+        npm_package_ensure  => 'present',
+      }
+    }
+    else {
+      class { '::nodejs':
+        repo_url_suffix     => $nodejs_version,
+        manage_package_repo => $manage_repo,
+      }
+      # in RHEL7+ we no longer want the npm package installed
+      Package<| title == $::nodejs::npm_package_name |> {
+        uninstall_options => ['--nodeps'],
+        provider          => 'rpm',
+      }
     }
   }
   else {
-    # else install nodejs from nodesource repo
+    # install nodejs from nodesource repo
     class { '::nodejs':
       repo_url_suffix     => $nodejs_version,
       manage_package_repo => $manage_repo,

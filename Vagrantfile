@@ -23,7 +23,7 @@
 #
 #   - Fix sudoers directory
 #       sudo su -
-#       chmod 4400 -R /etc/sudoers.d
+#       chmod 440 -R /etc/sudoers.d
 #
 #   - Run puppet to install StackStorm
 #       puppet apply -e "include ::st2::profile::fullinstall"
