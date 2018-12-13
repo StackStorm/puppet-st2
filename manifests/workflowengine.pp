@@ -1,4 +1,15 @@
-# Class that manages the st2workflowengine service (Orquesta)
+# @summary Manages the <code>st2workflowengine</code> service (Orquesta)
+#
+# Normally this class is instantiated by +st2::profile::fullinstall+.
+# However, advanced users can instantiate this class directly to configure
+# and manage just the <code>st2workflowengine</code> service on a single node.
+# Parameters for this class mirror the parameters in the st2 config.
+#
+# @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample
+#
+# @example Basic usage
+#   include ::st2::workflowengine
+#
 class st2::workflowengine {
   include ::st2
 

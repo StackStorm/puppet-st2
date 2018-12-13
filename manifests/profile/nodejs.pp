@@ -1,36 +1,34 @@
-# == Class st2::profile::nodejs
+# @summary st2 compatable installation of NodeJS and dependencies for use with StackStorm.
 #
-# st2 compatable installation of NodeJS and dependencies for use with
-# StackStorm
+# This class is needed for StackStorm ChatOps +st2::profile::chatops::.
+# Normally this class is instantiated by +st2::profile::fullinstall+.
+# However, advanced users can instantiate this class directly to configure
+# and manage just the <code>NodeJS</code> installation on a single node.
 #
-# === Parameters
-#
-#  [*version*]     - Version of NodeJS to install. If not provided it
-#                    will be auto-calcuated based on $version
-#                    (default: $::st2::nodejs_version)
-#  [*manage_repo*] - Set this to false when you have your own repositories
-#                    for NodeJS (default: $::st2::nodejs_manage_repo)
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
+# @example Basic Usage
 #  include st2::profile::nodejs
+#
+# @example Custom Parameters
+#  class { 'st2::profile::nodejs':
+#  }
+#
+# @param manage_repo
+#   Set this to false when you have your own repositories for NodeJS.
+# @param version
+#   Version of NodeJS to install. If not provided it will be auto-calcuated based on $::st2::version
 #
 class st2::profile::nodejs(
   $manage_repo = $::st2::nodejs_manage_repo,
   $version     = $::st2::nodejs_version,
 ) inherits st2 {
 
-  # if the StackStorm version is 'latest' or >= 3.0.0 then use NodeJS 10.x
-  # if the StackStorm version is 3.0.0 < and >= 2.4.0 then use NodeJS 6.x
+  # if the StackStorm version is 'latest' or >= 2.10.0 then use NodeJS 10.x
+  # if the StackStorm version is 2.10.0 < and >= 2.4.0 then use NodeJS 6.x
   # else use NodeJS 4.x
   if ($::st2::version == 'latest' or
       $::st2::version == 'present' or
       $::st2::version == 'installed' or
-      versioncmp($::st2::version, '3.0.0') >= 0) {
+      versioncmp($::st2::version, '2.10.0') >= 0) {
     $nodejs_version_default = '10.x'
   }
   elsif versioncmp($::st2::version, '2.4.0') >= 0 {
