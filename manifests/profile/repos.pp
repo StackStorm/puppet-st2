@@ -1,18 +1,17 @@
-# == Class: st2::profile::python
+# @summary Manages the installation of st2 required repos for installing the StackStorm packages.
 #
-# Installation of st2 required repos
+# @example Basic usage
+#   include ::st2::profile::repos
 #
-# === Parameters
+# @example Installing from unstable
+#   class { '::st2::profile::repos':
+#     repository => 'unstable',
+#   }
 #
-#  This module contains no parameters
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
-#  include st2::profile::repos
+# @param repository
+#   Release repository to enable. Options: 'stable', 'unstable'.
+# @param package_type
+#   Type of package management system used for repo. Options: 'rpm', 'deb'
 #
 class st2::profile::repos(
   $repository   = $::st2::repository,
