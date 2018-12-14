@@ -19,7 +19,7 @@
 # @param sleep_interval
 #   How long (in seconds) to sleep between each action scheduler main loop run interval.
 # @param gc_interval
-#   How often (in seconds) to look for zombie execution requests before rescheduling the
+#   How often (in seconds) to look for zombie execution requests before rescheduling them.
 # @param pool_size
 #   The size of the pool used by the scheduler for scheduling executions.
 #

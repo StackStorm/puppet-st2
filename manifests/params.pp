@@ -118,11 +118,9 @@ class st2::params(
   $scheduler_services = [
     'st2scheduler',
   ]
-  # # NOTE: these parameters seem to be changing quite often right now,
-  # # wait until they stabilize before adding them
-  # $scheduler_sleep_interval = 0.1
-  # $scheduler_gc_interval = 10
-  # $scheduler_pool_size = 10
+  $scheduler_sleep_interval = 0.1
+  $scheduler_gc_interval = 10
+  $scheduler_pool_size = 10
 
   ## StackStorm default credentials (change these!)
   $admin_username = 'st2admin'
