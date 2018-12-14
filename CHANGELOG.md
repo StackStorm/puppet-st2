@@ -22,8 +22,8 @@
   (Feature)
   Contributed by @nmaludy
 
-- Added new parameter to `::st2` class `release` that allows configuring a different
-  release repository for Yum/Apt. Available options are:
+- Added new parameter to `::st2` class `repository` that allows configuring a different
+  release repository from PackageCloud for Yum/Apt. Available options are:
       - `'stable'` (default)
       - `'unstable'`
   (Enhancement)

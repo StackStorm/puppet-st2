@@ -8,7 +8,7 @@
 #  [*version*]              - Version of StackStorm package to install (default = 'present')
 #                             See the package 'ensure' property:
 #                             https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
-#  [*release*]              - Release repository to enable. 'stable', 'unstable'
+#  [*repository*]           - Release repository to enable. 'stable', 'unstable'
 #                             (default = 'stable')
 #  [*mistral_git_branch*]   - Tagged branch of Mistral to download/install
 #  [*conf_file*]            - The path where st2 config is stored
@@ -121,7 +121,7 @@
 #
 class st2(
   $version                  = 'present',
-  $release                  = $::st2::params::release,
+  $repository               = $::st2::params::repository,
   $mistral_git_branch       = 'st2-1.2.0',
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",

@@ -15,7 +15,7 @@
 #  include st2::profile::repos
 #
 class st2::profile::repos(
-  $release      = $::st2::release,
+  $repository   = $::st2::repository,
   $package_type = $::st2::params::package_type,
 ) inherits st2 {
   require ::packagecloud
@@ -23,7 +23,7 @@ class st2::profile::repos(
   if $::osfamily == 'RedHat' {
     require ::epel
   }
-  $_packagecloud_repo = "StackStorm/${release}"
+  $_packagecloud_repo = "StackStorm/${repository}"
   packagecloud::repo { $_packagecloud_repo:
     type => $package_type,
   }
