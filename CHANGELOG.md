@@ -2,7 +2,22 @@
 
 ## Development
 
-
+- Added support for `st2scheduler` service in StackStorm >= `2.10.0`.
+  Two new options were added to `::st2`:
+    - `scheduler_sleep_interval` - How long (in seconds) to sleep between each action scheduler main loop run interval. (default = 0.1)
+    - `scheduler_gc_interval` - How often (in seconds) to look for zombie execution requests before rescheduling them. (default = 10)
+    - `scheduler_pool_size` - The size of the pool used by the scheduler for scheduling executions. (default = 10)
+  #251 (Enhancement)
+  Contributed by @nmaludy
+  
+- Installs NodeJS 10, by default, when installing StackStorm >= `2.10.0`.
+  This is now also the default when specifying a version of `latest`, `installed` or `present` (default).
+  Existing installations are also upgraded to NodeJS 10 if their `::st2::version`
+  is set to `latest`, `installed` or `present` (default). If users wish to pin their
+  installation to an old version of StackStorm, set `::st2::version` to something
+  specific, like `2.9.0`.
+  #219 (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.2.0 (Sep 25, 2018)
 
