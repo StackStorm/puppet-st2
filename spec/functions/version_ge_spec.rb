@@ -17,10 +17,12 @@ describe 'st2::version_ge' do
 
   context 'when StackStorm is installed' do
     context 'and st2::version = "present"' do
+      let(:pre_condition) { "class {'::st2': version => 'present' }" }
       let(:facts) do
         {
           st2_version: '2.9.0',
           'st2::version' => 'present',
+          osfamily: 'RedHat',
         }
       end
 
@@ -34,10 +36,12 @@ describe 'st2::version_ge' do
     end
 
     context 'and st2::version = "installed"' do
+      let(:pre_condition) { "class {'::st2': version => 'installed' }" }
       let(:facts) do
         {
           st2_version: '2.9.0',
           'st2::version' => 'installed',
+          osfamily: 'RedHat',
         }
       end
 
@@ -51,10 +55,12 @@ describe 'st2::version_ge' do
     end
 
     context 'and st2::version = "latest"' do
+      let(:pre_condition) { "class {'::st2': version => 'latest' }" }
       let(:facts) do
         {
           st2_version: '2.9.0',
           'st2::version' => 'latest',
+          osfamily: 'RedHat',
         }
       end
 
@@ -68,10 +74,12 @@ describe 'st2::version_ge' do
     end
 
     context 'and st2_version = "2.9.0" st2::version = "2.9.0"' do
+      let(:pre_condition) { "class {'::st2': version => '2.9.0' }" }
       let(:facts) do
         {
           st2_version: '2.9.0',
           'st2::version' => '2.9.0',
+          osfamily: 'RedHat',
         }
       end
 
@@ -85,10 +93,12 @@ describe 'st2::version_ge' do
     end
 
     context 'and st2_version = "2.9.0" st2::version = "2.10.0"' do
+      let(:pre_condition) { "class {'::st2': version => '2.10.0' }" }
       let(:facts) do
         {
           st2_version: '2.9.0',
           'st2::version' => '2.10.0',
+          osfamily: 'RedHat',
         }
       end
 
@@ -102,10 +112,12 @@ describe 'st2::version_ge' do
     end
 
     context 'and st2_version = "2.10.0" st2::version = "2.9.0"' do
+      let(:pre_condition) { "class {'::st2': version => '2.9.0' }" }
       let(:facts) do
         {
           st2_version: '2.10.0',
           'st2::version' => '2.9.0',
+          osfamily: 'RedHat',
         }
       end
 
