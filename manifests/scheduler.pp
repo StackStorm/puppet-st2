@@ -30,10 +30,7 @@ class st2::scheduler (
 ) inherits st2 {
 
   # st2scheduler was introduced in 2.10.0
-  if ($::st2::version == 'latest' or
-      $::st2::version == 'present' or
-      $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.10.0') >= 0) {
+  if st2::version_ge('2.10.0') {
 
     $_logger_config = $::st2::syslog ? {
       true    => 'syslog',

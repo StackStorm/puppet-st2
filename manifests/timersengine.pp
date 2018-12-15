@@ -27,10 +27,7 @@ class st2::timersengine (
 ) inherits st2 {
 
   # st2timersengine was introduced in 2.9.0
-  if ($::st2::version == 'latest' or
-      $::st2::version == 'present' or
-      $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.9.0') >= 0) {
+  if st2::version_ge('2.9.0') {
 
     $_logger_config = $::st2::syslog ? {
       true    => 'syslog',

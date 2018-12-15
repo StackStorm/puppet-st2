@@ -14,10 +14,7 @@ class st2::workflowengine {
   include ::st2
 
   # st2workflowengine was introduced in 2.8.0
-  if ($::st2::version == 'latest' or
-      $::st2::version == 'present' or
-      $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.8.0') >= 0) {
+  if st2::version_ge('2.8.0') {
 
     $_logger_config = $::st2::syslog ? {
       true    => 'syslog',

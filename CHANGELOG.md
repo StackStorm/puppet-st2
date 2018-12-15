@@ -10,12 +10,15 @@
   #251 (Enhancement)
   Contributed by @nmaludy
   
+- Added a new fact `st2_version` that reports the installed version of StackStorm.
+  If StackStorm is not installed then the fact will not be present (default behavior of Facter).
+  Contributed by @nmaludy
+  
 - Installs NodeJS 10, by default, when installing StackStorm >= `2.10.0`.
-  This is now also the default when specifying a version of `latest`, `installed` or `present` (default).
+  This is now also the default when running a brand new installation with a
+  `::st2::version` of `latest`, `installed` or `present` (default).
   Existing installations are also upgraded to NodeJS 10 if their `::st2::version`
-  is set to `latest`, `installed` or `present` (default). If users wish to pin their
-  installation to an old version of StackStorm, set `::st2::version` to something
-  specific, like `2.9.0`.
+  is set to `latest`(default) or to a version >= `2.10.0`.
   #219 (Enhancement)
   Contributed by @nmaludy
 
