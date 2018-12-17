@@ -1,7 +1,10 @@
 # Changelog
 
 ## Development
-  
+
+
+## 1.3.0 (Dec 17, 2018)
+
 - Added authentication for RabbitMQ, by default.
   The authentication options are available in the `::st2` class:
     - `rabbitmq_username` : Username for the new RabbitMQ user (default: `st2admin`)
