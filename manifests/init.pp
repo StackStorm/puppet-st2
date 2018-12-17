@@ -80,6 +80,12 @@
 #  [*timersengine_enabled*]  - Set to true if the st2timersengine service should be enabled
 #                              on this node (default: true)
 #  [*timersengine_timezone*] - The local timezone for this node. (default: 'America/Los_Angeles')
+#  [*scheduler_sleep_interval*] - How long (in seconds) to sleep between each action
+#                                 scheduler main loop run interval. (default = 0.1)
+#  [*scheduler_gc_interval*]    - How often (in seconds) to look for zombie execution requests
+#                                 before rescheduling them. (default = 10)
+#  [*scheduler_pool_size*]      - The size of the pool used by the scheduler for scheduling
+#                                 executions. (default = 10)
 #  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
 #  [*chatops_adapter_conf*] - Configuration parameters for Hubot adapter (hash)
 #  [*chatops_hubot_log_level*]              - Logging level for hubot (string)
@@ -178,8 +184,11 @@ class st2(
   $rabbitmq_port            = $::st2::params::rabbitmq_port,
   $rabbitmq_bind_ip         = $::st2::params::rabbitmq_bind_ip,
   $rabbitmq_vhost           = $::st2::params::rabbitmq_vhost,
-  $timersengine_enabled     = $::st2::params::st2timersengine_enabled,
-  $timersengine_timezone    = $::st2::params::st2timersengine_timezone,
+  $timersengine_enabled     = $::st2::params::timersengine_enabled,
+  $timersengine_timezone    = $::st2::params::timersengine_timezone,
+  $scheduler_sleep_interval = $::st2::params::scheduler_sleep_interval,
+  $scheduler_gc_interval    = $::st2::params::scheduler_gc_interval,
+  $scheduler_pool_size      = $::st2::params::scheduler_pool_size,
   $chatops_adapter          = $::st2::params::chatops_adapter,
   $chatops_adapter_conf     = $::st2::params::chatops_adapter_conf,
   $chatops_hubot_log_level              = $::st2::params::hubot_log_level,

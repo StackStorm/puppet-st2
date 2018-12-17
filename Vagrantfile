@@ -22,10 +22,10 @@
 #       vagrant ssh
 #
 #   - Fix sudoers directory
-#       sudo chmod 4400 -R /etc/sudoers.d
+#       sudo su -
+#       chmod 440 -R /etc/sudoers.d
 #
 #   - Run puppet to install StackStorm
-#       sudo su -
 #       puppet apply -e "include ::st2::profile::fullinstall"
 #
 #   - Keep editing files locally and re-running puppet with the command above

@@ -38,12 +38,9 @@ class st2::profile::mongodb (
   $auth        = $::st2::mongodb_auth,
 ) inherits st2 {
 
-  # if the StackStorm version is 'latest' or >= 2.4.0 then use MongoDB 3.4
+  # if the StackStorm version is > 2.4.0 then MongoDB 3.4
   # else use MongoDB 3.2
-  if ($::st2::version == 'latest' or
-      $::st2::version == 'present' or
-      $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.4.0') >= 0) {
+  if st2::version_ge('2.4.0') {
     $_mongodb_version_default = '3.4'
   }
   else {
