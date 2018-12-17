@@ -48,6 +48,7 @@ class st2::params(
   $api_port = 9101
 
   # Non-user configurable parameters
+  $repository = 'stable'
   $conf_dir = '/etc/st2'
   $datstore_keys_dir = "${conf_dir}/keys"
 
