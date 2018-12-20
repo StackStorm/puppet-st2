@@ -7,7 +7,10 @@ cache: bundler
 before_install:
   - bundle -v
   - rm -f Gemfile.lock
-  - gem update --system
+  # need to comment out the system update because this upgrades rubygem-update
+  # further than what's allowable for Puppet 4. rubygem-update 3.0.0 requires
+  # ruby 2.3.0 and Puppet 4 requires ruby 2.1.0
+  #- gem update --system
   - gem --version
   - bundle -v
 bundler_args: --without system_tests
