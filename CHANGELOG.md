@@ -2,6 +2,11 @@
 
 ## Development
 
+- Fixed build for Puppet 4. New version of rubygem-update requires Ruby 2.3.0
+  and Puppet 4 requires 2.1.x. When running `gem update --system` this updated
+  the gem past the installed ruby version, breaking the build. Instead,
+  we simply leave the system gems alone during the build.
+  Contributed by @nmaludy
 
 ## 1.3.0 (Dec 17, 2018)
 

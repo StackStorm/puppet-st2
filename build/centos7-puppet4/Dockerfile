@@ -36,7 +36,10 @@ ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
   BUNDLE_PATH=/bundle
 RUN /bin/bash -l -c "bundle -v"
 RUN /bin/bash -l -c "rm -f ${APP_HOME}/Gemfile.lock"
-RUN /bin/bash -l -c "gem update --system"
+# need to comment out the system update because this upgrades rubygem-update
+# further than what's allowable for Puppet 4. rubygem-update 3.0.0 requires
+# ruby 2.3.0 and Puppet 4 requires ruby 2.1.0
+# RUN /bin/bash -l -c "gem update --system"
 RUN /bin/bash -l -c "gem --version"
 RUN /bin/bash -l -c "bundle -v"
 RUN cat $BUNDLE_GEMFILE
