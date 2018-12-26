@@ -1,0 +1,30 @@
+# ################
+# # Instructions #
+# ################
+# yum -y install puppet (or equivalent)
+# gem install puppet_forge:2.2.6 r10k
+# # create a new file ./Puppetfile with the contents of this file
+# r10k puppetfile install -v --moduledir=./modules --puppetfile=./Puppetfile
+# puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
+
+forge "https://forgeapi.puppetlabs.com"
+
+mod 'puppet/rabbitmq'
+mod 'jamtur01/httpauth'
+mod 'puppet/staging'
+mod 'puppet/wget'
+mod 'saz/sudo'
+mod 'puppet/python'
+mod 'puppetlabs/gcc'
+mod 'puppetlabs/inifile'
+mod 'puppet/mongodb'
+mod 'puppetlabs/postgresql'
+mod 'stahnma/epel'
+mod 'ghoneycutt/facter'
+mod 'computology/packagecloud'
+mod "puppet/selinux"
+mod 'puppet/nginx'
+mod 'puppet/nodejs'
+mod 'puppetlabs/apt'
+mod 'puppetlabs/concat'
+mod 'puppetlabs/stdlib'

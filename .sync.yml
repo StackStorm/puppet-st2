@@ -1,0 +1,44 @@
+---
+.gitignore:
+  paths:
+    - .librarian
+    - .kitchen
+    - .tmp
+    - .bundle
+    - Puppetfile.lock
+.gitlab-ci.yml:
+  # we don't use GitLab
+  unmanaged: true
+.travis.yml:
+  # we keep our own .travis.yml because of integration testing
+  unmanaged: true
+appveyor.yml:
+  # we don't use Appveyor
+  unmanaged: true
+Gemfile:
+  required:
+    ':development':
+      - gem: 'puppet-lint-absolute_classname-check'
+        version: '>= 0.2.4'
+      - gem: 'puppet-lint-absolute_template_path'
+        version: '>= 1.0.1'
+      - gem: 'puppet-lint-alias-check'
+        version: '>= 0.1.1'
+      - gem: 'puppet-lint-classes_and_types_beginning_with_digits-check'
+        version: '>= 0.1.2'
+      - gem: 'puppet-lint-concatenated_template_files-check'
+        version: '>= 0.1.1'
+      - gem: 'puppet-lint-file_ensure-check'
+        version: '>= 0.3.1'
+      - gem: 'puppet-lint-file_source_rights-check'
+        version: '>= 0.1.1'
+      - gem: 'puppet-lint-leading_zero-check'
+        version: '>= 0.1.1'
+      - gem: 'puppet-lint-resource_reference_syntax'
+        version: '>= 1.0.10'
+      - gem: 'puppet-lint-trailing_comma-check'
+        version: '>= 0.3.2'
+      - gem: 'puppet-lint-unquoted_string-check'
+        version: '>= 0.3.0'
+      - gem: 'puppet-lint-version_comparison-check'
+        version: '>= 0.2.1'

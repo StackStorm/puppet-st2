@@ -20,7 +20,7 @@ provisioner:
   # don't have kitchen-puppet install puppet by default (done in Dockerfile)
   require_puppet_collections: false
   # If you do not enable puppet_detailed_exitcodes, the provisioner only failes
-  # if the manifest can not be compiled. 
+  # if the manifest can not be compiled.
   puppet_detailed_exitcodes: true
   # Exit code details:
   # https://github.com/neillturner/kitchen-puppet/blob/master/provisioner_options.md#checking-puppet-apply-success-with-puppet_detailed_exitcodes
@@ -32,72 +32,163 @@ provisioner:
   puppet_whitelist_exit_code:
     - 0
     - 2
-  # enable/disable puppet debug mode
-  puppet_debug: true
-    
+
 platforms:
-  # CentOS6 with sysV init
-  - name: centos6
+  # CentOS6 with sysV init - Puppet 4
+  - name: centos6-puppet4
     driver:
       platform: centos
-      dockerfile: build/centos6/Dockerfile.kitchen
+      dockerfile: build/centos6-puppet4/Dockerfile.kitchen
       run_command: /usr/sbin/sshd -D
     provisioner:
-      puppetfile_path: build/centos6/Puppetfile
-      
-  # CentOS7 with Systemd
-  - name: centos7
+      puppetfile_path: build/centos6-puppet4/Puppetfile
+
+  # CentOS6 with sysV init - Puppet 5
+  - name: centos6-puppet5
     driver:
       platform: centos
-      dockerfile: build/centos7/Dockerfile.kitchen
+      dockerfile: build/centos6-puppet5/Dockerfile.kitchen
+      run_command: /usr/sbin/sshd -D
+    provisioner:
+      puppetfile_path: build/centos6-puppet5/Puppetfile
+
+  # CentOS6 with sysV init - Puppet 6
+  - name: centos6-puppet6
+    driver:
+      platform: centos
+      dockerfile: build/centos6-puppet6/Dockerfile.kitchen
+      run_command: /usr/sbin/sshd -D
+    provisioner:
+      puppetfile_path: build/centos6-puppet6/Puppetfile
+
+  # CentOS7 with Systemd - Puppet 4
+  - name: centos7-puppet4
+    driver:
+      platform: centos
+      dockerfile: build/centos7-puppet4/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/centos7/Puppetfile
-      
-  # Ubuntu Trusty with Upstart
-  - name: ubuntu14
+      puppetfile_path: build/centos7-puppet4/Puppetfile
+
+  # CentOS7 with Systemd - Puppet 5
+  - name: centos7-puppet5
+    driver:
+      platform: centos
+      dockerfile: build/centos7-puppet5/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos7-puppet5/Puppetfile
+
+  # CentOS7 with Systemd - Puppet 6
+  - name: centos7-puppet6
+    driver:
+      platform: centos
+      dockerfile: build/centos7-puppet6/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos7-puppet6/Puppetfile
+
+  # Ubuntu Trusty with Upstart - Puppet 4
+  - name: ubuntu14-puppet4
     driver:
       platform: ubuntu
-      dockerfile: build/ubuntu14/Dockerfile.kitchen
+      dockerfile: build/ubuntu14-puppet4/Dockerfile.kitchen
       disable_upstart: false
       run_command: /sbin/init
     provisioner:
-      puppetfile_path: build/ubuntu14/Puppetfile
-      
-  # Ubuntu Xenial with Systemd
-  - name: ubuntu16
+      puppetfile_path: build/ubuntu14-puppet4/Puppetfile
+      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+      # we need to install Puppet once the container has started.
+      # Good news, kitchen-puppet supports this with the following commands:
+      require_puppet_omnibus: true
+      require_puppet_collections: true
+      require_puppet_repo: false
+      puppet_omnibus_url: https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_agent.sh
+
+  # Ubuntu Trusty with Upstart - Puppet 5
+  - name: ubuntu14-puppet5
     driver:
       platform: ubuntu
-      dockerfile: build/ubuntu16/Dockerfile.kitchen
+      dockerfile: build/ubuntu14-puppet5/Dockerfile.kitchen
+      disable_upstart: false
       run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/ubuntu16/Puppetfile
-      
-  # Puppet4 on CentOS7 with Systemd
-  - name: puppet4
+      puppetfile_path: build/ubuntu14-puppet5/Puppetfile
+      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+      # we need to install Puppet once the container has started.
+      # Good news, kitchen-puppet supports this with the following commands:
+      require_puppet_omnibus: true
+      require_puppet_collections: true
+      require_puppet_repo: false
+      puppet_omnibus_url: https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_5_agent.sh
+
+  # Ubuntu Trusty with Upstart - Puppet 6
+  - name: ubuntu14-puppet6
     driver:
-      platform: centos
-      dockerfile: build/puppet4/Dockerfile.kitchen
+      platform: ubuntu
+      dockerfile: build/ubuntu14-puppet6/Dockerfile.kitchen
+      disable_upstart: false
       run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/puppet4/Puppetfile
-      
-  # Puppet5 on CentOS7 with Systemd
-  - name: puppet5
+      puppetfile_path: build/ubuntu14-puppet6/Puppetfile
+      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
+      # we need to install Puppet once the container has started.
+      # Good news, kitchen-puppet supports this with the following commands:
+      require_puppet_omnibus: true
+      require_puppet_collections: true
+      require_puppet_repo: false
+      puppet_omnibus_url: https://raw.githubusercontent.com/nmaludy/puppet-install-shell/master/install_puppet_6_agent.sh
+
+  # Ubuntu Xenial with Systemd - Puppet 4
+  - name: ubuntu16-puppet4
     driver:
-      platform: centos
-      dockerfile: build/puppet5/Dockerfile.kitchen
+      platform: ubuntu
+      dockerfile: build/ubuntu16-puppet4/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/puppet5/Puppetfile
+      puppetfile_path: build/ubuntu16-puppet4/Puppetfile
+
+  # Ubuntu Xenial with Systemd - Puppet 5
+  - name: ubuntu16-puppet5
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu16-puppet5/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/ubuntu16-puppet5/Puppetfile
+
+  # Ubuntu Xenial with Systemd - Puppet 6
+  - name: ubuntu16-puppet6
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu16-puppet6/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/ubuntu16-puppet6/Puppetfile
 
 suites:
   - name: default
+
+verifier:
+  name: inspec
+  sudo: true
+  # by default `sudo` doesn't set many of the environment variables.
+  # we need to tell sudo to set the $HOME env var to /root.
+  # this way it picks up ~/.st2/config for the root user, configured by Puppet
+  # this ~/.st2/config contains auth credentials to test out st2 comamnds
+  # via inspec
+  sudo_options: "HOME=/root -u root"
+  inspec_tests:
+    - path: test/integration/stackstorm

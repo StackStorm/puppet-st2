@@ -1,0 +1,20 @@
+name: stackstorm
+title: Integration Tests for StackStorm community
+summary: >
+  Tests to verify if StackStorm packages st2, st2web, st2mistral, st2chatops are installed,
+  files and directories are shipped, services are running as well as dependent servers like
+  nginx, postgresql, mongodb are available and working correctly.
+maintainer: StackStorm
+copyright: StackStorm
+copyright_email: info@stackstorm.com
+license: Apache-2.0
+version: 0.1.0
+supports:
+  - os-name: centos
+    release: 6.*
+  - os-name: centos
+    release: 7.*
+  - os-name: ubuntu
+    release: 14.04
+  - os-name: ubuntu
+    release: 16.04

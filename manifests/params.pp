@@ -80,6 +80,7 @@ class st2::params(
   $api_port = 9101
 
   # Non-user configurable parameters
+  $repository = 'stable'
   $conf_dir = '/etc/st2'
   $datstore_keys_dir = "${conf_dir}/keys"
 
@@ -134,13 +135,34 @@ class st2::params(
     'st2chatops',
   ]
 
+  ## StackStorm Workflow Engine (Orchestra)
+  $workflowengine_services = [
+    'st2workflowengine',
+  ]
+
+  ## StackStorm Timers Engine
+  $timersengine_services = [
+    'st2timersengine',
+  ]
+  $timersengine_enabled = true
+  $timersengine_timezone = 'America/Los_Angeles'
+
+  ## StackStorm Scheduler
+  $scheduler_services = [
+    'st2scheduler',
+  ]
+  $scheduler_sleep_interval = 0.1
+  $scheduler_gc_interval = 10
+  $scheduler_pool_size = 10
+
+  ## StackStorm default credentials (change these!)
+  $admin_username = 'st2admin'
+  $admin_password = 'Ch@ngeMe'
+
   ## nginx default config
   $nginx_default_conf = $::osfamily ? {
     'Debian' => '/etc/nginx/conf.d/default.conf',
-    'RedHat' => $::operatingsystemmajrelease ? {
-      '6'     => '/etc/nginx/conf.d/default.conf',
-      default => '/etc/nginx/nginx.conf',
-    }
+    'RedHat' => '/etc/nginx/conf.d/default.conf',
   }
   ## nginx conf.d directory in /etc
   $nginx_conf_d = $::osfamily ? {
@@ -149,8 +171,6 @@ class st2::params(
   }
   # nginx config for StackStorm (installed with the st2 packages)
   $nginx_st2_conf = '/usr/share/doc/st2/conf/nginx/st2.conf'
-
-  # syslog
 
   # st2web certs
   $st2web_ssl_dir = '/etc/ssl/st2'
@@ -173,9 +193,12 @@ class st2::params(
   $mistral_db_bind_ips = '127.0.0.1'
 
   ## RabbitMQ
-  $rabbitmq_port = 25672
-  $rabbitmq_protocol = 'tcp'
-  $rabbitmq_selinux_type = 'amqp_port_t'
+  $rabbitmq_username = $admin_username
+  $rabbitmq_password = $admin_password
+  $rabbitmq_hostname = '127.0.0.1'
+  $rabbitmq_port = 5672
+  $rabbitmq_bind_ip = '127.0.0.1'
+  $rabbitmq_vhost = '/'
 
   ## actionrunner config
   $actionrunner_workers = 10
@@ -197,5 +220,7 @@ class st2::params(
   $hubot_name = '"hubot"'
   $hubot_alias = "'!'"
   $chatops_adapter = {}
-  $chatops_adapter_conf = {}
+  $chatops_adapter_conf = {
+    'HUBOT_ADAPTER' => 'slack',
+  }
 }
