@@ -1,29 +1,22 @@
-# == Class: st2::params
+# @summary Main parameters to manage the st2 module
 #
-#  Main parameters to manage the st2 module
+# @param packs_group_name
+#   The name of the group created to hold the st2 admin user
+# @param hostname
+#   Hostname of the StackStorm box. This is used as the default to drive a lot of
+#   other parameters in the ::st2 class such as auth URL, MongoDB host, RabbitMQ host, etc.
+# @param admin_username
+#   Username of the StackStorm admin user. Best practice is to change this to a unique username.
+# @param admin_password
+#   Password of the StackStorm admin user. Best practice is to change this to a unique password.
 #
-# === Parameters
-#  [*packs_group_name*] - The name of the group created to hold the st2 admin user
+# @example Best Practice
+#   class { '::st2::params':
+#     admin_username => 'myuser',
+#     admin_password => 'SuperSecret!',
+#   }
+#   include ::st2::profile::fullinstall
 #
-# === Variables
-#  [*conf_dir*] - The local directory where st2 config is stored
-#  [*st2_server_packages*] - A list of all upstream server packages to grab from upstream package server
-#  [*st2_client_packages*] - A list of all upstream client packages to grab from upstream package server
-#  [*debian_dependencies*] - Any dependencies needed to successfully run st2 server on the Debian OS Family
-#  [*debian_client_dependencies*] - Any dependencies needed to successfully run st2 client on the Debian OS Family
-#  [*debian_mongodb_dependencies*] - MongoDB Dependencies (if installed via this module)
-#  [*redhat_dependencies*] - Any dependencies needed to successfully run st2 server on the RedHat OS Family
-#  [*redhat_client_dependencies*] - Any dependencies needed to successfully run st2 client on the RedHat OS Family
-#
-# === Examples
-#
-#  include st2::params
-#
-#  class { 'st2::params':
-#
-#  }
-#
-
 class st2::params(
   $packs_group_name = 'st2packs',
   $hostname         = '127.0.0.1',
