@@ -28,11 +28,11 @@
 #  }
 #
 class st2::profile::mistral(
-  $version           = $st2::version,
-  $db_host           = $st2::mistral_db_host,
-  $db_name           = $st2::mistral_db_name,
-  $db_username       = $st2::mistral_db_username,
-  $db_password       = $st2::db_password,
+  $version           = $::st2::version,
+  $db_host           = $::st2::mistral_db_host,
+  $db_name           = $::st2::mistral_db_name,
+  $db_username       = $::st2::mistral_db_username,
+  $db_password       = $::st2::mistral_db_password,
   $rabbitmq_username = $::st2::rabbitmq_username,
   $rabbitmq_password = $::st2::rabbitmq_password,
   $rabbitmq_hostname = $::st2::rabbitmq_hostname,
