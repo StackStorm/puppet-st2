@@ -7,8 +7,6 @@
 #
 # === Variables
 #  [*conf_dir*] - The local directory where st2 config is stored
-#  [*subsystems*] - Different executable subsystems within StackStorm
-#  [*component_map*] - Hash table of mappings of Subsystems -> Components
 #  [*st2_server_packages*] - A list of all upstream server packages to grab from upstream package server
 #  [*st2_client_packages*] - A list of all upstream client packages to grab from upstream package server
 #  [*debian_dependencies*] - Any dependencies needed to successfully run st2 server on the Debian OS Family
@@ -33,33 +31,6 @@ class st2::params(
   $admin_username   = 'st2admin',
   $admin_password   = 'Ch@ngeMe',
 ) {
-  $subsystems = [
-    'actionrunner', 'api', 'sensorcontainer',
-    'rulesengine', 'garbagecollector', 'resultstracker', 'notifier',
-    'auth',
-  ]
-
-  $component_map = {
-    actionrunner        => 'st2actions',
-    api                 => 'st2api',
-    auth                => 'st2auth',
-    notifier            => 'st2actions',
-    resultstracker      => 'st2actions',
-    rulesengine         => 'st2reactor',
-    sensorcontainer     => 'st2reactor',
-    garbagecollector    => 'st2reactor',
-    web                 => 'st2common',
-
-    st2actionrunner     => 'st2actions',
-    st2api              => 'st2api',
-    st2auth             => 'st2auth',
-    st2notifier         => 'st2actions',
-    st2resultstracker   => 'st2actions',
-    st2rulesengine      => 'st2reactor',
-    st2sensorcontainer  => 'st2reactor',
-    st2garbagecollector => 'st2reactor',
-    st2web              => 'st2common',
-  }
 
   # SSL settings
   $use_ssl  = false
