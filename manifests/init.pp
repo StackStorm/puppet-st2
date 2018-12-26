@@ -159,7 +159,7 @@ class st2(
   $mistral_db_name          = $::st2::params::mistral_db_name,
   $mistral_db_username      = $::st2::params::mistral_db_username,
   $mistral_db_password      = $::st2::params::admin_password,
-  $mistral_db_bind_ips      = $::st2::params::mistral_bind_ips,
+  $mistral_db_bind_ips      = $::st2::params::mistral_db_bind_ips,
   $syslog                   = false,
   $syslog_host              = 'localhost',
   $syslog_protocol          = 'udp',

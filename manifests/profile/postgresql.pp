@@ -1,23 +1,18 @@
-# == Class: st2::profile::postgresql
+# @summary st2 compatable installation of PostgreSQL and dependencies for use with StackStorm and Mistral.
 #
-# st2 compatable installation of PostgreSQL and dependencies for use with
-# StackStorm
+# @example Basic usage
+#   include ::st2::profile::postgresql
 #
-# === Parameters
+# @example Customizing parameters
+#   class { '::st2::profile::postgresql':
+#     db_bind_ips => '0.0.0.0',
+#   }
 #
-#  This module contains no parameters
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
-#  include st2::profile::postgresql
+# @param db_bind_ips
+#   String of IPs (csv) that the Postgres database will accept connections on.
 #
 class st2::profile::postgresql(
-  $db_password         = $st2::mistral_db_password,
-  $db_listen_addresses = '127.0.0.1',
+  $bind_ips = $::st2::mistral_db_bind_ips,
 ) inherits st2 {
   if !defined(Class['::postgresql::server']) {
     if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
@@ -28,7 +23,7 @@ class st2::profile::postgresql(
     }
 
     class { '::postgresql::server':
-      listen_addresses => $db_listen_addresses,
+      listen_addresses => $bind_ips,
     }
   }
 }
