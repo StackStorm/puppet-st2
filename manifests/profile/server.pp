@@ -1,33 +1,45 @@
-# == Class: st2::profile::server
+# @summary Profile to install, configure and manage all server components for st2
 #
-#  Profile to install all server components for st2
+# @param version
+#    Version of StackStorm to install
+# @param conf_dir
+#    The directory where st2 configs are stored
+# @param conf_file
+#    The path where st2 config is stored
+# @param auth
+#    Toggle Auth
+# @param actionrunner_workers
+#    Set the number of actionrunner processes to start
+# @param st2api_listen_ip
+#    Listen IP for st2api process
+# @param st2api_listen_port
+#    Listen port for st2api process
+# @param st2auth_listen_ip
+#    Listen IP for st2auth process
+# @param st2auth_listen_port
+#    Listen port for st2auth process
+# @param syslog
+#    Routes all log messages to syslog
+# @param syslog_host
+#    Syslog host.
+# @param syslog_protocol
+#    Syslog protocol.
+# @param syslog_port
+#    Syslog port.
+# @param syslog_facility
+#    Syslog facility.
+# @param ssh_key_location
+#    Location on filesystem of Admin SSH key for remote runner
+# @param db_username
+#    Username to connect to MongoDB with (default: 'stackstorm')
+# @param db_password
+#    Password for 'stackstorm' user in MongDB.
+# @param index_url
+#    Url to the StackStorm Exchange index file. (default undef)
 #
-# === Parameters
-#
-#  [*version*]                - Version of StackStorm to install
-#  [*conf_dir*]               - The directory where st2 configs are stored
-#  [*conf_file*]              - The path where st2 config is stored
-#  [*auth*]                   - Toggle Auth
-#  [*actionrunner_workers*]   - Set the number of actionrunner processes to start
-#  [*st2api_listen_ip*]       - Listen IP for st2api process
-#  [*st2api_listen_port*]     - Listen port for st2api process
-#  [*st2auth_listen_ip*]      - Listen IP for st2auth process
-#  [*st2auth_listen_port*]    - Listen port for st2auth process
-#  [*syslog*]                 - Routes all log messages to syslog
-#  [*syslog_host*]            - Syslog host.
-#  [*syslog_protocol*]        - Syslog protocol.
-#  [*syslog_port*]            - Syslog port.
-#  [*syslog_facility*]        - Syslog facility.
-#  [*ssh_key_location*]       - Location on filesystem of Admin SSH key for remote runner
-#  [*db_username*]            - Username to connect to MongoDB with (default: 'stackstorm')
-#  [*db_password*]            - Password for 'stackstorm' user in MongDB.
-#  [*index_url*]              - Url to the StackStorm Exchange index file. (default undef)
-#
-# === Examples
-#
+# @example Basic usage
 #  include st2::profile::server
 #
-
 class st2::profile::server (
   $version                = $::st2::version,
   $conf_dir               = $::st2::conf_dir,
@@ -83,14 +95,6 @@ class st2::profile::server (
   ensure_resource('file', '/opt/stackstorm', {
     'ensure' => 'directory',
     'owner'  => 'root',
-    'group'  => 'root',
-    'mode'   => '0755',
-    'tag'    => 'st2::server',
-  })
-
-  ensure_resource('file', '/var/run/st2', {
-    'ensure' => 'directory',
-    'owner'  => 'st2',
     'group'  => 'root',
     'mode'   => '0755',
     'tag'    => 'st2::server',

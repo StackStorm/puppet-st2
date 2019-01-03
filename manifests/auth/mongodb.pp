@@ -1,22 +1,22 @@
-# == Class: st2::auth::mongodb
+# @summary Auth class to configure and setup MongoDB Based Authentication
 #
-#  Auth class to configure and setup MongoDB Based Authentication
+# For information on parameters see the
+# {backend documentation}[https://github.com/StackStorm/st2-auth-backend-mongodb#configuration-options]
 #
-#  For information on parameters see the backend documentation:
-#   https://github.com/StackStorm/st2-auth-backend-mongodb#configuration-options
+# @param conf_file
+#    The path where st2 config is stored
+# @param db_host
+#    Hostname for the MongoDB server (default: 127.0.0.1)
+# @param db_port
+#    Port for the MongoDB server (default: 27017)
+# @param db_name
+#    Database name in MongoDB (default: st2auth)
+# @param db_username
+#    Username for MongoDB login (default: st2auth)
+# @param db_password
+#    MongoDB DB storing credentials (default: st2auth)
 #
-# === Parameters:
-#
-#  [*conf_file*]        - The path where st2 config is stored
-#  [*db_host*]     - Hostname for the MongoDB server (default: 127.0.0.1)
-#  [*db_port*]     - Port for the MongoDB server (default: 27017)
-#  [*db_name*]     - Database name in MongoDB (default: st2auth)
-#  [*db_username*] - Username for MongoDB login (default: st2auth)
-#  [*db_password*] - MongoDB DB storing credentials (default: st2auth)
-#
-# === Usage:
-#
-#  # Instantiate via ::st2
+# @example Instantiate via ::st2
 #  class { '::st2':
 #    auth_backend        => 'mongodb',
 #    auth_backend_config => {
@@ -26,7 +26,7 @@
 #    },
 #  }
 #
-#  # Instantiate via Hiera
+# @example Instantiate via Hiera
 #  st2::auth_backend: "mongodb"
 #  st2::auth_backend_config:
 #    db_host: "mongodb.stackstorm.net"

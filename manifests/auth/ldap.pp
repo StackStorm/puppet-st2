@@ -1,51 +1,45 @@
-# == Class: st2::auth::ldap
+# @summary Auth class to configure and setup LDAP Based Authentication
 #
-#  Auth class to configure and setup LDAP Based Authentication
+# For information on parameters see the
+# {backend documentation}[https://github.com/StackStorm/st2-auth-backend-ldap#configuration-options]
 #
-#  For information on parameters see the backend documentation:
-#   https://github.com/StackStorm/st2-auth-backend-ldap#configuration-options
+# @param conf_file
+#    The path where st2 config is stored
+# @param ldap_uri
+#    URI of the LDAP server.
+#    Format: <code><protocol>://<hostname>[:port]</code> (protocol: ldap or ldaps)
+# @param use_tls
+#    Boolean parameter to set if tls is required.
+#    Should be set to false using ldaps in the uri. (default: false)
+# @param bind_dn
+#    DN user to bind to LDAP. If an empty string, an anonymous bind is performed.
+#    To use the user supplied username in the bind_dn, use the <code>{username}</code> placeholder
+#    in string.
+# @param bind_pw
+#    DN password. Use the <code>{password}</code> placeholder in the string to use the user supplied password.
+# @param user
+#   Search parameters for user authentication
 #
-# === Parameters:
+#   * base_dn - Base DN on the LDAP server to be used when looking up the user account.
+#   * search_filter - LDAP search filter for finding the user in the directory.
+#     Should contain the placeholder <code>{username}</code> for the username.
+#   * scope - The scope of the search to be performed.
+#     Available choices: base, onelevel, subtree
 #
-#  [*conf_file*]        - The path where st2 config is stored
-#  [*ldap_uri*] - URI of the LDAP server.
-#                 Format: <protocol>://<hostname>[:port](Protocol: ldap or ldaps)
-#  [*use_tls*]         - Boolean parameter to set if tls is required.
-#                        Should be set to false using ldaps in the uri.
-#                        (default: false)
-#  [*bind_dn*]         - DN user to bind to LDAP. If an empty string, an
-#                        anonymous bind is performed. To use the user supplied
-#                        username in the bind_dn, use the {username} placeholder
-#                        in string.
-#  [*bind_pw*]         - DN password. Use the {password} placeholder in the
-#                        string to use the user supplied password.
-#  [*user*]            - Search parameters for user authentication. see user
-#                        table below (default: undef)
-#  [*group*]           - Search parameters for user's group membership. see
-#                        group table below (default: undef)
-#  [*chase_referrals*] - Boolean parameter to set whether to chase referrals.
-#                        (default: true)
-#  [*ref_hop_limit*]   - The maximum number to refer Referrals recursively
-#                        (default: 0)
+# @param group
+#   Search parameters for user's group membership:
 #
-# [*user] Parameters:
-#  [*base_dn*]	     - Base DN on the LDAP server to be used when looking up the user account.
-#  [*search_filter*] - LDAP search filter for finding the user in the directory.
-#                      Should contain the placeholder {username} for the username.
-#  [*scope*]         - The scope of the search to be performed.
-#                      Available choices: base, onelevel, subtree
+#   * base_dn - Base DN on the LDAP server to be used when looking up the group.
+#   * search_filter - DAP search filter for finding the group in the directory.
+#     Should contain the placeholder <code>{username}</code> for the username.
+#   * scope - The scope of the search to be performed.
+#     Available choices: base, onelevel, subtree
+# @param chase_referrals
+#    Boolean parameter to set whether to chase referrals. (default: true)
+# @param ref_hop_limit
+#    The maximum number to refer Referrals recursively (default: 0)
 #
-# [*group*] Parameters:
-#  [*base_dn*]	     - Base DN on the LDAP server to be used when looking up the group.
-#  [*search_filter*] - LDAP search filter for finding the group in the directory.
-#                      Should contain the placeholder {username} for the username.
-#  [*scope*]         - The scope of the search to be performed.
-#                      Available choices: base, onelevel, subtree
-#
-# === Usage:
-#
-#  # Instantiate via ::st2
-#  # this example shows how to auth with Active Directory
+# @example Instantiate via ::st2 (Active Directory)
 #  class { '::st2':
 #    auth_backend        => 'ldap',
 #    auth_backend_config => {
@@ -61,7 +55,7 @@
 #    },
 #  }
 #
-#  # Instantiate via Hiera
+# @example Instantiate via Hiera (Active Directory)
 #  st2::auth_backend: "ldap"
 #  st2::auth_backend_config:
 #    ldap_uri: "ldaps://ldap.domain.tld"

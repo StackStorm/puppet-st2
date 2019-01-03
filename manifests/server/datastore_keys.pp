@@ -1,18 +1,20 @@
-# == Class: st2::server::datastore_keys
+# @summary Generates and manages crypto keys for use with the StackStorm datastore
 #
-#  Generates and manages crypto keys for use with the StackStorm datastore
+# @param conf_file
+#    The path where st2 config is stored
+# @param keys_dir
+#    The directory where the datastore keys will be stored
+# @param key_path
+#    Path to the key file
 #
-# === Parameters
-#  [*conf_file*]  - The path where st2 config is stored
-#  [*keys_dir*]   - The directory where the datastore keys will be stored
-#  [*key_path*]   - Path to the key file
+# @example Basic Usage
+#   include ::st2::server::datastore_keys
 #
-# === Variables
-#
-#
-# === Examples
-#
-#  class { '::st2::server::datastore_keys': }
+# @example Custom key path
+#   class { '::st2::server::datastore_keys':
+#     keys_dir => '/path/to/custom/keys',
+#     key_path => '/path/to/custom/keys/datastore_key.json.',
+#   }
 #
 class st2::server::datastore_keys (
   $conf_file = $::st2::conf_file,

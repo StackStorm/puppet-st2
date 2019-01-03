@@ -1,19 +1,16 @@
-# == Class: st2::auth::keystone
+# @summary Auth class to configure and setup Keystone Based Authentication
 #
-#  Auth class to configure and setup Keystone Based Authentication
+# For information on parameters see the
+# {backend documentation}[https://github.com/StackStorm/st2-auth-backend-keystone#configuration-options]
 #
-#  For information on parameters see the backend documentation:
-#   https://github.com/StackStorm/st2-auth-backend-keystone#configuration-options
+# @param conf_file
+#    The path where st2 config is stored
+# @param keystone_url
+#    Keystone URL to connect to (default: '127.0.0.1')
+# @param keystone_version
+#    Keystone API version (default: '2')
 #
-# === Parameters:
-#
-#  [*conf_file*]        - The path where st2 config is stored
-#  [*keystone_url*]     - Keystone URL to connect to (default: '127.0.0.1')
-#  [*keystone_version*] - Keystone API version (default: '2')
-#
-# === Usage:
-#
-#  # Instantiate via ::st2
+# @example Instantiate via ::st2
 #  class { '::st2':
 #    auth_backend        => 'keystone',
 #    auth_backend_config => {
@@ -22,7 +19,7 @@
 #    },
 #  }
 #
-#  # Instantiate via Hiera
+# @example Instantiate via Hiera
 #  st2::auth_backend: "keystone"
 #  st2::auth_backend_config:
 #    keystone_url: "http://keystone.domain.tld:5000"

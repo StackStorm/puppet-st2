@@ -1,30 +1,41 @@
-# == Class: st2::profile::mistral
+# @summary This class installs OpenStack Mistral, a workflow engine that integrates with StackStorm.
 #
-# This class installs OpenStack Mistral, a workflow engine that integrates with
-# StackStorm. Has the option to manage a companion MySQL Server
+# @param version
+#    Version of the st2mistral package to install
+# @param db_host
+#    Server hosting Mistral Postgres DB
+# @param db_name
+#    Name of the Mistral Postgres database
+# @param db_username
+#    Mistral user for authenticating with PostgreSQL
+# @param db_password
+#    Mistral password for authenticating with PostgreSQL
+# @param rabbitmq_username
+#    Username for authenticating with RabbitMQ
+# @param rabbitmq_password
+#    Password for authenticating with RabbitMQ
+# @param rabbitmq_hostname
+#    Hostname/IP of the RabbitMQ server
+# @param rabbitmq_port
+#    Port for connecting to RabbitMQ
+# @param rabbitmq_vhost
+#    RabbitMQ virtual host for Mistral
 #
-# === Parameters
-#  [*git_branch*]          - Tagged branch of Mistral to download/install
-#  [*db_password*]         - Mistral user password in PostgreSQL
-#  [*db_host*]             - Server hosting Mistral Postgres DB
-#  [*db_database*]         - Database storing Mistral Data
-#  [*db_max_pool_size*]    - Max DB Pool size for Mistral Connections
-#  [*db_max_overflow*]     - Max DB overload for Mistral Connections
-#  [*db_pool_recycle*]     - DB Pool recycle time
-#  [*api_url*]             - URI of Mistral backend (e.x.: 127.0.0.1)
-#  [*api_port*]            - Port of Mistral backend. Default: 8989
-#  [*manage_service*]      - Manage the Mistral service. Default: true
-#  [*api_service*]         - Run API in a separte service via gunicorn. Default: true
-#  [*disable_executor*]    - Disables the executor subsystem. Default: false
-#  [*disable_engine*]      - Disables the engine subsystem. Default: false
+# @example Basic Usage
+#  include ::st2::profile::mistral
 #
-# === Examples
-#
-#  include st2::profile::mistral
-#
+# @example External database
 #  class { '::st2::profile::mistral':
-#    manage_postgresql   => true,
-#    db_mistral_password => 'mistralpassword',
+#    db_host     => 'postgres.domain.tld',
+#    db_username => 'mistral',
+#    db_password => 'xyz123',
+#  }
+#
+# @example External RabbitMQ
+#  class { '::st2::profile::mistral':
+#    rabbitmq_hostname => 'rabbitmq.domain.tld',
+#    rabbitmq_username => 'mistral',
+#    rabbitmq_password => 'xyz123',
 #  }
 #
 class st2::profile::mistral(

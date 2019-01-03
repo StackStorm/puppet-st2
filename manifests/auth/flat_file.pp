@@ -1,17 +1,15 @@
-# == Class: st2::auth::flat_file
+# @summary Auth class to configure and setup Flat File (htpasswd) Authentication
 #
-#  Auth class to configure and setup Flat File (htpasswd) Authentication
+# @param cli_username
+#   CLI config - Auth Username
+# @param cli_password
+#   CLI config - Auth Password
+# @param conf_file
+#   The path where st2 config is stored
+# @param htpasswd_file
+#   Path to htpasswd file (default: /etc/st2/htpasswd)
 #
-# === Parameters:
-#
-#  [*cli_username*]         - CLI config - Auth Username
-#  [*cli_password*]         - CLI config - Auth Password
-#  [*conf_file*] - The path where st2 config is stored
-#  [*htpasswd_file*] - Path to htpasswd file (default: /etc/st2/htpasswd)
-#
-# === Usage:
-#
-#  # Instantiate via ::st2
+# @example Instantiate via ::st2
 #  class { '::st2':
 #    auth_backend        => 'flat_file',
 #    auth_backend_config => {
@@ -19,7 +17,7 @@
 #    },
 #  }
 #
-#  # Instantiate via Hiera
+# @example Instantiate via Hiera
 #  st2::auth_backend: "flat_file"
 #  st2::auth_backend_config"
 #    htpasswd_file: "/etc/something/htpasswd"

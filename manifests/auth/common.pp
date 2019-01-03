@@ -1,21 +1,21 @@
-# Class: st2::auth::common
+# @summary Class that contains all of the "common" settings for auth.
 #
-#  Class that contains all of the "common" settings for auth.
+# @note Don't use directly
 #
-# Parameters:
-#
-# [*api_url*]   - URL to the StackStorm API
-# [*conf_file*] - The path where st2 config is stored
-# [*debug*]     - Enable Debug (default: false)
-# [*mode*]      - Authentication mode, either 'standalone' or 'proxy'
-#                 (default: standalone)
-# [*use_ssl*]   - Enable SSL (default: false)
-# [*ssl_cert*]  - Path to SSL Certificate file (default: '/etc/ssl/st2/st2.crt')
-# [*ssl_key*]   - Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
-#
-# Usage:
-#
-#   Don't use directly
+# @param api_url
+#   URL to the StackStorm API
+# @param conf_file
+#   The path where st2 config is stored
+# @param debug
+#   Enable Debug (default: false)
+# @param mode
+#   Authentication mode, either 'standalone' or 'proxy' (default: standalone)
+# @param use_ssl
+#   Enable SSL (default: false)
+# @param ssl_cert
+#   Path to SSL Certificate file (default: '/etc/ssl/st2/st2.crt')
+# @param ssl_key
+#  Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
 #
 class st2::auth::common (
   $api_url   = $::st2::auth_api_url,
