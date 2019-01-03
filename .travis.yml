@@ -5,6 +5,7 @@ services: docker
 language: ruby
 cache: bundler
 before_install:
+  - gem install bundler
   - bundle -v
   - rm -f Gemfile.lock
   # need to comment out the system update because this upgrades rubygem-update
