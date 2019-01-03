@@ -5,13 +5,12 @@ services: docker
 language: ruby
 cache: bundler
 before_install:
-  - gem install bundler
+  - if [ $BUNDLER_VERSION ]; then
+      gem install -v $BUNDLER_VERSION bundler --no-rdoc --no-ri;
+    fi
   - bundle -v
   - rm -f Gemfile.lock
-  # need to comment out the system update because this upgrades rubygem-update
-  # further than what's allowable for Puppet 4. rubygem-update 3.0.0 requires
-  # ruby 2.3.0 and Puppet 4 requires ruby 2.1.0
-  #- gem update --system
+  - gem update --system $RUBYGEMS_VERSION
   - gem --version
   - bundle -v
 bundler_args: --without system_tests
@@ -36,6 +35,11 @@ matrix:
         - UNIT_TEST="true"
         - PUPPET_GEM_VERSION="~> 4.0"
         - CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop parallel_spec"
+        # rubygem-update 3.0.0 requires ruby 2.3.0 and Puppet 4 requires ruby 2.1.0
+        # Bundler 2.0+ requires ruby 2.3.0 and Puppet 4 requires ruby 2.1.0
+        # We need to lock bundler and rubygems to old versions in order to keep the build happy
+        - BUNDLER_VERSION=1.17.3
+        - RUBYGEMS_VERSION=2.7.8
     - name: "Unit Testing - Puppet 5"
       rvm: 2.4
       # use default Gemfile in repo root (from PDK)
