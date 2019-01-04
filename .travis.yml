@@ -54,6 +54,12 @@ matrix:
         - UNIT_TEST="true"
         - PUPPET_GEM_VERSION="~> 6.0"
         - CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop parallel_spec"
+    - name: "Documentation Testing"
+      rvm: 2.5
+      # use default Gemfile in repo root (from PDK)
+      env:
+        - DOCS_TEST="true"
+        - PUPPET_GEM_VERSION="~> 6.0"
     - name: "RHEL/CentOS 6 - Puppet 4"
       rvm: 2.4
       gemfile: build/kitchen/Gemfile

@@ -11,10 +11,12 @@
 #    Port for the MongoDB server (default: 27017)
 # @param db_name
 #    Database name in MongoDB (default: st2auth)
+# @param db_auth
+#    Enable authentication with MongoDB (required for MongoDB installs with auth enabled)
 # @param db_username
 #    Username for MongoDB login (default: st2auth)
 # @param db_password
-#    MongoDB DB storing credentials (default: st2auth)
+#    Password for MongoDB login (default: st2auth)
 #
 # @example Instantiate via ::st2
 #  class { '::st2':

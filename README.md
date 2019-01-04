@@ -30,6 +30,13 @@ puppet apply -e "include ::st2::profile::fullinstall"
 
 **This module no longer supports Puppet 3 as of version `1.1`**
 
+## Reference Documentation
+
+This module uses [Puppet Strings](https://puppet.com/docs/puppet/latest/puppet_strings.html)
+as the documentation standard. An live version is available online at
+[puppetmodule.info/m/stackstorm-st2](http://www.puppetmodule.info/m/stackstorm-st2).
+A markdown version is available directly in this repo in [REFERENCE.md](REFERENCE.md).
+
 ## Configuration
 
 This module aims to provide sane default configurations, but also stay
@@ -230,12 +237,16 @@ and [librarian-puppet](http://librarian-puppet.com/).
 
  * RHEL/CentOS 6 - Puppet 4 - [build/centos6-puppet4/Puppetfile](build/centos6-puppet4/Puppetfile)
  * RHEL/CentOS 6 - Puppet 5 - [build/centos6-puppet5/Puppetfile](build/centos6-puppet5/Puppetfile)
+ * RHEL/CentOS 6 - Puppet 6 - [build/centos6-puppet6/Puppetfile](build/centos6-puppet6/Puppetfile)
  * RHEL/CentOS 7 - Puppet 4 - [build/centos7-puppet4/Puppetfile](build/centos7-puppet4/Puppetfile)
  * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
  * Ubuntu 14.04 - Puppet 4 - [build/ubuntu14-puppet4/Puppetfile](build/ubuntu14-puppet4/Puppetfile)
  * Ubuntu 14.04 - Puppet 5 - [build/ubuntu14-puppet5/Puppetfile](build/ubuntu14-puppet5/Puppetfile)
+ * Ubuntu 14.04 - Puppet 6 - [build/ubuntu14-puppet6/Puppetfile](build/ubuntu14-puppet6/Puppetfile)
  * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet4/Puppetfile](build/ubuntu16-puppet4/Puppetfile)
  * Ubuntu 16.06 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * Ubuntu 16.06 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
 
 ## Upgrading StackStorm
 

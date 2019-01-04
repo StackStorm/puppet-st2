@@ -1,19 +1,10 @@
-# Class: st2::logging::rsyslog
+# @summary Helper class to route syslog messages when using rsyslog
 #
-#  Helper class to route syslog messages when using rsyslog
+# This class bootstraps a system configured with rsyslog
+# and st2::syslog enabled to route messages to all the right
+# places.
 #
-# Description
-#
-#  This class bootstraps a system configured with rsyslog
-#  and st2::syslog enabled to route messages to all the right
-#  places.
-#
-# Parameters
-#
-#  This class contains no parameters
-#
-# Usage
-#
+# @example Basic usage
 #  include ::st2::logging::rsyslog
 class st2::logging::rsyslog {
   file { '/etc/rsyslog.d/10-st2.conf':

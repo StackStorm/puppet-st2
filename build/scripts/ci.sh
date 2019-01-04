@@ -11,6 +11,10 @@ if [ ! -z "$UNIT_TEST" ]; then
   export PUPPET_GEM_VERSION="$PUPPET_GEM_VERSION"
   echo $PUPPET_GEM_VERSION
   "$SCRIPT_DIR"/ci_pdk_unit.sh
+elif [ ! -z "$DOCS_TEST" ]; then
+  export PUPPET_GEM_VERSION="$PUPPET_GEM_VERSION"
+  echo $PUPPET_GEM_VERSION
+  "$SCRIPT_DIR"/ci_docs_generate.sh
 else
   export TEST_NAME="$TEST_NAME"
   echo $TEST_NAME

@@ -1,18 +1,6 @@
-# == Class: st2::profile::python
+# @summary StackStorm compatable installation of Python and dependencies.
 #
-# st2 compatable installation of Python and dependencies for use with
-# StackStorm
-#
-# === Parameters
-#
-#  This module contains no parameters
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
+# @example Basic Usage
 #  include st2::profile::python
 #
 class st2::profile::python {

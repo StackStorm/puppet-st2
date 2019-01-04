@@ -1,17 +1,24 @@
-# == Class: st2::profile::fullinstall
+# @summary This class performs a full default install of StackStorm and all its components on a single node.
 #
-# This class performs a default install of StackStorm on a single node
-# including all st2 components and full installs of all components.
-#
+# Components:
 #  * RabbitMQ
 #  * Python
 #  * MongoDB
 #  * NodeJS
-#  * Mistral+PostgreSQL
+#  * nginx
+#  * PostgreSQL (required by Mistral)
+#  * Mistral
 #
-# === Examples
+# @example Basic Usage
+#   include ::st2::profile::fullinstall
 #
-#  include st2::profile::fullinstall
+# @example Customizing parameters
+#   # Customizations are done via the main ::st2 class
+#   class { '::st2':
+#     # ... assign custom parameters
+#   }
+#
+#   include ::st2::profile::fullinstall
 #
 class st2::profile::fullinstall inherits st2 {
 

@@ -1,21 +1,29 @@
-# == Class: st2::profile::client
+# @summary Profile to install, configure and manage all client libraries for st2
 #
-#  Profile to install all client libraries for st2
+# @param auth
+#    Is auth enabled or not.
+# @param api_url
+#    URL of the StackStorm API service
+# @param auth_url
+#    URL of the StackStorm Auth service
+# @param base_url
+#    Base URL for other StackStorm services
+# @param username
+#    Username for auth on the CLI
+# @param password
+#    Password for auth on the CLI
+# @param api_version
+#    Version of the StackStorm API
+# @param cacert
+#    Path to the SSL CA certficate for the StackStorm services
+# @param debug
+#    Enable debug mode
+# @param cache_token
+#    Enable cacheing authentication tokens until they expire
+# @param silence_ssl_warnings
+#    Enable silencing SSL warnings for self-signed certs
 #
-# === Parameters
-#
-#  [*base_url*]             - CLI config - Base URL lives
-#  [*api_version*]          - CLI config - API Version
-#  [*debug*]                - CLI config - Enable/Disable Debug
-#  [*cache_token*]          - CLI config - True to cache auth token until it expires
-#  [*silence_ssl_warnings*] - CLI Config - True to silence any SSL related warnings emitted by the client.
-#  [*username*]             - CLI config - Auth Username
-#  [*password*]             - CLI config - Auth Password
-#  [*api_url*]              - CLI config - API URL
-#  [*auth_url*]             - CLI config - Auth URL
-#
-# === Examples
-#
+# @example Basic Usage
 #  include st2::profile::client
 #
 class st2::profile::client (

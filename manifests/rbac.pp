@@ -1,11 +1,8 @@
-# Definition: st2::rbac
+# @summary This defined type creates RBAC resources for users
 #
-# This defined type creates RBAC resources for users
-# This is an enterprise feature, and requires a license
-# to be used.
+# @note This is an enterprise feature, and requires a license to be used.
 #
-# Example
-#
+# @example
 #   st2::rbac { 'admin':
 #     description => "Administrative user",
 #     roles       => [
