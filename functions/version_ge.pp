@@ -1,18 +1,24 @@
-# @summary Determines if the StackStorm version installed on the system ($facts['st2_version'])
-#          or the version requested by the user ($::st2::version) is greater than or equal
-#          to $version.
+# @summary Determines if the StackStorm version installed or the version requested
+#          by the user is greater than or equal to <code>$version</code>.
+#
+# Determines if the StackStorm version installed on the system <code>$facts['st2_version']</code>
+# or the version requested by the user <code>$::st2::version</code> is greater than or equal
+# to <code>$version</code>.
 #
 # This is used to determine if this Puppet module should enable features for managing
 # specific versions of StackStorm. Older versions of StackStorm will not have new features
 # and we don't want this module to try and manage them if they're not present on the system.
 #
-# Users who have old version of StackStorm installed may have $::st2::version = 'present'
-# or $::st2::version = 'installed'. In this case, we don't want to assume the user
+# Users who have old version of StackStorm installed may have <code>$::st2::version = 'present'</code>
+# or <code>$::st2::version = 'installed'</code>. In this case, we don't want to assume the user
 # has a new version of StackStorm or wants to upgrade. Instead, we should assume that
 # this the installed version of StackStorm is the version we should be using to compare.
 #
 # @param version
 #   Version string to compare against. This should be in SemVer format
+#
+# @return [Boolean] True if the StackStorm version on the system or $::st2::version is
+#                   >= to the +version+ parameter.
 #
 # @example Basic Usage
 #   if st2::version_ge('2.4.0') {

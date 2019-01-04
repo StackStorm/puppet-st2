@@ -1,17 +1,14 @@
-# == Define: st2::kv
+# @summary Sets a value to the StackStorm Key/Value Store
 #
-#  Sets a value to the StackStorm Key/Value Store
+# @param key
+#    Key to set
+# @param value
+#    Value of key
 #
-# === Parameters
-#  [*key*]   - Key to set
-#  [*value*] - Value of key
-#
-# === Examples
-#
+# @example Basic usage
 #  st2::kv { 'install_uuid':
 #    value => $_uuid,
 #  }
-#
 #
 define st2::kv (
   $value,

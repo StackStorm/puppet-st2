@@ -1,24 +1,19 @@
-# == Define: st2::pack
+# @summary Manages a StackStorm Pack
 #
-#  Installs StackStorm Packs to the system
+# @param pack
+#    Name of the pack to install.
+# @param repo_url
+#    URL of the package to install when not installing from the exchange.
+# @param config
+#    Hash that will be translated into YAML in the pack's config file after installation.
 #
-# === Parameters
-#
-#  [*pack*]     - Name of the pack to install.
-#  [*repo_url*] - URL of the package to install when not installing from the exchange.
-#                 (default:  undef)
-#  [*config*]   - Hash that will be translated into YAML in the pack's config
-#                 file after installation.
-#
-# === Examples
-#
+# @example Basic Usage
 #  st2::pack { 'puppet': }
 #
-#  st2::pack { ['linux', 'cicd']:
-#    repo_url => 'http://github.com/StackStorm/st2incubator.git',
+# @example Install from a custom URL
+#  st2::pack { 'custom':
+#    repo_url => 'http://github.com/myorg/stackstorm-custom.git',
 #  }
-#
-#  st2::pack { 'linux, cicd': }
 #
 define st2::pack (
   $ensure   = present,

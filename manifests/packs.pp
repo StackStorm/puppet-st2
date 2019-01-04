@@ -1,16 +1,24 @@
-# == Class: st2::packs
+# @summary Install and configure st2 packages in bulk and via Hiera.
 #
-#  Install and configure st2 packages
+# @see st2::pack and st2::pack::config for usage
 #
-#  See st2::pack and st2::pack::config for usage
+# @example Basic Usage
+#  class { '::st2::packs':
+#    packs => {
+#      puppet => {},
+#      influxdb => {
+#        config => {
+#          server => 'influxdb.domain.tld',
+#      },
+#    },
+#  }
 #
-# === Parameters
-#
-#  This class takes no parameters
-#
-# === Examples
-#
-#  include st2::packs
+# @example Created via Hiera
+#  st2::packs:
+#    puppet: {}
+#    influxdb:
+#      config:
+#        server => 'influxdb.domain.tld'
 #
 class st2::packs (
   $packs = $::st2::packs,

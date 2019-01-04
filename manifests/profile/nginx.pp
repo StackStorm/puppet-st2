@@ -1,18 +1,9 @@
-# == Class st2::profile::nginx
+# @summary StackStorm compatible installation of nginx and dependencies.
 #
-# st2 compatible installation of nginx and dependencies for use with
-# StackStorm
+# @param manage_repo
+#    Set this to false when you have your own repository for nginx
 #
-# === Parameters
-#
-#  [*manage_repo*] - Set this to false when you have your own repository for nginx
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
+# @example Basic Usage
 #  include st2::profile::nginx
 #
 class st2::profile::nginx (

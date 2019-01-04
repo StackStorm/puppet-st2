@@ -1,17 +1,6 @@
-# == Class: st2::profile::selinux
+# @summary Configure SELinux so that StackStorm services run properly
 #
-# Configure SELinux so that st2 services run properly
-#
-# === Parameters
-#
-#  This module contains no parameters
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
+# @example Basic Usage
 #  include st2::profile::selinux
 #
 class st2::profile::selinux inherits st2::params {

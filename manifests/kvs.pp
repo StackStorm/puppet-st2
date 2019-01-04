@@ -1,16 +1,13 @@
-# == Class: st2::kvs
+# @summary Automatically loads Key/Value pairs for StackStorm DB from Hiera
 #
-#  Automatically loads Key/Value pairs for StackStorm DB from Hiera
+# @see st2::kv
 #
-#  See st2::kv
-#
-# === Parameters
-#
-#  This class takes no parameters
-#
-# === Examples
-#
-#  include st2::kvs
+# @example Key/value pairs defined in Hiera
+#   st2::kvs:
+#     keyname:
+#       value: 'blah'
+#     mysupercoolkey:
+#       value: 'xyz123'
 #
 class st2::kvs {
   $_kvs = hiera_hash('st2::kvs', {})

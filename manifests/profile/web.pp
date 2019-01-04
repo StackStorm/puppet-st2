@@ -1,18 +1,19 @@
-# == Class: st2::profile::web
+# @summary  Profile to install, configure and manage StackStorm web UI (st2web).
 #
-#  Profile to install StackStorm web UI (st2web).
+# @param ssl_dir
+#   Directory where st2web will look for its SSL info.
+#   (default: /etc/ssl/st2)
+# @param ssl_cert
+#   Path to the file where the StackStorm SSL cert will
+#   be generated. (default: /etc/ssl/st2/st2.crt)
+# @param ssl_key
+#   Path to the file where the StackStorm SSL key will
+#   be generated. (default: /etc/ssl/st2/st2.key)
+# @param version
+#    Version of StackStorm WebUI to install
 #
-# === Parameters
-#
-#  [*version*]      - Version of StackStorm WebUI to install
-#
-# === Variables
-#
-#  This class has no variables
-#
-# === Examples
-#
-#  class { '::st2::profile::web': }
+# @example Basic Usage
+#   include ::st2::profile::web'
 #
 class st2::profile::web(
   $ssl_dir  = $::st2::ssl_dir,

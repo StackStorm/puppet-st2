@@ -1,19 +1,25 @@
-# == Class: st2::profile::rabbitmq
+# @summary StackStorm compatable installation of RabbitMQ and dependencies.
 #
-# st2 compatable installation of RabbitMQ and dependencies for use with
-# StackStorm
+# @param username
+#   User to create within RabbitMQ for authentication.
+# @param password
+#   Password of +username+ for RabbitMQ authentication.
+# @param port
+#   Port to bind to for the RabbitMQ server
+# @param bind_ip
+#   IP address to bind to for the RabbitMQ server
+# @param vhost
+#   RabbitMQ virtual host to create for StackStorm
 #
-# === Parameters
+# @example Basic Usage
+#   include st2::profile::rabbitmq
 #
-#  This module contains no parameters
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
-#  include st2::profile::rabbitmq
+# @example Authentication enabled (configured vi ::st2)
+#   class { '::st2':
+#     rabbitmq_username => 'rabbitst2',
+#     rabbitmq_password => 'secret123',
+#   }
+#   include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq (
   $username = $::st2::rabbitmq_username,

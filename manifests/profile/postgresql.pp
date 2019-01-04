@@ -8,7 +8,7 @@
 #     db_bind_ips => '0.0.0.0',
 #   }
 #
-# @param db_bind_ips
+# @param bind_ips
 #   String of IPs (csv) that the Postgres database will accept connections on.
 #
 class st2::profile::postgresql(
