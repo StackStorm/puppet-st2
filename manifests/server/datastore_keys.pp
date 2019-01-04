@@ -1,24 +1,26 @@
-# == Class: st2::server::generate_crypto
+# @summary Generates and manages crypto keys for use with the StackStorm datastore
 #
-#  Generates symmetric
+# @param conf_file
+#    The path where st2 config is stored
+# @param keys_dir
+#    The directory where the datastore keys will be stored
+# @param key_path
+#    Path to the key file
 #
-# === Parameters
-#  [*robots_group_name*] - The name of the group created to hold the st2 admin user
-#  [*robots_group_id*] - The GID of the group created to hold the st2 admin user.
+# @example Basic Usage
+#   include ::st2::server::datastore_keys
 #
-# === Variables
+# @example Custom key path
+#   class { '::st2::server::datastore_keys':
+#     keys_dir => '/path/to/custom/keys',
+#     key_path => '/path/to/custom/keys/datastore_key.json.',
+#   }
 #
-#
-# === Examples
-#
-#  class { 'st2::server::datastore_keys':
-#
-#  }
-#
-class st2::server::datastore_keys(
-  $keys_dir = $::st2::datastore_keys_dir,
-  $key_path = $::st2::datastore_key_path,
-) {
+class st2::server::datastore_keys (
+  $conf_file = $::st2::conf_file,
+  $keys_dir  = $::st2::datastore_keys_dir,
+  $key_path  = $::st2::datastore_key_path,
+) inherits st2 {
   ## Directory
   file { $keys_dir:
     ensure  => directory,
@@ -48,7 +50,7 @@ class st2::server::datastore_keys(
   ## Config
   ini_setting { 'keyvalue_encryption_key_path':
     ensure  => present,
-    path    => '/etc/st2/st2.conf',
+    path    => $conf_file,
     section => 'keyvalue',
     setting => 'encryption_key_path',
     value   => $key_path,

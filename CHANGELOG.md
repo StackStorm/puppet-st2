@@ -7,6 +7,34 @@
   the gem past the installed ruby version, breaking the build. Instead,
   we simply leave the system gems alone during the build.
   Contributed by @nmaludy
+  
+- Removed the following unused variables from `::st2`:
+    - `mistral_git_branch`
+    - `st2web_ssl_cert`
+    - `st2web_ssl_key`
+    - `api_url`
+    - `api_logging_file`
+    - `flow_url`
+    - `global_env`
+    - `workers` (actually implemented below with `actionrunner_workers`)
+  (Enhancement)
+  Contributed by @nmaludy
+    
+- Added the following variables to `::st2`:
+    - `auth_api_url` : URL of the StackStorm API for use by the `st2auth` service.
+    - `actionrunner_workers`: Number of `st2actionrunner` processes to start.
+    - `mistral_db_host` : Hostname/IP of the Mistral Postgres database
+    - `mistral_db_name` : Database name of the Mistral Postgres databa
+    - `mistral_db_username` : Username for authentication to the Mistral Postgres database
+    - `mistral_db_password` : Password for authentication to the Mistral Postgres database
+    - `mistral_db_bind_ips` : String of IPs (csv) that the Mistral Postgres database will accept connections on (default: 127.0.0.1)
+    - `chatops_api_url` : URL of the StackStorm API service for use by `st2chatops`
+    - `chatops_auth_url` : URL of the StackStorm Auth service for use by `st2chatops`
+  (Enhancement)
+  Contributed by @nmaludy
+  
+- Added documentation for variables in many of the classes. (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.3.0 (Dec 17, 2018)
 

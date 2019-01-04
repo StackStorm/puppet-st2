@@ -1,148 +1,236 @@
-# == Class: st2
+# @summary Base class for st2 module. Used as top-level to set parameters via Hiera, this class does not need to be called directly.
 #
-#  Base class for st2 module. Used as top-level to set parameters via Hiera
-#  This class does not need to be called directly
+# @param version
+#   Version of StackStorm package to install (default = 'present')
+#   See the package 'ensure' property:
+#   https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
+# @param repository
+#   Release repository to enable. 'stable', 'unstable'
+#   (default = 'stable')
+# @param conf_dir
+#   The directory where st2 configs are stored
+# @param conf_file
+#   The path where st2 config is stored
+# @param use_ssl
+#   Enable/Disable SSL for all st2 APIs
+# @param ssl_dir
+#   Directory where st2web will look for its SSL info.
+#   (default: /etc/ssl/st2)
+# @param ssl_cert
+#   Path to the file where the StackStorm SSL cert will
+#   be generated. (default: /etc/ssl/st2/st2.crt)
+# @param ssl_key
+#   Path to the file where the StackStorm SSL key will
+#   be generated. (default: /etc/ssl/st2/st2.key)
+# @param auth
+#   Toggle to enable/disable auth (Default: true)
+# @param auth_api_url
+#   URL where StackStorm auth service will communicate
+#   with the StackStorm API service
+# @param auth_debug
+#   Toggle to enable/disable auth debugging (Default: false)
+# @param auth_mode
+#   Auth mode, either 'standalone' or 'backend (default: 'standalone')
+# @param auth_backend
+#   Determines which auth backend to configure. (default: flat_file)
+#   Available backends:
+#   - flat_file
+#   - keystone
+#   - ldap
+#   - mongodb
+#   - pam
+# @param auth_backend_config
+#   Hash of parameters to pass to the auth backend
+#   class when it's instantiated. This will be different
+#   for every backend. Please see the corresponding
+#   backend class to determine what the config options
+#   should be.
+# @param cli_base_url
+#   CLI config - Base URL lives
+# @param cli_api_version
+#   CLI config - API Version
+# @param cli_debug
+#   CLI config - Enable/Disable Debug
+# @param cli_cache_token
+#   CLI config - True to cache auth token until expries
+# @param cli_username
+#   CLI config - Auth Username
+# @param cli_password
+#   CLI config - Auth Password
+# @param cli_api_url
+#   CLI config - API URL
+# @param cli_auth_url
+#   CLI config - Auth URL
+# @param actionrunner_workers
+#   Set the number of actionrunner processes to start
+# @param packs
+#   Hash of st2 packages to be installed
+# @param index_url
+#   Url to the StackStorm Exchange index file. (default undef)
+# @param mistral_db_host
+#   Hostname/IP of the Mistral Postgres database
+# @param mistral_db_name
+#   Database name of the Mistral Postgres database
+# @param mistral_db_username
+#   Username for authentication to the Mistral Postgres database
+# @param mistral_db_password
+#   Password for authentication to the Mistral Postgres database
+# @param mistral_db_bind_ips
+#   String of IPs (csv) that the Mistral Postgres database
+#   will accept connections on (default: 127.0.0.1)
+# @param syslog
+#   Routes all log messages to syslog
+# @param syslog_host
+#   Syslog host. Default: localhost
+# @param syslog_protocol
+#   Syslog protocol. Default: udp
+# @param syslog_port
+#   Syslog port. Default: 514
+# @param syslog_facility
+#   Syslog facility. Default: local7
+# @param ssh_key_location
+#   Location on filesystem of Admin SSH key for remote runner
+# @param db_host
+#   Hostname to talk to st2 db
+# @param db_port
+#   Port for db server for st2 to talk to
+# @param db_bind_ips
+#   Array of bind IP addresses for MongoDB to listen on
+# @param db_name
+#   Name of db to connect to (default: 'st2')
+# @param db_username
+#   Username to connect to db with (default: 'stackstorm')
+# @param db_password
+#   Password for 'admin' and 'stackstorm' users in MongDB.
+#   If 'undef' then use $cli_password
+# @param mongodb_version
+#   Version of MongoDB to install. If not provided it
+#   will be auto-calcuated based on $version
+#   (default: undef)
+# @param mongodb_manage_repo
+#   Set this to false when you have your own repositories
+#   for MongoDB (default: true)
+# @param mongodb_auth
+#   Boolean determining if auth should be enabled for
+#   MongoDB. Note: On new versions of Puppet (4.0+)
+#   you'll need to disable this setting.
+#   (default: true)
+# @param nginx_manage_repo
+#   Set this to false when you have your own repositories for nginx
+#   (default: true)
+# @param timersengine_enabled
+#   Set to true if the st2timersengine service should be enabled
+#   on this node (default: true)
+# @param timersengine_timezone
+#   The local timezone for this node. (default: 'America/Los_Angeles')
+# @param scheduler_sleep_interval
+#   How long (in seconds) to sleep between each action
+#   scheduler main loop run interval. (default = 0.1)
+# @param scheduler_gc_interval
+#   How often (in seconds) to look for zombie execution requests
+#   before rescheduling them. (default = 10)
+# @param scheduler_pool_size
+#   The size of the pool used by the scheduler for scheduling
+#   executions. (default = 10)
+# @param chatops_adapter
+#   Adapter package(s) to be installed with npm. List of hashes.
+# @param chatops_adapter_conf
+#   Configuration parameters for Hubot adapter (hash)
+# @param chatops_hubot_log_level
+#   Logging level for hubot (string)
+# @param chatops_hubot_express_port
+#   Port that hubot operates on (integer or string)
+# @param chatops_tls_cert_reject_unauthorized
+#   Should hubot validate SSL certs
+#   Set to 1 when using self signed certs
+# @param chatops_hubot_name
+#   Name of the bot in chat. Should be
+#   properly quoted if it has special characters,
+#   example: '"MyBot!"'
+# @param chatops_hubot_alias
+#   Character to trigger the bot at the
+#   beginning of a message. Must be properly
+#   quoted of it's a special character,
+#   example: "'!'"
+# @param chatops_api_key
+#   API key generated by `st2 apikey create`
+#   that hubot will use to post data back
+#   to StackStorm.
+#   (default: undef)
+# @param chatops_st2_hostname
+#   Hostname of the StackStorm instance
+#   that chatops will connect to for
+#   API and Auth. If unspecified it will
+#   use the default in /opt/stackstorm/chatops/st2chatops.env
+#   (default: undef)
+# @param chatops_api_url
+#   ChatOps config - API URL
+# @param chatops_auth_url
+#   ChatOps config - Auth URL
+# @param chatops_web_url
+#   Public URL of StackStorm instance.
+#   used by chatops to offer links to
+#   execution details in a chat.
+#   If unspecified it will use the
+#   default in /opt/stackstorm/chatops/st2chatops.env
+#   (default: undef)
+# @param nodejs_version
+#   Version of NodeJS to install. If not provided it
+#   will be auto-calcuated based on $version
+#   (default: undef)
+# @param nodejs_manage_repo
+#   Set this to false when you have your own repositories
+#   for NodeJS (default: true)
 #
-# === Parameters
 #
-#  [*version*]              - Version of StackStorm package to install (default = 'present')
-#                             See the package 'ensure' property:
-#                             https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
-#  [*repository*]           - Release repository to enable. 'stable', 'unstable'
-#                             (default = 'stable')
-#  [*mistral_git_branch*]   - Tagged branch of Mistral to download/install
-#  [*conf_file*]            - The path where st2 config is stored
-#  [*use_ssl*]              - Enable/Disable SSL for all st2 APIs
-#  [*ssl_key*]              - The path to SSL key for all st2 APIs
-#  [*ssl_cert*]             - The path to SSL cert for all st2 APIs
-#  [*st2web_ssl_dir*]       - Directory where st2web will look for its SSL info.
-#                             (default: /etc/ssl/st2)
-#  [*st2web_ssl_cert*]      - Path to the file where the StackStorm SSL cert will
-#                             be generated. (default: /etc/ssl/st2/st2.crt)
-#  [*st2web_ssl_key*]       - Path to the file where the StackStorm SSL key will
-#                             be generated. (default: /etc/ssl/st2/st2.key)
-#  [*api_url*]              - URL where the StackStorm API lives (default: undef)
-#  [*api_logging_file*]     - Path to st2 API logging file (default: /etc/st2api/logging.conf)
-#  [*auth*]                 - Toggle to enable/disable auth (Default: true)
-#  [*auth_debug*]           - Toggle to enable/disable auth debugging (Default: false)
-#  [*auth_url*]             - URL where the StackStorm Auth lives (default: undef)
-#  [*auth_mode*]            - Auth mode, either 'standalone' or 'backend (default: 'standalone')
-#  [*auth_backend*          - Determines which auth backend to configure. (default: flat_file)
-#                             Available backends:
-#                              - flat_file
-#                              - keystone
-#                              - ldap
-#                              - mongodb
-#                              - pam
-# [*auth_backend_config*]   - Hash of parameters to pass to the auth backend
-#                             class when it's instantiated. This will be different
-#                             for every backend. Please see the corresponding
-#                             backend class to determine what the config options
-#                             should be.
-#  [*flow_url*]             - URL Path where StackStorm Flow lives (default: undef)
-#  [*cli_base_url*]         - CLI config - Base URL lives
-#  [*cli_api_version*]      - CLI config - API Version
-#  [*cli_debug*]            - CLI config - Enable/Disable Debug
-#  [*cli_cache_token*]      - CLI config - True to cache auth token until expries
-#  [*cli_username*]         - CLI config - Auth Username
-#  [*cli_password*]         - CLI config - Auth Password
-#  [*cli_api_url*]          - CLI config - API URL
-#  [*cli_auth_url*]         - CLI config - Auth URL
-#  [*global_env*]           - Globally set the environment variables for ST2 API/Auth
-#                             Overwritten by local config or CLI arguments.
-#  [*workers*]              - Set the number of actionrunner processes to start
-#  [*packs*]                - Hash of st2 packages to be installed
-#  [*index_url*]            - Url to the StackStorm Exchange index file. (default undef)
-#  [*syslog*]               - Routes all log messages to syslog
-#  [*syslog_host*]          - Syslog host. Default: localhost
-#  [*syslog_protocol*]      - Syslog protocol. Default: udp
-#  [*syslog_port*]          - Syslog port. Default: 514
-#  [*syslog_facility*]      - Syslog facility. Default: local7
-#  [*ssh_key_location*]     - Location on filesystem of Admin SSH key for remote runner
-#  [*db_host*]              - Hostname to talk to st2 db
-#  [*db_port*]              - Port for db server for st2 to talk to
-#  [*db_bind_ips*]          - Array of bind IP addresses for MongoDB to listen on
-#  [*db_name*]              - Name of db to connect to (default: 'st2')
-#  [*db_username*]          - Username to connect to db with (default: 'stackstorm')
-#  [*db_password*]          - Password for 'admin' and 'stackstorm' users in MongDB.
-#                             If 'undef' then use $cli_password
-#  [*mongodb_version*]      - Version of MongoDB to install. If not provided it
-#                             will be auto-calcuated based on $version
-#                             (default: undef)
-#  [*mongodb_manage_repo*]  - Set this to false when you have your own repositories
-#                             for MongoDB (default: true)
-#  [*mongodb_auth*]         - Boolean determining if auth should be enabled for
-#                             MongoDB. Note: On new versions of Puppet (4.0+)
-#                             you'll need to disable this setting.
-#                             (default: true)
-#  [*nginx_manage_repo*]    - Set this to false when you have your own repositories for nginx
-#                             (default: true)
-#  [*timersengine_enabled*]  - Set to true if the st2timersengine service should be enabled
-#                              on this node (default: true)
-#  [*timersengine_timezone*] - The local timezone for this node. (default: 'America/Los_Angeles')
-#  [*scheduler_sleep_interval*] - How long (in seconds) to sleep between each action
-#                                 scheduler main loop run interval. (default = 0.1)
-#  [*scheduler_gc_interval*]    - How often (in seconds) to look for zombie execution requests
-#                                 before rescheduling them. (default = 10)
-#  [*scheduler_pool_size*]      - The size of the pool used by the scheduler for scheduling
-#                                 executions. (default = 10)
-#  [*chatops_adapter*]      - Adapter package(s) to be installed with npm. List of hashes.
-#  [*chatops_adapter_conf*] - Configuration parameters for Hubot adapter (hash)
-#  [*chatops_hubot_log_level*]              - Logging level for hubot (string)
-#  [*chatops_hubot_express_port*]           - Port that hubot operates on (integer or string)
-#  [*chatops_tls_cert_reject_unauthorized*] - Should hubot validate SSL certs
-#                                             Set to 1 when using self signed certs
-#  [*chatops_hubot_name*]                   - Name of the bot in chat. Should be
-#                                             properly quoted if it has special characters,
-#                                             example: '"MyBot!"'
-#  [*chatops_hubot_alias*]                  - Character to trigger the bot at the
-#                                             beginning of a message. Must be properly
-#                                             quoted of it's a special character,
-#                                             example: "'!'"
-#  [*chatops_api_key*]                      - API key generated by `st2 apikey create`
-#                                             that hubot will use to post data back
-#                                             to StackStorm.
-#                                             (default: undef)
-#  [*chatops_st2_hostname*]                 - Hostname of the StackStorm instance
-#                                             that chatops will connect to for
-#                                             API and Auth. If unspecified it will
-#                                             use the default in /opt/stackstorm/chatops/st2chatops.env
-#                                             (default: undef)
-#  [*chatops_web_url*]                      - Public URL of StackStorm instance.
-#                                             used by chatops to offer links to
-#                                             execution details in a chat.
-#                                             If unspecified it will use the
-#                                             default in /opt/stackstorm/chatops/st2chatops.env
-#                                             (default: undef)
-#  [*nodejs_version*]       - Version of NodeJS to install. If not provided it
-#                             will be auto-calcuated based on $version
-#                             (default: undef)
-#  [*nodejs_manage_repo*]   - Set this to false when you have your own repositories
-#                             for NodeJS (default: true)
+# @example Basic Usage
+#   include ::st2
 #
-#  Variables can be set in Hiera and take advantage of automatic data bindings:
+# @example Variables can be set in Hiera and take advantage of automatic data bindings:
+#   st2::version: 2.10.1
 #
-#  Example:
-#    st2::version: 0.6.0
+# @example Customizing parameters
+#   # best practice is to change default username/password
+#   class { '::st2::params':
+#     admin_username => 'st2admin',
+#     admin_password => 'SuperSecret!',
+#   }
+#
+#   class { '::st2':
+#     version => '2.10.1',
+#   }
+#
+# @example Different passwords for each database (MongoDB, RabbitMQ, Postgres)
+#   class { '::st2':
+#     # StackStorm user
+#     cli_username        => 'st2admin',
+#     cli_password        => 'SuperSecret!',
+#     # MongoDB user for StackStorm
+#     db_username         => 'admin',
+#     db_password         => 'KLKfp9#!2',
+#     # RabbitMQ user for StackStorm
+#     rabbitmq_username   => 'st2',
+#     rabbitmq_password   => '@!fsdf0#45',
+#     # Postrgres user for Mistral
+#     mistral_db_username => 'stackstorm',
+#     mistral_db_password => 'FSDfcds#45w',
+#   }
 #
 class st2(
   $version                  = 'present',
   $repository               = $::st2::params::repository,
-  $mistral_git_branch       = 'st2-1.2.0',
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = $::st2::params::use_ssl,
   $ssl_dir                  = $::st2::params::ssl_dir,
   $ssl_cert                 = $::st2::params::ssl_cert,
   $ssl_key                  = $::st2::params::ssl_key,
-  $api_url                  = undef,
   $auth                     = true,
+  $auth_api_url             = "http://${::st2::params::hostname}:${::st2::params::api_port}",
   $auth_debug               = false,
-  $auth_url                 = undef,
   $auth_mode                = $::st2::params::auth_mode,
   $auth_backend             = $::st2::params::auth_backend,
   $auth_backend_config      = $::st2::params::auth_backend_config,
-  $flow_url                 = undef,
   $cli_base_url             = "http://${::st2::params::hostname}",
   $cli_api_version          = 'v1',
   $cli_debug                = false,
@@ -152,13 +240,14 @@ class st2(
   $cli_password             = $::st2::params::admin_password,
   $cli_api_url              = "http://${::st2::params::hostname}:${::st2::params::api_port}",
   $cli_auth_url             = "http://${::st2::params::hostname}:${::st2::params::auth_port}",
-  $global_env               = false,
-  $workers                  = 8,
+  $actionrunner_workers     = $::st2::params::actionrunner_workers,
   $packs                    = {},
   $index_url                = undef,
-  $mistral_api_url          = undef,
-  $mistral_api_port         = '8989',
-  $mistral_api_service      = false,
+  $mistral_db_host          = $::st2::params::hostname,
+  $mistral_db_name          = $::st2::params::mistral_db_name,
+  $mistral_db_username      = $::st2::params::mistral_db_username,
+  $mistral_db_password      = $::st2::params::admin_password,
+  $mistral_db_bind_ips      = $::st2::params::mistral_db_bind_ips,
   $syslog                   = false,
   $syslog_host              = 'localhost',
   $syslog_protocol          = 'udp',
@@ -204,6 +293,7 @@ class st2(
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
 ) inherits st2::params {
+
   ########################################
   ## Control commands
   exec {'/usr/bin/st2ctl reload --register-all':
