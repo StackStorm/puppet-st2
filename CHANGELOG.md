@@ -36,6 +36,12 @@
 - Added documentation for variables in many of the classes. (Enhancement)
   Contributed by @nmaludy
 
+- Converted entire module over to Puppet Strings documentation. (Enhancement)
+  Contributed by @nmaludy
+  
+- Added CI check for documentation warnings/errors. (Enhancement)
+  Contributed by @nmaludy
+
 ## 1.3.0 (Dec 17, 2018)
 
 - Added authentication for RabbitMQ, by default.
