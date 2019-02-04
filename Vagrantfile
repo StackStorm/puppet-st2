@@ -34,7 +34,8 @@
 hostname   = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'puppet-st2-vagrant'
 
 # We also support the :libvirt provider for CentOS / RHEL folks
-provider   = ENV['PROVIDER'] ? ENV['PROVIDER'] : :libvirt
+provider   = ENV['PROVIDER'] ? ENV['PROVIDER'] : 'libvirt'
+provider   = provider.to_sym
 
 # The following boxes will work for both :virtualbox and :libvirt providers
 #  - centos/6

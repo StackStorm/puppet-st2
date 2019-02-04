@@ -41,6 +41,10 @@
   
 - Added CI check for documentation warnings/errors. (Enhancement)
   Contributed by @nmaludy
+  
+- Fixed `st2_pack` resouce not escaping username/password arguments, leading to errors
+  when authenticating with usernames/passwords that contain special characters. (Bugfix)
+  Contributed by @nmaludy
 
 ## 1.3.0 (Dec 17, 2018)
 
