@@ -8,7 +8,7 @@
 ST2_SERVICES = ['st2actionrunner', 'st2api', 'st2stream',
                 'st2auth', 'st2garbagecollector', 'st2notifier',
                 'st2resultstracker', 'st2rulesengine', 'st2sensorcontainer',
-                'st2workflowengine', 'st2timersengine'].freeze
+                'st2workflowengine', 'st2timersengine', 'st2scheduler'].freeze
 
 control 'st2-services' do
   title 'verify stackstorm services'

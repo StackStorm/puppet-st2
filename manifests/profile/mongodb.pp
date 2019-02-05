@@ -1,31 +1,33 @@
-# == Class st2::profile::mongodb
+# @summary StackStorm compatable installation of MongoDB and dependencies.
 #
-# st2 compatable installation of MongoDB and dependencies for use with
-# StackStorm
+# @param db_name
+#    Name of the StackStorm database
+# @param db_username
+#    Username to connect to db with
+# @param db_password
+#    Password for 'admin' and 'stackstorm' users in MongDB. If 'undef' then use $cli_password
+# @param db_port
+#    Port for db server for st2 to talk to
+# @param db_bind_ips
+#    Array of bind IP addresses for MongoDB to listen on
+# @param version
+#    Version of MongoDB to install. If not provided it will be auto-calcuated based on $st2::version.
+# @param manage_repo
+#    Set this to +false+ when you have your own repositories for mongodb
+# @param auth
+#    Boolean determining if auth should be enabled for MongoDB.
 #
-# === Parameters
+# @example Basic Usage
+#   include ::st2::profile::mongodb
 #
-#  [*db_name*]     - Name of db to connect to
-#  [*db_username*] - Username to connect to db with
-#  [*db_password*] - Password for 'admin' and 'stackstorm' users in MongDB.
-#                    If 'undef' then use $cli_password
-#  [*db_port*]     - Port for db server for st2 to talk to
-#  [*db_bind_ips*] - Array of bind IP addresses for MongoDB to listen on
-#  [*version*]     - Version of MongoDB to install. If not provided it will be
-#                    auto-calcuated based on $st2::version
-#  [*manage_repo*] - Set this to false when you have your own repositories for mongodb
-#  [*auth*]        - Boolean determining of auth should be enabled for
-#                    MongoDB. Note: On new versions of Puppet (4.0+)
-#                    you'll need to disable this setting.
-#                    (default: $st2::mongodb_auth)
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
-#  include st2::profile::mongodb
+# @example Customize (done via ::st2)
+#   class { '::st2':
+#     db_name     => 'stackstormdb',
+#     db_username => 'abc',
+#     db_password => 'xyz123',
+#     db_port     => 12345,
+#   }
+#   include ::st2::profile::mongodb
 #
 class st2::profile::mongodb (
   $db_name     = $::st2::db_name,
@@ -38,12 +40,9 @@ class st2::profile::mongodb (
   $auth        = $::st2::mongodb_auth,
 ) inherits st2 {
 
-  # if the StackStorm version is 'latest' or >= 2.4.0 then use MongoDB 3.4
+  # if the StackStorm version is > 2.4.0 then MongoDB 3.4
   # else use MongoDB 3.2
-  if ($::st2::version == 'latest' or
-      $::st2::version == 'present' or
-      $::st2::version == 'installed' or
-      versioncmp($::st2::version, '2.4.0') >= 0) {
+  if st2::version_ge('2.4.0') {
     $_mongodb_version_default = '3.4'
   }
   else {

@@ -11,7 +11,99 @@
    - `pack_remove` - Removes a list of packs
   (Feature)
   Contributed by @nmaludy
+
+- Fixed build for Puppet 4. New version of rubygem-update requires Ruby 2.3.0
+  and Puppet 4 requires 2.1.x. When running `gem update --system` this updated
+  the gem past the installed ruby version, breaking the build. Instead,
+  we simply leave the system gems alone during the build.
+  Contributed by @nmaludy
   
+- Removed the following unused variables from `::st2`:
+    - `mistral_git_branch`
+    - `st2web_ssl_cert`
+    - `st2web_ssl_key`
+    - `api_url`
+    - `api_logging_file`
+    - `flow_url`
+    - `global_env`
+    - `workers` (actually implemented below with `actionrunner_workers`)
+  (Enhancement)
+  Contributed by @nmaludy
+    
+- Added the following variables to `::st2`:
+    - `auth_api_url` : URL of the StackStorm API for use by the `st2auth` service.
+    - `actionrunner_workers`: Number of `st2actionrunner` processes to start.
+    - `mistral_db_host` : Hostname/IP of the Mistral Postgres database
+    - `mistral_db_name` : Database name of the Mistral Postgres databa
+    - `mistral_db_username` : Username for authentication to the Mistral Postgres database
+    - `mistral_db_password` : Password for authentication to the Mistral Postgres database
+    - `mistral_db_bind_ips` : String of IPs (csv) that the Mistral Postgres database will accept connections on (default: 127.0.0.1)
+    - `chatops_api_url` : URL of the StackStorm API service for use by `st2chatops`
+    - `chatops_auth_url` : URL of the StackStorm Auth service for use by `st2chatops`
+  (Enhancement)
+  Contributed by @nmaludy
+  
+- Added documentation for variables in many of the classes. (Enhancement)
+  Contributed by @nmaludy
+
+- Converted entire module over to Puppet Strings documentation. (Enhancement)
+  Contributed by @nmaludy
+  
+- Added CI check for documentation warnings/errors. (Enhancement)
+  Contributed by @nmaludy
+  
+- Fixed `st2_pack` resouce not escaping username/password arguments, leading to errors
+  when authenticating with usernames/passwords that contain special characters. (Bugfix)
+  Contributed by @nmaludy
+
+## 1.3.0 (Dec 17, 2018)
+
+- Added authentication for RabbitMQ, by default.
+  The authentication options are available in the `::st2` class:
+    - `rabbitmq_username` : Username for the new RabbitMQ user (default: `st2admin`)
+    - `rabbitmq_password` : Password for the new RabbitMQ user (default: `Ch@ngMe`)
+  When upgrading to this new version, this will force a restart of all StackStorm
+  and Mistral services as the new password is applied. (Feature)
+  Contributed by @nmaludy
+  
+- Remove the insecure RabbitMQ default `guest` user on RabbitMQ instances. 
+  Note: this will remove this user on new AND existing instances. (Enhancement)
+  Contributed by @nmaludy
+  
+- Added support for additional RabbitMQ configuration options:
+    - `rabbitmq_hostname` : Hostname of the RabbitMQ server (default: `127.0.0.1`)
+    - `rabbitmq_port` : Port to connect to the RabbitMQ server (default: `5672`)
+    - `rabbitmq_bind_ip` : IP address to bind the RabbitMQ server to (default: `127.0.0.1`)
+    - `rabbitmq_vhost` : Virtual Host for the StackStorm content on RabbitMQ (default: `/`)
+  (Feature)
+  Contributed by @nmaludy
+
+- Added support for `st2scheduler` service in StackStorm >= `2.10.0`.
+  Two new options were added to `::st2`:
+    - `scheduler_sleep_interval` - How long (in seconds) to sleep between each action scheduler main loop run interval. (default = 0.1)
+    - `scheduler_gc_interval` - How often (in seconds) to look for zombie execution requests before rescheduling them. (default = 10)
+    - `scheduler_pool_size` - The size of the pool used by the scheduler for scheduling executions. (default = 10)
+  #251 (Enhancement)
+  Contributed by @nmaludy
+  
+- Added a new fact `st2_version` that reports the installed version of StackStorm.
+  If StackStorm is not installed then the fact will not be present (default behavior of Facter).
+  Contributed by @nmaludy
+  
+- Installs NodeJS 10, by default, when installing StackStorm >= `2.10.0`.
+  This is now also the default when running a brand new installation with a
+  `::st2::version` of `latest`, `installed` or `present` (default).
+  Existing installations are also upgraded to NodeJS 10 if their `::st2::version`
+  is set to `latest`(default) or to a version >= `2.10.0`.
+  #219 (Enhancement)
+  Contributed by @nmaludy
+
+- Added new parameter to `::st2` class `repository` that allows configuring a different
+  release repository from PackageCloud for Yum/Apt. Available options are:
+      - `'stable'` (default)
+      - `'unstable'`
+  (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.2.0 (Sep 25, 2018)
 

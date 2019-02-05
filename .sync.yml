@@ -42,3 +42,5 @@ Gemfile:
         version: '>= 0.3.0'
       - gem: 'puppet-lint-version_comparison-check'
         version: '>= 0.2.1'
+spec/spec_helper.rb:
+  mock_with: ':rspec'

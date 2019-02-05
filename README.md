@@ -30,6 +30,13 @@ puppet apply -e "include ::st2::profile::fullinstall"
 
 **This module no longer supports Puppet 3 as of version `1.1`**
 
+## Reference Documentation
+
+This module uses [Puppet Strings](https://puppet.com/docs/puppet/latest/puppet_strings.html)
+as the documentation standard. An live version is available online at
+[puppetmodule.info/m/stackstorm-st2](http://www.puppetmodule.info/m/stackstorm-st2).
+A markdown version is available directly in this repo in [REFERENCE.md](REFERENCE.md).
+
 ## Configuration
 
 This module aims to provide sane default configurations, but also stay

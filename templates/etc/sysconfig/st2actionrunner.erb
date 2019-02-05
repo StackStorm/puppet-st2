@@ -1,0 +1,8 @@
+## This file is maintained by Puppet
+
+# Number of st2actionrunner worker processes to start
+<%- if @actionrunner_workers -%>
+WORKERS=<%= @actionrunner_workers %>
+<%- else -%>
+# WORKERS=""
+<%- end -%>

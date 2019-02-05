@@ -1,28 +1,29 @@
-# == Class: st2::profile::python
+# @summary Manages the installation of st2 required repos for installing the StackStorm packages.
 #
-# Installation of st2 required repos
+# @example Basic usage
+#   include ::st2::profile::repos
 #
-# === Parameters
+# @example Installing from unstable
+#   class { '::st2::profile::repos':
+#     repository => 'unstable',
+#   }
 #
-#  This module contains no parameters
-#
-# === Variables
-#
-#  This module contains no variables
-#
-# === Examples
-#
-#  include st2::profile::repos
+# @param repository
+#   Release repository to enable. Options: 'stable', 'unstable'.
+# @param package_type
+#   Type of package management system used for repo. Options: 'rpm', 'deb'
 #
 class st2::profile::repos(
-  $package_type = $st2::params::package_type
-) {
+  $repository   = $::st2::repository,
+  $package_type = $::st2::params::package_type,
+) inherits st2 {
   require ::packagecloud
 
   if $::osfamily == 'RedHat' {
     require ::epel
   }
-  packagecloud::repo { 'StackStorm/stable':
+  $_packagecloud_repo = "StackStorm/${repository}"
+  packagecloud::repo { $_packagecloud_repo:
     type => $package_type,
   }
 
@@ -34,7 +35,7 @@ class st2::profile::repos(
       command     =>  'rm -rf /var/lib/apt/lists/*; apt-get update',
       path        => ['/usr/bin/', '/bin/'],
       refreshonly => true,
-      subscribe   => Packagecloud::Repo['StackStorm/stable'],
+      subscribe   => Packagecloud::Repo[$_packagecloud_repo],
     }
   }
 }
