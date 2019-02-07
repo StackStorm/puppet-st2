@@ -27,7 +27,11 @@
   },
   "implementations": [
     {
-      "name": "st2_common.py"
+      "name": "pack_remove.py",
+      "files": [
+        "python_task_helper/files/task_helper.py",
+        "st2/files/st2_task_base.py"
+      ]
     }
   ]
 }

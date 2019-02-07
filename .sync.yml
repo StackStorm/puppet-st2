@@ -1,11 +1,15 @@
 ---
 .gitignore:
   paths:
+    - .coverage
     - .librarian
     - .kitchen
     - .tmp
     - .bundle
+    - /cover/
+    - /ci/
     - Puppetfile.lock
+    - '*.pyc'
 .gitlab-ci.yml:
   # we don't use GitLab
   unmanaged: true

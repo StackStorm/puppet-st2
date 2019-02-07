@@ -1,14 +1,6 @@
 {
-  "description": "Load a list of a StackStorm key/value pairs into the datastore",
+  "description": "Get a list of packs",
   "parameters": {
-    "keys": {
-      "type": "Array[Hash]",
-      "description": "List of key value pairs. Each hash should have a 'name' and 'value' key. Example: {'name': 'mydatastorkey', 'value': 'valueinthedatastore'} . For more details , see: https://docs.stackstorm.com/datastore.html#loading-key-value-pairs-from-a-file"
-    },
-    "convert": {
-      "type": "Optional[Boolean]",
-      "description": "Convert non-string types (hash, array, boolean, int, float) to a JSON string before loading it into the datastore."
-    },
     "api_key": {
       "description": "StackStorm API key to use for authentication (prefer this over username/password).",
       "type": "Optional[String]",
@@ -31,7 +23,7 @@
   },
   "implementations": [
     {
-      "name": "key_load.py",
+      "name": "pack_list.py",
       "files": [
         "python_task_helper/files/task_helper.py",
         "st2/files/st2_task_base.py"
