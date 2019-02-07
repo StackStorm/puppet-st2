@@ -262,6 +262,7 @@ a node where StackStorm is installed.
 - `st2::key_get` - Retrieves the value for a key from the datastore
 - `st2::key_load` - Loads a list of key/value pairs into the datastore
 - `st2::pack_install` - Installs a list of packs
+- `st2::pack_list` - Get a list of installed packs
 - `st2::pack_remove` - Removes a list of packs
   
 ### Task Usage
