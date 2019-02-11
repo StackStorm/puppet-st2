@@ -11,6 +11,22 @@
    - `st2::pack_list` - Get a list of installed packs
    - `st2::pack_remove` - Removes a list of packs
   (Feature)
+
+- Fixed build for new release of `puppet/nginx` causing conflict with `puppetlabs/stdlib`.
+  The new version `0.16.0` of `puppet/nginx` requires `puppetlabs/stdlib >= 5.0.0`.
+  Several other modules we depend on require `puppetlabs/stdlib < 5.0.0` causing a conflict.
+  To fix this, we've pinned `puppet/nginx` to `0.15.0` in the Puppetfiles used
+  for testing. (Bugfix)
+  Contributed by @nmaludy
+  
+- Removed the dependencies because they're no longer used.
+    - `puppet/staging`
+    - `puppetlabs/gcc`
+  (Enhancement)
+  Contributed by @nmaludy
+
+- Puppet 4 is officially deprecated due to it being End of Life on 2018-12-31.
+  Support will be removed in a future version. (Enhancement)
   Contributed by @nmaludy
 
 - Fixed build for Puppet 4. New version of rubygem-update requires Ruby 2.3.0
@@ -196,7 +212,7 @@
   Contributed by @nmaludy
 
 - Changed the behavior of `st2` packages. Previously they were automatically
-  updating due to the package resources having `ensure => latest` set. Going
+  updating due to the package resources having `ensure  latest` set. Going
   forward, packages will have `ensure => present` set by default  and it will be
   the responsibility of the end user to update the packages. (Change)
   Contributed by @nmaludy

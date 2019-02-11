@@ -17,10 +17,6 @@
       "version_requirement": ">= 4.6.0"
     },
     {
-      "name": "puppet/staging",
-      "version_requirement": ">= 1.0.2"
-    },
-    {
       "name": "puppetlabs/apt",
       "version_requirement": ">= 1.7.0"
     },
@@ -35,10 +31,6 @@
     {
       "name": "puppet/python",
       "version_requirement": ">= 1.10.0"
-    },
-    {
-      "name": "puppetlabs/gcc",
-      "version_requirement": ">= 0.2.0"
     },
     {
       "name": "puppetlabs/inifile",
