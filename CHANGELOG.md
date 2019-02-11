@@ -4,9 +4,15 @@
 
 - Fixed build for new release of `puppet/nginx` causing conflict with `puppetlabs/stdlib`.
   The new version `0.16.0` of `puppet/nginx` requires `puppetlabs/stdlib >= 5.0.0`.
-  Several other modules we depend on require `puppetlabs/stdlib < 5.0.05` causing a conflict.
+  Several other modules we depend on require `puppetlabs/stdlib < 5.0.0` causing a conflict.
   To fix this, we've pinned `puppet/nginx` to `0.15.0` in the Puppetfiles used
   for testing. (Bugfix)
+  Contributed by @nmaludy
+  
+- Removed the dependencies because they're no longer used.
+    - `puppet/staging`
+    - `puppetlabs/gcc`
+  (Enhancement)
   Contributed by @nmaludy
 
 - Puppet 4 is officially deprecated due to it being End of Life on 2018-12-31.
