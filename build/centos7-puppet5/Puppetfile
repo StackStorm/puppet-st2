@@ -11,20 +11,19 @@ forge "https://forgeapi.puppetlabs.com"
 
 mod 'puppet/rabbitmq'
 mod 'jamtur01/httpauth'
-mod 'puppet/staging'
 mod 'puppet/wget'
 mod 'saz/sudo'
 mod 'puppet/python'
-mod 'puppetlabs/gcc'
 mod 'puppetlabs/inifile'
 mod 'puppet/mongodb'
 mod 'puppetlabs/postgresql'
 mod 'stahnma/epel'
 mod 'ghoneycutt/facter'
 mod 'computology/packagecloud'
-mod "puppet/selinux"
-mod 'puppet/nginx'
+mod 'puppet/selinux'
+# hard coding 0.15.0 because it requires stdlib >= 5.0.0
+# several other dependencies require stdlib < 5.0.0 causing a conflict
+mod 'puppet/nginx', '0.15.0'
 mod 'puppet/nodejs'
 mod 'puppetlabs/apt'
-mod 'puppetlabs/concat'
 mod 'puppetlabs/stdlib'
