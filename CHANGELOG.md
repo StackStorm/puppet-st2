@@ -9,6 +9,10 @@
   for testing. (Bugfix)
   Contributed by @nmaludy
 
+- Puppet 4 is officially deprecated due to it being End of Life on 2018-12-31.
+  Support will be removed in a future version. (Enhancement)
+  Contributed by @nmaludy
+
 - Fixed build for Puppet 4. New version of rubygem-update requires Ruby 2.3.0
   and Puppet 4 requires 2.1.x. When running `gem update --system` this updated
   the gem past the installed ruby version, breaking the build. Instead,
