@@ -84,74 +84,39 @@ class St2TaskHelperTestCase(St2TestCase):
         self.assertEquals(task.username, 'st2admin')
         self.assertEquals(task.password, 'pass')
 
-    def testscan_for_json_none(self):
-        stdout = '\n\nblah'
-
-        # run
+    def test_parse_output_none(self):
         task = St2TaskBase()
-        result = task.scan_for_json(stdout)
-
-        # assert
+        result = task.parse_output('\n\nblah')
         self.assertEquals(result, {'result': '\n\nblah'})
 
-    def testscan_for_json_list_begin(self):
-        stdout = '["a", "b", "c"]'
-
-        # run
+    def test_parse_output_list_begin(self):
         task = St2TaskBase()
-        result = task.scan_for_json(stdout)
-
-        # assert
+        result = task.parse_output('["a", "b", "c"]')
         self.assertEquals(result, {'result': ['a', 'b', 'c']})
 
-    def testscan_for_json_list_middle_begin(self):
-        stdout = '\n\nblah["a", "b", "c"]'
-
-        # run
+    def test_parse_output_list_middle(self):
         task = St2TaskBase()
-        result = task.scan_for_json(stdout)
+        result = task.parse_output('\n\nblah["a", "b", "c"]')
+        self.assertEquals(result, {'result': '\n\nblah["a", "b", "c"]'})
 
-        # assert
-        self.assertEquals(result, {'result': ['a', 'b', 'c']})
-
-    def testscan_for_json_list_invalid(self):
-        stdout = '["a", "b"'
-
-        # run
+    def test_parse_output_list_invalid(self):
         task = St2TaskBase()
-        result = task.scan_for_json(stdout)
-
-        # assert
+        result = task.parse_output('["a", "b"')
         self.assertEquals(result, {'result': '["a", "b"'})
 
-    def testscan_for_json_dict_begin(self):
-        stdout = '{"a":"b"}'
-
-        # run
+    def test_parse_output_dict_begin(self):
         task = St2TaskBase()
-        result = task.scan_for_json(stdout)
-
-        # assert
+        result = task.parse_output('{"a":"b"}')
         self.assertEquals(result, {'result': {'a': 'b'}})
 
-    def testscan_for_json_dict_middle_begin(self):
-        stdout = '\n\nblah{"a": "b"}'
-
-        # run
+    def test_parse_output_dict_middle(self):
         task = St2TaskBase()
-        result = task.scan_for_json(stdout)
+        result = task.parse_output('\n\nblah{"a": "b"}')
+        self.assertEquals(result, {'result': '\n\nblah{"a": "b"}'})
 
-        # assert
-        self.assertEquals(result, {'result': {'a': 'b'}})
-
-    def testscan_for_json_dict_invalid(self):
-        stdout = '{"a": "b"'
-
-        # run
+    def test_parse_output_dict_invalid(self):
         task = St2TaskBase()
-        result = task.scan_for_json(stdout)
-
-        # assert
+        result = task.parse_output('{"a": "b"')
         self.assertEquals(result, {'result': '{"a": "b"'})
 
     @mock.patch('subprocess.check_output')

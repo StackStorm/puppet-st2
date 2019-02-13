@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import json
 import os
-import re
 import subprocess
 import sys
 import traceback
@@ -16,9 +15,6 @@ try:
 except ImportError:
     # python 3
     from urllib.parse import urlparse  # noqa
-
-# try to find a [ or { at the start of a line
-JSON_START_PATTERN = re.compile("(\\[|{)", re.MULTILINE)
 
 
 class St2TaskBase(TaskHelper):
@@ -46,37 +42,12 @@ class St2TaskBase(TaskHelper):
         #    assume auth token is written in client config for this user.
         #    don't worry, if there is no auth we'll get an error
 
-    def scan_for_json(self, stdout):
-        # the output from st2 pack install doesn't print out in pure JSON, so
-        # look for the JSON in the output
-        start_pos = 0
-        stdout_json = None
-        while start_pos < len(stdout):
-            # try to find the start of JSON
-            m = JSON_START_PATTERN.search(stdout[start_pos:])
-            if m:
-                # we found some json potentially, get the position of the match
-                # in the string and increment our start position that much
-                start_pos += m.span(0)[0]
-                try:
-                    # try to parse JSON starting at the position of our JSON
-                    # character match
-                    stdout_json = json.loads(stdout[start_pos:])
-                    break
-                except ValueError:
-                    # JSON parse failed, so start looking for JSON data beginning
-                    # at the next character
-                    start_pos += 1
-                    pass
-            else:
-                # didn't find a patch in the entire string, bail out
-                break
-
-        # if we found JSON, return the parse result
-        # else return the raw stdout
-        if stdout_json:
-            return {'result': stdout_json}
-        else:
+    def parse_output(self, stdout):
+        try:
+            # try to parse stdout as JSON and return the parse result
+            return {'result': json.loads(stdout)}
+        except ValueError:
+            # JSON parsing failed, return the raw stdout string
             return {'result': stdout}
 
     def exec_cmd(self, cmd, error_msg):
@@ -85,7 +56,7 @@ class St2TaskBase(TaskHelper):
             stdout = subprocess.check_output(cmd,
                                              stderr=subprocess.STDOUT,
                                              env=self.env)
-            result.update(self.scan_for_json(stdout))
+            result.update(self.parse_output(stdout))
         except subprocess.CalledProcessError as e:
             tb = traceback.format_exc()
             raise TaskError(("Could not {}: {} \n {}\n {}".
