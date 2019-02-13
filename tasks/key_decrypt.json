@@ -1,0 +1,16 @@
+{
+  "description": "Decrypt a StackStorm key/value pair. TODO - Remove this when the following is closed: https://github.com/StackStorm/st2/issues/4545",
+  "parameters": {
+    "crypto_key_path": {
+      "type": "String",
+      "description": "Path to StackStorm crypto key"
+    },
+    "keys": {
+      "type": "Array[Hash]",
+      "description": "List of key value pairs"
+    }
+  },
+  "implementations": [
+    {"name": "key_decrypt.py"}
+  ]
+}

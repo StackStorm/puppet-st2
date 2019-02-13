@@ -2,6 +2,16 @@
 
 ## Development
 
+- Added new tasks to communicate with the StackStorm CLI. The naming standard and parameters
+  are modeled after the `st2` CLI command and must be run on the StackStorm node:
+   - `st2::key_decrypt` - Decrypts an encrypted key/value pair
+   - `st2::key_get` - Retrieves the value for a key from the datastore
+   - `st2::key_load` - Loads a list of key/value pairs into the datastore
+   - `st2::pack_install` - Installs a list of packs
+   - `st2::pack_list` - Get a list of installed packs
+   - `st2::pack_remove` - Removes a list of packs
+  (Feature)
+
 - Fixed build for new release of `puppet/nginx` causing conflict with `puppetlabs/stdlib`.
   The new version `0.16.0` of `puppet/nginx` requires `puppetlabs/stdlib >= 5.0.0`.
   Several other modules we depend on require `puppetlabs/stdlib < 5.0.0` causing a conflict.
@@ -147,7 +157,7 @@
 - Fixed bug where the default nginx splash page was not being removed
   on RHEL/CentOS installs. (Bugfix)
   Contributed by @nmaludy
-  
+
 ## 1.1.0 (Sep 07, 2018)
 
 - DEPRECATION WARNING - Dropped support for Puppet 3. (Enhancement)
@@ -202,7 +212,7 @@
   Contributed by @nmaludy
 
 - Changed the behavior of `st2` packages. Previously they were automatically
-  updating due to the package resources having `ensure => latest` set. Going
+  updating due to the package resources having `ensure  latest` set. Going
   forward, packages will have `ensure => present` set by default  and it will be
   the responsibility of the end user to update the packages. (Change)
   Contributed by @nmaludy

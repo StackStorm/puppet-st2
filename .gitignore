@@ -22,8 +22,12 @@
 /convert_report.txt
 /update_report.txt
 .DS_Store
+.coverage
 .librarian
 .kitchen
 .tmp
 .bundle
+/cover/
+/ci/
 Puppetfile.lock
+*.pyc

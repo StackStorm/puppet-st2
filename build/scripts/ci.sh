@@ -15,6 +15,9 @@ elif [ ! -z "$DOCS_TEST" ]; then
   export PUPPET_GEM_VERSION="$PUPPET_GEM_VERSION"
   echo $PUPPET_GEM_VERSION
   "$SCRIPT_DIR"/ci_docs_generate.sh
+elif [ ! -z "$PYTHON_TEST" ]; then
+  pushd "$SCRIPT_DIR"/../..
+  make
 else
   export TEST_NAME="$TEST_NAME"
   echo $TEST_NAME

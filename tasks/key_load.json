@@ -1,0 +1,41 @@
+{
+  "description": "Load a list of a StackStorm key/value pairs into the datastore",
+  "parameters": {
+    "keys": {
+      "type": "Array[Hash]",
+      "description": "List of key value pairs. Each hash should have a 'name' and 'value' key. Example: {'name': 'mydatastorkey', 'value': 'valueinthedatastore'} . For more details , see: https://docs.stackstorm.com/datastore.html#loading-key-value-pairs-from-a-file"
+    },
+    "convert": {
+      "type": "Optional[Boolean]",
+      "description": "Convert non-string types (hash, array, boolean, int, float) to a JSON string before loading it into the datastore."
+    },
+    "api_key": {
+      "description": "StackStorm API key to use for authentication (prefer this over username/password).",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "auth_token": {
+      "description": "StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "username": {
+      "description": "Username to use for StackStorm authentication.",
+      "type": "Optional[String]"
+    },
+    "password": {
+      "description": "Password to use for StackStorm authentication.",
+      "type": "Optional[String]",
+      "sensitive": true
+    }
+  },
+  "implementations": [
+    {
+      "name": "key_load.py",
+      "files": [
+        "python_task_helper/files/task_helper.py",
+        "st2/files/st2_task_base.py"
+      ]
+    }
+  ]
+}
