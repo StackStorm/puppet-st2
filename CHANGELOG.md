@@ -2,6 +2,8 @@
 
 ## Development
 
+## 1.4.0 (Feb 13, 2019)
+
 - Added new tasks to communicate with the StackStorm CLI. The naming standard and parameters
   are modeled after the `st2` CLI command and must be run on the StackStorm node:
    - `st2::key_decrypt` - Decrypts an encrypted key/value pair
