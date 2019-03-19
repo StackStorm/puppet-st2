@@ -364,7 +364,7 @@ on demand using [bolt](https://github.com/puppetlabs/bolt).
 In StackStorm `< 2.4.0` there is a known bug [#3290](https://github.com/StackStorm/st2/issues/3290) 
 where the first puppet run fails to install the `st2` pack. Simply invoking puppet
 a second time will produce a fully functional installation with the `st2` pack 
-installed. This was an upstream but and has been fixed in StackStorm version `2.4.0`.
+installed. This was an upstream bug and has been fixed in StackStorm version `2.4.0`.
 
 ## Maintainers
 
