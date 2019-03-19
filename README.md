@@ -236,7 +236,7 @@ Configuration via Hiera:
 
 This module installs and configures all of the components required for StackStorm.
 In order to not repeat others work, we've utilized many existing modules from the
-foge. We manage the module dependenies using a `Puppetfile` for each OS we support.
+forge. We manage the module dependenies using a `Puppetfile` for each OS we support.
 These `Puppetfile` can be used both with [r10k](https://github.com/puppetlabs/r10k)
 and [librarian-puppet](http://librarian-puppet.com/).
 
