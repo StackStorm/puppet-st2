@@ -2,6 +2,13 @@
 
 ## Development
 
+- Fixed a bug in the `st2_pack` resource so that when authentication fails, the error
+  message about why it failed is shown to the user. Along with this i prevented the
+  authentication command from being written to the debug log to prevent potential
+  credential leakage.
+  (Bugfix)
+  Contributed by @nmaludy
+
 ## 1.4.0 (Feb 13, 2019)
 
 - Added new tasks to communicate with the StackStorm CLI. The naming standard and parameters

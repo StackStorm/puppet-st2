@@ -25,7 +25,8 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
     it 'authenticates and receives a token' do
       expect(provider).to receive(:exec_st2).with('auth', 'st2_user',
                                                   '-t',
-                                                  '-p', 'st2_password')
+                                                  '-p', 'st2_password',
+                                                  sensitive: true)
                                             .and_return("token\n")
       expect(provider.st2_authenticate).to eq('token')
     end
@@ -114,7 +115,10 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
         .with(['/usr/bin/st2', 'auth', 'someuser',
                '-t',
                '-p', 'blah'],
-              override_locale: false)
+              override_locale: false,
+              failonfail: true,
+              combine: true,
+              sensitive: false)
       provider.send(:exec_st2, 'auth', 'someuser', '-t', '-p', 'blah')
     end
 
@@ -132,6 +136,19 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
                     '" blah"',
                     ')(',
                     '#')
+    end
+
+    it 'executes a propagates sensitive option' do
+      expect(Puppet::Util::Execution).to receive(:execute)
+        .with(['/usr/bin/st2', 'auth', 'someuser',
+               '-t',
+               '-p', 'blah'],
+              override_locale: false,
+              failonfail: true,
+              combine: true,
+              sensitive: true)
+      provider.send(:exec_st2, 'auth', 'someuser', '-t', '-p', 'blah',
+                    sensitive: true)
     end
   end
 end
