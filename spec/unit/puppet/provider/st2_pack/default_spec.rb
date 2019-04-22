@@ -25,8 +25,7 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
     it 'authenticates and receives a token' do
       expect(provider).to receive(:exec_st2).with('auth', 'st2_user',
                                                   '-t',
-                                                  '-p', 'st2_password',
-                                                  sensitive: true)
+                                                  '-p', 'st2_password')
                                             .and_return("token\n")
       expect(provider.st2_authenticate).to eq('token')
     end
