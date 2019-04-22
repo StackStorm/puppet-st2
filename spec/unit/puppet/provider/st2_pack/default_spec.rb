@@ -121,7 +121,9 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
     it 'escapes arguments' do
       expect(Puppet::Util::Execution).to receive(:execute)
         .with('/usr/bin/st2 pack search arg\ with\ spaces \"\ blah\" \)\( \#',
-              override_locale: false)
+              override_locale: false,
+              failonfail: true,
+              combine: true)
       provider.send(:exec_st2,
                     'pack', 'search',
                     'arg with spaces',
