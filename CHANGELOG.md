@@ -2,6 +2,17 @@
 
 ## Development
 
+- Fixed a bug in the `st2_pack` resource so that when authentication fails, the error
+  message about why it failed is shown to the user.
+  (Bugfix)
+  Contributed by @nmaludy
+  
+- Fixed a bug in the `st2_pack` resource where usernames and passwords were not being
+  escaped properly. This only manifested itself with certain special characters.
+  (Bugfix)
+  Contributed by @nmaludy
+  
+
 ## 1.4.0 (Feb 13, 2019)
 
 - Added new tasks to communicate with the StackStorm CLI. The naming standard and parameters

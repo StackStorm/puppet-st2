@@ -70,6 +70,7 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
 
   describe 'exists?' do
     it 'checks if pack exists' do
+      expect(provider).to receive(:list_installed_packs).and_return([])
       expect(provider.exists?).to be false
     end
 
@@ -111,21 +112,19 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
   describe 'exec_st2' do
     it 'executes a command' do
       expect(Puppet::Util::Execution).to receive(:execute)
-        .with(['/usr/bin/st2', 'auth', 'someuser',
-               '-t',
-               '-p', 'blah'],
-              override_locale: false)
+        .with('/usr/bin/st2 auth someuser -t -p blah',
+              override_locale: false,
+              failonfail: true,
+              combine: true)
       provider.send(:exec_st2, 'auth', 'someuser', '-t', '-p', 'blah')
     end
 
     it 'escapes arguments' do
       expect(Puppet::Util::Execution).to receive(:execute)
-        .with(['/usr/bin/st2', 'pack', 'search',
-               'arg\ with\ spaces',
-               '\"\ blah\"',
-               '\)\(',
-               '\#'],
-              override_locale: false)
+        .with('/usr/bin/st2 pack search arg\ with\ spaces \"\ blah\" \)\( \#',
+              override_locale: false,
+              failonfail: true,
+              combine: true)
       provider.send(:exec_st2,
                     'pack', 'search',
                     'arg with spaces',

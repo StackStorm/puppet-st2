@@ -52,7 +52,23 @@ Puppet::Type.type(:st2_pack).provide(:default) do
   def exec_st2(*args)
     # escape all arguments so they're safe to use in a shell command
     escaped_args = args.map { |a| Shellwords.shellescape(a) }
-    Puppet::Util::Execution.execute([command(:st2)] + escaped_args,
-                                    override_locale: false)
+
+    # when passing in a command array into Puppet::Util::Execution.execute()
+    # it doesn't do shell expansion on the arguments, but special characters are still
+    # sometimes not processed correctly by the underlying system.
+    # instead if you specify the first argument as a string, the command is treated
+    # as a shell command with normal shell expansion rules and our escaping above
+    # works correctly
+    # see: https://ruby-doc.org/core/Kernel.html#method-i-exec
+    command_str = ([command(:st2)] + escaped_args).join(' ')
+
+    # when we started passing in the override_locale: option, there is some "known behavior"
+    # of this function where when any option is passed in it sets failonfail: false and
+    # combine: false for some terrible reason. We want both of those set to true like
+    # they are when no options are specified, so we set them explicitly.
+    Puppet::Util::Execution.execute(command_str,
+                                    override_locale: false,
+                                    failonfail: true,
+                                    combine: true)
   end
 end
