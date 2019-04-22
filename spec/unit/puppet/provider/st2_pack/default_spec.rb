@@ -70,6 +70,7 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
 
   describe 'exists?' do
     it 'checks if pack exists' do
+      expect(provider).to receive(:list_installed_packs).and_return([])
       expect(provider.exists?).to be false
     end
 
