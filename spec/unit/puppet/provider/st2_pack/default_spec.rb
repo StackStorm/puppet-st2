@@ -112,23 +112,16 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
   describe 'exec_st2' do
     it 'executes a command' do
       expect(Puppet::Util::Execution).to receive(:execute)
-        .with(['/usr/bin/st2', 'auth', 'someuser',
-               '-t',
-               '-p', 'blah'],
+        .with('/usr/bin/st2 auth someuser -t -p blah',
               override_locale: false,
               failonfail: true,
-              combine: true,
-              sensitive: false)
+              combine: true)
       provider.send(:exec_st2, 'auth', 'someuser', '-t', '-p', 'blah')
     end
 
     it 'escapes arguments' do
       expect(Puppet::Util::Execution).to receive(:execute)
-        .with(['/usr/bin/st2', 'pack', 'search',
-               'arg\ with\ spaces',
-               '\"\ blah\"',
-               '\)\(',
-               '\#'],
+        .with('/usr/bin/st2 pack search arg\ with\ spaces \"\ blah\" \)\( \#',
               override_locale: false)
       provider.send(:exec_st2,
                     'pack', 'search',
@@ -136,19 +129,6 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
                     '" blah"',
                     ')(',
                     '#')
-    end
-
-    it 'executes a propagates sensitive option' do
-      expect(Puppet::Util::Execution).to receive(:execute)
-        .with(['/usr/bin/st2', 'auth', 'someuser',
-               '-t',
-               '-p', 'blah'],
-              override_locale: false,
-              failonfail: true,
-              combine: true,
-              sensitive: true)
-      provider.send(:exec_st2, 'auth', 'someuser', '-t', '-p', 'blah',
-                    sensitive: true)
     end
   end
 end

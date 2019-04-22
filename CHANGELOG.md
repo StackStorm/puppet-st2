@@ -3,11 +3,15 @@
 ## Development
 
 - Fixed a bug in the `st2_pack` resource so that when authentication fails, the error
-  message about why it failed is shown to the user. Along with this i prevented the
-  authentication command from being written to the debug log to prevent potential
-  credential leakage.
+  message about why it failed is shown to the user.
   (Bugfix)
   Contributed by @nmaludy
+  
+- Fixed a bug in the `st2_pack` resource where usernames and passwords were not being
+  escaped properly. This only manifested itself with certain special characters.
+  (Bugfix)
+  Contributed by @nmaludy
+  
 
 ## 1.4.0 (Feb 13, 2019)
 
