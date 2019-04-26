@@ -11,7 +11,13 @@
   escaped properly. This only manifested itself with certain special characters.
   (Bugfix)
   Contributed by @nmaludy
-  
+
+- Modified the build system to utilize `r10k` instead of `librarian-puppet`.
+  This change requires the `Puppetfile` using during CI to explicitly call out all dependencies,
+  but will result in less maintenance of the `Puppetfile` due to releases of dependent
+  modules.
+  (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.4.0 (Feb 13, 2019)
 
