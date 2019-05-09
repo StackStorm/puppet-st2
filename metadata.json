@@ -21,6 +21,10 @@
       "version_requirement": ">= 1.7.0"
     },
     {
+      "name": "stahnma/epel",
+      "version_requirement": ">= 1.1.0"
+    },
+    {
       "name": "puppet/wget",
       "version_requirement": ">= 1.5.6"
     },
@@ -47,10 +51,6 @@
     {
       "name": "puppet/rabbitmq",
       "version_requirement": ">= 4.1.0"
-    },
-    {
-      "name": "stahnma/epel",
-      "version_requirement": ">= 1.1.0"
     },
     {
       "name": "ghoneycutt/facter",
@@ -95,7 +95,7 @@
       "version_requirement": ">= 4.7.0 < 7.0.0"
     }
   ],
-  "pdk-version": "1.8.0",
-  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git",
-  "template-ref": "1.8.0-0-g0d9da00"
+  "pdk-version": "1.10.0",
+  "template-url": "file:///opt/puppetlabs/pdk/share/cache/pdk-templates.git#1.10.0",
+  "template-ref": "1.10.0-0-gbba9ac3"
 }

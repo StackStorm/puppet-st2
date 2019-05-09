@@ -19,6 +19,11 @@ provisioner:
   require_chef_for_busser: false
   # don't have kitchen-puppet install puppet by default (done in Dockerfile)
   require_puppet_collections: false
+  # no longer resolve with librarian-puppet because of dependency hell
+  resolve_with_librarian_puppet: false
+  # use r10k for installing dependencies so we have the explicitly installed
+  # and avoid ordering problems and random minor version clashes
+  resolve_with_r10k: true
   # If you do not enable puppet_detailed_exitcodes, the provisioner only failes
   # if the manifest can not be compiled.
   puppet_detailed_exitcodes: true
