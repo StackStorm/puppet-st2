@@ -18,6 +18,10 @@
   modules.
   (Enhancement)
   Contributed by @nmaludy
+  
+- Removed Puppet 4 from build matrix. Puppet 4 has been end-of-life since 2018-12-31.
+  (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.4.0 (Feb 13, 2019)
 
