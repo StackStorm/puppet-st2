@@ -29,9 +29,11 @@ puppet apply -e "include ::st2::profile::fullinstall"
 ## :warning: Deprecation Notice - Puppet 4
 
 Puppet 4 reached End of Life on 2018-12-31. As of version `1.4` use of Puppet 4 with this module
-is officially deprecated. The next minor release of the module will drop support
-for Puppet 4 in the CI testing matrix. The next major release of the module will drop
-support for Puppet 4 by adjusting the minimum supported Puppet version in `metadata.json`.
+is officially deprecated.
+
+* As of version `1.5.0` this module no longer tests against Puppet 4 in its build matrix.
+* The next major release of the module will drop support for Puppet 4 by adjusting the
+  minimum supported Puppet version in `metadata.json`.
 
 ## :warning: Deprecation Notice - Puppet 3
 

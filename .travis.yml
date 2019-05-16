@@ -28,18 +28,6 @@ script:
 matrix:
   fast_finish: true
   include:
-    - name: "Unit Testing - Puppet 4"
-      rvm: 2.1
-      # use default Gemfile in repo root (from PDK)
-      env:
-        - UNIT_TEST="true"
-        - PUPPET_GEM_VERSION="~> 4.0"
-        - CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop parallel_spec"
-        # rubygem-update 3.0.0 requires ruby 2.3.0 and Puppet 4 requires ruby 2.1.0
-        # Bundler 2.0+ requires ruby 2.3.0 and Puppet 4 requires ruby 2.1.0
-        # We need to lock bundler and rubygems to old versions in order to keep the build happy
-        - BUNDLER_VERSION=1.17.3
-        - RUBYGEMS_VERSION=2.7.8
     - name: "Unit Testing - Puppet 5"
       rvm: 2.4
       # use default Gemfile in repo root (from PDK)
@@ -76,11 +64,6 @@ matrix:
       env:
         - DOCS_TEST="true"
         - PUPPET_GEM_VERSION="~> 6.0"
-    - name: "RHEL/CentOS 6 - Puppet 4"
-      rvm: 2.4
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="centos6-puppet4"
     - name: "RHEL/CentOS 6 - Puppet 5"
       rvm: 2.4
       gemfile: build/kitchen/Gemfile
@@ -91,11 +74,6 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - TEST_NAME="centos6-puppet6"
-    - name: "RHEL/CentOS 7 - Puppet 4"
-      rvm: 2.4
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="centos7-puppet4"
     - name: "RHEL/CentOS 7 - Puppet 5"
       rvm: 2.4
       gemfile: build/kitchen/Gemfile
@@ -106,11 +84,6 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - TEST_NAME="centos7-puppet6"
-    - name: "Ubuntu 14 - Puppet 4"
-      rvm: 2.4
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="ubuntu14-puppet4"
     - name: "Ubuntu 14 - Puppet 5"
       rvm: 2.4
       gemfile: build/kitchen/Gemfile
@@ -121,11 +94,6 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - TEST_NAME="ubuntu14-puppet6"
-    - name: "Ubuntu 16 - Puppet 4"
-      rvm: 2.4
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="ubuntu16-puppet4"
     - name: "Ubuntu 16 - Puppet 5"
       rvm: 2.4
       gemfile: build/kitchen/Gemfile

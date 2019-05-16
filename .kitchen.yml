@@ -39,14 +39,6 @@ provisioner:
     - 2
 
 platforms:
-  # CentOS6 with sysV init - Puppet 4
-  - name: centos6-puppet4
-    driver:
-      platform: centos
-      dockerfile: build/centos6-puppet4/Dockerfile.kitchen
-      run_command: /usr/sbin/sshd -D
-    provisioner:
-      puppetfile_path: build/centos6-puppet4/Puppetfile
 
   # CentOS6 with sysV init - Puppet 5
   - name: centos6-puppet5
@@ -65,17 +57,6 @@ platforms:
       run_command: /usr/sbin/sshd -D
     provisioner:
       puppetfile_path: build/centos6-puppet6/Puppetfile
-
-  # CentOS7 with Systemd - Puppet 4
-  - name: centos7-puppet4
-    driver:
-      platform: centos
-      dockerfile: build/centos7-puppet4/Dockerfile.kitchen
-      run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    provisioner:
-      puppetfile_path: build/centos7-puppet4/Puppetfile
 
   # CentOS7 with Systemd - Puppet 5
   - name: centos7-puppet5
@@ -98,23 +79,6 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/centos7-puppet6/Puppetfile
-
-  # Ubuntu Trusty with Upstart - Puppet 4
-  - name: ubuntu14-puppet4
-    driver:
-      platform: ubuntu
-      dockerfile: build/ubuntu14-puppet4/Dockerfile.kitchen
-      disable_upstart: false
-      run_command: /sbin/init
-    provisioner:
-      puppetfile_path: build/ubuntu14-puppet4/Puppetfile
-      # Due to issues with running apt-get during 'docker build' on Ubuntu 14,
-      # we need to install Puppet once the container has started.
-      # Good news, kitchen-puppet supports this with the following commands:
-      require_puppet_omnibus: true
-      require_puppet_collections: true
-      require_puppet_repo: false
-      puppet_omnibus_url: https://raw.githubusercontent.com/petems/puppet-install-shell/master/install_puppet_agent.sh
 
   # Ubuntu Trusty with Upstart - Puppet 5
   - name: ubuntu14-puppet5
@@ -149,17 +113,6 @@ platforms:
       require_puppet_collections: true
       require_puppet_repo: false
       puppet_omnibus_url: https://raw.githubusercontent.com/nmaludy/puppet-install-shell/master/install_puppet_6_agent.sh
-
-  # Ubuntu Xenial with Systemd - Puppet 4
-  - name: ubuntu16-puppet4
-    driver:
-      platform: ubuntu
-      dockerfile: build/ubuntu16-puppet4/Dockerfile.kitchen
-      run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    provisioner:
-      puppetfile_path: build/ubuntu16-puppet4/Puppetfile
 
   # Ubuntu Xenial with Systemd - Puppet 5
   - name: ubuntu16-puppet5
