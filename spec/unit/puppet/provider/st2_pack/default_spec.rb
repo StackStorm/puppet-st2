@@ -87,10 +87,10 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
                                                   '-p', 'st2_password')
                                             .and_return('token')
       expect(provider).to receive(:exec_st2).with('pack', 'list',
-                                                  '-a', 'name',
+                                                  '-a', 'ref',
                                                   '-j',
                                                   '-t', 'token')
-                                            .and_return('[{"name": "pack1"}, {"name": "pack2"}]')
+                                            .and_return('[{"ref": "pack1"}, {"ref": "pack2"}]')
       expect(provider.list_installed_packs).to eq ['pack1', 'pack2']
     end
   end
@@ -105,7 +105,7 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
     end
 
     it 'extracts pack names from a JSON string' do
-      expect(provider.parse_output_json('[{"name": "core"}, {"name": "examples"}]')).to eq ['core', 'examples']
+      expect(provider.parse_output_json('[{"ref": "core"}, {"ref": "examples"}]')).to eq ['core', 'examples']
     end
   end
 

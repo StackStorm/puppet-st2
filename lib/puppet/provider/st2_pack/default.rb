@@ -30,7 +30,7 @@ Puppet::Type.type(:st2_pack).provide(:default) do
 
   def list_installed_packs
     token = st2_authenticate
-    output = exec_st2('pack', 'list', '-a', 'name', '-j', '-t', token)
+    output = exec_st2('pack', 'list', '-a', 'ref', '-j', '-t', token)
     parse_output_json(output)
   end
 
@@ -39,7 +39,7 @@ Puppet::Type.type(:st2_pack).provide(:default) do
     result = []
     if raw && !raw.empty?
       pack_list = JSON.parse(raw)
-      result = pack_list.map { |pack| pack['name'] }
+      result = pack_list.map { |pack| pack['ref'] }
       debug("Installed packs: #{result}")
     end
     result

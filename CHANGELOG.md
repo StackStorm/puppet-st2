@@ -23,6 +23,10 @@
   (Enhancement)
   Contributed by @nmaludy
 
+- Already installed packs are now recognized by their configured "ref" variable instead of "name"
+  (Enhancement)
+  Contributed by @ruriky
+
 ## 1.4.0 (Feb 13, 2019)
 
 - Added new tasks to communicate with the StackStorm CLI. The naming standard and parameters
