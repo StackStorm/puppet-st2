@@ -40,9 +40,11 @@ provider   = provider.to_sym
 # The following boxes will work for both :virtualbox and :libvirt providers
 #  - centos/6
 #  - centos/7
-#  - generic/1404
-#  - generic/1604
+#  - generic/ubuntu1404
+#  - generic/ubuntu1604
+#  - generic/ubuntu1804
 box        = ENV['BOX'] ? ENV['BOX'] : 'centos/7'
+#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1604'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
