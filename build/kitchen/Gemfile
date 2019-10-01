@@ -1,7 +1,8 @@
 source 'https://rubygems.org'
 
 # Gems for kitchen ci
-gem 'inspec'
+# hard code to 4.16.0 because of missing resource declaration bugs in 4.17.x
+gem 'inspec', '~> 4.16.0'
 gem 'kitchen-docker'
 gem 'kitchen-inspec'
 # install kitchen-puppet from git so we get use the resolve_with_r10k feature
