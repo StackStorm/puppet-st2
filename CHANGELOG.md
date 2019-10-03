@@ -2,6 +2,16 @@
 
 ## Development
 
+
+## 1.5.0 (Oct 2, 2019)
+
+- Fixed a bug in the `mistral` Postrgres connection string where passwords weren't
+  being URL encoded / escaped. This could lead to potentially bad URL parsing
+  when passwords contained certain special characters. To fix this, the 
+  password in the mistral `connection` parameter is now URL encoded / escaped.
+  (Bugfix)
+  Contributed by @nmaludy
+
 - Fixed a bug in the `st2_pack` resource so that when authentication fails, the error
   message about why it failed is shown to the user.
   (Bugfix)

@@ -72,12 +72,15 @@ class st2::profile::mistral(
   ### End Mistral Packages ###
 
   ### Mistral Config ###
+  # URL encode the password, in case it contains special characters that
+  # can mess up the URL in the config.
+  $_db_password = st2::urlencode($db_password)
   ini_setting { 'database_connection':
     ensure  => present,
     path    => $mistral_config,
     section => 'database',
     setting => 'connection',
-    value   => "postgresql://${db_username}:${db_password}@${db_host}/${db_name}",
+    value   => "postgresql://${db_username}:${_db_password}@${db_host}/${db_name}",
     tag     => 'mistral',
   }
 
