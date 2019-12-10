@@ -69,7 +69,7 @@ Base class for st2 module. Used as top-level to set parameters via Hiera, this c
 ##### Basic Usage
 
 ```puppet
-include ::st2
+include st2
 ```
 
 ##### Variables can be set in Hiera and take advantage of automatic data bindings:
@@ -776,7 +776,7 @@ The auth backend implementations are in the manifests/auth/ directory.
 
 #### Examples
 
-##### Basic usage (via ::st2)
+##### Basic usage (via st2)
 
 ```puppet
 class { '::st2':
@@ -798,7 +798,7 @@ st2::auth_backend_config"
 ##### Direct usage (default Flat File auth backend)
 
 ```puppet
-include ::st2::auth
+include st2::auth
 ```
 
 ##### Direct usage to configure a specific auth backend
@@ -955,7 +955,7 @@ Auth class to configure and setup Flat File (htpasswd) Authentication
 
 #### Examples
 
-##### Instantiate via ::st2
+##### Instantiate via st2
 
 ```puppet
 class { '::st2':
@@ -1017,7 +1017,7 @@ For information on parameters see the
 
 #### Examples
 
-##### Instantiate via ::st2
+##### Instantiate via st2
 
 ```puppet
 class { '::st2':
@@ -1073,7 +1073,7 @@ For information on parameters see the
 
 #### Examples
 
-##### Instantiate via ::st2 (Active Directory)
+##### Instantiate via st2 (Active Directory)
 
 ```puppet
 class { '::st2':
@@ -1206,7 +1206,7 @@ For information on parameters see the
 
 #### Examples
 
-##### Instantiate via ::st2
+##### Instantiate via st2
 
 ```puppet
 class { '::st2':
@@ -1300,7 +1300,7 @@ You will need to auth a non-root user on the Linux host.
 
 #### Examples
 
-##### Instantiate via ::st2
+##### Instantiate via st2
 
 ```puppet
 class { '::st2':
@@ -1357,7 +1357,7 @@ places.
 ##### Basic usage
 
 ```puppet
-include ::st2::logging::rsyslog
+include st2::logging::rsyslog
 ```
 
 ### st2::notices
@@ -1425,7 +1425,7 @@ class { '::st2::params':
   admin_username => 'myuser',
   admin_password => 'SuperSecret!',
 }
-include ::st2::profile::fullinstall
+include st2::profile::fullinstall
 ```
 
 #### Parameters
@@ -1445,7 +1445,7 @@ Default value: 'st2packs'
 Data type: `Any`
 
 Hostname of the StackStorm box. This is used as the default to drive a lot of
-other parameters in the ::st2 class such as auth URL, MongoDB host, RabbitMQ host, etc.
+other parameters in the st2 class such as auth URL, MongoDB host, RabbitMQ host, etc.
 
 Default value: '127.0.0.1'
 
@@ -1762,18 +1762,18 @@ Components:
 ##### Basic Usage
 
 ```puppet
-include ::st2::profile::fullinstall
+include st2::profile::fullinstall
 ```
 
 ##### Customizing parameters
 
 ```puppet
-# Customizations are done via the main ::st2 class
+# Customizations are done via the main st2 class
 class { '::st2':
   # ... assign custom parameters
 }
 
-include ::st2::profile::fullinstall
+include st2::profile::fullinstall
 ```
 
 ### st2::profile::mistral
@@ -1785,7 +1785,7 @@ This class installs OpenStack Mistral, a workflow engine that integrates with St
 ##### Basic Usage
 
 ```puppet
-include ::st2::profile::mistral
+include st2::profile::mistral
 ```
 
 ##### External database
@@ -1901,10 +1901,10 @@ StackStorm compatable installation of MongoDB and dependencies.
 ##### Basic Usage
 
 ```puppet
-include ::st2::profile::mongodb
+include st2::profile::mongodb
 ```
 
-##### Customize (done via ::st2)
+##### Customize (done via st2)
 
 ```puppet
 class { '::st2':
@@ -1913,7 +1913,7 @@ class { '::st2':
   db_password => 'xyz123',
   db_port     => 12345,
 }
-include ::st2::profile::mongodb
+include st2::profile::mongodb
 ```
 
 #### Parameters
@@ -2059,7 +2059,7 @@ st2 compatable installation of PostgreSQL and dependencies for use with StackSto
 ##### Basic usage
 
 ```puppet
-include ::st2::profile::postgresql
+include st2::profile::postgresql
 ```
 
 ##### Customizing parameters
@@ -2106,7 +2106,7 @@ StackStorm compatable installation of RabbitMQ and dependencies.
 include st2::profile::rabbitmq
 ```
 
-##### Authentication enabled (configured vi ::st2)
+##### Authentication enabled (configured vi st2)
 
 ```puppet
 class { '::st2':
@@ -2169,7 +2169,7 @@ Manages the installation of st2 required repos for installing the StackStorm pac
 ##### Basic usage
 
 ```puppet
-include ::st2::profile::repos
+include st2::profile::repos
 ```
 
 ##### Installing from unstable
@@ -2429,7 +2429,7 @@ Profile to install, configure and manage StackStorm web UI (st2web).
 ##### Basic Usage
 
 ```puppet
-include ::st2::profile::web'
+include st2::profile::web'
 ```
 
 #### Parameters
@@ -2486,7 +2486,7 @@ https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample#L251-L259
 ##### Basic usage
 
 ```puppet
-include ::st2::scheduler
+include st2::scheduler
 ```
 
 ##### Customizing parameters
@@ -2535,7 +2535,7 @@ Generates and manages crypto keys for use with the StackStorm datastore
 ##### Basic Usage
 
 ```puppet
-include ::st2::server::datastore_keys
+include st2::server::datastore_keys
 ```
 
 ##### Custom key path
@@ -2586,7 +2586,7 @@ Installs the default admin user for st2 (stanley).
 ##### Basic Usage
 
 ```puppet
-include ::st2::stanley
+include st2::stanley
 ```
 
 ##### Custom SSH keys
@@ -2666,7 +2666,7 @@ https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample#L337-L343
 ##### Basic usage
 
 ```puppet
-include ::st2::timersengine
+include st2::timersengine
 ```
 
 ##### Customizing parameters
@@ -2713,7 +2713,7 @@ https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample
 ##### Basic usage
 
 ```puppet
-include ::st2::workflowengine
+include st2::workflowengine
 ```
 
 ## Defined types

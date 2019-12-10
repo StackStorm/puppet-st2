@@ -26,7 +26,8 @@ Gemfile:
   required:
     ':development':
       - gem: 'puppet-lint-absolute_classname-check'
-        version: '>= 0.2.4'
+        # pin to 2.0.0 to comply with new standard which removes the leading ::
+        version: '>= 2.0.0'
       - gem: 'puppet-lint-absolute_template_path'
         version: '>= 1.0.1'
       - gem: 'puppet-lint-alias-check'

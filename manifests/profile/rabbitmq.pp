@@ -14,7 +14,7 @@
 # @example Basic Usage
 #   include st2::profile::rabbitmq
 #
-# @example Authentication enabled (configured vi ::st2)
+# @example Authentication enabled (configured vi st2)
 #   class { '::st2':
 #     rabbitmq_username => 'rabbitst2',
 #     rabbitmq_password => 'secret123',

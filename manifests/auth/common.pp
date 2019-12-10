@@ -25,7 +25,7 @@ class st2::auth::common (
   $use_ssl   = $::st2::use_ssl,
   $ssl_cert  = $::st2::ssl_cert,
   $ssl_key   = $::st2::ssl_key,
-) inherits ::st2 {
+) inherits st2 {
 
   $_debug = $debug ? {
     true    => 'True',

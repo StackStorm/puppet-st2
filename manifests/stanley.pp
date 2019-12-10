@@ -16,7 +16,7 @@
 #    Server where connection requests originate (usually st2 server)
 #
 # @example Basic Usage
-#  include ::st2::stanley
+#  include st2::stanley
 #
 # @example Custom SSH keys
 #  class { '::st2::stanley':

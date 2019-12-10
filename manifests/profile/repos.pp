@@ -1,7 +1,7 @@
 # @summary Manages the installation of st2 required repos for installing the StackStorm packages.
 #
 # @example Basic usage
-#   include ::st2::profile::repos
+#   include st2::profile::repos
 #
 # @example Installing from unstable
 #   class { '::st2::profile::repos':
@@ -17,10 +17,10 @@ class st2::profile::repos(
   $repository   = $::st2::repository,
   $package_type = $::st2::params::package_type,
 ) inherits st2 {
-  require ::packagecloud
+  require packagecloud
 
   if $::osfamily == 'RedHat' {
-    require ::epel
+    require epel
   }
   $_packagecloud_repo = "StackStorm/${repository}"
   packagecloud::repo { $_packagecloud_repo:

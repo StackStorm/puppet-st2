@@ -22,7 +22,7 @@
 #    RabbitMQ virtual host for Mistral
 #
 # @example Basic Usage
-#  include ::st2::profile::mistral
+#  include st2::profile::mistral
 #
 # @example External database
 #  class { '::st2::profile::mistral':
@@ -50,7 +50,7 @@ class st2::profile::mistral(
   $rabbitmq_port     = $::st2::rabbitmq_port,
   $rabbitmq_vhost    = $::st2::rabbitmq_vhost,
 ) inherits st2 {
-  include ::st2::params
+  include st2::params
 
   ### Mistral Variables ###
   $mistral_root = '/opt/stackstorm/mistral'

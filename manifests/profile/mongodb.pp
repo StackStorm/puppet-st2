@@ -18,16 +18,16 @@
 #    Boolean determining if auth should be enabled for MongoDB.
 #
 # @example Basic Usage
-#   include ::st2::profile::mongodb
+#   include st2::profile::mongodb
 #
-# @example Customize (done via ::st2)
+# @example Customize (done via st2)
 #   class { '::st2':
 #     db_name     => 'stackstormdb',
 #     db_username => 'abc',
 #     db_password => 'xyz123',
 #     db_port     => 12345,
 #   }
-#   include ::st2::profile::mongodb
+#   include st2::profile::mongodb
 #
 class st2::profile::mongodb (
   $db_name     = $::st2::db_name,
@@ -95,7 +95,7 @@ class st2::profile::mongodb (
 
         # unfortinately there is no way to synchronously force a service restart
         # in Puppet, so we have to revert to exec... sorry
-        include ::mongodb::params
+        include mongodb::params
         if (($::osfamily == 'Debian' and $::operatingsystemmajrelease == '14.04') or
             ($::osfamily == 'RedHat' and $::operatingsystemmajrelease == '6')) {
           $_mongodb_stop_cmd = "service ${::mongodb::params::service_name} stop"

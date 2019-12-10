@@ -10,15 +10,15 @@
 #  * Mistral
 #
 # @example Basic Usage
-#   include ::st2::profile::fullinstall
+#   include st2::profile::fullinstall
 #
 # @example Customizing parameters
-#   # Customizations are done via the main ::st2 class
+#   # Customizations are done via the main st2 class
 #   class { '::st2':
 #     # ... assign custom parameters
 #   }
 #
-#   include ::st2::profile::fullinstall
+#   include st2::profile::fullinstall
 #
 class st2::profile::fullinstall inherits st2 {
 
@@ -46,9 +46,9 @@ class st2::profile::fullinstall inherits st2 {
   -> class { '::st2::profile::chatops': }
   -> Anchor['st2::end']
 
-  include ::st2::auth
-  include ::st2::packs
-  include ::st2::kvs
+  include st2::auth
+  include st2::packs
+  include st2::kvs
 
   # If user has not defined a pack "st2", install it from the Exchange.
   if ! defined(St2::Pack['st2']) {

@@ -34,7 +34,7 @@ define st2::user(
   $groups            = undef,
   $ssh_dir           = "/home/${name}/.ssh",
 ) {
-  include ::st2::params
+  include st2::params
 
   $_packs_group_name = $st2::params::packs_group_name
 

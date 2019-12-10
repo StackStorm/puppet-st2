@@ -18,7 +18,7 @@
 # @param db_password
 #    Password for MongoDB login (default: st2auth)
 #
-# @example Instantiate via ::st2
+# @example Instantiate via st2
 #  class { '::st2':
 #    auth_backend        => 'mongodb',
 #    auth_backend_config => {
@@ -43,8 +43,8 @@ class st2::auth::mongodb (
   $db_auth     = $::st2::mongodb_auth,
   $db_username = $::st2::db_username,
   $db_password = $::st2::db_password,
-) inherits ::st2 {
-  include ::st2::auth::common
+) inherits st2 {
+  include st2::auth::common
 
   if $db_auth {
     $_kwargs = "{\"db_host\": \"${db_host}\", \"db_port\": \"${db_port}\",\

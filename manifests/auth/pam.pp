@@ -8,7 +8,7 @@
 # @param conf_file
 #   The path where st2 config is stored
 #
-# @example Instantiate via ::st2
+# @example Instantiate via st2
 #  class { '::st2':
 #    backend => 'pam',
 #  }
@@ -19,8 +19,8 @@
 #
 class st2::auth::pam(
   $conf_file = $::st2::conf_file,
-) inherits ::st2 {
-  include ::st2::auth::common
+) inherits st2 {
+  include st2::auth::common
 
   # config
   ini_setting { 'auth_backend':

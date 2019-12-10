@@ -8,10 +8,10 @@
 # @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample
 #
 # @example Basic usage
-#   include ::st2::workflowengine
+#   include st2::workflowengine
 #
 class st2::workflowengine {
-  include ::st2
+  include st2
 
   # st2workflowengine was introduced in 2.8.0
   if st2::version_ge('2.8.0') {

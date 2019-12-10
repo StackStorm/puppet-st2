@@ -15,7 +15,7 @@ define st2::kv (
   $ensure = present,
   $key    = $name,
 ) {
-  include ::st2
+  include st2
 
   exec { "set-st2-key-${key}":
     command   => "st2 key set ${key} ${value}",

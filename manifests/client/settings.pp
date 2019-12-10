@@ -32,7 +32,7 @@
 #    Enable silencing SSL warnings for self-signed certs
 #
 # @example Basic usage
-#   ::st2::client::settings { 'john':
+#   st2::client::settings { 'john':
 #     username => 'st2_john',
 #     password => 'xyz123',
 #   }

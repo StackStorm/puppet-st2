@@ -10,7 +10,7 @@
 # @param keystone_version
 #    Keystone API version (default: '2')
 #
-# @example Instantiate via ::st2
+# @example Instantiate via st2
 #  class { '::st2':
 #    auth_backend        => 'keystone',
 #    auth_backend_config => {
@@ -29,8 +29,8 @@ class st2::auth::keystone (
   $conf_file        = $::st2::conf_file,
   $keystone_url     = 'http://127.0.0.1:5000',
   $keystone_version = '2',
-) inherits ::st2 {
-  include ::st2::auth::common
+) inherits st2 {
+  include st2::auth::common
 
   # config
   ini_setting { 'auth_backend':

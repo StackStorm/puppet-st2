@@ -184,7 +184,7 @@
 #
 #
 # @example Basic Usage
-#   include ::st2
+#   include st2
 #
 # @example Variables can be set in Hiera and take advantage of automatic data bindings:
 #   st2::version: 2.10.1

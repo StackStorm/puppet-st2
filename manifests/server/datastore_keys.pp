@@ -8,7 +8,7 @@
 #    Path to the key file
 #
 # @example Basic Usage
-#   include ::st2::server::datastore_keys
+#   include st2::server::datastore_keys
 #
 # @example Custom key path
 #   class { '::st2::server::datastore_keys':

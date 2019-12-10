@@ -23,7 +23,7 @@ get you setup and going with minimal effort. Simply:
 
 ```
 puppet module install stackstorm-st2
-puppet apply -e "include ::st2::profile::fullinstall"
+puppet apply -e "include st2::profile::fullinstall"
 ```
 
 ## :warning: Deprecation Notice - Puppet 4
@@ -216,7 +216,7 @@ Configuration via Hiera:
   # Public URL used by ChatOps to offer links to execution details via the WebUI.
   st2::chatops_web_url: '"stackstorm.domain.tld"'
   
-  # install and configure hubot adapter (rocketchat, nodejs module installed by ::nodejs)
+  # install and configure hubot adapter (rocketchat, nodejs module installed by nodejs)
   st2::chatops_adapter:
     hubot-adapter:
       package: 'hubot-rocketchat'

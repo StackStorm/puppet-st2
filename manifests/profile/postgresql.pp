@@ -1,7 +1,7 @@
 # @summary st2 compatable installation of PostgreSQL and dependencies for use with StackStorm and Mistral.
 #
 # @example Basic usage
-#   include ::st2::profile::postgresql
+#   include st2::profile::postgresql
 #
 # @example Customizing parameters
 #   class { '::st2::profile::postgresql':

@@ -29,7 +29,7 @@
 # @param ssl_key
 #    Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
 #
-# @example Basic usage (via ::st2)
+# @example Basic usage (via st2)
 #  class { '::st2':
 #    auth_backend        => 'flat_file',
 #    auth_backend_config => {
@@ -43,7 +43,7 @@
 #    htpasswd_file: "/etc/something/htpasswd"
 #
 # @example Direct usage (default Flat File auth backend)
-#  include ::st2::auth
+#  include st2::auth
 #
 # @example Direct usage to configure a specific auth backend
 #  class { 'st2::auth':
@@ -64,7 +64,7 @@ class st2::auth (
   $use_ssl        = $::st2::use_ssl,
   $ssl_cert       = $::st2::ssl_cert,
   $ssl_key        = $::st2::ssl_key,
-) inherits ::st2 {
+) inherits st2 {
 
   if !defined(Class['::st2::auth::common']) {
     class { '::st2::auth::common':

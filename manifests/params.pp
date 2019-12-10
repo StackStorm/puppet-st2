@@ -4,7 +4,7 @@
 #   The name of the group created to hold the st2 admin user
 # @param hostname
 #   Hostname of the StackStorm box. This is used as the default to drive a lot of
-#   other parameters in the ::st2 class such as auth URL, MongoDB host, RabbitMQ host, etc.
+#   other parameters in the st2 class such as auth URL, MongoDB host, RabbitMQ host, etc.
 # @param admin_username
 #   Username of the StackStorm admin user. Best practice is to change this to a unique username.
 # @param admin_password
@@ -15,7 +15,7 @@
 #     admin_username => 'myuser',
 #     admin_password => 'SuperSecret!',
 #   }
-#   include ::st2::profile::fullinstall
+#   include st2::profile::fullinstall
 #
 class st2::params(
   $packs_group_name = 'st2packs',

@@ -66,8 +66,8 @@ class st2::profile::server (
   $rabbitmq_vhost         = $::st2::rabbitmq_vhost,
   $index_url              = $::st2::index_url,
 ) inherits st2 {
-  include ::st2::notices
-  include ::st2::params
+  include st2::notices
+  include st2::params
 
   $_enable_auth = $auth ? {
     true    => 'True',
@@ -339,9 +339,9 @@ class st2::profile::server (
     tag    => 'st2::service',
   }
 
-  contain ::st2::scheduler
-  contain ::st2::timersengine
-  contain ::st2::workflowengine
+  contain st2::scheduler
+  contain st2::timersengine
+  contain st2::workflowengine
 
   ########################################
   ## st2 user (stanley)

@@ -116,7 +116,7 @@ class st2::profile::chatops (
 
   ########################################
   ## Additional nodejs packages
-  include ::st2::profile::nodejs
+  include st2::profile::nodejs
 
   $npm_package_defaults = {
     ensure  => present,
