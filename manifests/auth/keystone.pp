@@ -11,7 +11,7 @@
 #    Keystone API version (default: '2')
 #
 # @example Instantiate via st2
-#  class { '::st2':
+#  class { 'st2':
 #    auth_backend        => 'keystone',
 #    auth_backend_config => {
 #      keystone_url     => 'http://keystone.domain.tld:5000',

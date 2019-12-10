@@ -40,7 +40,7 @@
 #    The maximum number to refer Referrals recursively (default: 0)
 #
 # @example Instantiate via st2 (Active Directory)
-#  class { '::st2':
+#  class { 'st2':
 #    auth_backend        => 'ldap',
 #    auth_backend_config => {
 #      ldap_uri      => 'ldaps://ldap.domain.tld',

@@ -10,7 +10,7 @@
 #   Path to htpasswd file (default: /etc/st2/htpasswd)
 #
 # @example Instantiate via st2
-#  class { '::st2':
+#  class { 'st2':
 #    auth_backend        => 'flat_file',
 #    auth_backend_config => {
 #      htpasswd_file => '/etc/something/htpasswd',

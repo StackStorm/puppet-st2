@@ -82,12 +82,12 @@ st2::version: 2.10.1
 
 ```puppet
 # best practice is to change default username/password
-class { '::st2::params':
+class { 'st2::params':
   admin_username => 'st2admin',
   admin_password => 'SuperSecret!',
 }
 
-class { '::st2':
+class { 'st2':
   version => '2.10.1',
 }
 ```
@@ -95,7 +95,7 @@ class { '::st2':
 ##### Different passwords for each database (MongoDB, RabbitMQ, Postgres)
 
 ```puppet
-class { '::st2':
+class { 'st2':
   # StackStorm user
   cli_username        => 'st2admin',
   cli_password        => 'SuperSecret!',
@@ -779,7 +779,7 @@ The auth backend implementations are in the manifests/auth/ directory.
 ##### Basic usage (via st2)
 
 ```puppet
-class { '::st2':
+class { 'st2':
   auth_backend        => 'flat_file',
   auth_backend_config => {
     htpasswd_file => '/etc/something/htpasswd',
@@ -958,7 +958,7 @@ Auth class to configure and setup Flat File (htpasswd) Authentication
 ##### Instantiate via st2
 
 ```puppet
-class { '::st2':
+class { 'st2':
   auth_backend        => 'flat_file',
   auth_backend_config => {
     htpasswd_file => '/etc/something/htpasswd',
@@ -1020,7 +1020,7 @@ For information on parameters see the
 ##### Instantiate via st2
 
 ```puppet
-class { '::st2':
+class { 'st2':
   auth_backend        => 'keystone',
   auth_backend_config => {
     keystone_url     => 'http://keystone.domain.tld:5000',
@@ -1076,7 +1076,7 @@ For information on parameters see the
 ##### Instantiate via st2 (Active Directory)
 
 ```puppet
-class { '::st2':
+class { 'st2':
   auth_backend        => 'ldap',
   auth_backend_config => {
     ldap_uri      => 'ldaps://ldap.domain.tld',
@@ -1209,7 +1209,7 @@ For information on parameters see the
 ##### Instantiate via st2
 
 ```puppet
-class { '::st2':
+class { 'st2':
   auth_backend        => 'mongodb',
   auth_backend_config => {
     db_host => 'mongodb.stackstorm.net',
@@ -1303,7 +1303,7 @@ You will need to auth a non-root user on the Linux host.
 ##### Instantiate via st2
 
 ```puppet
-class { '::st2':
+class { 'st2':
   backend => 'pam',
 }
 ```
@@ -1379,7 +1379,7 @@ and st2::pack::config for usage
 ##### Basic Usage
 
 ```puppet
-class { '::st2::packs':
+class { 'st2::packs':
   packs => {
     puppet => {},
     influxdb => {
@@ -1421,7 +1421,7 @@ Main parameters to manage the st2 module
 ##### Best Practice
 
 ```puppet
-class { '::st2::params':
+class { 'st2::params':
   admin_username => 'myuser',
   admin_password => 'SuperSecret!',
 }
@@ -1477,7 +1477,7 @@ it through the main +::st2+ class
 ##### Basic Usage
 
 ```puppet
-class { '::st2':
+class { 'st2':
   chatops_hubot_name => '"@RosieRobot"',
   chatops_api_key    => '"xxxxyyyyy123abc"',
   chatops_adapter    => {
@@ -1769,7 +1769,7 @@ include st2::profile::fullinstall
 
 ```puppet
 # Customizations are done via the main st2 class
-class { '::st2':
+class { 'st2':
   # ... assign custom parameters
 }
 
@@ -1791,7 +1791,7 @@ include st2::profile::mistral
 ##### External database
 
 ```puppet
-class { '::st2::profile::mistral':
+class { 'st2::profile::mistral':
   db_host     => 'postgres.domain.tld',
   db_username => 'mistral',
   db_password => 'xyz123',
@@ -1801,7 +1801,7 @@ class { '::st2::profile::mistral':
 ##### External RabbitMQ
 
 ```puppet
-class { '::st2::profile::mistral':
+class { 'st2::profile::mistral':
   rabbitmq_hostname => 'rabbitmq.domain.tld',
   rabbitmq_username => 'mistral',
   rabbitmq_password => 'xyz123',
@@ -1907,7 +1907,7 @@ include st2::profile::mongodb
 ##### Customize (done via st2)
 
 ```puppet
-class { '::st2':
+class { 'st2':
   db_name     => 'stackstormdb',
   db_username => 'abc',
   db_password => 'xyz123',
@@ -2065,7 +2065,7 @@ include st2::profile::postgresql
 ##### Customizing parameters
 
 ```puppet
-class { '::st2::profile::postgresql':
+class { 'st2::profile::postgresql':
   db_bind_ips => '0.0.0.0',
 }
 ```
@@ -2109,7 +2109,7 @@ include st2::profile::rabbitmq
 ##### Authentication enabled (configured vi st2)
 
 ```puppet
-class { '::st2':
+class { 'st2':
   rabbitmq_username => 'rabbitst2',
   rabbitmq_password => 'secret123',
 }
@@ -2175,7 +2175,7 @@ include st2::profile::repos
 ##### Installing from unstable
 
 ```puppet
-class { '::st2::profile::repos':
+class { 'st2::profile::repos':
   repository => 'unstable',
 }
 ```
@@ -2492,7 +2492,7 @@ include st2::scheduler
 ##### Customizing parameters
 
 ```puppet
-class { '::st2::scheduler':
+class { 'st2::scheduler':
   sleep_interval => 60,
   gc_interval    => 120,
 }
@@ -2541,7 +2541,7 @@ include st2::server::datastore_keys
 ##### Custom key path
 
 ```puppet
-class { '::st2::server::datastore_keys':
+class { 'st2::server::datastore_keys':
   keys_dir => '/path/to/custom/keys',
   key_path => '/path/to/custom/keys/datastore_key.json.',
 }
@@ -2592,7 +2592,7 @@ include st2::stanley
 ##### Custom SSH keys
 
 ```puppet
-class { '::st2::stanley':
+class { 'st2::stanley':
   ssh_key_type => 'ssh-rsa',
   ssh_public_key => 'AAAAAWESOMEKEY==',
   ssh_private_key => '----- BEGIN RSA PRIVATE KEY -----\nDEADBEEF\n----- END RSA PRIVATE KEY -----',
@@ -2672,7 +2672,7 @@ include st2::timersengine
 ##### Customizing parameters
 
 ```puppet
-class { '::st2::timersengine':
+class { 'st2::timersengine':
   enabled  => true,
   timezone => 'America/Los_Angeles',
 }

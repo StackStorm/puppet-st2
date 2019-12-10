@@ -9,7 +9,7 @@
 #   The path where st2 config is stored
 #
 # @example Instantiate via st2
-#  class { '::st2':
+#  class { 'st2':
 #    backend => 'pam',
 #  }
 #

@@ -11,7 +11,7 @@
 #   Password of the StackStorm admin user. Best practice is to change this to a unique password.
 #
 # @example Best Practice
-#   class { '::st2::params':
+#   class { 'st2::params':
 #     admin_username => 'myuser',
 #     admin_password => 'SuperSecret!',
 #   }

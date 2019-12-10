@@ -39,8 +39,8 @@ define st2::user(
   $_packs_group_name = $st2::params::packs_group_name
 
   if $create_sudo_entry {
-    if !defined(Class['::sudo']) and !defined(Class['sudo']) {
-      class { '::sudo':
+    if !defined(Class['sudo']) and !defined(Class['sudo']) {
+      class { 'sudo':
         # do not purge files in /etc/sudoers.d/*
         purge               => false,
         # the 'enable' option (for some reason) purges all /etc/sudoers.d/* files

@@ -21,7 +21,7 @@
 #   include st2::profile::mongodb
 #
 # @example Customize (done via st2)
-#   class { '::st2':
+#   class { 'st2':
 #     db_name     => 'stackstormdb',
 #     db_username => 'abc',
 #     db_password => 'xyz123',
@@ -56,9 +56,9 @@ class st2::profile::mongodb (
     default => $version,
   }
 
-  if !defined(Class['::mongodb::server']) {
+  if !defined(Class['mongodb::server']) {
 
-    class { '::mongodb::globals':
+    class { 'mongodb::globals':
       manage_package      => true,
       manage_package_repo => $manage_repo,
       version             => $_mongodb_version,
@@ -66,10 +66,10 @@ class st2::profile::mongodb (
       manage_pidfile      => false, # mongo will not start if this is true
     }
 
-    class { '::mongodb::client': }
+    class { 'mongodb::client': }
 
     if $auth == true {
-      class { '::mongodb::server':
+      class { 'mongodb::server':
         port           => $db_port,
         auth           => true,
         create_admin   => true,
@@ -179,7 +179,7 @@ class st2::profile::mongodb (
       }
     }
     else {
-      class { '::mongodb::server':
+      class { 'mongodb::server':
         port => $db_port,
       }
     }
@@ -241,7 +241,7 @@ class st2::profile::mongodb (
       user     => $db_username,
       password => $db_password,
       roles    => $::st2::params::mongodb_st2_roles,
-      require  => Class['::mongodb::server'],
+      require  => Class['mongodb::server'],
     }
   }
 

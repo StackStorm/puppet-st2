@@ -14,7 +14,7 @@
 #
 # @example Customizing parameters
 #   # Customizations are done via the main st2 class
-#   class { '::st2':
+#   class { 'st2':
 #     # ... assign custom parameters
 #   }
 #
@@ -30,20 +30,20 @@ class st2::profile::fullinstall inherits st2 {
 
   Anchor['st2::begin']
   -> Anchor['st2::bootstrap']
-  -> class { '::st2::profile::facter': }
-  -> class { '::st2::profile::repos': }
-  -> class { '::st2::profile::selinux': }
+  -> class { 'st2::profile::facter': }
+  -> class { 'st2::profile::repos': }
+  -> class { 'st2::profile::selinux': }
   -> Anchor['st2::pre_reqs']
-  -> class { '::st2::profile::nodejs': }
-  -> class { '::st2::profile::postgresql': }
-  -> class { '::st2::profile::rabbitmq': }
-  -> class { '::st2::profile::mongodb': }
+  -> class { 'st2::profile::nodejs': }
+  -> class { 'st2::profile::postgresql': }
+  -> class { 'st2::profile::rabbitmq': }
+  -> class { 'st2::profile::mongodb': }
   -> Anchor['st2::main']
-  -> class { '::st2::profile::mistral': }
-  -> class { '::st2::profile::client': }
-  -> class { '::st2::profile::server': }
-  -> class { '::st2::profile::web': }
-  -> class { '::st2::profile::chatops': }
+  -> class { 'st2::profile::mistral': }
+  -> class { 'st2::profile::client': }
+  -> class { 'st2::profile::server': }
+  -> class { 'st2::profile::web': }
+  -> class { 'st2::profile::chatops': }
   -> Anchor['st2::end']
 
   include st2::auth

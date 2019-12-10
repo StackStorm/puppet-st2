@@ -11,7 +11,7 @@
 #   include st2::timersengine
 #
 # @example Customizing parameters
-#   class { '::st2::timersengine':
+#   class { 'st2::timersengine':
 #     enabled  => true,
 #     timezone => 'America/Los_Angeles',
 #   }

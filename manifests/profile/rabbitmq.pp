@@ -15,7 +15,7 @@
 #   include st2::profile::rabbitmq
 #
 # @example Authentication enabled (configured vi st2)
-#   class { '::st2':
+#   class { 'st2':
 #     rabbitmq_username => 'rabbitst2',
 #     rabbitmq_password => 'secret123',
 #   }
@@ -31,7 +31,7 @@ class st2::profile::rabbitmq (
 
   # In new versions of the RabbitMQ module we need to explicitly turn off
   # the ranch TCP settings so that Kombu can connect via AMQP
-  class { '::rabbitmq' :
+  class { 'rabbitmq' :
     config_ranch          => false,
     delete_guest_user     => true,
     port                  => $port,
@@ -39,7 +39,7 @@ class st2::profile::rabbitmq (
       'RABBITMQ_NODE_IP_ADDRESS' => $::st2::rabbitmq_bind_ip,
     },
   }
-  contain '::rabbitmq'
+  contain 'rabbitmq'
 
   rabbitmq_user { $username:
     admin    => true,
@@ -58,11 +58,11 @@ class st2::profile::rabbitmq (
 
   # RHEL needs EPEL installed prior to rabbitmq
   if $::osfamily == 'RedHat' {
-    Class['::epel']
-    -> Class['::rabbitmq']
+    Class['epel']
+    -> Class['rabbitmq']
 
     Yumrepo['epel']
-    -> Class['::rabbitmq']
+    -> Class['rabbitmq']
 
     Yumrepo['epel']
     -> Package['rabbitmq-server']

@@ -19,7 +19,7 @@
 #    Password for MongoDB login (default: st2auth)
 #
 # @example Instantiate via st2
-#  class { '::st2':
+#  class { 'st2':
 #    auth_backend        => 'mongodb',
 #    auth_backend_config => {
 #      db_host => 'mongodb.stackstorm.net',

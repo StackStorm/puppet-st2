@@ -19,7 +19,7 @@
 #  include st2::stanley
 #
 # @example Custom SSH keys
-#  class { '::st2::stanley':
+#  class { 'st2::stanley':
 #    ssh_key_type => 'ssh-rsa',
 #    ssh_public_key => 'AAAAAWESOMEKEY==',
 #    ssh_private_key => '----- BEGIN RSA PRIVATE KEY -----\nDEADBEEF\n----- END RSA PRIVATE KEY -----',

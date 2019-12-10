@@ -20,8 +20,8 @@ class st2::profile::python {
       require => Package['python27'],
     }
   } else {
-    if !defined(Class['::python']) {
-      class { '::python':
+    if !defined(Class['python']) {
+      class { 'python':
         version    => 'system',
         pip        => present,
         dev        => true,

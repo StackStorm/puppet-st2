@@ -345,11 +345,11 @@ class st2::profile::server (
 
   ########################################
   ## st2 user (stanley)
-  class { '::st2::stanley': }
+  class { 'st2::stanley': }
 
   ########################################
   ## Datastore keys
-  class { '::st2::server::datastore_keys': }
+  class { 'st2::server::datastore_keys': }
 
   ########################################
   ## Dependencies
@@ -358,11 +358,11 @@ class st2::profile::server (
   ~> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>
-  -> Class['::st2::server::datastore_keys']
+  -> Class['st2::server::datastore_keys']
   -> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>
-  -> Class['::st2::stanley']
+  -> Class['st2::stanley']
   -> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>

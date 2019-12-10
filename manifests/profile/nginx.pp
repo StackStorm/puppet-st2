@@ -9,7 +9,7 @@
 class st2::profile::nginx (
   $manage_repo = $::st2::nginx_manage_repo
 ) inherits st2 {
-  class { '::nginx':
+  class { 'nginx':
     manage_repo => $manage_repo,
     confd_purge => false,
   }

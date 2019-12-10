@@ -146,7 +146,7 @@ By default the `flat_file` backend is used. To change this you can configure it
 when instantiating the `::st2` class in a manifest file:
 
 ``` ruby
-class { '::st2':
+class { 'st2':
   auth_backend => 'ldap',
 }
 ```
@@ -166,7 +166,7 @@ using the `auth_backend_config` option. This option can be changed when instanti
 the `::st2` class in a manifest file:
 
 ``` ruby
-class { '::st2':
+class { 'st2':
   auth_backend        => 'ldap',
   auth_backend_config => {
     ldap_uri      => 'ldaps://ldap.domain.tld',

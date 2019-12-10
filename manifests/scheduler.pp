@@ -11,7 +11,7 @@
 #   include st2::scheduler
 #
 # @example Customizing parameters
-#   class { '::st2::scheduler':
+#   class { 'st2::scheduler':
 #     sleep_interval => 60,
 #     gc_interval    => 120,
 #   }

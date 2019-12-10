@@ -25,14 +25,14 @@
 #  include st2::profile::mistral
 #
 # @example External database
-#  class { '::st2::profile::mistral':
+#  class { 'st2::profile::mistral':
 #    db_host     => 'postgres.domain.tld',
 #    db_username => 'mistral',
 #    db_password => 'xyz123',
 #  }
 #
 # @example External RabbitMQ
-#  class { '::st2::profile::mistral':
+#  class { 'st2::profile::mistral':
 #    rabbitmq_hostname => 'rabbitmq.domain.tld',
 #    rabbitmq_username => 'mistral',
 #    rabbitmq_password => 'xyz123',
@@ -107,7 +107,7 @@ class st2::profile::mistral(
     password_hash => postgresql_password($db_username, $db_password),
     createdb      => true,
     before        => Postgresql::Server::Database[$db_name],
-    require       => Class['::postgresql::server'],
+    require       => Class['postgresql::server'],
   }
 
   postgresql::server::database { $db_name:

@@ -4,7 +4,7 @@
 #   include st2::profile::repos
 #
 # @example Installing from unstable
-#   class { '::st2::profile::repos':
+#   class { 'st2::profile::repos':
 #     repository => 'unstable',
 #   }
 #
