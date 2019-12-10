@@ -29,7 +29,7 @@ control 'rabbitmq' do
   describe port(5672) do
     it { should be_listening }
     its('processes') { should include 'beam.smp' }
-    its('addresses') { should be_in ['127.0.0.1', ''] }
+    its('addresses') { should be_in ['127.0.0.1', '::'] }
     its('protocols') { should cmp 'tcp' }
   end
 
