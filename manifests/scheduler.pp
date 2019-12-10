@@ -8,10 +8,10 @@
 # @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample#L251-L259
 #
 # @example Basic usage
-#   include ::st2::scheduler
+#   include st2::scheduler
 #
 # @example Customizing parameters
-#   class { '::st2::scheduler':
+#   class { 'st2::scheduler':
 #     sleep_interval => 60,
 #     gc_interval    => 120,
 #   }

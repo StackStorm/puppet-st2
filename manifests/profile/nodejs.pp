@@ -49,13 +49,13 @@ class st2::profile::nodejs(
   if ($::osfamily == 'RedHat' and
       versioncmp($::operatingsystemmajrelease, '7') >= 0) {
     if $use_rhel7_builtin {
-      class { '::nodejs':
+      class { 'nodejs':
         manage_package_repo => false,
         npm_package_ensure  => 'present',
       }
     }
     else {
-      class { '::nodejs':
+      class { 'nodejs':
         repo_url_suffix     => $nodejs_version,
         manage_package_repo => $manage_repo,
       }
@@ -74,7 +74,7 @@ class st2::profile::nodejs(
   }
   else {
     # install nodejs from nodesource repo
-    class { '::nodejs':
+    class { 'nodejs':
       repo_url_suffix     => $nodejs_version,
       manage_package_repo => $manage_repo,
     }

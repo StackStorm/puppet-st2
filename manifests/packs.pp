@@ -3,7 +3,7 @@
 # @see st2::pack and st2::pack::config for usage
 #
 # @example Basic Usage
-#  class { '::st2::packs':
+#  class { 'st2::packs':
 #    packs => {
 #      puppet => {},
 #      influxdb => {
@@ -22,6 +22,6 @@
 #
 class st2::packs (
   $packs = $::st2::packs,
-) inherits ::st2 {
-  create_resources('::st2::pack', $packs)
+) inherits st2 {
+  create_resources('st2::pack', $packs)
 }

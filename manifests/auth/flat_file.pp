@@ -9,8 +9,8 @@
 # @param htpasswd_file
 #   Path to htpasswd file (default: /etc/st2/htpasswd)
 #
-# @example Instantiate via ::st2
-#  class { '::st2':
+# @example Instantiate via st2
+#  class { 'st2':
 #    auth_backend        => 'flat_file',
 #    auth_backend_config => {
 #      htpasswd_file => '/etc/something/htpasswd',
@@ -27,8 +27,8 @@ class st2::auth::flat_file(
   $cli_password  = $::st2::cli_password,
   $conf_file     = $::st2::conf_file,
   $htpasswd_file = $::st2::params::auth_htpasswd_file,
-) inherits ::st2 {
-  include ::st2::auth::common
+) inherits st2 {
+  include st2::auth::common
 
   $_auth_users = hiera_hash('st2::auth_users', {})
 

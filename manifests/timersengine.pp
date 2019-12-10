@@ -8,10 +8,10 @@
 # @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample#L337-L343
 #
 # @example Basic usage
-#   include ::st2::timersengine
+#   include st2::timersengine
 #
 # @example Customizing parameters
-#   class { '::st2::timersengine':
+#   class { 'st2::timersengine':
 #     enabled  => true,
 #     timezone => 'America/Los_Angeles',
 #   }

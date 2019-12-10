@@ -42,7 +42,7 @@
 #    Used if +api_key+ is not specified (optional)
 #
 # @example Basic Usage
-#   class { '::st2':
+#   class { 'st2':
 #     chatops_hubot_name => '"@RosieRobot"',
 #     chatops_api_key    => '"xxxxyyyyy123abc"',
 #     chatops_adapter    => {
@@ -80,7 +80,7 @@ class st2::profile::chatops (
   $auth_username                = $::st2::cli_username,
   $auth_password                = $::st2::cli_password,
 ) inherits st2 {
-  include '::st2::params'
+  include 'st2::params'
 
   $_chatops_packages = $::st2::params::st2_chatops_packages
   $_chatops_dir = $::st2::params::st2_chatops_dir
@@ -116,7 +116,7 @@ class st2::profile::chatops (
 
   ########################################
   ## Additional nodejs packages
-  include ::st2::profile::nodejs
+  include st2::profile::nodejs
 
   $npm_package_defaults = {
     ensure  => present,
@@ -125,7 +125,7 @@ class st2::profile::chatops (
     tag     => 'st2::chatops::npm_package',
   }
 
-  create_resources('::nodejs::npm', $npm_packages, $npm_package_defaults)
+  create_resources('nodejs::npm', $npm_packages, $npm_package_defaults)
 
   ########################################
   ## Services

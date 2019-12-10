@@ -26,7 +26,7 @@
 #       chmod 440 -R /etc/sudoers.d
 #
 #   - Run puppet to install StackStorm
-#       puppet apply -e "include ::st2::profile::fullinstall"
+#       puppet apply -e "include st2::profile::fullinstall"
 #
 #   - Keep editing files locally and re-running puppet with the command above
 
@@ -43,7 +43,7 @@ provider   = provider.to_sym
 #  - generic/ubuntu1404
 #  - generic/ubuntu1604
 #  - generic/ubuntu1804
-box        = ENV['BOX'] ? ENV['BOX'] : 'centos/7'
+box        = ENV['BOX'] ? ENV['BOX'] : 'generic/centos8'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1604'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!

@@ -66,8 +66,8 @@ class st2::profile::server (
   $rabbitmq_vhost         = $::st2::rabbitmq_vhost,
   $index_url              = $::st2::index_url,
 ) inherits st2 {
-  include ::st2::notices
-  include ::st2::params
+  include st2::notices
+  include st2::params
 
   $_enable_auth = $auth ? {
     true    => 'True',
@@ -339,17 +339,17 @@ class st2::profile::server (
     tag    => 'st2::service',
   }
 
-  contain ::st2::scheduler
-  contain ::st2::timersengine
-  contain ::st2::workflowengine
+  contain st2::scheduler
+  contain st2::timersengine
+  contain st2::workflowengine
 
   ########################################
   ## st2 user (stanley)
-  class { '::st2::stanley': }
+  class { 'st2::stanley': }
 
   ########################################
   ## Datastore keys
-  class { '::st2::server::datastore_keys': }
+  class { 'st2::server::datastore_keys': }
 
   ########################################
   ## Dependencies
@@ -358,11 +358,11 @@ class st2::profile::server (
   ~> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>
-  -> Class['::st2::server::datastore_keys']
+  -> Class['st2::server::datastore_keys']
   -> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>
-  -> Class['::st2::stanley']
+  -> Class['st2::stanley']
   -> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>

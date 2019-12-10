@@ -90,7 +90,7 @@ describe 'st2::pack' do
   end
 
   context 'when declared with non-default user and password' do
-    let(:pre_condition) { 'class {"::st2": cli_password => "test_bar", cli_username => "test_foo"}' }
+    let(:pre_condition) { 'class {"st2": cli_password => "test_bar", cli_username => "test_foo"}' }
 
     it do
       is_expected.to contain_st2_pack('st2testpack').with(

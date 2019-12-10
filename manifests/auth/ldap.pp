@@ -39,8 +39,8 @@
 # @param ref_hop_limit
 #    The maximum number to refer Referrals recursively (default: 0)
 #
-# @example Instantiate via ::st2 (Active Directory)
-#  class { '::st2':
+# @example Instantiate via st2 (Active Directory)
+#  class { 'st2':
 #    auth_backend        => 'ldap',
 #    auth_backend_config => {
 #      ldap_uri      => 'ldaps://ldap.domain.tld',
@@ -77,8 +77,8 @@ class st2::auth::ldap (
   $group           = undef,
   $chase_referrals = true,
   $ref_hop_limit   = 0,
-) inherits ::st2 {
-  include ::st2::auth::common
+) inherits st2 {
+  include st2::auth::common
 
   $_use_tls = bool2str($use_tls)
   $_chase_refs = bool2str($chase_referrals)

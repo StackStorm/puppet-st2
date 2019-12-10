@@ -13,7 +13,7 @@
 #    Version of StackStorm WebUI to install
 #
 # @example Basic Usage
-#   include ::st2::profile::web'
+#   include st2::profile::web'
 #
 class st2::profile::web(
   $ssl_dir  = $::st2::ssl_dir,
@@ -22,11 +22,11 @@ class st2::profile::web(
   $version  = $::st2::version,
 ) inherits st2 {
   # include nginx here only
-  # if we include this in ::st2::profile::fullinstall Anchor['pre_reqs'] then
+  # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
   # a dependency cycle is created because we must modify the nginx config
   # in this profile.
-  include ::st2::profile::nginx
-  include ::st2::params
+  include st2::profile::nginx
+  include st2::params
 
   ## Install the packages
   package { $::st2::params::st2_web_packages:

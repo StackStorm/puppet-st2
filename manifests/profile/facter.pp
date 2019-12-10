@@ -4,5 +4,5 @@
 #  include st2::profile::facter
 #
 class st2::profile::facter {
-  include ::facter
+  include facter
 }

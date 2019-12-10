@@ -21,7 +21,7 @@ define st2::pack (
   $repo_url = undef,
   $config   = undef,
 ) {
-  include ::st2
+  include st2
   $_cli_username = $::st2::cli_username
   $_cli_password = $::st2::cli_password
   $_st2_packs_group = $::st2::params::packs_group_name

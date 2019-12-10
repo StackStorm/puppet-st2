@@ -29,8 +29,8 @@
 # @param ssl_key
 #    Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
 #
-# @example Basic usage (via ::st2)
-#  class { '::st2':
+# @example Basic usage (via st2)
+#  class { 'st2':
 #    auth_backend        => 'flat_file',
 #    auth_backend_config => {
 #      htpasswd_file => '/etc/something/htpasswd',
@@ -43,7 +43,7 @@
 #    htpasswd_file: "/etc/something/htpasswd"
 #
 # @example Direct usage (default Flat File auth backend)
-#  include ::st2::auth
+#  include st2::auth
 #
 # @example Direct usage to configure a specific auth backend
 #  class { 'st2::auth':
@@ -64,10 +64,10 @@ class st2::auth (
   $use_ssl        = $::st2::use_ssl,
   $ssl_cert       = $::st2::ssl_cert,
   $ssl_key        = $::st2::ssl_key,
-) inherits ::st2 {
+) inherits st2 {
 
-  if !defined(Class['::st2::auth::common']) {
-    class { '::st2::auth::common':
+  if !defined(Class['st2::auth::common']) {
+    class { 'st2::auth::common':
       debug    => $debug,
       mode     => $mode,
       use_ssl  => $use_ssl,
@@ -78,11 +78,11 @@ class st2::auth (
 
   # instantiate a backend
   $_backend_class = $backend ? {
-    'flat_file' => '::st2::auth::flat_file',
-    'keystone'  => '::st2::auth::keystone',
-    'ldap'      => '::st2::auth::ldap',
-    'mongodb'   => '::st2::auth::mongodb',
-    'pam'       => '::st2::auth::pam',
+    'flat_file' => 'st2::auth::flat_file',
+    'keystone'  => 'st2::auth::keystone',
+    'ldap'      => 'st2::auth::ldap',
+    'mongodb'   => 'st2::auth::mongodb',
+    'pam'       => 'st2::auth::pam',
     default     => undef,
   }
   if $_backend_class == undef {

@@ -23,7 +23,7 @@ get you setup and going with minimal effort. Simply:
 
 ```
 puppet module install stackstorm-st2
-puppet apply -e "include ::st2::profile::fullinstall"
+puppet apply -e "include st2::profile::fullinstall"
 ```
 
 ## :warning: Deprecation Notice - Puppet 4
@@ -146,7 +146,7 @@ By default the `flat_file` backend is used. To change this you can configure it
 when instantiating the `::st2` class in a manifest file:
 
 ``` ruby
-class { '::st2':
+class { 'st2':
   auth_backend => 'ldap',
 }
 ```
@@ -166,7 +166,7 @@ using the `auth_backend_config` option. This option can be changed when instanti
 the `::st2` class in a manifest file:
 
 ``` ruby
-class { '::st2':
+class { 'st2':
   auth_backend        => 'ldap',
   auth_backend_config => {
     ldap_uri      => 'ldaps://ldap.domain.tld',
@@ -216,7 +216,7 @@ Configuration via Hiera:
   # Public URL used by ChatOps to offer links to execution details via the WebUI.
   st2::chatops_web_url: '"stackstorm.domain.tld"'
   
-  # install and configure hubot adapter (rocketchat, nodejs module installed by ::nodejs)
+  # install and configure hubot adapter (rocketchat, nodejs module installed by nodejs)
   st2::chatops_adapter:
     hubot-adapter:
       package: 'hubot-rocketchat'

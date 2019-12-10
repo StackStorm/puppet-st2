@@ -9,7 +9,7 @@
 - Remove unused code
   - Tiller
   - Unused variables in this like st2::params
-  - Unused class level parameters in things like ::st2
+  - Unused class level parameters in things like st2
 - Cleanup class level comments
 - More unit tests
 - InSpec integration verification tests for kitchen

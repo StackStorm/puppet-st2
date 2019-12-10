@@ -38,7 +38,7 @@ class st2::profile::client (
   $debug                = $::st2::cli_debug,
   $cache_token          = $::st2::cli_cache_token,
   $silence_ssl_warnings = $::st2::cli_silence_ssl_warnings,
-) inherits ::st2 {
+) inherits st2 {
 
   # Setup st2client settings for Root user by default
   st2::client::settings { 'root':

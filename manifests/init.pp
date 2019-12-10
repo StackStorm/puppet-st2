@@ -184,24 +184,24 @@
 #
 #
 # @example Basic Usage
-#   include ::st2
+#   include st2
 #
 # @example Variables can be set in Hiera and take advantage of automatic data bindings:
 #   st2::version: 2.10.1
 #
 # @example Customizing parameters
 #   # best practice is to change default username/password
-#   class { '::st2::params':
+#   class { 'st2::params':
 #     admin_username => 'st2admin',
 #     admin_password => 'SuperSecret!',
 #   }
 #
-#   class { '::st2':
+#   class { 'st2':
 #     version => '2.10.1',
 #   }
 #
 # @example Different passwords for each database (MongoDB, RabbitMQ, Postgres)
-#   class { '::st2':
+#   class { 'st2':
 #     # StackStorm user
 #     cli_username        => 'st2admin',
 #     cli_password        => 'SuperSecret!',
