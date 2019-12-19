@@ -5,7 +5,12 @@
 - Updated to new Puppet style guide where the leading `::` in class names is no longer
   acceptable. (Bugfix)
   Contributed by @nmaludy
+  
+- Added support for Ubuntu 18.04 (Feature)
+  Contributed by @nmaludy
 
+- Dropped support for Ubuntu 14.04 (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.5.0 (Oct 2, 2019)
 
