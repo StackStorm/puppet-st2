@@ -13,8 +13,9 @@
 #
 class st2::profile::postgresql(
   $bind_ips = $::st2::mistral_db_bind_ips,
+  $manage   = $::st2::mistral_manage,
 ) inherits st2 {
-  if !defined(Class['postgresql::server']) {
+  if $manage and !defined(Class['postgresql::server']) {
     if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
       class { 'postgresql::globals':
         version             => '9.4',

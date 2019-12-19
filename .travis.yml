@@ -84,16 +84,6 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - TEST_NAME="centos7-puppet6"
-    - name: "Ubuntu 14 - Puppet 5"
-      rvm: 2.5
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="ubuntu14-puppet5"
-    - name: "Ubuntu 14 - Puppet 6"
-      rvm: 2.5
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="ubuntu14-puppet6"
     - name: "Ubuntu 16 - Puppet 5"
       rvm: 2.5
       gemfile: build/kitchen/Gemfile
@@ -104,6 +94,16 @@ matrix:
       gemfile: build/kitchen/Gemfile
       env:
         - TEST_NAME="ubuntu16-puppet6"
+    - name: "Ubuntu 18 - Puppet 5"
+      rvm: 2.5
+      gemfile: build/kitchen/Gemfile
+      env:
+        - TEST_NAME="ubuntu18-puppet5"
+    - name: "Ubuntu 18 - Puppet 6"
+      rvm: 2.5
+      gemfile: build/kitchen/Gemfile
+      env:
+        - TEST_NAME="ubuntu18-puppet6"
 
 notifications:
   # Post build failures to '#puppet' channel in 'stackstorm-community' Slack

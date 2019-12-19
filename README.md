@@ -11,8 +11,8 @@ Module to manage [StackStorm](http://stackstorm.com)
 
 ## Supported platforms
 
-* Ubuntu 14.04
 * Ubuntu 16.04
+* Ubuntu 18.04
 * RHEL/CentOS 6
 * RHEL/CentOS 7
 
@@ -244,18 +244,14 @@ and [librarian-puppet](http://librarian-puppet.com/).
 
 ### Puppetfiles
 
- * RHEL/CentOS 6 - Puppet 4 - [build/centos6-puppet4/Puppetfile](build/centos6-puppet4/Puppetfile)
  * RHEL/CentOS 6 - Puppet 5 - [build/centos6-puppet5/Puppetfile](build/centos6-puppet5/Puppetfile)
  * RHEL/CentOS 6 - Puppet 6 - [build/centos6-puppet6/Puppetfile](build/centos6-puppet6/Puppetfile)
- * RHEL/CentOS 7 - Puppet 4 - [build/centos7-puppet4/Puppetfile](build/centos7-puppet4/Puppetfile)
  * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
- * Ubuntu 14.04 - Puppet 4 - [build/ubuntu14-puppet4/Puppetfile](build/ubuntu14-puppet4/Puppetfile)
- * Ubuntu 14.04 - Puppet 5 - [build/ubuntu14-puppet5/Puppetfile](build/ubuntu14-puppet5/Puppetfile)
- * Ubuntu 14.04 - Puppet 6 - [build/ubuntu14-puppet6/Puppetfile](build/ubuntu14-puppet6/Puppetfile)
- * Ubuntu 16.06 - Puppet 4 - [build/ubuntu16-puppet4/Puppetfile](build/ubuntu16-puppet4/Puppetfile)
- * Ubuntu 16.06 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
- * Ubuntu 16.06 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
+ * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
+ * Ubuntu 18.04 - Puppet 5 - [build/ubuntu18-puppet5/Puppetfile](build/ubuntu18-puppet5/Puppetfile)
+ * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
  
  
 ## Tasks
