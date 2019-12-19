@@ -10,6 +10,9 @@
 #    Mistral user for authenticating with PostgreSQL
 # @param db_password
 #    Mistral password for authenticating with PostgreSQL
+# @param manage
+#   If this module should manage the st2mistral install and service
+#   (default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
 # @param rabbitmq_username
 #    Username for authenticating with RabbitMQ
 # @param rabbitmq_password

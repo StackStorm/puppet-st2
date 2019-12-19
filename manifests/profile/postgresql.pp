@@ -1,5 +1,11 @@
 # @summary st2 compatable installation of PostgreSQL and dependencies for use with StackStorm and Mistral.
 #
+# @param bind_ips
+#   String of IPs (csv) that the Postgres database will accept connections on.
+# @param manage
+#   If this module should manage the postgres install and service
+#   (default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
+#
 # @example Basic usage
 #   include st2::profile::postgresql
 #
@@ -7,9 +13,6 @@
 #   class { 'st2::profile::postgresql':
 #     db_bind_ips => '0.0.0.0',
 #   }
-#
-# @param bind_ips
-#   String of IPs (csv) that the Postgres database will accept connections on.
 #
 class st2::profile::postgresql(
   $bind_ips = $::st2::mistral_db_bind_ips,

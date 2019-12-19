@@ -79,7 +79,7 @@
 #   String of IPs (csv) that the Mistral Postgres database
 #   will accept connections on (default: 127.0.0.1)
 # @param mistral_manage
-#   If this repo sould manage mistral.
+#   If this module should manage the Mistral install and services (st2mistral and postgres).
 #   (default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
 # @param syslog
 #   Routes all log messages to syslog
