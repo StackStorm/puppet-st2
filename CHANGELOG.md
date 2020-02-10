@@ -5,6 +5,9 @@
 - Updated to new Puppet style guide where the leading `::` in class names is no longer
   acceptable. (Bugfix)
   Contributed by @nmaludy
+  
+- Removed unused `puppet-wget` module dependency. (Enhancement)
+  Contributed by @nmaludy
 
 
 ## 1.5.0 (Oct 2, 2019)
