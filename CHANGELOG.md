@@ -9,6 +9,9 @@
 - Removed unused `puppet-wget` module dependency. (Enhancement)
   Contributed by @nmaludy
 
+- Define upper-bounds for puppet module dependencies. #282 (Enhancement)
+  Contributed by @nmaludy
+
 
 ## 1.5.0 (Oct 2, 2019)
 
