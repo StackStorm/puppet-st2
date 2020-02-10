@@ -25,11 +25,16 @@
         * [Task List](#task-list)
         * [Task Authentication](#task-authentication)
         * [Using Tasks With API Key](#using-tasks-with-api-key)
-        * [Using Tasks With Auth Token](#using-tasks-with-auth-token)
+        * [Using Tasks With Auth Tokens](#using-tasks-with-auth-tokens)
         * [Using Tasks With Username and Password](#using-tasks-with-username-and-password)
 4. [Limitations - OS compatibility, etc.](#limitations)
     * [Supported Platforms](#supported-platforms)
+    * [Supported Puppet versions](#supported-puppet-versions)
+    * [Upgrading StackStorm](#upgrading-stackstorm)
+    * [Ubuntu 16.04](#ubuntu-16.04)
 5. [Development - Guide for contributing to the module](#development)
+    * [Maintainers](#maintainers)
+    * [Help](#help)
 
 ## Description
 
@@ -287,7 +292,7 @@ are modeled after the `st2` CLI command, names of the tasks and parameters refle
 Under the hood, the tasks invoke the `st2` CLI command so they must be executed on
 a node where StackStorm is installed.
 
-#### Tasks List
+#### Task List
 
 - `st2::key_decrypt` - Decrypts an encrypted key/value pair
 - `st2::key_get` - Retrieves the value for a key from the datastore
@@ -373,17 +378,30 @@ $res = run_task('st2::key_get', $stackstorm_target,
 
 ## Limitations
 
-### Supported Puppet versions
-
-* Puppet 5
-* Puppet 6
-
 ### Supported platforms
 
 * Ubuntu 14.04
 * Ubuntu 16.04
 * RHEL/CentOS 6
 * RHEL/CentOS 7
+
+### Supported Puppet versions
+
+* Puppet 5
+* Puppet 6
+
+#### :warning: Deprecation Notice - Puppet 4
+
+Puppet 4 reached End of Life on 2018-12-31. As of version `1.4` use of Puppet 4 with this module
+is officially deprecated.
+
+* As of version `1.5.0` this module no longer tests against Puppet 4 in its build matrix.
+* The next major release of the module will drop support for Puppet 4 by adjusting the
+  minimum supported Puppet version in `metadata.json`.
+
+#### :warning: Deprecation Notice - Puppet 3
+
+**This module no longer supports Puppet 3 as of version `1.1`**
 
 ### Upgrading StackStorm
 
@@ -400,19 +418,6 @@ In StackStorm `< 2.4.0` there is a known bug [#3290](https://github.com/StackSto
 where the first puppet run fails to install the `st2` pack. Simply invoking puppet
 a second time will produce a fully functional installation with the `st2` pack 
 installed. This was an upstream bug and has been fixed in StackStorm version `2.4.0`.
-
-### :warning: Deprecation Notice - Puppet 4
-
-Puppet 4 reached End of Life on 2018-12-31. As of version `1.4` use of Puppet 4 with this module
-is officially deprecated.
-
-* As of version `1.5.0` this module no longer tests against Puppet 4 in its build matrix.
-* The next major release of the module will drop support for Puppet 4 by adjusting the
-  minimum supported Puppet version in `metadata.json`.
-
-### :warning: Deprecation Notice - Puppet 3
-
-**This module no longer supports Puppet 3 as of version `1.1`**
 
 ## Development
 
