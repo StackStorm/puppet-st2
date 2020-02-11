@@ -42,7 +42,7 @@
     },
     {
       "name": "puppet/mongodb",
-      "version_requirement": ">= 3.0.0"
+      "version_requirement": ">= 3.1.0"
     },
     {
       "name": "puppetlabs/postgresql",
