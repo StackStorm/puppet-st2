@@ -1,7 +1,7 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-ubuntu16-puppet5 -f build/ubuntu16-puppet5/Dockerfile.kitchen .
+# docker build -t stackstorm/puppet-st2-ubuntu18-puppet5 -f build/ubuntu18-puppet5/Dockerfile.kitchen .
 
-FROM stackstorm/packagingtest:xenial-systemd
+FROM stackstorm/packagingtest:bionic-systemd
 
 # kitchen setup
 RUN mkdir -p /var/run/sshd
@@ -20,8 +20,8 @@ RUN sudo apt-get -y update
 
 # install puppet
 # https://puppet.com/docs/puppet/5.5/puppet_platform.html#apt-based-systems
-RUN wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
-RUN sudo dpkg -i puppet5-release-xenial.deb
+RUN wget https://apt.puppetlabs.com/puppet5-release-bionic.deb
+RUN sudo dpkg -i puppet5-release-bionic.deb
 RUN sudo apt-get -y update
 RUN sudo apt-get -y install puppet-agent
 
