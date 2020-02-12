@@ -73,8 +73,8 @@ and [librarian-puppet](http://librarian-puppet.com/).
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
  * Ubuntu 14.04 - Puppet 5 - [build/ubuntu14-puppet5/Puppetfile](build/ubuntu14-puppet5/Puppetfile)
  * Ubuntu 14.04 - Puppet 6 - [build/ubuntu14-puppet6/Puppetfile](build/ubuntu14-puppet6/Puppetfile)
- * Ubuntu 16.06 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
- * Ubuntu 16.06 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
+ * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
 
 ### Beginning with st2
 
@@ -411,13 +411,6 @@ responsiblity of the end user to upgrade StackStorm according to the
 
 In a future release a Puppet task may be included to perform these update 
 on demand using [bolt](https://github.com/puppetlabs/bolt).
-
-### Ubuntu 16.04
-
-In StackStorm `< 2.4.0` there is a known bug [#3290](https://github.com/StackStorm/st2/issues/3290) 
-where the first puppet run fails to install the `st2` pack. Simply invoking puppet
-a second time will produce a fully functional installation with the `st2` pack 
-installed. This was an upstream bug and has been fixed in StackStorm version `2.4.0`.
 
 ## Development
 
