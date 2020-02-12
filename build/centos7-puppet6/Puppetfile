@@ -8,7 +8,7 @@
 # r10k puppetfile install -v --moduledir=./modules --puppetfile=./Puppetfile
 # # to check the module dependencies here:
 # # puppet module list --tree --modulepath ./modules/
-# puppet apply --modulepath=./modules -e "include st2::profilek::fullinstall"
+# puppet apply --modulepath=./modules -e "include st2::profile::fullinstall"
 #
 # #############
 # # DEV Notes #
