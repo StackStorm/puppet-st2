@@ -6,6 +6,16 @@
   acceptable. (Bugfix)
   Contributed by @nmaludy
   
+- Removed unused `puppet-wget` module dependency. (Enhancement)
+  Contributed by @nmaludy
+
+- Define upper-bounds for puppet module dependencies. #282 (Enhancement)
+  Contributed by @nmaludy
+
+- Reorganized README.md to conform to the [Puppet module README template](https://puppet.com/docs/puppet/latest/modules_documentation.html#concept-3315)
+  #283 (Enhancement)
+  Contributed by @nmaludy
+  
 - Added support for Ubuntu 18.04 (Feature)
   Contributed by @nmaludy
 

@@ -7,16 +7,76 @@
 [![puppetmodule.info docs](http://www.puppetmodule.info/images/badge.png)](http://www.puppetmodule.info/m/stackstorm-st2)
 [![Join our community Slack](https://stackstorm-community.herokuapp.com/badge.svg)](https://stackstorm.com/community-signup)
 
-Module to manage [StackStorm](http://stackstorm.com)
+#### Table of Contents
 
-## Supported platforms
+1. [Description](#description)
+2. [Setup - The basics of getting started with st2](#setup)
+    * [What st2 affects](#what-st2-affects)
+    * [Setup requirements](#setup-requirements)
+    * [Beginning with st2](#beginning-with-st2)
+3. [Usage - Configuration options and additional functionality](#usage)
+    * [Reference Documentation](#reference-documentation)
+    * [Configuration](#configuration)
+        * [Profiles](#profiles)
+        * [Installing and Configuring Packs](#installing-and-configuring-packs)
+        * [Configuring Authentication](#configuring-authentication)
+        * [Configuring ChatOps](#configuring-chatops)
+    * [Tasks](#tasks)
+        * [Task List](#task-list)
+        * [Task Authentication](#task-authentication)
+        * [Using Tasks With API Key](#using-tasks-with-api-key)
+        * [Using Tasks With Auth Tokens](#using-tasks-with-auth-tokens)
+        * [Using Tasks With Username and Password](#using-tasks-with-username-and-password)
+4. [Limitations - OS compatibility, etc.](#limitations)
+    * [Supported Platforms](#supported-platforms)
+    * [Supported Puppet versions](#supported-puppet-versions)
+    * [Upgrading StackStorm](#upgrading-stackstorm)
+    * [Ubuntu 16.04](#ubuntu-16.04)
+5. [Development - Guide for contributing to the module](#development)
+    * [Maintainers](#maintainers)
+    * [Help](#help)
 
-* Ubuntu 16.04
-* Ubuntu 18.04
-* RHEL/CentOS 6
-* RHEL/CentOS 7
+## Description
 
-## Quick Start
+Module to manage [StackStorm](http://stackstorm.com) with Puppet.
+
+## Setup
+
+### What st2 Affects
+
+The `st2` module configures the existing into a complete and dedicated StackStorm node with the following components:
+ * StackStorm
+ * MongoDB
+ * Postgres
+ * RabbitMQ
+ * Nginx
+ * NodeJS
+
+### Setup Requirements
+
+This module, similar to normal StackStorm installs, expects to be run on
+a _blank_ system without any existing configurations. The only hard requirements
+are on the Operating System and machine specs. See [Limitations](#limitations) and
+the official StackStorm [system requirements](https://docs.stackstorm.com/install/system_requirements.html).
+
+#### Module Dependencies
+
+This module installs and configures all of the components required for StackStorm.
+In order to not repeat others work, we've utilized many existing modules from the
+forge. We manage the module dependenies using a `Puppetfile` for each OS we support.
+These `Puppetfile` can be used both with [r10k](https://github.com/puppetlabs/r10k)
+and [librarian-puppet](http://librarian-puppet.com/).
+
+ * RHEL/CentOS 6 - Puppet 5 - [build/centos6-puppet5/Puppetfile](build/centos6-puppet5/Puppetfile)
+ * RHEL/CentOS 6 - Puppet 6 - [build/centos6-puppet6/Puppetfile](build/centos6-puppet6/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
+ * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
+ * Ubuntu 18.04 - Puppet 5 - [build/ubuntu18-puppet5/Puppetfile](build/ubuntu18-puppet5/Puppetfile)
+ * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
+ 
+### Beginning with st2
 
 For a full installation on a single node, a profile already exists to
 get you setup and going with minimal effort. Simply:
@@ -26,27 +86,18 @@ puppet module install stackstorm-st2
 puppet apply -e "include st2::profile::fullinstall"
 ```
 
-## :warning: Deprecation Notice - Puppet 4
 
-Puppet 4 reached End of Life on 2018-12-31. As of version `1.4` use of Puppet 4 with this module
-is officially deprecated.
 
-* As of version `1.5.0` this module no longer tests against Puppet 4 in its build matrix.
-* The next major release of the module will drop support for Puppet 4 by adjusting the
-  minimum supported Puppet version in `metadata.json`.
+## Usage
 
-## :warning: Deprecation Notice - Puppet 3
-
-**This module no longer supports Puppet 3 as of version `1.1`**
-
-## Reference Documentation
+### Reference Documentation
 
 This module uses [Puppet Strings](https://puppet.com/docs/puppet/latest/puppet_strings.html)
 as the documentation standard. An live version is available online at
 [puppetmodule.info/m/stackstorm-st2](http://www.puppetmodule.info/m/stackstorm-st2).
 A markdown version is available directly in this repo in [REFERENCE.md](REFERENCE.md).
 
-## Configuration
+### Configuration
 
 This module aims to provide sane default configurations, but also stay
 out of your way in the event you need something more custom. To accomplish
@@ -68,7 +119,7 @@ Hiera data bindings. A few notable parameters to take note of:
 All other classes are documented with Puppetdoc. Please refer to specific
 classes for use and configuration.
 
-### Profiles:
+#### Profiles
 
 * `st2::profile::client` - Profile to install all client libraries for st2
 * `st2::profile::fullinstall` - Full installation of StackStorm and dependencies
@@ -81,7 +132,7 @@ classes for use and configuration.
 * `st2::profile::web` - st2 web components
 * `st2::profile::chatops` - st2 chatops components
 
-### Installing and configuring Packs
+#### Installing and Configuring Packs
 
 StackStorm packs can be installed and configured directly from Puppet. This
 can be done via the `st2::pack` and `st2::pack::config` defined types.
@@ -123,7 +174,7 @@ st2::packs:
         webhook_url: XXX
 ```
 
-### Configuring Authentication (st2auth)
+#### Configuring Authentication
 
 StackStorm uses a pluggable authentication system where auth is delegated to
 an external service called a "backend". The `st2auth` service can be configured
@@ -198,7 +249,7 @@ st2::auth_backend_config:
 ```
 
 
-### Configuring ChatOps (Hubot)
+#### Configuring ChatOps
 
 Configuration via Hiera:
 
@@ -233,35 +284,15 @@ Configuration via Hiera:
     ROCKETCHAT_AUTH: password
     RESPOND_TO_DM: true
 ```
-
-## Module Dependencies
-
-This module installs and configures all of the components required for StackStorm.
-In order to not repeat others work, we've utilized many existing modules from the
-forge. We manage the module dependenies using a `Puppetfile` for each OS we support.
-These `Puppetfile` can be used both with [r10k](https://github.com/puppetlabs/r10k)
-and [librarian-puppet](http://librarian-puppet.com/).
-
-### Puppetfiles
-
- * RHEL/CentOS 6 - Puppet 5 - [build/centos6-puppet5/Puppetfile](build/centos6-puppet5/Puppetfile)
- * RHEL/CentOS 6 - Puppet 6 - [build/centos6-puppet6/Puppetfile](build/centos6-puppet6/Puppetfile)
- * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
- * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
- * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
- * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
- * Ubuntu 18.04 - Puppet 5 - [build/ubuntu18-puppet5/Puppetfile](build/ubuntu18-puppet5/Puppetfile)
- * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
  
- 
-## Tasks
+### Tasks
 
 This module provides several tasks for interacting with StackStorm. These tasks
 are modeled after the `st2` CLI command, names of the tasks and parameters reflect this.
 Under the hood, the tasks invoke the `st2` CLI command so they must be executed on
 a node where StackStorm is installed.
 
-### Tasks List
+#### Task List
 
 - `st2::key_decrypt` - Decrypts an encrypted key/value pair
 - `st2::key_get` - Retrieves the value for a key from the datastore
@@ -269,8 +300,8 @@ a node where StackStorm is installed.
 - `st2::pack_install` - Installs a list of packs
 - `st2::pack_list` - Get a list of installed packs
 - `st2::pack_remove` - Removes a list of packs
-  
-### Task Usage
+
+#### Task Authentication
 
 Tasks that interact with the `st2` CLI command require authentication with the StackStorm
 instance. There are three options for authentication:
@@ -279,7 +310,7 @@ instance. There are three options for authentication:
 - Auth token
 - Username/password
 
-#### Task Usage - API Key
+#### Using Tasks With API Key
 
 API keys are the recommended way for systems to authenticate with StackStorm.
 To do this via a task, you would first create an API key in StackStorm:
@@ -304,7 +335,7 @@ $res = run_task('st2::key_get', $stackstorm_target,
                 api_key    => $api_key)
 ```
 
-#### Task Usage - Auth tokens
+#### Using Tasks With Auth Tokens
 
 Auth tokens can be used by `bolt` to communicate with StackStorm. First, the user
 needs to create an auth token, then pass it in via the `auth_token` parameter
@@ -328,7 +359,7 @@ $res = run_task('st2::key_get', $stackstorm_target,
                 auth_token => $auth_token)
 ```
 
-#### Task Usage - Username/Password
+#### Using Tasks With Username and Password
 
 Finally `bolt` can accept username/passwords to communicate with StackStorm.
 
@@ -345,8 +376,34 @@ $res = run_task('st2::key_get', $stackstorm_target,
                 password => $password)
 ```
 
+## Limitations
 
-## Upgrading StackStorm
+### Supported platforms
+
+* Ubuntu 16.04
+* Ubuntu 18.04
+* RHEL/CentOS 6
+* RHEL/CentOS 7
+
+### Supported Puppet versions
+
+* Puppet 5
+* Puppet 6
+
+#### :warning: Deprecation Notice - Puppet 4
+
+Puppet 4 reached End of Life on 2018-12-31. As of version `1.4` use of Puppet 4 with this module
+is officially deprecated.
+
+* As of version `1.5.0` this module no longer tests against Puppet 4 in its build matrix.
+* The next major release of the module will drop support for Puppet 4 by adjusting the
+  minimum supported Puppet version in `metadata.json`.
+
+#### :warning: Deprecation Notice - Puppet 3
+
+**This module no longer supports Puppet 3 as of version `1.1`**
+
+### Upgrading StackStorm
 
 By default this module does NOT handle upgrades of StackStorm. It is the 
 responsiblity of the end user to upgrade StackStorm according to the 
@@ -355,25 +412,22 @@ responsiblity of the end user to upgrade StackStorm according to the
 In a future release a Puppet task may be included to perform these update 
 on demand using [bolt](https://github.com/puppetlabs/bolt).
 
-## Known Limitations
+## Development
 
-### Ubuntu 16.04
+Contributions to this module are more than welcome! If you have a problem with the module or
+would like to see a new feature, please raise an [issue](https://github.com/StackStorm/puppet-st2/issues). 
+If you are amazing, find a bug or implement a new feature and want to add it to the module,
+please submit a [Pull Request](https://github.com/StackStorm/puppet-st2/pulls).
 
-In StackStorm `< 2.4.0` there is a known bug [#3290](https://github.com/StackStorm/st2/issues/3290) 
-where the first puppet run fails to install the `st2` pack. Simply invoking puppet
-a second time will produce a fully functional installation with the `st2` pack 
-installed. This was an upstream bug and has been fixed in StackStorm version `2.4.0`.
-
-## Maintainers
+### Maintainers
 
 * Nick Maludy 
   * GitHub - [@nmaludy](https://github.com/nmaludy)
-  * Email - <nick.maludy@encore.tech>
 * StackStorm <info@stackstorm.com>
 * James Fryman
 * Patrick Hoolboom
 
-## Help
+### Help
 
 If you're in stuck, our community always ready to help, feel free to:
 * Ask questions in our [public Slack channel](https://stackstorm.com/community-signup) in channel `#puppet`
