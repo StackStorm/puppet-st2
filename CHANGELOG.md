@@ -12,6 +12,9 @@
 - Define upper-bounds for puppet module dependencies. #282 (Enhancement)
   Contributed by @nmaludy
 
+- Reorganized README.md to conform to the [Puppet module README template](https://puppet.com/docs/puppet/latest/modules_documentation.html#concept-3315)
+  #283 (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.5.0 (Oct 2, 2019)
 
