@@ -26,7 +26,6 @@
 #   ├── puppetlabs-stdlib (v5.2.0)
 #   ├─┬ puppetlabs-apt (v6.3.0)
 #   │ └── puppetlabs-translate (v1.2.0)
-#   ├── puppet-wget (v2.0.1)
 #   ├── saz-sudo (v6.0.0)
 #   ├─┬ puppet-python (v2.2.2)
 #   │ └── stahnma-epel (v1.3.1)
@@ -49,7 +48,6 @@ mod 'puppetlabs-stdlib'
 mod 'puppetlabs-apt'
 mod 'stahnma-epel'
 mod 'puppetlabs-translate' # dependency of puppetlabs-apt
-mod 'puppet-wget'
 mod 'saz-sudo'
 mod 'puppet-python'
 mod 'puppetlabs-inifile'
