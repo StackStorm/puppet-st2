@@ -4,6 +4,7 @@
     - .coverage
     - .librarian
     - .kitchen
+    - .r10k
     - .tmp
     - .bundle
     - /cover/
@@ -25,6 +26,11 @@ appveyor.yml:
 Gemfile:
   required:
     ':development':
+      # needed for ed25519 support
+      - gem: 'bcrypt_pbkdf'
+        version: '>= 1.0.0'
+      - gem: 'ed25519'
+        version: '>= 1.2.0'
       - gem: 'puppet-lint-absolute_classname-check'
         # pin to 2.0.0 to comply with new standard which removes the leading ::
         version: '>= 2.0.0'

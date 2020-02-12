@@ -1,0 +1,14 @@
+---
+docker_centos6:
+  provisioner: docker
+  images: ['litmusimage/centos:6']
+docker_centos7:
+  provisioner: docker
+  images: ['litmusimage/centos:7']
+docker_ubuntu16:
+  provisioner: docker
+  images: ['litmusimage/ubuntu:16.04']
+docker_ubuntu18:
+  provisioner: docker
+  images: ['litmusimage/ubuntu:18.04']
+# TODO vagrant

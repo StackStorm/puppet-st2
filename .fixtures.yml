@@ -9,7 +9,6 @@ fixtures:
     apt: "puppetlabs/apt"
     epel: "stahnma/epel"
     concat: "puppetlabs/concat"
-    wget: "puppet/wget"
     sudo: "saz/sudo"
     python: "puppet/python"
     gcc: "puppetlabs/gcc"
@@ -21,3 +20,9 @@ fixtures:
     selinux: "puppet/selinux"
     nginx: "puppet/nginx"
     nodejs: "puppet/nodejs"
+  repositories:
+    # needed for Litmus
+    # https://github.com/puppetlabs/puppet_litmus/wiki/Converting-a-module-to-use-Litmus
+    facts: 'https://github.com/puppetlabs/puppetlabs-facts.git'
+    puppet_agent: 'https://github.com/puppetlabs/puppetlabs-puppet_agent.git'
+    provision: 'https://github.com/puppetlabs/provision.git'
