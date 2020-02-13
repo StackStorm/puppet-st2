@@ -7,6 +7,12 @@ describe 'st2::version_ge' do
     let(:facts) do
       {
         st2_version: nil,
+        os: {
+          family: 'RedHat',
+          release: {
+            major: '7',
+          },
+        },
       }
     end
 
@@ -23,6 +29,12 @@ describe 'st2::version_ge' do
           st2_version: '2.9.0',
           'st2::version' => 'present',
           osfamily: 'RedHat',
+          os: {
+            family: 'RedHat',
+            release: {
+              major: '7',
+            },
+          },
         }
       end
 
@@ -42,6 +54,12 @@ describe 'st2::version_ge' do
           st2_version: '2.9.0',
           'st2::version' => 'installed',
           osfamily: 'RedHat',
+          os: {
+            family: 'RedHat',
+            release: {
+              major: '7',
+            },
+          },
         }
       end
 
@@ -61,6 +79,12 @@ describe 'st2::version_ge' do
           st2_version: '2.9.0',
           'st2::version' => 'latest',
           osfamily: 'RedHat',
+          os: {
+            family: 'RedHat',
+            release: {
+              major: '7',
+            },
+          },
         }
       end
 
@@ -80,6 +104,12 @@ describe 'st2::version_ge' do
           st2_version: '2.9.0',
           'st2::version' => '2.9.0',
           osfamily: 'RedHat',
+          os: {
+            family: 'RedHat',
+            release: {
+              major: '7',
+            },
+          },
         }
       end
 
@@ -99,6 +129,12 @@ describe 'st2::version_ge' do
           st2_version: '2.9.0',
           'st2::version' => '2.10.0',
           osfamily: 'RedHat',
+          os: {
+            family: 'RedHat',
+            release: {
+              major: '7',
+            },
+          },
         }
       end
 
@@ -118,6 +154,12 @@ describe 'st2::version_ge' do
           st2_version: '2.10.0',
           'st2::version' => '2.9.0',
           osfamily: 'RedHat',
+          os: {
+            family: 'RedHat',
+            release: {
+              major: '7',
+            },
+          },
         }
       end
 

@@ -71,11 +71,11 @@ and [librarian-puppet](http://librarian-puppet.com/).
  * RHEL/CentOS 6 - Puppet 6 - [build/centos6-puppet6/Puppetfile](build/centos6-puppet6/Puppetfile)
  * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
- * Ubuntu 14.04 - Puppet 5 - [build/ubuntu14-puppet5/Puppetfile](build/ubuntu14-puppet5/Puppetfile)
- * Ubuntu 14.04 - Puppet 6 - [build/ubuntu14-puppet6/Puppetfile](build/ubuntu14-puppet6/Puppetfile)
  * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
  * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
-
+ * Ubuntu 18.04 - Puppet 5 - [build/ubuntu18-puppet5/Puppetfile](build/ubuntu18-puppet5/Puppetfile)
+ * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
+ 
 ### Beginning with st2
 
 For a full installation on a single node, a profile already exists to
@@ -380,8 +380,8 @@ $res = run_task('st2::key_get', $stackstorm_target,
 
 ### Supported platforms
 
-* Ubuntu 14.04
 * Ubuntu 16.04
+* Ubuntu 18.04
 * RHEL/CentOS 6
 * RHEL/CentOS 7
 

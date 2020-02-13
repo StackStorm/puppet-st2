@@ -30,19 +30,24 @@
 #   include st2::profile::mongodb
 #
 class st2::profile::mongodb (
-  $db_name     = $::st2::db_name,
-  $db_username = $::st2::db_username,
-  $db_password = $::st2::db_password,
-  $db_port     = $::st2::db_port,
-  $db_bind_ips = $::st2::db_bind_ips,
-  $version     = $::st2::mongodb_version,
-  $manage_repo = $::st2::mongodb_manage_repo,
-  $auth        = $::st2::mongodb_auth,
+  $db_name     = $st2::db_name,
+  $db_username = $st2::db_username,
+  $db_password = $st2::db_password,
+  $db_port     = $st2::db_port,
+  $db_bind_ips = $st2::db_bind_ips,
+  $version     = $st2::mongodb_version,
+  $manage_repo = $st2::mongodb_manage_repo,
+  $auth        = $st2::mongodb_auth,
 ) inherits st2 {
 
+  # if we're on Ubuntu >= 18.04 then use MongoDB 4.0
   # if the StackStorm version is > 2.4.0 then MongoDB 3.4
   # else use MongoDB 3.2
-  if st2::version_ge('2.4.0') {
+  if ($facts['os']['family'] == 'Debian' and
+      versioncmp($facts['os']['release']['major'], '18.04') >= 0) {
+    $_mongodb_version_default = '4.0'
+  }
+  elsif st2::version_ge('2.4.0') {
     $_mongodb_version_default = '3.4'
   }
   else {
@@ -96,8 +101,8 @@ class st2::profile::mongodb (
         # unfortinately there is no way to synchronously force a service restart
         # in Puppet, so we have to revert to exec... sorry
         include mongodb::params
-        if (($::osfamily == 'Debian' and $::operatingsystemmajrelease == '14.04') or
-            ($::osfamily == 'RedHat' and $::operatingsystemmajrelease == '6')) {
+        if (($facts['os']['family'] == 'Debian' and $facts['os']['release']['major'] == '14.04') or
+            ($facts['os']['family'] == 'RedHat' and $facts['os']['release']['major'] == '6')) {
           $_mongodb_stop_cmd = "service ${::mongodb::params::service_name} stop"
           $_mongodb_start_cmd = "service ${::mongodb::params::service_name} start"
           $_mongodb_restart_cmd = "service ${::mongodb::params::service_name} restart"
@@ -190,7 +195,7 @@ class st2::profile::mongodb (
     -> Class['mongodb::server']
 
     # Handle more special cases of things that didn't work properly...
-    case $::osfamily {
+    case $facts['os']['family'] {
       'RedHat': {
         Package <| tag == 'mongodb' |> {
           ensure => 'present'
@@ -240,7 +245,7 @@ class st2::profile::mongodb (
     mongodb::db { $db_name:
       user     => $db_username,
       password => $db_password,
-      roles    => $::st2::params::mongodb_st2_roles,
+      roles    => $st2::params::mongodb_st2_roles,
       require  => Class['mongodb::server'],
     }
   }

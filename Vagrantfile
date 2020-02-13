@@ -24,11 +24,23 @@
 #   - Fix sudoers directory
 #       sudo su -
 #       chmod 440 -R /etc/sudoers.d
+#       chmod 755 -R /etc/sudoers.d # on ubuntu to get rsync to work
 #
 #   - Run puppet to install StackStorm
 #       puppet apply -e "include st2::profile::fullinstall"
 #
 #   - Keep editing files locally and re-running puppet with the command above
+#
+# Nick's notes
+# vagrant destroy -f
+# vagrant up
+# vagrant ssh
+# sudo su -
+# vi /etc/puppetlabs/code/modules/mongodb/manifests/repo.pp
+#           '4.2'   => 'E162F504A20CDF15827F718D4B7C549A058F8B6B',
+#           '4.0'   => '9DA31620334BD75D9DCB49F368818C72E52529D4',
+#
+# puppet apply -e "include st2::profile::fullinstall"
 
 # hostname of the VM
 hostname   = ENV['HOSTNAME'] ? ENV['HOSTNAME'] : 'puppet-st2-vagrant'
@@ -43,8 +55,8 @@ provider   = provider.to_sym
 #  - generic/ubuntu1404
 #  - generic/ubuntu1604
 #  - generic/ubuntu1804
-box        = ENV['BOX'] ? ENV['BOX'] : 'generic/centos8'
-#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1604'
+#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/centos8'
+box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1804'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"

@@ -5,6 +5,12 @@ describe 'st2::pack' do
   let(:title) { 'st2testpack' }
   let(:facts) do
     {
+      os: {
+        family: 'RedHat',
+        release: {
+          major: '7',
+        },
+      },
       operatingsystem: 'RedHat',
       osfamily: 'RedHat',
       operatingsystemmajrelease: '7',

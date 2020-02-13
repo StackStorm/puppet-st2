@@ -78,6 +78,9 @@
 # @param mistral_db_bind_ips
 #   String of IPs (csv) that the Mistral Postgres database
 #   will accept connections on (default: 127.0.0.1)
+# @param mistral_manage
+#   If this module should manage the Mistral install and services (st2mistral and postgres).
+#   (default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
 # @param syslog
 #   Routes all log messages to syslog
 # @param syslog_host
@@ -248,6 +251,7 @@ class st2(
   $mistral_db_username      = $::st2::params::mistral_db_username,
   $mistral_db_password      = $::st2::params::admin_password,
   $mistral_db_bind_ips      = $::st2::params::mistral_db_bind_ips,
+  $mistral_manage           = $st2::params::mistral_manage,
   $syslog                   = false,
   $syslog_host              = 'localhost',
   $syslog_protocol          = 'udp',
