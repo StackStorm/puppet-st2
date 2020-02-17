@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache-2.0",
@@ -91,7 +91,7 @@
       "version_requirement": ">= 4.7.0 < 7.0.0"
     }
   ],
-  "pdk-version": "1.15.0",
-  "template-url": "pdk-default#1.15.0",
-  "template-ref": "tags/1.15.0-0-g0bc522e"
+  "pdk-version": "1.16.0",
+  "template-url": "https://github.com/puppetlabs/pdk-templates#1.16.0",
+  "template-ref": "tags/1.16.0-0-gaf44904"
 }

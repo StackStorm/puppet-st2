@@ -2,6 +2,9 @@
 
 ## Development
 
+
+## 1.6.0 (Feb 17, 2020)
+
 - Updated to new Puppet style guide where the leading `::` in class names is no longer
   acceptable. (Bugfix)
   Contributed by @nmaludy
