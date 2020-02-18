@@ -51,8 +51,8 @@ control 'st2' do
 
   describe file('/opt/stackstorm/configs') do
     it { should exist }
-    its('owner') { should eq 'root' }
-    its('group') { should eq 'st2' }
+    its('owner') { should eq 'st2' }
+    its('group') { should eq 'root' }
     its('mode') { should cmp '0755' }
   end
 
