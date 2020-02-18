@@ -2,10 +2,28 @@
 
 ## Development
 
+
+## 1.6.0 (Feb 17, 2020)
+
 - Updated to new Puppet style guide where the leading `::` in class names is no longer
   acceptable. (Bugfix)
   Contributed by @nmaludy
+  
+- Removed unused `puppet-wget` module dependency. (Enhancement)
+  Contributed by @nmaludy
 
+- Define upper-bounds for puppet module dependencies. #282 (Enhancement)
+  Contributed by @nmaludy
+
+- Reorganized README.md to conform to the [Puppet module README template](https://puppet.com/docs/puppet/latest/modules_documentation.html#concept-3315)
+  #283 (Enhancement)
+  Contributed by @nmaludy
+  
+- Added support for Ubuntu 18.04 (Feature)
+  Contributed by @nmaludy
+
+- Dropped support for Ubuntu 14.04 (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.5.0 (Oct 2, 2019)
 

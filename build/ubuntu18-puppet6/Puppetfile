@@ -26,6 +26,7 @@
 #   ├── puppetlabs-stdlib (v5.2.0)
 #   ├─┬ puppetlabs-apt (v6.3.0)
 #   │ └── puppetlabs-translate (v1.2.0)
+#   ├── puppet-wget (v2.0.1)
 #   ├── saz-sudo (v6.0.0)
 #   ├─┬ puppet-python (v2.2.2)
 #   │ └── stahnma-epel (v1.3.1)
@@ -37,19 +38,19 @@
 #   │ ├── puppet-archive (v3.2.1)
 #   │ └── camptocamp-systemd (v2.3.0)
 #   ├── ghoneycutt-facter (v3.5.0)
+#   ├── computology-packagecloud (v0.3.2)
 #   ├── puppet-selinux (v1.6.1)
 #   ├── puppet-nginx (v0.16.0)
 #   └── puppet-nodejs (v7.0.0)
 forge "https://forgeapi.puppetlabs.com"
 
 mod 'jamtur01-httpauth'
-mod 'puppetlabs-stdlib'
 mod 'puppetlabs-apt'
 mod 'stahnma-epel'
 mod 'puppetlabs-translate' # dependency of puppetlabs-apt
+mod 'puppet-wget'
 mod 'saz-sudo'
 mod 'puppet-python'
-mod 'puppetlabs-inifile'
 mod 'puppet-mongodb'
 mod 'puppetlabs-postgresql'
 mod 'puppetlabs-concat'    # dependency of puppetlabs-postgresql
@@ -57,6 +58,9 @@ mod 'puppet-rabbitmq'
 mod 'puppet-archive'       # dependency of puppet-rabbitmq
 mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'ghoneycutt-facter'
+mod 'computology-packagecloud'
 mod 'puppet-selinux'
 mod 'puppet-nginx'
 mod 'puppet-nodejs'
+mod 'puppetlabs-inifile'
+mod 'puppetlabs-stdlib'
