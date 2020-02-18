@@ -65,6 +65,7 @@ class st2::profile::server (
   $rabbitmq_port          = $::st2::rabbitmq_port,
   $rabbitmq_vhost         = $::st2::rabbitmq_vhost,
   $index_url              = $::st2::index_url,
+  $packs_group            = $::st2::packs_group_name,
 ) inherits st2 {
   include st2::notices
   include st2::params
@@ -99,6 +100,45 @@ class st2::profile::server (
     'mode'   => '0755',
     'tag'    => 'st2::server',
   })
+
+  ensure_resource('group', $packs_group, {
+    'ensure' => present,
+  })
+
+  ensure_resource('file', '/opt/stackstorm/configs', {
+    'ensure'  => 'directory',
+    'owner'   => 'st2',
+    'group'   => 'root',
+    'mode'    => '0755',
+    'tag'     => 'st2::server',
+  })
+
+  ensure_resource('file', '/opt/stackstorm/packs', {
+    'ensure'  => 'directory',
+    'owner'   => 'root',
+    'group'   => $packs_group,
+    'tag'     => 'st2::server',
+  })
+
+  ensure_resource('file', '/opt/stackstorm/virtualenvs', {
+    'ensure'  => 'directory',
+    'owner'   => 'root',
+    'group'   => $packs_group,
+    'mode'    => '0755',
+    'tag'     => 'st2::server',
+  })
+
+  recursive_file_permissions { '/opt/stackstorm/packs':
+    owner => 'root',
+    group => $packs_group,
+    tag   => 'st2::server',
+  }
+
+  recursive_file_permissions { '/opt/stackstorm/virtualenvs':
+    owner => 'root',
+    group => $packs_group,
+    tag   => 'st2::server',
+  }
 
   ########################################
   ## Config
@@ -371,4 +411,7 @@ class st2::profile::server (
 
   Service<| tag == 'st2::service' |>
   ~> Exec<| tag == 'st2::reload' |>
+
+  St2_pack<||>
+  ~> Recursive_file_permissions<| tag == 'st2::server' |>
 }

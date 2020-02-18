@@ -56,5 +56,8 @@ Gemfile:
         version: '>= 0.3.0'
       - gem: 'puppet-lint-version_comparison-check'
         version: '>= 0.2.1'
+      - gem: 'puppet_litmus'
+        git: 'https://github.com/puppetlabs/puppet_litmus.git'
+      - gem: 'serverspec'
 spec/spec_helper.rb:
   mock_with: ':rspec'

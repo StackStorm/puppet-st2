@@ -4,7 +4,10 @@ describe 'apply' do
   context 'when full install' do
     let(:pp) do
       <<-MANIFEST
-        include st2::profile::fullinstall
+        class { 'sudo':
+          purge => false,
+        }
+        contain st2::profile::fullinstall
       MANIFEST
     end
 
