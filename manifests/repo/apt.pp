@@ -7,7 +7,7 @@ class st2::repo::apt {
       repos    => $st2::repo::repos,
       key      => {
         'id'     => $st2::repo::key_id,
-        'source' => $st2::repo::key_server,
+        'source' => $st2::repo::key_source,
       },
     }
 

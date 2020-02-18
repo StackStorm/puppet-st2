@@ -25,7 +25,7 @@
 #   ├── jamtur01-httpauth (v0.0.3)
 #   ├── puppetlabs-stdlib (v5.2.0)
 #   ├─┬ puppetlabs-apt (v6.3.0)
-#   │ └── puppetlabs-translate (v1.2.0)y
+#   │ └── puppetlabs-translate (v1.2.0)
 #   ├── saz-sudo (v6.0.0)
 #   ├─┬ puppet-python (v2.2.2)
 #   │ └── stahnma-epel (v1.3.1)

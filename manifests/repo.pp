@@ -8,15 +8,15 @@
 #     repository => 'unstable',
 #   }
 #
-# @param Enum['present', 'absent'] ensure
+# @param [Enum['present', 'absent']] ensure
 #   The basic state the repo should be in
 #
-# @param Enum['stable', 'unstable', 'staging-stable', 'staging-unstable'] repository
+# @param [St2::Repository] repository
 #   Release repository to enable
 #
 class st2::repo (
   Enum['present', 'absent'] $ensure = 'present',
-  Enum['stable', 'unstable', 'staging-stable', 'staging-unstable'] $repository = 'stable',
+  St2::Repository $repository = 'stable',
 ) {
   case $facts['os']['family'] {
     'RedHat': {
