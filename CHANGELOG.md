@@ -2,6 +2,13 @@
 
 ## Development
 
+- Refactored the system StackStorm repository handling. This replaces the `PackageCloud`
+  Puppet module because it was _not_ idempotent. At the same time we've moved the repository
+  handling from the old-school `st2::profile::repos` to the new idiomatic
+  `st2::repo` (base) and `st2::repo::apt` or `st2::repo::yum` based on OS type.
+  This is considered a minor breaking change if you were using the internal class
+  `st2::profile::repos`. The replacement class is `st2::repo` and is a direct replacement. (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.6.0 (Feb 17, 2020)
 
