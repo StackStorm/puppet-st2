@@ -221,7 +221,7 @@
 #
 class st2(
   $version                  = 'present',
-  $repository               = $::st2::params::repository,
+  Enum['stable', 'unstable', 'staging-stable', 'staging-unstable'] $repository = $::st2::params::repository,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = $::st2::params::use_ssl,
