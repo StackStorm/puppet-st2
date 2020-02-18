@@ -24,43 +24,6 @@ define st2::pack (
   include st2
   $_cli_username = $::st2::cli_username
   $_cli_password = $::st2::cli_password
-  $_st2_packs_group = $::st2::params::packs_group_name
-
-  ensure_resource('group', $_st2_packs_group, {
-    'ensure' => present,
-  })
-
-  ensure_resource('file', '/opt/stackstorm', {
-    'ensure' => 'directory',
-    'owner'  => 'root',
-    'group'  => 'root',
-    'mode'   => '0755',
-  })
-
-  ensure_resource('file', '/opt/stackstorm/packs', {
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => $_st2_packs_group,
-    'recurse' => true,
-    'tag'     => 'st2::subdirs',
-  })
-
-  ensure_resource('file', '/opt/stackstorm/configs', {
-    'ensure'  => 'directory',
-    'owner'   => 'st2',
-    'group'   => 'root',
-    'mode'    => '0755',
-    'tag'     => 'st2::subdirs',
-  })
-
-  ensure_resource('file', '/opt/stackstorm/virtualenvs', {
-    'ensure'  => 'directory',
-    'owner'   => 'root',
-    'group'   => $_st2_packs_group,
-    'mode'    => '0755',
-    'tag'     => 'st2::subdirs',
-  })
-
 
   st2_pack { $pack:
     ensure   => $ensure,
@@ -85,10 +48,6 @@ define st2::pack (
     -> File["/opt/stackstorm/configs/${pack}.yaml"]
     ~> Exec<| tag == 'st2::register-configs' |>
   }
-
-  Group[$_st2_packs_group]
-  -> File['/opt/stackstorm']
-  -> File<| tag == 'st2::subdirs' |>
 
   Service<| tag == 'st2::service' |> -> St2_pack<||>
   Exec<| tag == 'st2::reload' |> -> St2_pack<||>

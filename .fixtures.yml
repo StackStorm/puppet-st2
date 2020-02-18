@@ -21,3 +21,4 @@ fixtures:
     selinux: "puppet/selinux"
     nginx: "puppet/nginx"
     nodejs: "puppet/nodejs"
+    recursive_file_permissions: "npwalker/recursive_file_permissions"

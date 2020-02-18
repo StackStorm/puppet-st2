@@ -2,6 +2,11 @@
 
 ## Development
 
+- Fixed `/opt/stackstorm/packs` and `/opt/stackstorm/virtualenv` resources to be idempotent
+  and manage the ownership of these directories recursively in a much more efficient manner.
+  Instead of using the `file` resource with `recurse => true` we now utilize the module
+  `npwalker/recursive_file_permissions`. #278 (Bugfix) (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.6.0 (Feb 17, 2020)
 
