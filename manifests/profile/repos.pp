@@ -10,32 +10,17 @@
 #
 # @param repository
 #   Release repository to enable. Options: 'stable', 'unstable'.
-# @param package_type
-#   Type of package management system used for repo. Options: 'rpm', 'deb'
 #
 class st2::profile::repos(
-  $repository   = $::st2::repository,
-  $package_type = $::st2::params::package_type,
+  Enum['stable', 'unstable'] $repository = $st2::repository,
 ) inherits st2 {
-  require packagecloud
-
   if $::osfamily == 'RedHat' {
     require epel
   }
-  $_packagecloud_repo = "StackStorm/${repository}"
-  packagecloud::repo { $_packagecloud_repo:
-    type => $package_type,
-  }
 
-  # On ubuntu 14, the packagecloud repo addition corrupts the apt-cache...
-  # this cleans it out and refreshes it
-  if ($::osfamily == 'Debian' and
-      versioncmp($::operatingsystemmajrelease, '14.04') == 0) {
-    exec { 'Refresh apt-cache after packagecloud':
-      command     =>  'rm -rf /var/lib/apt/lists/*; apt-get update',
-      path        => ['/usr/bin/', '/bin/'],
-      refreshonly => true,
-      subscribe   => Packagecloud::Repo[$_packagecloud_repo],
-    }
+  # defines the StackStorm repo (Yum and Apt are handled here)
+  class { 'st2::repo':
+    repository => $repository,
   }
+  contain st2::repo
 }

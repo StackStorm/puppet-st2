@@ -28,6 +28,8 @@ group :development do
   gem "puppet-module-posix-dev-r#{minor_version}", '~> 0.4',                   require: false, platforms: [:ruby]
   gem "puppet-module-win-default-r#{minor_version}", '~> 0.4',                 require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "puppet-module-win-dev-r#{minor_version}", '~> 0.4',                     require: false, platforms: [:mswin, :mingw, :x64_mingw]
+  gem "bcrypt_pbkdf", '>= 1.0.0',                                              require: false
+  gem "ed25519", '>= 1.2.0',                                                   require: false
   gem "puppet-lint-absolute_classname-check", '>= 2.0.0',                      require: false
   gem "puppet-lint-absolute_template_path", '>= 1.0.1',                        require: false
   gem "puppet-lint-alias-check", '>= 0.1.1',                                   require: false
@@ -40,6 +42,8 @@ group :development do
   gem "puppet-lint-trailing_comma-check", '>= 0.3.2',                          require: false
   gem "puppet-lint-unquoted_string-check", '>= 0.3.0',                         require: false
   gem "puppet-lint-version_comparison-check", '>= 0.2.1',                      require: false
+  gem "puppet_litmus",                                                         require: false, git: 'https://github.com/puppetlabs/puppet_litmus.git'
+  gem "serverspec",                                                            require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']

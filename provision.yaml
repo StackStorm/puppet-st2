@@ -1,0 +1,14 @@
+---
+docker_centos6:
+  provisioner: docker_exp
+  images: ['stackstorm/packagingtest:centos6-sshd']
+docker_centos7:
+  provisioner: docker_exp
+  images: ['stackstorm/packagingtest:centos7-systemd']
+docker_ubuntu16:
+  provisioner: docker_exp
+  images: ['stackstorm/packagingtest:xenial-systemd']
+docker_ubuntu18:
+  provisioner: docker_exp
+  images: ['stackstorm/packagingtest:bionic-systemd']
+# TODO vagrant
