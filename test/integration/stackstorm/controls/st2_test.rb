@@ -48,4 +48,25 @@ control 'st2' do
     it { should_not be_executable.by('owner') }
     it { should_not be_executable.by('group') }
   end
+
+  describe file('/opt/stackstorm/configs') do
+    it { should exist }
+    its('owner') { should eq 'st2' }
+    its('group') { should eq 'root' }
+    its('mode') { should cmp '0755' }
+  end
+
+  describe file('/opt/stackstorm/packs') do
+    it { should exist }
+    its('owner') { should eq 'root' }
+    its('group') { should eq 'st2packs' }
+    its('mode') { should cmp '0775' }
+  end
+
+  describe file('/opt/stackstorm/virtualenvs') do
+    it { should exist }
+    its('owner') { should eq 'root' }
+    its('group') { should eq 'st2packs' }
+    its('mode') { should cmp '0755' }
+  end
 end
