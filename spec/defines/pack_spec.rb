@@ -17,33 +17,6 @@ describe 'st2::pack' do
     }
   end
 
-  it do
-    is_expected.to contain_file('/opt/stackstorm').with(
-      ensure: 'directory',
-      owner: 'root',
-      group: 'root',
-      mode: '0755',
-    )
-  end
-  it do
-    is_expected.to contain_file('/opt/stackstorm/configs').with(
-      ensure: 'directory',
-      owner: 'st2',
-      group: 'root',
-      mode: '0755',
-    )
-  end
-  it do
-    is_expected.to contain_file('/opt/stackstorm/packs').with(
-      ensure: 'directory',
-      owner: 'root',
-      group: 'st2packs',
-    )
-  end
-  it do
-    is_expected.to contain_group('st2packs')
-  end
-
   context 'when declared with config' do
     let(:params) do
       {

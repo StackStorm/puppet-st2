@@ -10,6 +10,12 @@
   `st2::profile::repos`. The replacement class is `st2::repo` and is a direct replacement. (Enhancement)
   Contributed by @nmaludy
 
+- Fixed `/opt/stackstorm/packs` and `/opt/stackstorm/virtualenv` resources to be idempotent
+  and manage the ownership of these directories recursively in a much more efficient manner.
+  Instead of using the `file` resource with `recurse => true` we now utilize the module
+  `npwalker/recursive_file_permissions`. #278 (Bugfix) (Enhancement)
+  Contributed by @nmaludy
+
 ## 1.6.0 (Feb 17, 2020)
 
 - Updated to new Puppet style guide where the leading `::` in class names is no longer

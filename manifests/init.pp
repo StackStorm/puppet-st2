@@ -65,6 +65,8 @@
 #   Set the number of actionrunner processes to start
 # @param packs
 #   Hash of st2 packages to be installed
+# @param packs_group
+#   Name of the group that will own the /opt/stackstorm/packs directory (default: st2packs)
 # @param index_url
 #   Url to the StackStorm Exchange index file. (default undef)
 # @param mistral_db_host
@@ -245,6 +247,7 @@ class st2(
   $cli_auth_url             = "http://${::st2::params::hostname}:${::st2::params::auth_port}",
   $actionrunner_workers     = $::st2::params::actionrunner_workers,
   $packs                    = {},
+  $packs_group              = $::st2::params::packs_group_name,
   $index_url                = undef,
   $mistral_db_host          = $::st2::params::hostname,
   $mistral_db_name          = $::st2::params::mistral_db_name,
