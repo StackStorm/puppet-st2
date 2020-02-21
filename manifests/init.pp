@@ -4,7 +4,7 @@
 #   Version of StackStorm package to install (default = 'present')
 #   See the package 'ensure' property:
 #   https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
-# @param repository
+# @param [St2::Repository] repository
 #   Release repository to enable. 'stable', 'unstable'
 #   (default = 'stable')
 # @param conf_dir
@@ -223,7 +223,7 @@
 #
 class st2(
   $version                  = 'present',
-  $repository               = $::st2::params::repository,
+  St2::Repository $repository = $::st2::params::repository,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = $::st2::params::use_ssl,

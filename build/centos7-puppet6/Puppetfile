@@ -37,7 +37,6 @@
 #   │ ├── puppet-archive (v3.2.1)
 #   │ └── camptocamp-systemd (v2.3.0)
 #   ├── ghoneycutt-facter (v3.5.0)
-#   ├── computology-packagecloud (v0.3.2)
 #   ├── puppet-selinux (v1.6.1)
 #   ├── puppet-nginx (v0.16.0)
 #   └── puppet-nodejs (v7.0.0)
@@ -58,7 +57,6 @@ mod 'puppet-rabbitmq'
 mod 'puppet-archive'       # dependency of puppet-rabbitmq
 mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'ghoneycutt-facter'
-mod 'computology-packagecloud'
 mod 'puppet-selinux'
 mod 'puppet-nginx'
 mod 'puppet-nodejs'
