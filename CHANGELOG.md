@@ -15,6 +15,9 @@
   Instead of using the `file` resource with `recurse => true` we now utilize the module
   `npwalker/recursive_file_permissions`. #278 (Bugfix) (Enhancement)
   Contributed by @nmaludy
+  
+- Added Puppet Forge Endorsement badge to show that this is an Approved Puppet module. (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.6.0 (Feb 17, 2020)
 
