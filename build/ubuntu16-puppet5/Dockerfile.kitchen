@@ -18,6 +18,9 @@ RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/auth
 # update OS
 RUN sudo apt-get -y update
 
+# Add in HTTPS transport for Puppet repo
+RUN sudo apt-get -y install apt-transport-https ca-certificates
+
 # install puppet
 # https://puppet.com/docs/puppet/5.5/puppet_platform.html#apt-based-systems
 RUN wget https://apt.puppetlabs.com/puppet5-release-xenial.deb
