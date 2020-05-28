@@ -12,7 +12,7 @@ class KeyGet(St2TaskBase):
 
     def convert_result_from_json(self, result, convert):
         # convert value from a JSON string to dict/list/etc
-        if convert and result.get('result', {}).get('value'):
+        if convert and 'result' in result and 'value' in result['result']:
             try:
                 result['result']['value'] = json.loads(result['result']['value'])
             except ValueError:

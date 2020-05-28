@@ -19,6 +19,13 @@
 - Added Puppet Forge Endorsement badge to show that this is an Approved Puppet module. (Enhancement)
   Contributed by @nmaludy
 
+- Fixed bug in `st2::key_get` task where non-JSON output from the command would throw an 
+  exception. (Bugfix)
+  Contributed by @nmaludy
+  
+- Fixed bug in `st2::key_decrypt` causing it to be incompatible with Python 3. (Bugfix)
+  Contributed by @nmaludy
+
 ## 1.6.0 (Feb 17, 2020)
 
 - Updated to new Puppet style guide where the leading `::` in class names is no longer
