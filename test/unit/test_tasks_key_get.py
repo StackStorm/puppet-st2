@@ -45,6 +45,13 @@ class KeyGetTestCase(St2TestCase):
         result = task.convert_result_from_json(res, convert)
         self.assertEquals(result, {'result': {'blah': 'xxx'}})
 
+    def test_convert_result_from_json_result_string_no_value(self):
+        res = {'result': 'string with non-json data'}
+        convert = True
+        task = KeyGet()
+        result = task.convert_result_from_json(res, convert)
+        self.assertEquals(result, {'result': 'string with non-json data'})
+
     def test_convert_result_from_json_no_result(self):
         res = {'value': '["a", "b", "c"]'}
         convert = True

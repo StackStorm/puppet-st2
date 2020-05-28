@@ -466,4 +466,4 @@ if __name__ == '__main__':
 
     # wrap in an object because otherwise Bolt won't parse the
     # JSON array into an array, if it's an object then it works
-    print json.dumps({'result': keys})
+    print(json.dumps({'result': keys}))
