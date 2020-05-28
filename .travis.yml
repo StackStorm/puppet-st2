@@ -49,7 +49,7 @@ matrix:
       before_install:
         - echo 'no bundler needed here'
       script:
-        - make
+        - make python2
     - name: "Unit Testing - Bolt Tasks Python 3.6"
       language: python
       python: 3.6
@@ -57,7 +57,7 @@ matrix:
       before_install:
         - echo 'no bundler needed here'
       script:
-        - make
+        - make python3
     - name: "Documentation Testing"
       rvm: 2.5
       # use default Gemfile in repo root (from PDK)
