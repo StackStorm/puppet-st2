@@ -7,17 +7,17 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'files'))
 from st2_task_base import St2TaskBase
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'tasks'))
-from pack_install import PackInstall
+from pack_install import St2PackInstall
 
 
-class PackInstallTestCase(St2TestCase):
+class St2PackInstallTestCase(St2TestCase):
     __test__ = True
 
     def test_init(self):
-        task = PackInstall()
+        task = St2PackInstall()
         self.assertIsInstance(task, St2TaskBase)
 
-    @mock.patch('pack_install.PackInstall.exec_cmd')
+    @mock.patch('pack_install.St2PackInstall.exec_cmd')
     def test_task_impl(self, mock_exec_cmd):
         args = {
             'packs': ['pack1', 'pack2'],
@@ -25,7 +25,7 @@ class PackInstallTestCase(St2TestCase):
         mock_exec_cmd.return_value = {'result': {'value': 'expected'}}
 
         # run
-        task = PackInstall()
+        task = St2PackInstall()
         result = task.task(args)
 
         # assert

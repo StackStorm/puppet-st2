@@ -300,7 +300,11 @@ a node where StackStorm is installed.
 - `st2::key_load` - Loads a list of key/value pairs into the datastore
 - `st2::pack_install` - Installs a list of packs
 - `st2::pack_list` - Get a list of installed packs
+- `st2::pack_register`: Registers a list of packs based from paths on the filesystem
 - `st2::pack_remove` - Removes a list of packs
+- `st2::rule_disable`: Disables a rule
+- `st2::rule_list`: Lists all rules, or just the rules in a given pack
+- `st2::run`: Runs a StackStorm action
 
 #### Task Authentication
 
