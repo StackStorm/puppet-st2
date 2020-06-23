@@ -25,6 +25,12 @@
   
 - Fixed bug in `st2::key_decrypt` causing it to be incompatible with Python 3. (Bugfix)
   Contributed by @nmaludy
+  
+- Added an override for the `LC_ALL` environment variable in all Bolt tasks, so that the
+  locale is set to UTF-8, preventing a WARNING from being output from the `st2` command line.
+  Without this override, new versions of Bolt set the locale to `C` causing a warning and
+  preventing the JSON Output from the `st2` command from being parsed properly. (Bugfix)
+  Contributed by @nmaludy
 
 ## 1.6.0 (Feb 17, 2020)
 

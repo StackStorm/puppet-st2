@@ -15,20 +15,26 @@ from task_helper import TaskHelper, TaskError
 class St2TaskHelperTestCase(St2TestCase):
     __test__ = True
 
+    def expected_env(self, **kwargs):
+        env = copy.deepcopy(os.environ)
+        env.update(kwargs)
+        env['LC_ALL'] = 'en_US.UTF-8'
+        return env
+
     def test_init(self):
         task = St2TaskBase()
         self.assertIsInstance(task, TaskHelper)
 
     def test_login_no_args(self):
         args = {}
-        old_env = copy.deepcopy(os.environ)
+        env = self.expected_env()
 
         # run
         task = St2TaskBase()
         task.login(args)
 
         # assert
-        self.assertEquals(task.env, old_env)
+        self.assertEquals(task.env, env)
 
     def test_login_api_key(self):
         args = {
@@ -37,15 +43,14 @@ class St2TaskHelperTestCase(St2TestCase):
             'username': 'st2admin',
             'password': 'pass',
         }
-        old_env = copy.deepcopy(os.environ)
+        env = self.expected_env(ST2_API_KEY='xyz123')
 
         # run
         task = St2TaskBase()
         task.login(args)
 
         # assert
-        old_env['ST2_API_KEY'] = 'xyz123'
-        self.assertEquals(task.env, old_env)
+        self.assertEquals(task.env, env)
         self.assertEquals(task.api_key, 'xyz123')
 
     def test_login_auth_token(self):
@@ -54,15 +59,14 @@ class St2TaskHelperTestCase(St2TestCase):
             'username': 'st2admin',
             'password': 'pass',
         }
-        old_env = copy.deepcopy(os.environ)
+        env = self.expected_env(ST2_AUTH_TOKEN='1234567890')
 
         # run
         task = St2TaskBase()
         task.login(args)
 
         # assert
-        old_env['ST2_AUTH_TOKEN'] = '1234567890'
-        self.assertEquals(task.env, old_env)
+        self.assertEquals(task.env, env)
         self.assertEquals(task.auth_token, '1234567890')
 
     @mock.patch('subprocess.check_output')
@@ -71,7 +75,7 @@ class St2TaskHelperTestCase(St2TestCase):
             'username': 'st2admin',
             'password': 'pass',
         }
-        old_env = copy.deepcopy(os.environ)
+        env = self.expected_env(ST2_AUTH_TOKEN='1234')
         mock_subprocess.return_value = '1234'
 
         # run
@@ -79,8 +83,7 @@ class St2TaskHelperTestCase(St2TestCase):
         task.login(args)
 
         # assert
-        old_env['ST2_AUTH_TOKEN'] = '1234'
-        self.assertEquals(task.env, old_env)
+        self.assertEquals(task.env, env)
         self.assertEquals(task.username, 'st2admin')
         self.assertEquals(task.password, 'pass')
 
@@ -126,14 +129,14 @@ class St2TaskHelperTestCase(St2TestCase):
 
         # run
         task = St2TaskBase()
-        task.env = {'ST2_API_KEY': 'abc123'}
+        task.login({'api_key': 'abc123'})
         result = task.exec_cmd(cmd, 'list files')
 
         # assert
         self.assertEquals(result, {'result': 'blah'})
         mock_subprocess.assert_called_with(['ls', '-l'],
                                            stderr=subprocess.STDOUT,
-                                           env={'ST2_API_KEY': 'abc123'})
+                                           env=self.expected_env(ST2_API_KEY='abc123'))
 
     @mock.patch('subprocess.check_output')
     def test_exec_cmd_json_output(self, mock_subprocess):
@@ -142,14 +145,14 @@ class St2TaskHelperTestCase(St2TestCase):
 
         # run
         task = St2TaskBase()
-        task.env = {'ST2_API_KEY': 'abc123'}
+        task.login({'api_key': 'abc123'})
         result = task.exec_cmd(cmd, 'list files')
 
         # assert
         self.assertEquals(result, {'result': {"this_is_a_key": "value"}})
         mock_subprocess.assert_called_with(['ls', '-l'],
                                            stderr=subprocess.STDOUT,
-                                           env={'ST2_API_KEY': 'abc123'})
+                                           env=self.expected_env(ST2_API_KEY='abc123'))
 
     @mock.patch('subprocess.check_output')
     def test_exec_cmd_subprocess_exception(self, mock_subprocess):
@@ -178,7 +181,7 @@ class St2TaskHelperTestCase(St2TestCase):
             'api_key': 'xyz123'
         }
         mock_task_impl.return_value = 'blah'
-        old_env = copy.deepcopy(os.environ)
+        env = self.expected_env(ST2_API_KEY='xyz123')
 
         # run
         task = St2TaskBase()
@@ -187,8 +190,7 @@ class St2TaskHelperTestCase(St2TestCase):
         # assert
         self.assertEquals(result, 'blah')
         self.assertEquals(task.api_key, 'xyz123')
-        old_env['ST2_API_KEY'] = 'xyz123'
-        self.assertEquals(task.env, old_env)
+        self.assertEquals(task.env, env)
 
     def test_task_default_raises(self):
         task = St2TaskBase()
