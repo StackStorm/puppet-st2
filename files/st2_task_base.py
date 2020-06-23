@@ -27,6 +27,9 @@ class St2TaskBase(TaskHelper):
         # inherit environment variables from the Bolt context to preserve things
         # like locale... otherwise we get errors from the StackStorm client.
         self.env = os.environ
+        # force the locale to UTF8, otherwise we get warnings from the stackstorm side
+        # and result in us not being able to parse JSON output
+        self.env['LC_ALL'] = 'en_US.UTF-8'
 
         # prefer API key over auth tokens
         if self.api_key:
