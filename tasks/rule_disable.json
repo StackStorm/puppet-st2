@@ -1,0 +1,37 @@
+{
+  "description": "Disable a given rule",
+  "parameters": {
+    "rule": {
+      "type": "String",
+      "description": "Name of a rule to disable (format: pack_name.rule_name)"
+    },
+    "api_key": {
+      "description": "StackStorm API key to use for authentication (prefer this over username/password).",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "auth_token": {
+      "description": "StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "username": {
+      "description": "Username to use for StackStorm authentication.",
+      "type": "Optional[String]"
+    },
+    "password": {
+      "description": "Password to use for StackStorm authentication.",
+      "type": "Optional[String]",
+      "sensitive": true
+    }
+  },
+  "implementations": [
+    {
+      "name": "rule_disable.py",
+      "files": [
+        "python_task_helper/files/task_helper.py",
+        "st2/files/st2_task_base.py"
+      ]
+    }
+  ]
+}

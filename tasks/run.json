@@ -1,0 +1,41 @@
+{
+  "description": "Runs a StackStorm action",
+  "parameters": {
+    "action": {
+      "type": "String",
+      "description": "Name of the action to execute"
+    },
+    "parameters": {
+      "description": "Array of parameter strings to pass to the execution. Named arguments should be of the format 'param=value' positional parameters can be put in their normal order as strings.",
+      "type": "Optional[Array[String]]"
+    },
+    "api_key": {
+      "description": "StackStorm API key to use for authentication (prefer this over username/password).",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "auth_token": {
+      "description": "StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "username": {
+      "description": "Username to use for StackStorm authentication.",
+      "type": "Optional[String]"
+    },
+    "password": {
+      "description": "Password to use for StackStorm authentication.",
+      "type": "Optional[String]",
+      "sensitive": true
+    }
+  },
+  "implementations": [
+    {
+      "name": "run.py",
+      "files": [
+        "python_task_helper/files/task_helper.py",
+        "st2/files/st2_task_base.py"
+      ]
+    }
+  ]
+}

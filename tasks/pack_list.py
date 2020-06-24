@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'files'))
 from st2_task_base import St2TaskBase
 
 
-class PackList(St2TaskBase):
+class St2PackList(St2TaskBase):
 
     def task_impl(self, args):
         # get a list of packs
@@ -16,4 +16,4 @@ class PackList(St2TaskBase):
 
 
 if __name__ == '__main__':
-    PackList().run()
+    St2PackList().run()

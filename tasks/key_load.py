@@ -9,7 +9,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'files'))
 from st2_task_base import St2TaskBase
 
 
-class KeyLoad(St2TaskBase):
+class St2KeyLoad(St2TaskBase):
 
     def task_impl(self, args):
         temp_fd = None
@@ -37,4 +37,4 @@ class KeyLoad(St2TaskBase):
 
 
 if __name__ == '__main__':
-    KeyLoad().run()
+    St2KeyLoad().run()

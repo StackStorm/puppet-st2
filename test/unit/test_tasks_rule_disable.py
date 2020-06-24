@@ -7,28 +7,28 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'files'))
 from st2_task_base import St2TaskBase
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'tasks'))
-from pack_remove import St2PackRemove
+from rule_disable import St2RuleDisable
 
 
-class St2PackRemoveTestCase(St2TestCase):
+class St2RuleDisableTestCase(St2TestCase):
     __test__ = True
 
     def test_init(self):
-        task = St2PackRemove()
+        task = St2RuleDisable()
         self.assertIsInstance(task, St2TaskBase)
 
-    @mock.patch('pack_remove.St2PackRemove.exec_cmd')
+    @mock.patch('rule_disable.St2RuleDisable.exec_cmd')
     def test_task_impl(self, mock_exec_cmd):
         args = {
-            'packs': ['pack1', 'pack2'],
+            'rule': 'rule1',
         }
         mock_exec_cmd.return_value = {'result': {'value': 'expected'}}
 
         # run
-        task = St2PackRemove()
+        task = St2RuleDisable()
         result = task.task(args)
 
         # assert
         self.assertEquals(result, {'result': {'value': 'expected'}})
-        mock_exec_cmd.assert_called_with(['st2', 'pack', 'remove', '--json', 'pack1', 'pack2'],
-                                         'remove packs')
+        mock_exec_cmd.assert_called_with(['st2', 'rule', 'disable', '--json', 'rule1'],
+                                         'disable pack rules')

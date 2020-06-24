@@ -7,20 +7,20 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'files'))
 from st2_task_base import St2TaskBase
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..', 'tasks'))
-from key_load import KeyLoad
+from key_load import St2KeyLoad
 
 
-class KeyLoadTestCase(St2TestCase):
+class St2KeyLoadTestCase(St2TestCase):
     __test__ = True
 
     def test_init(self):
-        task = KeyLoad()
+        task = St2KeyLoad()
         self.assertIsInstance(task, St2TaskBase)
 
     @mock.patch('os.remove')
     @mock.patch('os.fdopen')
     @mock.patch('tempfile.mkstemp')
-    @mock.patch('key_load.KeyLoad.exec_cmd')
+    @mock.patch('key_load.St2KeyLoad.exec_cmd')
     def test_task_impl(self, mock_exec_cmd, mock_mkstemp, mock_fdopen, mock_remove):
         args = {
             'keys': [
@@ -42,7 +42,7 @@ class KeyLoadTestCase(St2TestCase):
         mock_fdopen.return_value = mock_context_manager
         mock_exec_cmd.return_value = 'expected'
 
-        task = KeyLoad()
+        task = St2KeyLoad()
         result = task.task(args)
 
         self.assertEquals(result, 'expected')
@@ -56,7 +56,7 @@ class KeyLoadTestCase(St2TestCase):
     @mock.patch('os.remove')
     @mock.patch('os.fdopen')
     @mock.patch('tempfile.mkstemp')
-    @mock.patch('key_load.KeyLoad.exec_cmd')
+    @mock.patch('key_load.St2KeyLoad.exec_cmd')
     def test_task_impl_convert(self, mock_exec_cmd, mock_mkstemp, mock_fdopen, mock_remove):
         args = {
             'keys': [
@@ -79,7 +79,7 @@ class KeyLoadTestCase(St2TestCase):
         mock_fdopen.return_value = mock_context_manager
         mock_exec_cmd.return_value = 'expected'
 
-        task = KeyLoad()
+        task = St2KeyLoad()
         result = task.task(args)
 
         self.assertEquals(result, 'expected')

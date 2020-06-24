@@ -8,7 +8,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'files'))
 from st2_task_base import St2TaskBase
 
 
-class KeyGet(St2TaskBase):
+class St2KeyGet(St2TaskBase):
 
     def convert_result_from_json(self, result, convert):
         # convert value from a JSON string to dict/list/etc
@@ -39,4 +39,4 @@ class KeyGet(St2TaskBase):
 
 
 if __name__ == '__main__':
-    KeyGet().run()
+    St2KeyGet().run()

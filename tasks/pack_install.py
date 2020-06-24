@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'files'))
 from st2_task_base import St2TaskBase
 
 
-class PackInstall(St2TaskBase):
+class St2PackInstall(St2TaskBase):
 
     def task_impl(self, args):
         # install the list of packs
@@ -17,4 +17,4 @@ class PackInstall(St2TaskBase):
 
 
 if __name__ == '__main__':
-    PackInstall().run()
+    St2PackInstall().run()

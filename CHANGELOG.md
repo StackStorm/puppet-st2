@@ -31,6 +31,15 @@
   Without this override, new versions of Bolt set the locale to `C` causing a warning and
   preventing the JSON Output from the `st2` command from being parsed properly. (Bugfix)
   Contributed by @nmaludy
+  
+- Added new Bolt tasks:
+  - `st2::pack_register`: Registers a list of packs based from paths on the filesystem
+  - `st2::rule_disable`: Disables a rule
+  - `st2::rule_list`: Lists all rules, or just the rules in a given pack
+  - `st2::run`: Runs a StackStorm action
+  
+  (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.6.0 (Feb 17, 2020)
 
