@@ -7,7 +7,7 @@ fixtures:
     stdlib: "puppetlabs/stdlib"
     staging: "puppet/staging"
     apt: "puppetlabs/apt"
-    epel: "stahnma/epel"
+    epel: "puppet/epel"
     concat: "puppetlabs/concat"
     sudo: "saz/sudo"
     python: "puppet/python"

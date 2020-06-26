@@ -40,6 +40,9 @@
   
   (Enhancement)
   Contributed by @nmaludy
+  
+- Replaced deprecated `stahnma-epel` module with `puppet-epel`. (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.6.0 (Feb 17, 2020)
 
