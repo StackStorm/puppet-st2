@@ -32,7 +32,6 @@
     * [Supported Platforms](#supported-platforms)
     * [Supported Puppet versions](#supported-puppet-versions)
     * [Upgrading StackStorm](#upgrading-stackstorm)
-    * [Ubuntu 16.04](#ubuntu-16.04)
 5. [Development - Guide for contributing to the module](#development)
     * [Maintainers](#maintainers)
     * [Help](#help)
