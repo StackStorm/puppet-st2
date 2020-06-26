@@ -133,7 +133,7 @@ class st2::auth::ldap (
   }
 
   # install package dependency
-  $_dep_pkgs = $::osfamily ? {
+  $_dep_pkgs = $facts['os']['family'] ? {
     'Debian' => ['gcc', 'libldap2-dev'],
     'RedHat' => ['gcc', 'openldap-devel'],
     default  => undef,

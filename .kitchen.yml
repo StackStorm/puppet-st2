@@ -80,6 +80,28 @@ platforms:
     provisioner:
       puppetfile_path: build/centos7-puppet6/Puppetfile
 
+  # CentOS8 with Systemd - Puppet 5
+  - name: centos8-puppet5
+    driver:
+      platform: centos
+      dockerfile: build/centos8-puppet5/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos8-puppet5/Puppetfile
+
+  # CentOS8 with Systemd - Puppet 6
+  - name: centos8-puppet6
+    driver:
+      platform: centos
+      dockerfile: build/centos8-puppet6/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos8-puppet6/Puppetfile
+
   # Ubuntu Xenial with Systemd - Puppet 5
   - name: ubuntu16-puppet5
     driver:

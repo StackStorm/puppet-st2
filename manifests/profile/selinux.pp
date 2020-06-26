@@ -5,9 +5,16 @@
 #
 class st2::profile::selinux inherits st2::params {
   # note: the selinux module downcases the mode in the fact
-  if ($::osfamily == 'RedHat') and ($::selinux_current_mode == 'enforcing') {
-    if !defined(Package['policycoreutils-python']) {
-      package { 'policycoreutils-python':
+  if ($facts['os']['family'] == 'RedHat') and ($facts['selinux_current_mode'] == 'enforcing') {
+    if versioncmp($facts['os']['release']['major'], '8') >= 0 {
+      $policycoreutils_package = 'policycoreutils-python-utils'
+    }
+    else {
+      $policycoreutils_package = 'policycoreutils-python'
+    }
+
+    if !defined(Package[$policycoreutils_package]) {
+      package { $policycoreutils_package:
         ensure => present,
       }
     }
@@ -17,7 +24,6 @@ class st2::profile::selinux inherits st2::params {
       ensure => 'on',
       name   => 'httpd_can_network_connect',
     }
-
     # note: rabbitmq puppet module manages its own SELinux config
   }
 }

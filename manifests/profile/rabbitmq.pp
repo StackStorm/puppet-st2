@@ -57,7 +57,7 @@ class st2::profile::rabbitmq (
   }
 
   # RHEL needs EPEL installed prior to rabbitmq
-  if $::osfamily == 'RedHat' {
+  if $facts['os']['family'] == 'RedHat' {
     Class['epel']
     -> Class['rabbitmq']
 

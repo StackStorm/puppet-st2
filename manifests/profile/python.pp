@@ -4,7 +4,7 @@
 #  include st2::profile::python
 #
 class st2::profile::python {
-  if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
+  if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '6') {
     package {'python27':
       ensure => present,
     }
@@ -30,6 +30,4 @@ class st2::profile::python {
       }
     }
   }
-
-
 }

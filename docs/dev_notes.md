@@ -115,3 +115,164 @@ PUPPET_VERSION="~> 5.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lo
 
 ```
 
+## Adding support for a new OS or Puppet version
+
+### 1. Create new build/<os>-<puppet> environments
+
+In the `build/` directory, create new directories for your OS (or copy from existing).
+Directory naming format is `build/<os>-<puppet>` (example: `build/centos8-puppet6`).
+
+**TIP** Start from the previous major release of the OS you're using and just copy those, then edit.
+
+#### build/<os>-<puppet>/Dockerfile
+
+This file is used for unit testing. You'll need to edit the following things:
+
+- Change the `FROM` container to the appropriate OS version from `st2packaging-dockerfiles` repo: https://github.com/StackStorm/st2packaging-dockerfiles
+- Change the `Ruby` version installed by `rvm` to match whatever is used by that Puppet version
+- Change the `yum` repo to install the proper Puppet version for that OS
+- Change `ENV PUPPET_GEM_VERSION "~> 6.0"` to match your Puppet version
+
+#### build/<os>-<puppet>/Dockerfile.kitchen
+
+This file is used by Kitchen for integration testing.
+
+- Change the `FROM` container to the appropriate OS version from `st2packaging-dockerfiles` repo: https://github.com/StackStorm/st2packaging-dockerfiles
+- Change the `yum` repo to install the proper Puppet version for that OS
+
+#### build/<os>-<puppet>/Puppetfile
+
+You probably won't have to do anything here, but if you want:
+
+- Spin up a vagrant box for the OS you're testing.
+- Follow the instructions in the Puppetfile to generate the module list
+```shell
+# In the puppet-st2 repo
+pdk build
+
+# upload the package to Vagrant box
+
+
+# install the module
+puppet module install ./pkg/stackstorm-st2-x.y.z.tar.gz
+# list the module dependencies
+puppet module list --tree
+```
+
+### 2. Edit .travis.yml
+
+`.travis.yml` contains the build matrix for Travis.
+
+Create new integration testing `jobs` for your OS.
+
+The `TEST_NAME` environment variable should match your `<os>-<puppet>` pattern from above.
+
+Example:
+```yaml
+    - name: "RHEL/CentOS 8 - Puppet 5"
+      rvm: 2.5
+      gemfile: build/kitchen/Gemfile
+      env:
+        - TEST_NAME="centos8-puppet5"
+    - name: "RHEL/CentOS 8 - Puppet 6"
+      rvm: 2.5
+      gemfile: build/kitchen/Gemfile
+      env:
+        - TEST_NAME="centos8-puppet6"
+```
+
+If you're adding a new Puppet version, copy an existing `Unit Testing` job.
+ - Make sure the `rvm` version matches the suppred Ruby version for that version of Puppet
+ - Edit `PUPPET_GEM_VERSION` environment variable to match your major version of Puppet
+
+Example:
+```yaml
+    - name: "Unit Testing - Puppet 6"
+      rvm: 2.5
+      # use default Gemfile in repo root (from PDK)
+      env:
+        - UNIT_TEST="true"
+        - PUPPET_GEM_VERSION="~> 6.0"
+        - CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop parallel_spec"
+```
+
+### 3. Edit .kitchen.yml
+
+`.kitchen.yml` contains the test matrix for integation testing used by Travis.
+
+Create new integration test platforms (copy some existing ones) and change the following:
+
+- `name` This should be your new `<os>-<puppet>` name
+- `driver.dockerfile` This should be the path to your `Dockerfile.kitchen`, example `build/centos8-puppet5/Dockerfile.kitchen`
+- `provisioner.puppetfile_path` This should be the path to your `Puppetfil`, example `build/centos8-puppet5/Puppetfile`
+
+Example:
+```yaml
+  # CentOS8 with Systemd - Puppet 6
+  - name: centos8-puppet6
+    driver:
+      platform: centos
+      dockerfile: build/centos8-puppet6/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos8-puppet6/Puppetfile
+```
+
+### 4. Edit test/integration/stackstorm/inspec.yml
+
+`test/integration/stackstorm/inspec.yml` contains the supported OS versions for Inspec testing
+
+Add a new `supports` platform. On CentOS you can do `8.*` or whatever your major version is.
+On Ubuntu you need to match the version exactly, example `18.04`.
+
+Example:
+```
+supports:
+  - os-name: centos
+    release: 8.*
+```
+
+### 5. Edit metadata.json
+
+`metadata.json` describes the OSes and Puppet versions that are supported by this module.
+
+If you're adding support for a new OS, add it to `operatingsystem_support`, example:
+
+```json
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [
+        "6",
+        "7",
+        "8"
+      ]
+    },
+    ...
+```
+
+If you're adding support for a new Puppet version, change the version restrictions for `puppet` in `requirements`, example:
+
+```json
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.7.0 < 7.0.0"
+    }
+  ],
+```
+
+### 6. Add supported platforms to README
+
+Edit the `Supported Platforms` section in `README.md` to include your new version.
+
+### 7. Make code changes in the manifests/ directory
+
+Places to check for new OS compatability (basically grep for `$facts['os']`):
+- manifests/init.pp
+- manifests/repo.pp
+- manifests/profile/mongodb.pp
+
+

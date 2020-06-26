@@ -389,6 +389,7 @@ $res = run_task('st2::key_get', $stackstorm_target,
 * Ubuntu 18.04
 * RHEL/CentOS 6
 * RHEL/CentOS 7
+* RHEL/CentOS 8
 
 ### Supported Puppet versions
 

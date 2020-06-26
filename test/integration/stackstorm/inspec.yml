@@ -14,6 +14,8 @@ supports:
     release: 6.*
   - os-name: centos
     release: 7.*
+  - os-name: centos
+    release: 8.*
   - os-name: ubuntu
     release: 16.04
   - os-name: ubuntu

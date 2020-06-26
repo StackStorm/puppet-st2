@@ -46,8 +46,8 @@ class st2::profile::nodejs(
 
   # Red Hat 7.x + already have NodeJS 6.x installed
   # trying to install from nodesource repos fails, so just use the builtin
-  if ($::osfamily == 'RedHat' and
-      versioncmp($::operatingsystemmajrelease, '7') >= 0) {
+  if ($facts['os']['family'] == 'RedHat' and
+      versioncmp($facts['os']['release']['major'], '7') >= 0) {
     if $use_rhel7_builtin {
       class { 'nodejs':
         manage_package_repo => false,
@@ -66,7 +66,7 @@ class st2::profile::nodejs(
       # because the npm package from EPEL has dependencies on the nodejs
       # and st2chatops package.
       # This allows us go upgrade RHEL7 clients from NodeJS 6 -> 10
-      Package<| title == $::nodejs::npm_package_name |> {
+      Package<| title == $nodejs::npm_package_name |> {
         uninstall_options => ['--nodeps'],
         provider          => 'rpm',
       }

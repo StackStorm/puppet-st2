@@ -81,7 +81,7 @@ class st2::profile::server (
 
   ########################################
   ## Packages
-  if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
+  if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '6') {
     package { 'libffi-devel':
       ensure => present,
       before => Package[$::st2::params::st2_server_packages],

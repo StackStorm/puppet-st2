@@ -19,7 +19,7 @@ class st2::profile::postgresql(
   $manage   = $::st2::mistral_manage,
 ) inherits st2 {
   if $manage and !defined(Class['postgresql::server']) {
-    if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
+    if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '6') {
       class { 'postgresql::globals':
         version             => '9.4',
         manage_package_repo => true,

@@ -41,7 +41,7 @@ class st2::auth::pam(
   }
 
   # install package dependency
-  $_dep_pkgs = $::osfamily ? {
+  $_dep_pkgs = $facts['os']['family'] ? {
     'Debian' => 'libpam0g',
     'RedHat' => 'pam-devel',
     default  => undef,

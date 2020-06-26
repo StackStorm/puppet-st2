@@ -63,7 +63,7 @@ class st2::profile::mistral(
     ### End Mistral Variables ###
 
     ### Mistral Packages ###
-    if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
+    if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '6') {
       package {'st2python':
         ensure => 'installed',
         before => Package[$st2::params::st2_mistral_packages],
@@ -119,7 +119,7 @@ class st2::profile::mistral(
       owner => $db_username,
     }
 
-    if str2bool($::mistral_bootstrapped) != true {
+    if str2bool($facts['mistral_bootstrapped']) != true {
       exec { 'setup mistral database':
         command     => "mistral-db-manage --config-file ${mistral_config} upgrade head",
         refreshonly => true,
