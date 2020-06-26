@@ -2,6 +2,8 @@
 
 ## Development
 
+## 1.7.0 (Jun 26, 2020)
+
 - Refactored the system StackStorm repository handling. This replaces the `PackageCloud`
   Puppet module because it was _not_ idempotent. At the same time we've moved the repository
   handling from the old-school `st2::profile::repos` to the new idiomatic
