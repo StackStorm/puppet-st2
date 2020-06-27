@@ -29,7 +29,7 @@ stages:
   - test
   - if: tag =~ ^v\d
     name: deploy
-      
+
 jobs:
   fast_finish: true
   include:
@@ -134,6 +134,12 @@ notifications:
     on_pull_requests: false
     on_success: change # default: always
     on_failure: always # default: always
+
+# restrict build so our tagging deploys work properly
+branches:
+  only:
+  - master
+  - /^v\d/
 
 # deploy to forge when tagged with a new release
 deploy:
