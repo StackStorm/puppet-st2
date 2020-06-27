@@ -1,6 +1,6 @@
 ---
-sudo: false
-dist: trusty
+os: linux
+dist: bionic
 services: docker
 language: ruby
 cache: bundler
