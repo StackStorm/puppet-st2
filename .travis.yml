@@ -15,10 +15,6 @@ before_install:
   - bundle -v
 bundler_args: --without system_tests
 
-branches:
-  only:
-    - master
-
 # execute all commands in a single script with 'set -e' at the top
 # otherwise if you specify >1 command here, travis will try to run them
 # all and if one fails it will ignore the failure and go onto the next
@@ -125,6 +121,9 @@ jobs:
     - name: "Deploy to Forge"
       stage: deploy
       env: DEPLOY_TO_FORGE=yes
+      script:
+        # override the script so travis just goes on to do the deploy
+        - echo "Deploying to Forge..."
 
 notifications:
   # Post build failures to '#puppet' channel in 'stackstorm-community' Slack
