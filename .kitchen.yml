@@ -39,25 +39,6 @@ provisioner:
     - 2
 
 platforms:
-
-  # CentOS6 with sysV init - Puppet 5
-  - name: centos6-puppet5
-    driver:
-      platform: centos
-      dockerfile: build/centos6-puppet5/Dockerfile.kitchen
-      run_command: /usr/sbin/sshd -D
-    provisioner:
-      puppetfile_path: build/centos6-puppet5/Puppetfile
-
-  # CentOS6 with sysV init - Puppet 6
-  - name: centos6-puppet6
-    driver:
-      platform: centos
-      dockerfile: build/centos6-puppet6/Dockerfile.kitchen
-      run_command: /usr/sbin/sshd -D
-    provisioner:
-      puppetfile_path: build/centos6-puppet6/Puppetfile
-
   # CentOS7 with Systemd - Puppet 5
   - name: centos7-puppet5
     driver:

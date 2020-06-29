@@ -5,7 +5,7 @@ describe 'st2::profile::server' do
     supported_os: [
       {
         'operatingsystem'        => 'RedHat',
-        'operatingsystemrelease' => ['6', '7'],
+        'operatingsystemrelease' => ['7'],
       },
       {
         'operatingsystem'        => 'Ubuntu',
