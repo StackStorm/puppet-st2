@@ -67,8 +67,6 @@ forge. We manage the module dependenies using a `Puppetfile` for each OS we supp
 These `Puppetfile` can be used both with [r10k](https://github.com/puppetlabs/r10k)
 and [librarian-puppet](http://librarian-puppet.com/).
 
- * RHEL/CentOS 6 - Puppet 5 - [build/centos6-puppet5/Puppetfile](build/centos6-puppet5/Puppetfile)
- * RHEL/CentOS 6 - Puppet 6 - [build/centos6-puppet6/Puppetfile](build/centos6-puppet6/Puppetfile)
  * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
  * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
@@ -386,13 +384,18 @@ $res = run_task('st2::key_get', $stackstorm_target,
 
 * Ubuntu 16.04
 * Ubuntu 18.04
-* RHEL/CentOS 6
 * RHEL/CentOS 7
 
 ### Supported Puppet versions
 
 * Puppet 5
 * Puppet 6
+
+#### :warning: End-of-Support Notice - CentOS 6
+
+Support for CentOS 6 has been dropped as of StackStorm `3.3.0`.
+
+As of version `1.8` this module no longer supports CentOS 6 to coordinate with these changes.
 
 #### :warning: Deprecation Notice - Puppet 4
 

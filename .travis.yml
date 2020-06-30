@@ -70,18 +70,6 @@ jobs:
       env:
         - DOCS_TEST="true"
         - PUPPET_GEM_VERSION="~> 6.0"
-    - name: "RHEL/CentOS 6 - Puppet 5"
-      stage: test
-      rvm: 2.5
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="centos6-puppet5"
-    - name: "RHEL/CentOS 6 - Puppet 6"
-      stage: test
-      rvm: 2.5
-      gemfile: build/kitchen/Gemfile
-      env:
-        - TEST_NAME="centos6-puppet6"
     - name: "RHEL/CentOS 7 - Puppet 5"
       stage: test
       rvm: 2.5

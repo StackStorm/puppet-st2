@@ -50,9 +50,7 @@ provider   = ENV['PROVIDER'] ? ENV['PROVIDER'] : 'libvirt'
 provider   = provider.to_sym
 
 # The following boxes will work for both :virtualbox and :libvirt providers
-#  - centos/6
 #  - centos/7
-#  - generic/ubuntu1404
 #  - generic/ubuntu1604
 #  - generic/ubuntu1804
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/centos8'

@@ -63,13 +63,6 @@ class st2::profile::mistral(
     ### End Mistral Variables ###
 
     ### Mistral Packages ###
-    if ($::osfamily == 'RedHat') and ($::operatingsystemmajrelease == '6') {
-      package {'st2python':
-        ensure => 'installed',
-        before => Package[$st2::params::st2_mistral_packages],
-      }
-    }
-
     package { $st2::params::st2_mistral_packages:
       ensure => $version,
       tag    => ['st2::packages', 'st2::mistral::packages'],

@@ -2,6 +2,9 @@
 
 ## Development
 
+- Drop support for CentOS 6 #304 (Enhancement)
+  Contributed by @nmaludy
+
 ## 1.7.0 (Jun 26, 2020)
 
 - Refactored the system StackStorm repository handling. This replaces the `PackageCloud`
