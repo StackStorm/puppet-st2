@@ -95,82 +95,83 @@ class st2::profile::mongodb (
       #
       # To prevent this from running every time we've create a puppet fact
       # called $::mongodb_auth_init that is set when
+      if !$facts['mongodb_auth_init'] {
+        # unfortinately there is no way to synchronously force a service restart
+        # in Puppet, so we have to revert to exec... sorry
+        include mongodb::params
+        $_mongodb_stop_cmd = "systemctl stop ${::mongodb::params::service_name}"
+        $_mongodb_start_cmd = "systemctl start ${::mongodb::params::service_name}"
+        $_mongodb_restart_cmd = "systemctl restart ${::mongodb::params::service_name}"
+        $_mongodb_exec_path = ['/usr/sbin', '/usr/bin', '/sbin', '/bin']
 
-      # unfortinately there is no way to synchronously force a service restart
-      # in Puppet, so we have to revert to exec... sorry
-      include mongodb::params
-      $_mongodb_stop_cmd = "systemctl stop ${::mongodb::params::service_name}"
-      $_mongodb_start_cmd = "systemctl start ${::mongodb::params::service_name}"
-      $_mongodb_restart_cmd = "systemctl restart ${::mongodb::params::service_name}"
-      $_mongodb_exec_path = ['/usr/sbin', '/usr/bin', '/sbin', '/bin']
+        # stop mongodb; disable auth
+        exec { 'mongodb - stop service':
+          command => $_mongodb_stop_cmd,
+          unless  => 'grep "^security.authorization: disabled" /etc/mongod.conf',
+          path    => $_mongodb_exec_path,
+        }
+        exec { 'mongodb - disable auth':
+          command     => 'sed -i \'s/security.authorization: enabled/security.authorization: disabled/g\' /etc/mongod.conf',
+          refreshonly => true,
+          path        => $_mongodb_exec_path,
+        }
+        facter::fact { 'mongodb_auth_init':
+          value => bool2str(true),
+        }
 
-      # stop mongodb; disable auth
-      exec { 'mongodb - stop service':
-        command => $_mongodb_stop_cmd,
-        unless  => 'grep "^security.authorization: disabled" /etc/mongod.conf',
-        path    => $_mongodb_exec_path,
-      }
-      exec { 'mongodb - disable auth':
-        command     => 'sed -i \'s/security.authorization: enabled/security.authorization: disabled/g\' /etc/mongod.conf',
-        refreshonly => true,
-        path        => $_mongodb_exec_path,
-      }
-      facter::fact { 'mongodb_auth_init':
-        value => bool2str(true),
-      }
+        # start mongodb with auth disabled
+        exec { 'mongodb - start service':
+          command     => $_mongodb_start_cmd,
+          refreshonly => true,
+          path        => $_mongodb_exec_path,
+        }
 
-      # start mongodb with auth disabled
-      exec { 'mongodb - start service':
-        command     => $_mongodb_start_cmd,
-        refreshonly => true,
-        path        => $_mongodb_exec_path,
-      }
+        # create mongodb admin database with auth disabled
 
-      # create mongodb admin database with auth disabled
+        # enable auth
+        exec { 'mongodb - enable auth':
+          command => 'sed -i \'s/security.authorization: disabled/security.authorization: enabled/g\' /etc/mongod.conf',
+          unless  => 'grep "^security.authorization: enabled" /etc/mongod.conf',
+          path    => $_mongodb_exec_path,
+        }
+        exec { 'mongodb - restart service':
+          command     => $_mongodb_restart_cmd,
+          refreshonly => true,
+          path        => $_mongodb_exec_path,
+        }
 
-      # enable auth
-      exec { 'mongodb - enable auth':
-        command => 'sed -i \'s/security.authorization: disabled/security.authorization: enabled/g\' /etc/mongod.conf',
-        unless  => 'grep "^security.authorization: enabled" /etc/mongod.conf',
-        path    => $_mongodb_exec_path,
-      }
-      exec { 'mongodb - restart service':
-        command     => $_mongodb_restart_cmd,
-        refreshonly => true,
-        path        => $_mongodb_exec_path,
-      }
-
-      # wait for MongoDB restart by trying to establish a connection
-      if $db_bind_ips[0] == '0.0.0.0' {
-        $_mongodb_bind_ip = '127.0.0.1'
-      } else {
-        $_mongodb_bind_ip = $db_bind_ips[0]
-      }
-      mongodb_conn_validator { 'mongodb - wait for restart':
-        server  => $_mongodb_bind_ip,
-        port    => $db_port,
-        timeout => '240',
-      }
+        # wait for MongoDB restart by trying to establish a connection
+        if $db_bind_ips[0] == '0.0.0.0' {
+          $_mongodb_bind_ip = '127.0.0.1'
+        } else {
+          $_mongodb_bind_ip = $db_bind_ips[0]
+        }
+        mongodb_conn_validator { 'mongodb - wait for restart':
+          server  => $_mongodb_bind_ip,
+          port    => $db_port,
+          timeout => '240',
+        }
 
 
-      # ensure MongoDB config is present and service is running
-      Class['mongodb::server::config']
-      -> Class['mongodb::server::service']
-      # stop mongodb; disable auth
-      -> Exec['mongodb - stop service']
-      ~> Exec['mongodb - disable auth']
-      ~> Facter::Fact['mongodb_auth_init']
-      # start mongodb with auth disabled
-      ~> Exec['mongodb - start service']
-      # create mongodb admin database with auth disabled
-      -> Mongodb::Db['admin']
-      # enable auth
-      ~> Exec['mongodb - enable auth']
-      ~> Exec['mongodb - restart service']
-      # wait for MongoDB restart
-      ~> Mongodb_conn_validator['mongodb - wait for restart']
-      # create other databases
-      -> Mongodb::Db <| title != 'admin' |>
+        # ensure MongoDB config is present and service is running
+        Class['mongodb::server::config']
+        -> Class['mongodb::server::service']
+        # stop mongodb; disable auth
+        -> Exec['mongodb - stop service']
+        ~> Exec['mongodb - disable auth']
+        ~> Facter::Fact['mongodb_auth_init']
+        # start mongodb with auth disabled
+        ~> Exec['mongodb - start service']
+        # create mongodb admin database with auth disabled
+        -> Mongodb::Db['admin']
+        # enable auth
+        ~> Exec['mongodb - enable auth']
+        ~> Exec['mongodb - restart service']
+        # wait for MongoDB restart
+        ~> Mongodb_conn_validator['mongodb - wait for restart']
+        # create other databases
+        -> Mongodb::Db <| title != 'admin' |>
+      }
     }
     else {
       class { 'mongodb::server':
