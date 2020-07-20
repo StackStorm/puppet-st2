@@ -199,7 +199,7 @@ class st2::profile::server (
     path    => $conf_file,
     section => 'api',
     setting => 'logging',
-    value   => "/etc/st2/${_logger_config}.api.conf",
+    value   => "/etc/st2/${_logger_config}.api.gunicorn.conf",
     tag     => 'st2::config',
   }
 
@@ -233,7 +233,7 @@ class st2::profile::server (
     path    => $conf_file,
     section => 'auth',
     setting => 'logging',
-    value   => "/etc/st2/${_logger_config}.auth.conf",
+    value   => "/etc/st2/${_logger_config}.auth.gunicorn.conf",
     tag     => 'st2::config',
   }
 
@@ -316,6 +316,16 @@ class st2::profile::server (
     section => 'sensorcontainer',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.sensorcontainer.conf",
+    tag     => 'st2::config',
+  }
+
+  ## Stream Settings
+  ini_setting { 'stream_logging':
+    ensure  => present,
+    path    => $conf_file,
+    section => 'stream',
+    setting => 'logging',
+    value   => "/etc/st2/${_logger_config}.stream.gunicorn.conf",
     tag     => 'st2::config',
   }
 
