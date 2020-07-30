@@ -13,6 +13,8 @@
 #   The path where st2 config is stored
 # @param use_ssl
 #   Enable/Disable SSL for all st2 APIs
+# @param ssl_cert_manage
+#   Boolean to determine if this module should manage the SSL certificate used by nginx.
 # @param ssl_dir
 #   Directory where st2web will look for its SSL info.
 #   (default: /etc/ssl/st2)
@@ -227,6 +229,7 @@ class st2(
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
   $use_ssl                  = $::st2::params::use_ssl,
+  $ssl_cert_manage          = true,
   $ssl_dir                  = $::st2::params::ssl_dir,
   $ssl_cert                 = $::st2::params::ssl_cert,
   $ssl_key                  = $::st2::params::ssl_key,

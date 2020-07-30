@@ -29,10 +29,12 @@
 * [`st2::profile::postgresql`](#st2profilepostgresql): st2 compatable installation of PostgreSQL and dependencies for use with StackStorm and Mistral.
 * [`st2::profile::python`](#st2profilepython): StackStorm compatable installation of Python and dependencies.
 * [`st2::profile::rabbitmq`](#st2profilerabbitmq): StackStorm compatable installation of RabbitMQ and dependencies.
-* [`st2::profile::repos`](#st2profilerepos): Manages the installation of st2 required repos for installing the StackStorm packages.
 * [`st2::profile::selinux`](#st2profileselinux): Configure SELinux so that StackStorm services run properly
 * [`st2::profile::server`](#st2profileserver): Profile to install, configure and manage all server components for st2
 * [`st2::profile::web`](#st2profileweb): Profile to install, configure and manage StackStorm web UI (st2web).
+* [`st2::repo`](#st2repo): Manages the installation of st2 required repos for installing the StackStorm packages.
+* [`st2::repo::apt`](#st2repoapt): Apt repo for StackStorm
+* [`st2::repo::yum`](#st2repoyum): Yum repo for StackStorm
 * [`st2::scheduler`](#st2scheduler): Manages the <code>st2scheduler</code> service.
 * [`st2::server::datastore_keys`](#st2serverdatastore_keys): Generates and manages crypto keys for use with the StackStorm datastore
 * [`st2::stanley`](#st2stanley): Installs the default admin user for st2 (stanley).
@@ -57,6 +59,23 @@
 * [`st2::urlencode`](#st2urlencode): URL encodes a string
 * [`st2::version_ge`](#st2version_ge): Determines if the StackStorm version installed or the version requested
 by the user is greater than or equal to <code>$version</code>.
+
+**Data types**
+
+* [`St2::Repository`](#st2repository): Validate the type of system package repository for StackStorm
+
+**Tasks**
+
+* [`key_decrypt`](#key_decrypt): Decrypt a StackStorm key/value pair. TODO - Remove this when the following is closed: https://github.com/StackStorm/st2/issues/4545
+* [`key_get`](#key_get): Retrieve the value for a key from the StackStorm datastore
+* [`key_load`](#key_load): Load a list of a StackStorm key/value pairs into the datastore
+* [`pack_install`](#pack_install): Install a list of packs
+* [`pack_list`](#pack_list): Get a list of packs
+* [`pack_register`](#pack_register): Registers a pack that exists on the filesystem
+* [`pack_remove`](#pack_remove): Remove a list of packs
+* [`rule_disable`](#rule_disable): Disable a given rule
+* [`rule_list`](#rule_list): Return a list of rules.
+* [`run`](#run): Runs a StackStorm action
 
 ## Classes
 
@@ -127,7 +146,7 @@ Default value: 'present'
 
 ##### `repository`
 
-Data type: `Any`
+Data type: `St2::Repository`
 
 Release repository to enable. 'stable', 'unstable'
 (default = 'stable')
@@ -157,6 +176,14 @@ Data type: `Any`
 Enable/Disable SSL for all st2 APIs
 
 Default value: $::st2::params::use_ssl
+
+##### `ssl_cert_manage`
+
+Data type: `Any`
+
+Boolean to determine if this module should manage the SSL certificate used by nginx.
+
+Default value: `true`
 
 ##### `ssl_dir`
 
@@ -324,6 +351,14 @@ Hash of st2 packages to be installed
 
 Default value: {}
 
+##### `packs_group`
+
+Data type: `Any`
+
+Name of the group that will own the /opt/stackstorm/packs directory (default: st2packs)
+
+Default value: $::st2::params::packs_group_name
+
 ##### `index_url`
 
 Data type: `Any`
@@ -372,6 +407,15 @@ String of IPs (csv) that the Mistral Postgres database
 will accept connections on (default: 127.0.0.1)
 
 Default value: $::st2::params::mistral_db_bind_ips
+
+##### `mistral_manage`
+
+Data type: `Any`
+
+If this module should manage the Mistral install and services (st2mistral and postgres).
+(default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
+
+Default value: $st2::params::mistral_manage
 
 ##### `syslog`
 
@@ -1852,6 +1896,15 @@ Mistral password for authenticating with PostgreSQL
 
 Default value: $::st2::mistral_db_password
 
+##### `manage`
+
+Data type: `Any`
+
+If this module should manage the st2mistral install and service
+(default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
+
+Default value: $::st2::mistral_manage
+
 ##### `rabbitmq_username`
 
 Data type: `Any`
@@ -1926,7 +1979,7 @@ Data type: `Any`
 
 Name of the StackStorm database
 
-Default value: $::st2::db_name
+Default value: $st2::db_name
 
 ##### `db_username`
 
@@ -1934,7 +1987,7 @@ Data type: `Any`
 
 Username to connect to db with
 
-Default value: $::st2::db_username
+Default value: $st2::db_username
 
 ##### `db_password`
 
@@ -1942,7 +1995,7 @@ Data type: `Any`
 
 Password for 'admin' and 'stackstorm' users in MongDB. If 'undef' then use $cli_password
 
-Default value: $::st2::db_password
+Default value: $st2::db_password
 
 ##### `db_port`
 
@@ -1950,7 +2003,7 @@ Data type: `Any`
 
 Port for db server for st2 to talk to
 
-Default value: $::st2::db_port
+Default value: $st2::db_port
 
 ##### `db_bind_ips`
 
@@ -1958,7 +2011,7 @@ Data type: `Any`
 
 Array of bind IP addresses for MongoDB to listen on
 
-Default value: $::st2::db_bind_ips
+Default value: $st2::db_bind_ips
 
 ##### `version`
 
@@ -1966,7 +2019,7 @@ Data type: `Any`
 
 Version of MongoDB to install. If not provided it will be auto-calcuated based on $st2::version.
 
-Default value: $::st2::mongodb_version
+Default value: $st2::mongodb_version
 
 ##### `manage_repo`
 
@@ -1974,7 +2027,7 @@ Data type: `Any`
 
 Set this to +false+ when you have your own repositories for mongodb
 
-Default value: $::st2::mongodb_manage_repo
+Default value: $st2::mongodb_manage_repo
 
 ##### `auth`
 
@@ -1982,7 +2035,7 @@ Data type: `Any`
 
 Boolean determining if auth should be enabled for MongoDB.
 
-Default value: $::st2::mongodb_auth
+Default value: $st2::mongodb_auth
 
 ### st2::profile::nginx
 
@@ -2082,6 +2135,15 @@ String of IPs (csv) that the Postgres database will accept connections on.
 
 Default value: $::st2::mistral_db_bind_ips
 
+##### `manage`
+
+Data type: `Any`
+
+If this module should manage the postgres install and service
+(default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
+
+Default value: $::st2::mistral_manage
+
 ### st2::profile::python
 
 StackStorm compatable installation of Python and dependencies.
@@ -2159,46 +2221,6 @@ Data type: `Any`
 RabbitMQ virtual host to create for StackStorm
 
 Default value: $::st2::rabbitmq_vhost
-
-### st2::profile::repos
-
-Manages the installation of st2 required repos for installing the StackStorm packages.
-
-#### Examples
-
-##### Basic usage
-
-```puppet
-include st2::profile::repos
-```
-
-##### Installing from unstable
-
-```puppet
-class { 'st2::profile::repos':
-  repository => 'unstable',
-}
-```
-
-#### Parameters
-
-The following parameters are available in the `st2::profile::repos` class.
-
-##### `repository`
-
-Data type: `Any`
-
-Release repository to enable. Options: 'stable', 'unstable'.
-
-Default value: $::st2::repository
-
-##### `package_type`
-
-Data type: `Any`
-
-Type of package management system used for repo. Options: 'rpm', 'deb'
-
-Default value: $::st2::params::package_type
 
 ### st2::profile::selinux
 
@@ -2420,6 +2442,14 @@ Data type: `Any`
 
 Default value: $::st2::rabbitmq_vhost
 
+##### `packs_group`
+
+Data type: `Any`
+
+
+
+Default value: $::st2::packs_group_name
+
 ### st2::profile::web
 
 Profile to install, configure and manage StackStorm web UI (st2web).
@@ -2432,9 +2462,34 @@ Profile to install, configure and manage StackStorm web UI (st2web).
 include st2::profile::web'
 ```
 
+##### Managing your own certificate
+
+```puppet
+# create your own certificate and key in the correct locations
+file { '/etc/ssl/st2/st2.crt':
+  content => 'my cert data',
+}
+file { '/etc/ssl/st2/st2.key':
+  content => 'my privatekey data',
+}
+
+# instantiate this profile with ssl_cert_manage false
+class { 'st2::profile::web':
+  ssl_cert_manage => false,
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `st2::profile::web` class.
+
+##### `ssl_cert_manage`
+
+Data type: `Any`
+
+Boolean to determine if this module should manage the SSL certificate used by nginx.
+
+Default value: $::st2::ssl_cert_manage
 
 ##### `ssl_dir`
 
@@ -2470,6 +2525,54 @@ Data type: `Any`
 Version of StackStorm WebUI to install
 
 Default value: $::st2::version
+
+### st2::repo
+
+Manages the installation of st2 required repos for installing the StackStorm packages.
+
+#### Examples
+
+##### Basic usage
+
+```puppet
+include st2::repo
+```
+
+##### Installing from unstable
+
+```puppet
+class { 'st2::repo':
+  repository => 'unstable',
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `st2::repo` class.
+
+##### `ensure`
+
+Data type: `Enum['present', 'absent']`
+
+The basic state the repo should be in
+
+Default value: 'present'
+
+##### `repository`
+
+Data type: `St2::Repository`
+
+Release repository to enable
+
+Default value: 'stable'
+
+### st2::repo::apt
+
+Apt repo for StackStorm
+
+### st2::repo::yum
+
+Yum repo for StackStorm
 
 ### st2::scheduler
 
@@ -2765,7 +2868,7 @@ Generates a configuration file for the st2 CLI (st2client)
 ##### Basic usage
 
 ```puppet
-::st2::client::settings { 'john':
+st2::client::settings { 'john':
   username => 'st2_john',
   password => 'xyz123',
 }
@@ -3175,11 +3278,27 @@ Type: Ruby 4.x API
 
 URL encodes a string
 
+#### Examples
+
+##### Basic usage
+
+```puppet
+st2::urlencode('xyz!123')
+```
+
 #### `st2::urlencode(String $url)`
 
 URL encodes a string
 
 Returns: `String` URL encoded data
+
+##### Examples
+
+###### Basic usage
+
+```puppet
+st2::urlencode('xyz!123')
+```
 
 ##### `url`
 
@@ -3204,6 +3323,16 @@ or <code>$::st2::version = 'installed'</code>. In this case, we don't want to as
 has a new version of StackStorm or wants to upgrade. Instead, we should assume that
 this the installed version of StackStorm is the version we should be using to compare.
 
+#### Examples
+
+##### Basic Usage
+
+```puppet
+if st2::version_ge('2.4.0') {
+  # ... do something only for StackStorm version >= 2.4.0
+}
+```
+
 #### `st2::version_ge(String $version)`
 
 Determines if the StackStorm version installed on the system <code>$facts['st2_version']</code>
@@ -3222,9 +3351,415 @@ this the installed version of StackStorm is the version we should be using to co
 Returns: `Boolean` True if the StackStorm version on the system or $::st2::version is
 >= to the +version+ parameter.
 
+##### Examples
+
+###### Basic Usage
+
+```puppet
+if st2::version_ge('2.4.0') {
+  # ... do something only for StackStorm version >= 2.4.0
+}
+```
+
 ##### `version`
 
 Data type: `String`
 
 Version string to compare against. This should be in SemVer format
+
+## Data types
+
+### St2::Repository
+
+Validate the type of system package repository for StackStorm
+
+Alias of `Enum['stable', 'unstable', 'staging-stable', 'staging-unstable']`
+
+## Tasks
+
+### key_decrypt
+
+Decrypt a StackStorm key/value pair. TODO - Remove this when the following is closed: https://github.com/StackStorm/st2/issues/4545
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `crypto_key_path`
+
+Data type: `String`
+
+Path to StackStorm crypto key
+
+##### `keys`
+
+Data type: `Array[Hash]`
+
+List of key value pairs
+
+### key_get
+
+Retrieve the value for a key from the StackStorm datastore
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `key`
+
+Data type: `String[1]`
+
+Key to get
+
+##### `scope`
+
+Data type: `Optional[String]`
+
+Scope to retrieve the data from. Default = 'system'
+
+##### `decrypt`
+
+Data type: `Optional[Boolean]`
+
+Decrypt secret if encrypted. Default = false
+
+##### `convert`
+
+Data type: `Optional[Boolean]`
+
+Attempt to convert the string into a hash, array, etc by parsing it as JSON. If an error occurs the string data will be returned. Default = true
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### key_load
+
+Load a list of a StackStorm key/value pairs into the datastore
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `keys`
+
+Data type: `Array[Hash]`
+
+List of key value pairs. Each hash should have a 'name' and 'value' key. Example: {'name': 'mydatastorkey', 'value': 'valueinthedatastore'} . For more details , see: https://docs.stackstorm.com/datastore.html#loading-key-value-pairs-from-a-file
+
+##### `convert`
+
+Data type: `Optional[Boolean]`
+
+Convert non-string types (hash, array, boolean, int, float) to a JSON string before loading it into the datastore.
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### pack_install
+
+Install a list of packs
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `packs`
+
+Data type: `Array[String]`
+
+List of packs to install. This can either be the name of a pack to install from the exchange, a URL to a pack to install from git://user@domain/pack.git or https://github.com/org/pack.git, or the path to a local git repo file:///path/to/local/pack
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### pack_list
+
+Get a list of packs
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### pack_register
+
+Registers a pack that exists on the filesystem
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `paths`
+
+Data type: `Array[String]`
+
+Array of directories on the local StackStorm filesystem where the pack contents currently exist and will be used to register from.
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### pack_remove
+
+Remove a list of packs
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `packs`
+
+Data type: `Array[String]`
+
+List of packs names to remove
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### rule_disable
+
+Disable a given rule
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `rule`
+
+Data type: `String`
+
+Name of a rule to disable (format: pack_name.rule_name)
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### rule_list
+
+Return a list of rules.
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `pack`
+
+Data type: `Optional[String]`
+
+Name of a pack if you want to return rules only for a given pack.
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
+
+### run
+
+Runs a StackStorm action
+
+**Supports noop?** false
+
+#### Parameters
+
+##### `action`
+
+Data type: `String`
+
+Name of the action to execute
+
+##### `parameters`
+
+Data type: `Optional[Array[String]]`
+
+Array of parameter strings to pass to the execution. Named arguments should be of the format 'param=value' positional parameters can be put in their normal order as strings.
+
+##### `api_key`
+
+Data type: `Optional[String]`
+
+StackStorm API key to use for authentication (prefer this over username/password).
+
+##### `auth_token`
+
+Data type: `Optional[String]`
+
+StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.
+
+##### `username`
+
+Data type: `Optional[String]`
+
+Username to use for StackStorm authentication.
+
+##### `password`
+
+Data type: `Optional[String]`
+
+Password to use for StackStorm authentication.
 

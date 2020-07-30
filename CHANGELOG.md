@@ -52,6 +52,13 @@
   
 - Replaced deprecated `stahnma-epel` module with `puppet-epel`. (Enhancement)
   Contributed by @nmaludy
+  
+- Add new parameter `st2::ssl_cert_manage` to allow users to disable this module from
+  managing the SSL certificate used by nginx. This flag defaults to the old behavior
+  of `true`, and generates a self-signed certificate. If a users sets this to `false`
+  they will need to generate their own certificate and place it in `/etc/ssl/st2/st2.crt`
+  and private key in `/etc/ssl/st2/st2.key`. There is a future improvement to allow
+  these paths to be configurable.
 
 ## 1.6.0 (Feb 17, 2020)
 
