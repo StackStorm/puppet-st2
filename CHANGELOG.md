@@ -4,9 +4,17 @@
 
 - Drop support for CentOS 6 #304 (Enhancement)
   Contributed by @nmaludy
-  
-- Corrected `logging` setting for `api`, `auth` and `stream` to point at the 
+
+- Corrected `logging` setting for `api`, `auth` and `stream` to point at the
   `/etc/st2/logging.<service>.gunicorn.conf` logging config files, the current default. (Bugfix)
+  Contributed by @nmaludy
+
+- Add new parameter `st2::ssl_cert_manage` to allow users to disable this module from
+  managing the SSL certificate used by nginx. This flag defaults to the old behavior
+  of `true`, and generates a self-signed certificate. If a users sets this to `false`
+  they will need to generate their own certificate and place it in `/etc/ssl/st2/st2.crt`
+  and private key in `/etc/ssl/st2/st2.key`. There is a future improvement to allow
+  these paths to be configurable. (Enhancement)
   Contributed by @nmaludy
 
 ## 1.7.0 (Jun 26, 2020)
@@ -24,48 +32,41 @@
   Instead of using the `file` resource with `recurse => true` we now utilize the module
   `npwalker/recursive_file_permissions`. #278 (Bugfix) (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added Puppet Forge Endorsement badge to show that this is an Approved Puppet module. (Enhancement)
   Contributed by @nmaludy
 
-- Fixed bug in `st2::key_get` task where non-JSON output from the command would throw an 
+- Fixed bug in `st2::key_get` task where non-JSON output from the command would throw an
   exception. (Bugfix)
   Contributed by @nmaludy
-  
+
 - Fixed bug in `st2::key_decrypt` causing it to be incompatible with Python 3. (Bugfix)
   Contributed by @nmaludy
-  
+
 - Added an override for the `LC_ALL` environment variable in all Bolt tasks, so that the
   locale is set to UTF-8, preventing a WARNING from being output from the `st2` command line.
   Without this override, new versions of Bolt set the locale to `C` causing a warning and
   preventing the JSON Output from the `st2` command from being parsed properly. (Bugfix)
   Contributed by @nmaludy
-  
+
 - Added new Bolt tasks:
   - `st2::pack_register`: Registers a list of packs based from paths on the filesystem
   - `st2::rule_disable`: Disables a rule
   - `st2::rule_list`: Lists all rules, or just the rules in a given pack
   - `st2::run`: Runs a StackStorm action
-  
+
   (Enhancement)
   Contributed by @nmaludy
-  
+
 - Replaced deprecated `stahnma-epel` module with `puppet-epel`. (Enhancement)
   Contributed by @nmaludy
-  
-- Add new parameter `st2::ssl_cert_manage` to allow users to disable this module from
-  managing the SSL certificate used by nginx. This flag defaults to the old behavior
-  of `true`, and generates a self-signed certificate. If a users sets this to `false`
-  they will need to generate their own certificate and place it in `/etc/ssl/st2/st2.crt`
-  and private key in `/etc/ssl/st2/st2.key`. There is a future improvement to allow
-  these paths to be configurable.
 
 ## 1.6.0 (Feb 17, 2020)
 
 - Updated to new Puppet style guide where the leading `::` in class names is no longer
   acceptable. (Bugfix)
   Contributed by @nmaludy
-  
+
 - Removed unused `puppet-wget` module dependency. (Enhancement)
   Contributed by @nmaludy
 
@@ -75,7 +76,7 @@
 - Reorganized README.md to conform to the [Puppet module README template](https://puppet.com/docs/puppet/latest/modules_documentation.html#concept-3315)
   #283 (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added support for Ubuntu 18.04 (Feature)
   Contributed by @nmaludy
 
@@ -86,7 +87,7 @@
 
 - Fixed a bug in the `mistral` Postrgres connection string where passwords weren't
   being URL encoded / escaped. This could lead to potentially bad URL parsing
-  when passwords contained certain special characters. To fix this, the 
+  when passwords contained certain special characters. To fix this, the
   password in the mistral `connection` parameter is now URL encoded / escaped.
   (Bugfix)
   Contributed by @nmaludy
@@ -95,7 +96,7 @@
   message about why it failed is shown to the user.
   (Bugfix)
   Contributed by @nmaludy
-  
+
 - Fixed a bug in the `st2_pack` resource where usernames and passwords were not being
   escaped properly. This only manifested itself with certain special characters.
   (Bugfix)
@@ -107,7 +108,7 @@
   modules.
   (Enhancement)
   Contributed by @nmaludy
-  
+
 - Removed Puppet 4 from build matrix. Puppet 4 has been end-of-life since 2018-12-31.
   (Enhancement)
   Contributed by @nmaludy
@@ -134,7 +135,7 @@
   To fix this, we've pinned `puppet/nginx` to `0.15.0` in the Puppetfiles used
   for testing. (Bugfix)
   Contributed by @nmaludy
-  
+
 - Removed the dependencies because they're no longer used.
     - `puppet/staging`
     - `puppetlabs/gcc`
@@ -150,7 +151,7 @@
   the gem past the installed ruby version, breaking the build. Instead,
   we simply leave the system gems alone during the build.
   Contributed by @nmaludy
-  
+
 - Removed the following unused variables from `::st2`:
     - `mistral_git_branch`
     - `st2web_ssl_cert`
@@ -162,7 +163,7 @@
     - `workers` (actually implemented below with `actionrunner_workers`)
   (Enhancement)
   Contributed by @nmaludy
-    
+
 - Added the following variables to `::st2`:
     - `auth_api_url` : URL of the StackStorm API for use by the `st2auth` service.
     - `actionrunner_workers`: Number of `st2actionrunner` processes to start.
@@ -175,16 +176,16 @@
     - `chatops_auth_url` : URL of the StackStorm Auth service for use by `st2chatops`
   (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added documentation for variables in many of the classes. (Enhancement)
   Contributed by @nmaludy
 
 - Converted entire module over to Puppet Strings documentation. (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added CI check for documentation warnings/errors. (Enhancement)
   Contributed by @nmaludy
-  
+
 - Fixed `st2_pack` resouce not escaping username/password arguments, leading to errors
   when authenticating with usernames/passwords that contain special characters. (Bugfix)
   Contributed by @nmaludy
@@ -198,11 +199,11 @@
   When upgrading to this new version, this will force a restart of all StackStorm
   and Mistral services as the new password is applied. (Feature)
   Contributed by @nmaludy
-  
-- Remove the insecure RabbitMQ default `guest` user on RabbitMQ instances. 
+
+- Remove the insecure RabbitMQ default `guest` user on RabbitMQ instances.
   Note: this will remove this user on new AND existing instances. (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added support for additional RabbitMQ configuration options:
     - `rabbitmq_hostname` : Hostname of the RabbitMQ server (default: `127.0.0.1`)
     - `rabbitmq_port` : Port to connect to the RabbitMQ server (default: `5672`)
@@ -218,11 +219,11 @@
     - `scheduler_pool_size` - The size of the pool used by the scheduler for scheduling executions. (default = 10)
   #251 (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added a new fact `st2_version` that reports the installed version of StackStorm.
   If StackStorm is not installed then the fact will not be present (default behavior of Facter).
   Contributed by @nmaludy
-  
+
 - Installs NodeJS 10, by default, when installing StackStorm >= `2.10.0`.
   This is now also the default when running a brand new installation with a
   `::st2::version` of `latest`, `installed` or `present` (default).
@@ -241,7 +242,7 @@
 ## 1.2.0 (Sep 25, 2018)
 
 - Removed `manifests/container.pp` and `manifests/profile/source.pp`. These files
-  were unused and unmaintained. Also removed module dependencies 
+  were unused and unmaintained. Also removed module dependencies
   `puppetlabs/vcsrepo` and `jfryman/tiller` that are no longer used because
   these two files have been removed. (Change)
   Contributed by @nmaludy
@@ -251,7 +252,7 @@
 
 - Added support for Puppet 6 on all platforms. (Enhancement)
   Contributed by @nmaludy
-  
+
 - Added default ChatOps config (`'HUBOT_ADAPTER' => 'slack'`), so that the ChatOps
   service starts cleanly without the user needing to provide any variables into
   the `::st2` class. #233 (Enhancement)
