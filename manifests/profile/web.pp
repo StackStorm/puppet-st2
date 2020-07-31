@@ -1,5 +1,7 @@
 # @summary  Profile to install, configure and manage StackStorm web UI (st2web).
 #
+# @param ssl_cert_manage
+#   Boolean to determine if this module should manage the SSL certificate used by nginx.
 # @param ssl_dir
 #   Directory where st2web will look for its SSL info.
 #   (default: /etc/ssl/st2)
@@ -15,11 +17,26 @@
 # @example Basic Usage
 #   include st2::profile::web'
 #
+# @example Managing your own certificate
+#   # create your own certificate and key in the correct locations
+#   file { '/etc/ssl/st2/st2.crt':
+#     content => 'my cert data',
+#   }
+#   file { '/etc/ssl/st2/st2.key':
+#     content => 'my privatekey data',
+#   }
+#
+#   # instantiate this profile with ssl_cert_manage false
+#   class { 'st2::profile::web':
+#     ssl_cert_manage => false,
+#   }
+#
 class st2::profile::web(
-  $ssl_dir  = $::st2::ssl_dir,
-  $ssl_cert = $::st2::ssl_cert,
-  $ssl_key  = $::st2::ssl_key,
-  $version  = $::st2::version,
+  $ssl_cert_manage = $::st2::ssl_cert_manage,
+  $ssl_dir         = $::st2::ssl_dir,
+  $ssl_cert        = $::st2::ssl_cert,
+  $ssl_key         = $::st2::ssl_key,
+  $version         = $::st2::version,
 ) inherits st2 {
   # include nginx here only
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
@@ -36,15 +53,20 @@ class st2::profile::web(
 
   ## Create ssl cert directory
   file { $ssl_dir:
-    ensure => directory,
+    ensure  => directory,
   }
 
-  ## Generate SSL certificates
-  $_ssl_subj = "/C=US/ST=California/L=Palo Alto/O=StackStorm/OU=Information Technology/CN=${::fqdn}"
-  exec { "generate ssl cert ${ssl_cert}":
-    command => "openssl req -x509 -newkey rsa:2048 -keyout ${ssl_key} -out ${ssl_cert} -days 365 -nodes -subj \"${_ssl_subj}\"",
-    creates => $ssl_cert,
-    path    => ['/usr/bin', '/bin'],
+  ## optionally manage the SSL certificate used by nginx
+  if $ssl_cert_manage {
+    ## Generate SSL certificates
+    $_ssl_subj = "/C=US/ST=California/L=Palo Alto/O=StackStorm/OU=Information Technology/CN=${::fqdn}"
+    exec { "generate ssl cert ${ssl_cert}":
+      command => "openssl req -x509 -newkey rsa:2048 -keyout ${ssl_key} -out ${ssl_cert} -days 365 -nodes -subj \"${_ssl_subj}\"",
+      creates => $ssl_cert,
+      path    => ['/usr/bin', '/bin'],
+      require => File[$ssl_dir],
+      notify  => File["${::st2::params::nginx_conf_d}/st2.conf"],
+    }
   }
 
   ## st2 nginx config
@@ -69,7 +91,6 @@ class st2::profile::web(
   Package['nginx']
   -> Package<| tag == 'st2::web::packages' |>
   -> File[$ssl_dir]
-  -> Exec["generate ssl cert ${ssl_cert}"]
   -> File["${::st2::params::nginx_conf_d}/st2.conf"]
   ~> Service['nginx'] # notify to force a refresh
 }
