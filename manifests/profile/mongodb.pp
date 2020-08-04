@@ -181,30 +181,15 @@ class st2::profile::mongodb (
     -> Class['mongodb::client']
     -> Class['mongodb::server']
 
+    # MongoDB module specifies a hard coded version that doesn't match the available
+    # version in the repo
+    Package <| tag == 'mongodb_package' |> {
+      ensure => 'present',
+    }
+
     # Handle more special cases of things that didn't work properly...
     case $facts['os']['family'] {
-      'RedHat': {
-        Package <| tag == 'mongodb' |> {
-          ensure => 'present'
-        }
-      }
       'Debian': {
-        #############
-        # MongoDB module doens't ensure that the apt source is added prior to
-        # the packages.
-        # It also fails to ensure that apt-get update is run before trying
-        # to install the packages.
-        Apt::Source['mongodb'] -> Package<|tag == 'mongodb'|>
-        Class['Apt::Update'] -> Package<|tag == 'mongodb'|>
-
-        #############
-        # MongoDB module doesn't pass the proper install options when using the
-        # MongoDB repo on Ubuntu (Debian)
-        Package <| tag == 'mongodb' |> {
-          ensure          => 'present',
-          install_options => ['--allow-unauthenticated'],
-        }
-
         #############
         # Debian's mongodb doesn't create PID file properly, so we need to
         # create it and set proper permissions
@@ -220,7 +205,13 @@ class st2::profile::mongodb (
           recurse => true,
           tag     => 'st2::mongodb::debian',
         }
-        Package<| tag == 'mongodb' |>
+
+        # MongoDB / Apt don't call apt-update before trying to install their packages
+        # this fixes that problem
+        # This is documented here:
+        # https://github.com/puppetlabs/puppetlabs-apt/tree/master#adding-new-sources-or-ppas
+        Class['Apt::Update']
+        -> Package<| tag == 'mongodb_package' |>
         -> File<| tag == 'st2::mongodb::debian' |>
         -> Service['mongodb']
       }
