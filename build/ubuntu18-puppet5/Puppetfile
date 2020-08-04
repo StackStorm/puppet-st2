@@ -45,6 +45,7 @@ forge "https://forgeapi.puppetlabs.com"
 
 mod 'jamtur01-httpauth'
 mod 'puppetlabs-apt'
+mod 'puppetlabs-yumrepo_core'
 mod 'puppet-epel'
 mod 'puppetlabs-translate' # dependency of puppetlabs-apt
 mod 'saz-sudo'

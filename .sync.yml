@@ -50,5 +50,8 @@ Gemfile:
         version: '>= 0.3.0'
       - gem: 'puppet-lint-version_comparison-check'
         version: '>= 0.2.1'
+spec/default_facts.yml:
+  extra_facts:
+    root_home: '/root'
 spec/spec_helper.rb:
   mock_with: ':rspec'

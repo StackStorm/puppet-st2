@@ -16,6 +16,14 @@
   and private key in `/etc/ssl/st2/st2.key`. There is a future improvement to allow
   these paths to be configurable. (Enhancement)
   Contributed by @nmaludy
+  
+- Add support for using MongoDB `4.0` when installing latest StackStorn (`>= 3.3.0`)
+  #298 (Enhancement)
+  Contributed by @nmaludy
+  
+- Add dependency to `yumrepo_core` to this module that was missed when adding
+  repo support previously. (Bugfix)
+  Contributed by @nmaludy
 
 ## 1.7.0 (Jun 26, 2020)
 
