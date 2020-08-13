@@ -70,7 +70,16 @@ control 'st2web' do
     its('validity_in_days') { should be > 90 }
   end
 
-  describe file('/etc/nginx/conf.d/st2.conf') do
+  describe file('/etc/nginx/conf.d/sites-available/st2webui.conf') do
+    it { should exist }
+  end
+  describe file('/etc/nginx/conf.d/sites-available/ssl-st2webui.conf') do
+    it { should exist }
+  end
+  describe file('/etc/nginx/conf.d/sites-enabled/st2webui.conf') do
+    it { should exist }
+  end
+  describe file('/etc/nginx/conf.d/sites-enabled/ssl-st2webui.conf') do
     it { should exist }
   end
 
@@ -85,7 +94,7 @@ control 'st2web' do
   end
 
   describe http('http://localhost/', enable_remote_worker: true) do
-    its('status') { should eq 308 }
+    its('status') { should eq 301 }
   end
 
   describe http('https://localhost/', ssl_verify: false, enable_remote_worker: true) do
