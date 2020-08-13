@@ -106,16 +106,17 @@ class st2::profile::web(
   }
 
   # http redirect to https
+  $add_header = {
+    'Front-End-Https'        => 'on',
+    'X-Content-Type-Options' => 'nosniff',
+  }
   nginx::resource::server { 'st2webui':
     ensure       => present,
     listen_port  => 80,
     access_log   => "${nginx::config::log_dir}/st2webui.access.log",
     error_log    => "${nginx::config::log_dir}/st2webui.error.log",
     ssl_redirect => true,
-    add_header   => {
-      'Front-End-Https'        => 'on',
-      'X-Content-Type-Options' => 'nosniff',
-    },
+    add_header   => $add_header,
     tag          => ['st2', 'st2::frontend', 'st2::frontend::http'],
   }
 
@@ -145,106 +146,34 @@ class st2::profile::web(
     ssl_ciphers          => $nginx_ssl_ciphers_str,
     ssl_protocols        => $nginx_ssl_protocols_str,
     client_max_body_size => $nginx_client_max_body_size,
-    add_header           => {
-      'Front-End-Https'        => 'on',
-      'X-Content-Type-Options' => 'nosniff',
-    },
+    add_header           => $add_header,
     # For backward compatibility reasons, rewrite requests from "/api/stream"
     # to "/stream/v1/stream" and "/api/v1/stream" to "/stream/v1/stream"
     server_cfg_append    => {
       'rewrite' => [
         '^/api/stream/?$ /stream/v1/stream break',
-        '^/api/(v\d)/stream/?$ /stream/$1/stream break'
+        '^/api/(v\d)/stream/?$ /stream/$1/stream break',
       ],
     },
     tag                  => ['st2', 'st2::frontend', 'st2::frontend::https'],
   }
 
-  # root website location for st2webui
-  nginx::resource::location { '/':
-    ensure              => present,
-    server              => $ssl_server,
-    ssl                 => true,
-    ssl_only            => true,
-    index_files         => [ 'index.html' ],
-    www_root            => $web_root,
-    location_cfg_append => {
-      'sendfile'    => 'on',
-      'tcp_nopush'  => 'on',
-      'tcp_nodelay' => 'on',
-    },
-    tag                 => ['st2', 'st2::backend', 'st2::backend::webui'],
+  # default settings for all locations
+  $location_defaults = {
+    ensure      => present,
+    server      => $ssl_server,
+    # need to ensure both ssl and ssl_true are set so that these locations are ONLY
+    # added to the ssl site above
+    ssl         => true,
+    ssl_only    => true,
+    index_files => [ ],
   }
 
-  nginx::resource::location { '@apiError':
-    ensure              => present,
-    server              => $ssl_server,
-    ssl                 => true,
-    ssl_only            => true,
-    index_files         => [],
-    add_header          => {
-      'Content-Type' => 'application/json always',
-    },
-    location_cfg_append => {
-      'return' => '503 \'{ "faultstring": "Nginx is unable to reach st2api. Make sure service is running." }\'',
-    },
-    tag                 => ['st2', 'st2::backend', 'st2::backend::apierror'],
-  }
-
-  nginx::resource::location { '/api/':
-    ensure                => present,
-    server                => $ssl_server,
-    ssl                   => true,
-    ssl_only              => true,
-    index_files           => [],
-    rewrite_rules         => [
-      '^/api/(.*)  /$1 break',
-    ],
-    proxy                 => "http://127.0.0.1:${st2::params::api_port}",
-    proxy_read_timeout    => '90',
-    proxy_connect_timeout => '90',
-    proxy_redirect        => 'off',
-    proxy_set_header      => [
-      'Host $host',
-      'X-Real-IP $remote_addr',
-      'X-Forwarded-For $proxy_add_x_forwarded_for',
-      'X-Forwarded-Proto "https"',
-      'Connection \'\'',
-    ],
-    proxy_buffering       => 'off',
-    proxy_cache           => 'off',
-    location_cfg_append   => {
-      'error_page'                => '502 = @apiError',
-      'chunked_transfer_encoding' => 'off',
-    },
-    tag                   => ['st2', 'st2::backend', 'st2::backend::api'],
-  }
-
-  nginx::resource::location { '@streamError':
-    ensure              => present,
-    server              => $ssl_server,
-    ssl                 => true,
-    ssl_only            => true,
-    index_files         => [],
-    add_header          => {
-      'Content-Type' => 'text/event-stream',
-    },
-    location_cfg_append => {
-      'return' => '200 "retry: 1000\n\n"',
-    },
-    tag                 => ['st2', 'st2::backend', 'st2::backend::streamerror'],
-  }
-
-  nginx::resource::location { '/stream/':
-    ensure                => present,
-    server                => $ssl_server,
-    ssl                   => true,
-    ssl_only              => true,
-    index_files           => [],
-    rewrite_rules         => [
-      '^/stream/(.*)  /$1 break',
-    ],
-    proxy                 => "http://127.0.0.1:${st2::params::stream_port}",
+  # the proxy locations contain all of the location settings plus some common
+  # proxy settings used commonly across all of them, rather than copy paste
+  # we use some hash merges to make this more compact and easier to add common
+  # settings in the future
+  $proxy_defaults = $location_defaults + {
     proxy_read_timeout    => '90',
     proxy_connect_timeout => '90',
     proxy_redirect        => 'off',
@@ -260,61 +189,104 @@ class st2::profile::web(
     # want multiple chunks.
     proxy_buffering       => 'off',
     proxy_cache           => 'off',
-    location_cfg_append   => {
-      'error_page'                => '502 = @streamError',
-      'chunked_transfer_encoding' => 'off',
-      'sendfile'                  => 'off',
-      'tcp_nopush'                => 'off',
-      'tcp_nodelay'               => 'off',
+  }
+
+  # root website location for st2webui
+  nginx::resource::location { '/':
+    * => $location_defaults + {
+      index_files         => [ 'index.html' ],
+      www_root            => $web_root,
+      location_cfg_append => {
+        'sendfile'    => 'on',
+        'tcp_nopush'  => 'on',
+        'tcp_nodelay' => 'on',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::webui'],
     },
-    tag                   => ['st2', 'st2::backend', 'st2::backend::stream'],
+  }
+
+  nginx::resource::location { '@apiError':
+    * => $location_defaults + {
+      add_header          => {
+        'Content-Type' => 'application/json always',
+      },
+      location_cfg_append => {
+        'return' => '503 \'{ "faultstring": "Nginx is unable to reach st2api. Make sure service is running." }\'',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::apierror'],
+    },
+  }
+
+  nginx::resource::location { '/api/':
+    * => $proxy_defaults + {
+      rewrite_rules       => [
+        '^/api/(.*)  /$1 break',
+      ],
+      proxy               => "http://127.0.0.1:${st2::params::api_port}",
+      location_cfg_append => {
+        'error_page'                => '502 = @apiError',
+        'chunked_transfer_encoding' => 'off',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::api'],
+    },
+  }
+
+  nginx::resource::location { '@streamError':
+    * => $location_defaults + {
+      add_header          => {
+        'Content-Type' => 'text/event-stream',
+      },
+      location_cfg_append => {
+        'return' => '200 "retry: 1000\n\n"',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::streamerror'],
+    },
+  }
+
+  nginx::resource::location { '/stream/':
+    * => $proxy_defaults + {
+      rewrite_rules       => [
+        '^/stream/(.*)  /$1 break',
+      ],
+      proxy               => "http://127.0.0.1:${st2::params::stream_port}",
+      location_cfg_append => {
+        'error_page'                => '502 = @streamError',
+        'chunked_transfer_encoding' => 'off',
+        'sendfile'                  => 'off',
+        'tcp_nopush'                => 'off',
+        'tcp_nodelay'               => 'off',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::stream'],
+    },
   }
 
   nginx::resource::location { '@authError':
-    ensure              => present,
-    server              => $ssl_server,
-    ssl                 => true,
-    ssl_only            => true,
-    index_files         => [],
-    add_header          => {
-      'Content-Type' => 'application/json always',
+    * => $location_defaults + {
+      add_header          => {
+        'Content-Type' => 'application/json always',
+      },
+      location_cfg_append => {
+        'return' => '503 \'{ "faultstring": "Nginx is unable to reach st2auth. Make sure service is running." }\'',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::autherror'],
     },
-    location_cfg_append => {
-      'return' => '503 \'{ "faultstring": "Nginx is unable to reach st2auth. Make sure service is running." }\'',
-    },
-    tag                 => ['st2', 'st2::backend', 'st2::backend::autherror'],
   }
 
   nginx::resource::location { '/auth/':
-    ensure                => present,
-    server                => $ssl_server,
-    ssl                   => true,
-    ssl_only              => true,
-    index_files           => [],
-    rewrite_rules         => [
-      '^/auth/(.*)  /$1 break',
-    ],
-    proxy                 => "http://127.0.0.1:${st2::params::auth_port}",
-    proxy_read_timeout    => '90',
-    proxy_connect_timeout => '90',
-    proxy_redirect        => 'off',
-    proxy_set_header      => [
-      'Host $host',
-      'X-Real-IP $remote_addr',
-      'X-Forwarded-For $proxy_add_x_forwarded_for',
-      'X-Forwarded-Proto "https"',
-      'Connection \'\'',
-    ],
-    proxy_pass_header     => [
-      'Authorization',
-    ],
-    proxy_buffering       => 'off',
-    proxy_cache           => 'off',
-    location_cfg_append   => {
-      'error_page'                => '502 = @authError',
-      'chunked_transfer_encoding' => 'off',
+    * => $proxy_defaults + {
+      rewrite_rules       => [
+        '^/auth/(.*)  /$1 break',
+      ],
+      proxy               => "http://127.0.0.1:${st2::params::auth_port}",
+      proxy_pass_header   => [
+        'Authorization',
+      ],
+      location_cfg_append => {
+        'error_page'                => '502 = @authError',
+        'chunked_transfer_encoding' => 'off',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::auth'],
     },
-    tag                   => ['st2', 'st2::backend', 'st2::backend::auth'],
   }
 
   ## Dependencies
