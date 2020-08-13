@@ -553,6 +553,55 @@ Set this to false when you have your own repositories for nginx
 
 Default value: `true`
 
+##### `nginx_ssl_ciphers`
+
+Data type: `Any`
+
+String or list of strings of acceptable SSL ciphers to configure nginx with.
+@see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 secure ciphers only
+      (secure by default). The secure ciphers for each protocol were obtained via:
+      @see https://wiki.mozilla.org/Security/Server_Side_TLS
+
+Default value: $::st2::params::nginx_ssl_ciphers
+
+##### `nginx_ssl_protocols`
+
+Data type: `Any`
+
+String or list of strings of acceptable SSL protocols to configure nginx with.
+@see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 only (secure by default)
+
+Default value: $::st2::params::nginx_ssl_protocols
+
+##### `nginx_ssl_port`
+
+Data type: `Any`
+
+What port should nginx listen on publicly for new connections (default: 443)
+
+Default value: $::st2::params::nginx_ssl_port
+
+##### `nginx_client_max_body_size`
+
+Data type: `Any`
+
+The maximum size of the body for a request allow through nginx.
+We default this to '0' to allow for large messages/payloads/inputs/results
+to be passed through nginx as is normal in the StackStorm context.
+@see http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
+
+Default value: $::st2::params::nginx_client_max_body_size
+
+##### `web_root`
+
+Data type: `Any`
+
+Directory where the StackStorm WebUI site lives on the filesystem
+
+Default value: $::st2::params::web_root
+
 ##### `timersengine_enabled`
 
 Data type: `Any`
@@ -2479,13 +2528,66 @@ class { 'st2::profile::web':
 }
 ```
 
+##### Change the SSL protocols and ciphers
+
+```puppet
+class { 'st2::profile::web':
+  nginx_ssl_protocols => ['TLSv1.2'],
+  nginx_ssl_ciphers => [
+    'ECDHE-ECDSA-AES256-GCM-SHA384',
+    'ECDHE-ECDSA-AES256-SHA384',
+  ],
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `st2::profile::web` class.
 
+##### `nginx_ssl_ciphers`
+
+Data type: `Variant[Array[String], String]`
+
+String or list of strings of acceptable SSL ciphers to configure nginx with.
+@see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 secure ciphers only
+      (secure by default). The secure ciphers for each protocol were obtained via:
+      @see https://wiki.mozilla.org/Security/Server_Side_TLS
+
+Default value: $::st2::nginx_ssl_ciphers
+
+##### `nginx_ssl_protocols`
+
+Data type: `Variant[Array[String], String]`
+
+String or list of strings of acceptable SSL protocols to configure nginx with.
+@see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 only (secure by default)
+
+Default value: $::st2::nginx_ssl_protocols
+
+##### `nginx_ssl_port`
+
+Data type: `Stdlib::Port`
+
+What port should nginx listen on publicly for new connections (default: 443)
+
+Default value: $::st2::nginx_ssl_port
+
+##### `nginx_client_max_body_size`
+
+Data type: `String`
+
+The maximum size of the body for a request allow through nginx.
+We default this to '0' to allow for large messages/payloads/inputs/results
+to be passed through nginx as is normal in the StackStorm context.
+@see http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
+
+Default value: $::st2::nginx_client_max_body_size
+
 ##### `ssl_cert_manage`
 
-Data type: `Any`
+Data type: `Boolean`
 
 Boolean to determine if this module should manage the SSL certificate used by nginx.
 
@@ -2493,7 +2595,7 @@ Default value: $::st2::ssl_cert_manage
 
 ##### `ssl_dir`
 
-Data type: `Any`
+Data type: `Stdlib::Absolutepath`
 
 Directory where st2web will look for its SSL info.
 (default: /etc/ssl/st2)
@@ -2502,7 +2604,7 @@ Default value: $::st2::ssl_dir
 
 ##### `ssl_cert`
 
-Data type: `Any`
+Data type: `String`
 
 Path to the file where the StackStorm SSL cert will
 be generated. (default: /etc/ssl/st2/st2.crt)
@@ -2511,7 +2613,7 @@ Default value: $::st2::ssl_cert
 
 ##### `ssl_key`
 
-Data type: `Any`
+Data type: `String`
 
 Path to the file where the StackStorm SSL key will
 be generated. (default: /etc/ssl/st2/st2.key)
@@ -2520,11 +2622,19 @@ Default value: $::st2::ssl_key
 
 ##### `version`
 
-Data type: `Any`
+Data type: `String`
 
 Version of StackStorm WebUI to install
 
 Default value: $::st2::version
+
+##### `web_root`
+
+Data type: `String`
+
+Directory where the StackStorm WebUI site lives on the filesystem
+
+Default value: $::st2::web_root
 
 ### st2::repo
 

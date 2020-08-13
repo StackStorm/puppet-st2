@@ -1,5 +1,22 @@
 # @summary  Profile to install, configure and manage StackStorm web UI (st2web).
 #
+# @param nginx_ssl_ciphers
+#   String or list of strings of acceptable SSL ciphers to configure nginx with.
+#   @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+#   Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 secure ciphers only
+#         (secure by default). The secure ciphers for each protocol were obtained via:
+#         @see https://wiki.mozilla.org/Security/Server_Side_TLS
+# @param nginx_ssl_protocols
+#   String or list of strings of acceptable SSL protocols to configure nginx with.
+#   @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+#   Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 only (secure by default)
+# @param nginx_ssl_port
+#   What port should nginx listen on publicly for new connections (default: 443)
+# @param nginx_client_max_body_size
+#   The maximum size of the body for a request allow through nginx.
+#   We default this to '0' to allow for large messages/payloads/inputs/results
+#   to be passed through nginx as is normal in the StackStorm context.
+#   @see http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
 # @param ssl_cert_manage
 #   Boolean to determine if this module should manage the SSL certificate used by nginx.
 # @param ssl_dir
@@ -13,6 +30,8 @@
 #   be generated. (default: /etc/ssl/st2/st2.key)
 # @param version
 #    Version of StackStorm WebUI to install
+# @param web_root
+#    Directory where the StackStorm WebUI site lives on the filesystem
 #
 # @example Basic Usage
 #   include st2::profile::web'
@@ -31,17 +50,27 @@
 #     ssl_cert_manage => false,
 #   }
 #
+#
+# @example Change the SSL protocols and ciphers
+#   class { 'st2::profile::web':
+#     nginx_ssl_protocols => ['TLSv1.2'],
+#     nginx_ssl_ciphers => [
+#       'ECDHE-ECDSA-AES256-GCM-SHA384',
+#       'ECDHE-ECDSA-AES256-SHA384',
+#     ],
+#   }
+#
 class st2::profile::web(
   Variant[Array[String], String] $nginx_ssl_ciphers   = $::st2::nginx_ssl_ciphers,
   Variant[Array[String], String] $nginx_ssl_protocols = $::st2::nginx_ssl_protocols,
-  Stdlib::Port $nginx_ssl_port       = $::st2::nginx_ssl_port,
-  String $nginx_client_max_body_size = $::st2::nginx_client_max_body_size,
-  Boolean $ssl_cert_manage      = $::st2::ssl_cert_manage,
-  Stdlib::Absolutepath $ssl_dir = $::st2::ssl_dir,
-  String $ssl_cert              = $::st2::ssl_cert,
-  String $ssl_key               = $::st2::ssl_key,
-  String $version               = $::st2::version,
-  String $web_root              = $::st2::web_root,
+  Stdlib::Port $nginx_ssl_port                        = $::st2::nginx_ssl_port,
+  String $nginx_client_max_body_size                  = $::st2::nginx_client_max_body_size,
+  Boolean $ssl_cert_manage                            = $::st2::ssl_cert_manage,
+  Stdlib::Absolutepath $ssl_dir                       = $::st2::ssl_dir,
+  String $ssl_cert                                    = $::st2::ssl_cert,
+  String $ssl_key                                     = $::st2::ssl_key,
+  String $version                                     = $::st2::version,
+  String $web_root                                    = $::st2::web_root,
 ) inherits st2 {
   # include nginx here only
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
@@ -87,6 +116,7 @@ class st2::profile::web(
       'Front-End-Https'        => 'on',
       'X-Content-Type-Options' => 'nosniff',
     },
+    tag          => ['st2', 'st2::frontend', 'st2::frontend::http'],
   }
 
   # convert arrays into strings if necessary
@@ -127,6 +157,7 @@ class st2::profile::web(
         '^/api/(v\d)/stream/?$ /stream/$1/stream break'
       ],
     },
+    tag                  => ['st2', 'st2::frontend', 'st2::frontend::https'],
   }
 
   # root website location for st2webui
@@ -141,7 +172,8 @@ class st2::profile::web(
       'sendfile'    => 'on',
       'tcp_nopush'  => 'on',
       'tcp_nodelay' => 'on',
-    }
+    },
+    tag                 => ['st2', 'st2::backend', 'st2::backend::webui'],
   }
 
   nginx::resource::location { '@apiError':
@@ -155,7 +187,8 @@ class st2::profile::web(
     },
     location_cfg_append => {
       'return' => '503 \'{ "faultstring": "Nginx is unable to reach st2api. Make sure service is running." }\'',
-    }
+    },
+    tag                 => ['st2', 'st2::backend', 'st2::backend::apierror'],
   }
 
   nginx::resource::location { '/api/':
@@ -183,7 +216,8 @@ class st2::profile::web(
     location_cfg_append   => {
       'error_page'                => '502 = @apiError',
       'chunked_transfer_encoding' => 'off',
-    }
+    },
+    tag                   => ['st2', 'st2::backend', 'st2::backend::api'],
   }
 
   nginx::resource::location { '@streamError':
@@ -197,7 +231,8 @@ class st2::profile::web(
     },
     location_cfg_append => {
       'return' => '200 "retry: 1000\n\n"',
-    }
+    },
+    tag                 => ['st2', 'st2::backend', 'st2::backend::streamerror'],
   }
 
   nginx::resource::location { '/stream/':
@@ -231,7 +266,8 @@ class st2::profile::web(
       'sendfile'                  => 'off',
       'tcp_nopush'                => 'off',
       'tcp_nodelay'               => 'off',
-    }
+    },
+    tag                   => ['st2', 'st2::backend', 'st2::backend::stream'],
   }
 
   nginx::resource::location { '@authError':
@@ -245,7 +281,8 @@ class st2::profile::web(
     },
     location_cfg_append => {
       'return' => '503 \'{ "faultstring": "Nginx is unable to reach st2auth. Make sure service is running." }\'',
-    }
+    },
+    tag                 => ['st2', 'st2::backend', 'st2::backend::autherror'],
   }
 
   nginx::resource::location { '/auth/':
@@ -276,7 +313,8 @@ class st2::profile::web(
     location_cfg_append   => {
       'error_page'                => '502 = @authError',
       'chunked_transfer_encoding' => 'off',
-    }
+    },
+    tag                   => ['st2', 'st2::backend', 'st2::backend::auth'],
   }
 
   ## Dependencies
