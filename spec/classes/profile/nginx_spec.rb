@@ -12,9 +12,9 @@ describe 'st2::profile::nginx' do
       context 'with default options' do
         it { is_expected.to compile.with_all_deps }
         it do
-          is_expected.to contain_class('nginx').with(
-            manage_repo: true,
-            confd_purge: true)
+          is_expected.to contain_class('nginx')
+            .with(manage_repo: true,
+                  confd_purge: true)
         end
       end # context 'with default options'
 
@@ -23,9 +23,9 @@ describe 'st2::profile::nginx' do
 
         it { is_expected.to compile.with_all_deps }
         it do
-          is_expected.to contain_class('nginx').with(
-            manage_repo: false,
-            confd_purge: true)
+          is_expected.to contain_class('nginx')
+            .with(manage_repo: false,
+                  confd_purge: true)
         end
       end # context 'with manage_repo=false'
     end # context 'on #{os}'

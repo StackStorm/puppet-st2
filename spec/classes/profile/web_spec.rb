@@ -63,8 +63,7 @@ describe 'st2::profile::web' do
                   error_log: '/var/log/nginx/st2webui.error.log',
                   ssl_redirect: true,
                   add_header: add_header,
-                  tag: ['st2', 'st2::frontend', 'st2::frontend::http'],
-                 )
+                  tag: ['st2', 'st2::frontend', 'st2::frontend::http'])
         end
         it do
           is_expected.to contain_nginx__resource__server('ssl-st2webui')
@@ -314,7 +313,7 @@ describe 'st2::profile::web' do
                   tag: ['st2', 'st2::frontend', 'st2::frontend::https'])
         end
       end # context 'when specifying custom nginx_ssl_ciphers and nginx_ssl_protocols as arrays'
-      
+
       context 'when specifying custom nginx_ssl_port and nginx_client_max_body_size' do
         let(:params) do
           {
@@ -352,7 +351,7 @@ describe 'st2::profile::web' do
 
       context 'with web_root=/some/other/dir/' do
         let(:params) { { web_root: '/some/other/dir/' } }
-        
+
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_nginx__resource__location('/')
