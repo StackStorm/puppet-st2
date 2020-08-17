@@ -125,6 +125,25 @@
 # @param nginx_manage_repo
 #   Set this to false when you have your own repositories for nginx
 #   (default: true)
+# @param nginx_ssl_ciphers
+#   String or list of strings of acceptable SSL ciphers to configure nginx with.
+#   @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+#   Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 secure ciphers only
+#         (secure by default). The secure ciphers for each protocol were obtained via:
+#         @see https://wiki.mozilla.org/Security/Server_Side_TLS
+# @param nginx_ssl_protocols
+#   String or list of strings of acceptable SSL protocols to configure nginx with.
+#   @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
+#   Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 only (secure by default)
+# @param nginx_ssl_port
+#   What port should nginx listen on publicly for new connections (default: 443)
+# @param nginx_client_max_body_size
+#   The maximum size of the body for a request allow through nginx.
+#   We default this to '0' to allow for large messages/payloads/inputs/results
+#   to be passed through nginx as is normal in the StackStorm context.
+#   @see http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
+# @param web_root
+#    Directory where the StackStorm WebUI site lives on the filesystem
 # @param timersengine_enabled
 #   Set to true if the st2timersengine service should be enabled
 #   on this node (default: true)
@@ -277,6 +296,11 @@ class st2(
   $datastore_keys_dir       = $::st2::params::datstore_keys_dir,
   $datastore_key_path       = "${::st2::params::datstore_keys_dir}/datastore_key.json",
   $nginx_manage_repo        = true,
+  $nginx_client_max_body_size = $::st2::params::nginx_client_max_body_size,
+  $nginx_ssl_ciphers        = $::st2::params::nginx_ssl_ciphers,
+  $nginx_ssl_port           = $::st2::params::nginx_ssl_port,
+  $nginx_ssl_protocols      = $::st2::params::nginx_ssl_protocols,
+  $web_root                 = $::st2::params::web_root,
   $rabbitmq_username        = $::st2::params::rabbitmq_username,
   $rabbitmq_password        = $::st2::params::rabbitmq_password,
   $rabbitmq_hostname        = $::st2::params::rabbitmq_hostname,
