@@ -14,7 +14,6 @@ fixtures:
     python: "puppet/python"
     inifile: "puppetlabs/inifile"
     mongodb: "puppet/mongodb"
-    postgresql: "puppetlabs/postgresql"
     rabbitmq: "puppet/rabbitmq"
     facter: "ghoneycutt/facter"
     selinux: "puppet/selinux"

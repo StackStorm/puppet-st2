@@ -6,8 +6,6 @@
 #  * MongoDB
 #  * NodeJS
 #  * nginx
-#  * PostgreSQL (required by Mistral)
-#  * Mistral
 #
 # @example Basic Usage
 #   include st2::profile::fullinstall
@@ -35,11 +33,9 @@ class st2::profile::fullinstall inherits st2 {
   -> class { 'st2::profile::selinux': }
   -> Anchor['st2::pre_reqs']
   -> class { 'st2::profile::nodejs': }
-  -> class { 'st2::profile::postgresql': }
   -> class { 'st2::profile::rabbitmq': }
   -> class { 'st2::profile::mongodb': }
   -> Anchor['st2::main']
-  -> class { 'st2::profile::mistral': }
   -> class { 'st2::profile::client': }
   -> class { 'st2::profile::server': }
   -> class { 'st2::profile::web': }

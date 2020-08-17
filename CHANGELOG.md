@@ -4,6 +4,9 @@
 
 - Drop support for CentOS 6 #304 (Enhancement)
   Contributed by @nmaludy
+  
+- Drop support for Mistral and PostgreSQL #312 (Enhancement)
+  Contributed by @nmaludy
 
 - Corrected `logging` setting for `api`, `auth` and `stream` to point at the
   `/etc/st2/logging.<service>.gunicorn.conf` logging config files, the current default. (Bugfix)

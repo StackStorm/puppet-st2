@@ -7,7 +7,7 @@ CI_REPO_BRANCH ?= master
 all: .DEFAULT
 
 .PHONY: clean
-clean: clean-ci-repo clean-pyc clean-kitchen clean-puppet-librarian clean-bundler clean-pkg
+clean: clean-ci-repo clean-pyc clean-kitchen clean-puppet-librarian clean-bundler clean-pkg clean-rspec
 
 # Clone the ci-repo into the ci/ directory
 .PHONY: clone-ci-repo
@@ -78,6 +78,14 @@ clean-pkg:
 	@echo "== clean-pkg ======================================"
 	@echo
 	rm -rf ${ROOT_DIR}/pkg
+
+# Clean bundler build files
+.PHONY: clean-rspec
+clean-rspec:
+	@echo
+	@echo "== clean-rspec ======================================"
+	@echo
+	rm -rf ${ROOT_DIR}/spec/fixtures/modules
 
 # list all makefile targets
 .PHONY: list

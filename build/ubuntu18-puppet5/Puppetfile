@@ -21,45 +21,44 @@
 # ######################
 # # Latest Module Tree #
 # ######################
-# └─┬ stackstorm-st2 (v1.4.0)
-#   ├── jamtur01-httpauth (v0.0.3)
-#   ├── puppetlabs-stdlib (v5.2.0)
-#   ├─┬ puppetlabs-apt (v6.3.0)
-#   │ └── puppetlabs-translate (v1.2.0)
-#   ├── saz-sudo (v6.0.0)
-#   ├─┬ puppet-python (v2.2.2)
-#   │ └── puppet-epel (v1.3.1)
-#   ├── puppetlabs-inifile (v2.5.0)
-#   ├── puppet-mongodb (v2.4.1)
-#   ├─┬ puppetlabs-postgresql (v5.12.1)
-#   │ └── puppetlabs-concat (v5.3.0)
-#   ├─┬ puppet-rabbitmq (v9.0.0)
-#   │ ├── puppet-archive (v3.2.1)
-#   │ └── camptocamp-systemd (v2.3.0)
+# └─┬ stackstorm-st2 (v1.7.0)
 #   ├── ghoneycutt-facter (v3.5.0)
-#   ├── computology-packagecloud (v0.3.2)
-#   ├── puppet-selinux (v1.6.1)
-#   ├── puppet-nginx (v0.16.0)
-#   └── puppet-nodejs (v7.0.0)
+#   ├── jamtur01-httpauth (v0.0.6)
+#   ├── npwalker-recursive_file_permissions (v0.6.0)
+#   ├── puppet-epel (v3.0.1)
+#   ├── puppet-mongodb (v3.1.0)
+#   ├─┬ puppet-nginx (v1.1.0)
+#   │ └── puppetlabs-concat (v6.2.0)
+#   ├── puppet-nodejs (v7.0.1)
+#   ├── puppet-python (v4.1.1)
+#   ├─┬ puppet-rabbitmq (v10.1.1)
+#   │ ├── camptocamp-systemd (v2.9.0)
+#   │ └── puppet-archive (v4.5.0)
+#   ├── puppet-selinux (v3.2.0)
+#   ├─┬ puppetlabs-apt (v7.5.0)
+#   │ └── puppetlabs-translate (v2.2.0)
+#   ├── puppetlabs-inifile (v4.2.0)
+#   ├── puppetlabs-stdlib (v5.2.0)
+#   ├── puppetlabs-yumrepo_core (v1.0.7)
+#   └── saz-sudo (v6.0.0)
 forge "https://forgeapi.puppetlabs.com"
 
-mod 'jamtur01-httpauth'
-mod 'puppetlabs-apt'
-mod 'puppetlabs-yumrepo_core'
-mod 'puppet-epel'
-mod 'puppetlabs-translate' # dependency of puppetlabs-apt
-mod 'saz-sudo'
-mod 'puppet-python'
-mod 'puppet-mongodb'
-mod 'puppetlabs-postgresql'
-mod 'puppetlabs-concat'    # dependency of puppetlabs-postgresql
-mod 'puppet-rabbitmq'
-mod 'puppet-archive'       # dependency of puppet-rabbitmq
-mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'ghoneycutt-facter'
-mod 'puppet-selinux'
+mod 'jamtur01-httpauth'
+mod 'npwalker-recursive_file_permissions'
+mod 'puppet-epel'
+mod 'puppet-mongodb'
 mod 'puppet-nginx'
+mod 'puppetlabs-concat'    # dependency of puppet-nginx'
 mod 'puppet-nodejs'
+mod 'puppet-python'
+mod 'puppet-rabbitmq'
+mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
+mod 'puppet-archive'       # dependency of puppet-rabbitmq
+mod 'puppet-selinux'
+mod 'puppetlabs-apt'
+mod 'puppetlabs-translate' # dependency of puppetlabs-apt
 mod 'puppetlabs-inifile'
 mod 'puppetlabs-stdlib'
-mod 'npwalker-recursive_file_permissions'
+mod 'puppetlabs-yumrepo_core'
+mod 'saz-sudo'

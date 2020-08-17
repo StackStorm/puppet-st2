@@ -22,11 +22,9 @@
 * [`st2::profile::client`](#st2profileclient): Profile to install, configure and manage all client libraries for st2
 * [`st2::profile::facter`](#st2profilefacter): Setup custom fact locations
 * [`st2::profile::fullinstall`](#st2profilefullinstall): This class performs a full default install of StackStorm and all its components on a single node.
-* [`st2::profile::mistral`](#st2profilemistral): This class installs OpenStack Mistral, a workflow engine that integrates with StackStorm.
 * [`st2::profile::mongodb`](#st2profilemongodb): StackStorm compatable installation of MongoDB and dependencies.
 * [`st2::profile::nginx`](#st2profilenginx): StackStorm compatible installation of nginx and dependencies.
 * [`st2::profile::nodejs`](#st2profilenodejs): st2 compatable installation of NodeJS and dependencies for use with StackStorm.
-* [`st2::profile::postgresql`](#st2profilepostgresql): st2 compatable installation of PostgreSQL and dependencies for use with StackStorm and Mistral.
 * [`st2::profile::python`](#st2profilepython): StackStorm compatable installation of Python and dependencies.
 * [`st2::profile::rabbitmq`](#st2profilerabbitmq): StackStorm compatable installation of RabbitMQ and dependencies.
 * [`st2::profile::selinux`](#st2profileselinux): Configure SELinux so that StackStorm services run properly
@@ -111,7 +109,7 @@ class { 'st2':
 }
 ```
 
-##### Different passwords for each database (MongoDB, RabbitMQ, Postgres)
+##### Different passwords for each database (MongoDB, RabbitMQ)
 
 ```puppet
 class { 'st2':
@@ -124,9 +122,6 @@ class { 'st2':
   # RabbitMQ user for StackStorm
   rabbitmq_username   => 'st2',
   rabbitmq_password   => '@!fsdf0#45',
-  # Postrgres user for Mistral
-  mistral_db_username => 'stackstorm',
-  mistral_db_password => 'FSDfcds#45w',
 }
 ```
 
@@ -366,56 +361,6 @@ Data type: `Any`
 Url to the StackStorm Exchange index file. (default undef)
 
 Default value: `undef`
-
-##### `mistral_db_host`
-
-Data type: `Any`
-
-Hostname/IP of the Mistral Postgres database
-
-Default value: $::st2::params::hostname
-
-##### `mistral_db_name`
-
-Data type: `Any`
-
-Database name of the Mistral Postgres database
-
-Default value: $::st2::params::mistral_db_name
-
-##### `mistral_db_username`
-
-Data type: `Any`
-
-Username for authentication to the Mistral Postgres database
-
-Default value: $::st2::params::mistral_db_username
-
-##### `mistral_db_password`
-
-Data type: `Any`
-
-Password for authentication to the Mistral Postgres database
-
-Default value: $::st2::params::admin_password
-
-##### `mistral_db_bind_ips`
-
-Data type: `Any`
-
-String of IPs (csv) that the Mistral Postgres database
-will accept connections on (default: 127.0.0.1)
-
-Default value: $::st2::params::mistral_db_bind_ips
-
-##### `mistral_manage`
-
-Data type: `Any`
-
-If this module should manage the Mistral install and services (st2mistral and postgres).
-(default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
-
-Default value: $st2::params::mistral_manage
 
 ##### `syslog`
 
@@ -1798,8 +1743,6 @@ Components:
  * MongoDB
  * NodeJS
  * nginx
- * PostgreSQL (required by Mistral)
- * Mistral
 
 #### Examples
 
@@ -1819,131 +1762,6 @@ class { 'st2':
 
 include st2::profile::fullinstall
 ```
-
-### st2::profile::mistral
-
-This class installs OpenStack Mistral, a workflow engine that integrates with StackStorm.
-
-#### Examples
-
-##### Basic Usage
-
-```puppet
-include st2::profile::mistral
-```
-
-##### External database
-
-```puppet
-class { 'st2::profile::mistral':
-  db_host     => 'postgres.domain.tld',
-  db_username => 'mistral',
-  db_password => 'xyz123',
-}
-```
-
-##### External RabbitMQ
-
-```puppet
-class { 'st2::profile::mistral':
-  rabbitmq_hostname => 'rabbitmq.domain.tld',
-  rabbitmq_username => 'mistral',
-  rabbitmq_password => 'xyz123',
-}
-```
-
-#### Parameters
-
-The following parameters are available in the `st2::profile::mistral` class.
-
-##### `version`
-
-Data type: `Any`
-
-Version of the st2mistral package to install
-
-Default value: $::st2::version
-
-##### `db_host`
-
-Data type: `Any`
-
-Server hosting Mistral Postgres DB
-
-Default value: $::st2::mistral_db_host
-
-##### `db_name`
-
-Data type: `Any`
-
-Name of the Mistral Postgres database
-
-Default value: $::st2::mistral_db_name
-
-##### `db_username`
-
-Data type: `Any`
-
-Mistral user for authenticating with PostgreSQL
-
-Default value: $::st2::mistral_db_username
-
-##### `db_password`
-
-Data type: `Any`
-
-Mistral password for authenticating with PostgreSQL
-
-Default value: $::st2::mistral_db_password
-
-##### `manage`
-
-Data type: `Any`
-
-If this module should manage the st2mistral install and service
-(default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
-
-Default value: $::st2::mistral_manage
-
-##### `rabbitmq_username`
-
-Data type: `Any`
-
-Username for authenticating with RabbitMQ
-
-Default value: $::st2::rabbitmq_username
-
-##### `rabbitmq_password`
-
-Data type: `Any`
-
-Password for authenticating with RabbitMQ
-
-Default value: $::st2::rabbitmq_password
-
-##### `rabbitmq_hostname`
-
-Data type: `Any`
-
-Hostname/IP of the RabbitMQ server
-
-Default value: $::st2::rabbitmq_hostname
-
-##### `rabbitmq_port`
-
-Data type: `Any`
-
-Port for connecting to RabbitMQ
-
-Default value: $::st2::rabbitmq_port
-
-##### `rabbitmq_vhost`
-
-Data type: `Any`
-
-RabbitMQ virtual host for Mistral
-
-Default value: $::st2::rabbitmq_vhost
 
 ### st2::profile::mongodb
 
@@ -2102,47 +1920,6 @@ Data type: `Any`
 Version of NodeJS to install. If not provided it will be auto-calcuated based on $::st2::version
 
 Default value: $::st2::nodejs_version
-
-### st2::profile::postgresql
-
-st2 compatable installation of PostgreSQL and dependencies for use with StackStorm and Mistral.
-
-#### Examples
-
-##### Basic usage
-
-```puppet
-include st2::profile::postgresql
-```
-
-##### Customizing parameters
-
-```puppet
-class { 'st2::profile::postgresql':
-  db_bind_ips => '0.0.0.0',
-}
-```
-
-#### Parameters
-
-The following parameters are available in the `st2::profile::postgresql` class.
-
-##### `bind_ips`
-
-Data type: `Any`
-
-String of IPs (csv) that the Postgres database will accept connections on.
-
-Default value: $::st2::mistral_db_bind_ips
-
-##### `manage`
-
-Data type: `Any`
-
-If this module should manage the postgres install and service
-(default: true if Ubuntu <= 16.04 or CentOS <= 7, false otherwise)
-
-Default value: $::st2::mistral_manage
 
 ### st2::profile::python
 
