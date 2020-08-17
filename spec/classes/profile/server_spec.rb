@@ -1,20 +1,7 @@
 require 'spec_helper'
 
 describe 'st2::profile::server' do
-  all_os = {
-    supported_os: [
-      {
-        'operatingsystem'        => 'RedHat',
-        'operatingsystemrelease' => ['7'],
-      },
-      {
-        'operatingsystem'        => 'Ubuntu',
-        'operatingsystemrelease' => ['16.04', '18.04'],
-      },
-    ],
-  }
-
-  on_supported_os(all_os).each do |os, os_facts|
+  on_supported_os.each do |os, os_facts|
     let(:facts) do
       os_facts.merge(
         sudoversion: '1.8.23',

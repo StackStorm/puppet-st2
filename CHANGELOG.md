@@ -28,6 +28,16 @@
   repo support previously. (Bugfix)
   Contributed by @nmaludy
 
+- Change the way we handle the `nginx` config from just copying a config file to
+  using the native resource types provided by the `puppet-nginx` module.
+  Users can now configure the utilized SSL protocol and ciphers along with client
+  max body size directly from the `st2` class using the following new parameters:
+   - `nginx_client_max_body_size`
+   - `nginx_ssl_ciphers`
+   - `nginx_ssl_port`
+   - `nginx_ssl_protocols`
+  Contributed by @nmaludy
+
 ## 1.7.0 (Jun 26, 2020)
 
 - Refactored the system StackStorm repository handling. This replaces the `PackageCloud`
