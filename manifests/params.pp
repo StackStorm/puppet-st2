@@ -57,9 +57,6 @@ class st2::params(
   $st2_chatops_packages = [
     'st2chatops',
   ]
-  $st2_mistral_packages = [
-    'st2mistral',
-  ]
   $st2_web_packages = [
     'st2web',
   ]
@@ -160,34 +157,6 @@ class st2::params(
   $mongodb_st2_db = 'st2'
   $mongodb_st2_username = 'stackstorm'
   $mongodb_st2_roles = ['readWrite']
-
-  ## Mistral data
-  $mistral_db_name = 'mistral'
-  $mistral_db_username = 'mistral'
-  $mistral_db_bind_ips = '127.0.0.1'
-  case $facts['os']['family'] {
-    'Debian': {
-      # don't install Mistral in Ubuntu 18.04 and newer
-      if versioncmp($facts['os']['release']['major'], '18.04') >= 0 {
-        $mistral_manage = false
-      }
-      else {
-        $mistral_manage = true
-      }
-    }
-    'RedHat': {
-      # don't install Mistral in Red Hat 8 and newer
-      if versioncmp($facts['os']['release']['major'], '8') >= 0 {
-        $mistral_manage = false
-      }
-      else {
-        $mistral_manage = true
-      }
-    }
-    default: {
-      $mistral_manage = false
-    }
-  }
 
   ## RabbitMQ
   $rabbitmq_username = $admin_username

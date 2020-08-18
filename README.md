@@ -391,11 +391,18 @@ $res = run_task('st2::key_get', $stackstorm_target,
 * Puppet 5
 * Puppet 6
 
+#### :warning: End-of-Support Notice - Mistral
+
+Support for Mistral has been dropped as of StackStorm `3.3.0`.
+
+As of version `1.8` this module no longer supports Mistral (and subsequently PostgreSQL) 
+Neither Mistral nor Postgresql will be installed or managed by this module.
+
 #### :warning: End-of-Support Notice - CentOS 6
 
 Support for CentOS 6 has been dropped as of StackStorm `3.3.0`.
 
-As of version `1.8` this module no longer supports CentOS 6 to coordinate with these changes.
+As of version `1.8` this module no longer supports CentOS 6, so changes will not be tested against this platform.
 
 #### :warning: Deprecation Notice - Puppet 4
 
