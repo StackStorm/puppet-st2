@@ -43,6 +43,9 @@ class st2::params(
   # API settings
   $api_port = 9101
 
+  # stream settings
+  $stream_port = 9102
+
   # Non-user configurable parameters
   $repository = 'stable'
   $conf_dir = '/etc/st2'
@@ -116,23 +119,34 @@ class st2::params(
   $scheduler_gc_interval = 10
   $scheduler_pool_size = 10
 
-  ## nginx default config
-  $nginx_default_conf = $::osfamily ? {
-    'Debian' => '/etc/nginx/conf.d/default.conf',
-    'RedHat' => '/etc/nginx/conf.d/default.conf',
-  }
-  ## nginx conf.d directory in /etc
-  $nginx_conf_d = $::osfamily ? {
-    'Debian' => '/etc/nginx/conf.d',
-    'RedHat' => '/etc/nginx/conf.d',
-  }
-  # nginx config for StackStorm (installed with the st2 packages)
-  $nginx_st2_conf = '/usr/share/doc/st2/conf/nginx/st2.conf'
+  ## nginx
+  $nginx_ssl_port = 443
+  $nginx_ssl_protocols = [
+    'TLSv1.2',
+    'TLSv1.3',
+  ]
+  $nginx_ssl_ciphers = [
+    # TLSv1.3
+    'TLS_AES_128_GCM_SHA256',
+    'TLS_AES_256_GCM_SHA384',
+    'TLS_CHACHA20_POLY1305_SHA256',
+    # TLSv1.2
+    'ECDHE-ECDSA-AES128-GCM-SHA256',
+    'ECDHE-ECDSA-AES128-SHA256',
+    'ECDHE-ECDSA-AES256-GCM-SHA384',
+    'ECDHE-ECDSA-AES256-SHA384',
+    'ECDHE-ECDSA-CHACHA20-POLY1305',
+    'ECDHE-RSA-AES128-GCM-SHA256',
+    'ECDHE-RSA-AES128-SHA256',
+    'ECDHE-RSA-AES256-GCM-SHA384',
+    'ECDHE-RSA-AES256-SHA384',
+    'ECDHE-RSA-CHACHA20-POLY1305',
+  ]
+  # no max on the body size for large workflow support
+  $nginx_client_max_body_size = '0'
 
-  # st2web certs
-  $st2web_ssl_dir = '/etc/ssl/st2'
-  $st2web_ssl_cert = "${st2web_ssl_dir}/st2.crt"
-  $st2web_ssl_key = "${st2web_ssl_dir}/st2.key"
+  # st2web
+  $web_root = '/opt/stackstorm/static/webui/'
 
   ## MongoDB Data
   $mongodb_admin_username = 'admin'
