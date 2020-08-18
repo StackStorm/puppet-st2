@@ -6,7 +6,6 @@ module FactHelper
 {
   "kernelrelease": "3.13.0-36-generic",
   "kernel": "Linux",
-  "mistral_bootstrapped": "true",
   "role": "st2ops",
   "st2client_bootstrapped": "true",
   "st2server_bootstrapped": "true",
