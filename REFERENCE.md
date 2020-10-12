@@ -1920,7 +1920,7 @@ StackStorm compatible installation of nginx and dependencies.
 include st2::profile::nginx
 ```
 
-##### Disable manging the nginx repo so you can manage it yourself
+##### Disable managing the nginx repo so you can manage it yourself
 
 ```puppet
 class { 'st2::profile::nginx':
@@ -2463,7 +2463,7 @@ Data type: `St2::Repository`
 
 Release repository to enable
 
-Default value: 'stable'
+Default value: $st2::repository
 
 ### st2::repo::apt
 
@@ -3692,7 +3692,7 @@ bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_passwor
 ##### Upgrading enterprise packages
 
 ```puppet
-bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "mongo_packages": ["mongodb-enterprise-server", "mongodb-enterprise-shell", "mongodb-enterprise-tools"]}'
+bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "mongo_packages": ["mongodb-enterprise-server", "mongodb-enterprise-shell", "mongodb-enterprise-tools"], "mongo_edition": "enterprise"}'
 ```
 
 ##### Upgrading from 3.6 to 4.0
@@ -3746,6 +3746,15 @@ Data type: `Array[String]`
 List of MongoDB packages that will be upgraded
 
 Default value: ['mongodb-org-server', 'mongodb-org-shell', 'mongodb-org-tools']
+
+##### `mongo_edition`
+
+Data type: `Enum['enterprise', 'org']`
+
+What edition of MongoDB should be setup from a repo perspective,
+either 'org' for community edition, or 'enterprise' for enterprise edition.
+
+Default value: 'org'
 
 ##### `upgrade_version_start`
 

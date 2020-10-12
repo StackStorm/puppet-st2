@@ -6,7 +6,7 @@
 # @example Basic Usage
 #  include st2::profile::nginx
 #
-# @example Disable manging the nginx repo so you can manage it yourself
+# @example Disable managing the nginx repo so you can manage it yourself
 #  class { 'st2::profile::nginx':
 #    manage_repo => false,
 #  }
