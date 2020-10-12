@@ -75,6 +75,10 @@ by the user is greater than or equal to <code>$version</code>.
 * [`rule_list`](#rule_list): Return a list of rules.
 * [`run`](#run): Runs a StackStorm action
 
+**Plans**
+
+* [`st2::upgrade_mongodb`](#st2upgrade_mongodb): Upgrades a standalone MongoDB database between versions.
+
 ## Classes
 
 ### st2
@@ -1916,6 +1920,14 @@ StackStorm compatible installation of nginx and dependencies.
 include st2::profile::nginx
 ```
 
+##### Disable manging the nginx repo so you can manage it yourself
+
+```puppet
+class { 'st2::profile::nginx':
+  manage_repo => false,
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `st2::profile::nginx` class.
@@ -3649,4 +3661,105 @@ Username to use for StackStorm authentication.
 Data type: `Optional[String]`
 
 Password to use for StackStorm authentication.
+
+## Plans
+
+### st2::upgrade_mongodb
+
+The default upgrade for this plan goes from 3.4 to 3.6 and ultimately to 4.0
+
+High level steps:
+- stop stackstorm
+## https://docs.mongodb.com/manual/release-notes/3.6-upgrade-standalone/
+- set MongoDB feature compatibility to 3.4
+- change Yum repo to 3.6
+- upgrade packages
+- set MongoDB feature compatibility to 3.6
+## https://docs.mongodb.com/manual/release-notes/4.0-upgrade-standalone/
+- change Yum repo to 4.0
+- upgrade packages
+- set MongoDB feature compatibility to 4.0
+- start stackstorm
+
+#### Examples
+
+##### Basic usage
+
+```puppet
+bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx"}'
+```
+
+##### Upgrading enterprise packages
+
+```puppet
+bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "mongo_packages": ["mongodb-enterprise-server", "mongodb-enterprise-shell", "mongodb-enterprise-tools"]}'
+```
+
+##### Upgrading from 3.6 to 4.0
+
+```puppet
+bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.6", "upgrade_version_path": ["4.0"]}'
+```
+
+##### Upgrading from 3.4 to 3.6 to 4.0
+
+```puppet
+bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.4", "upgrade_version_path": ["3.6", "4.0"]}'
+```
+
+#### Parameters
+
+The following parameters are available in the `st2::upgrade_mongodb` plan.
+
+##### `targets`
+
+Data type: `TargetSpec`
+
+Set of targets (MongoDB hosts) that this plan will be executed on.
+
+##### `mongo_admin_db`
+
+Data type: `String`
+
+Name of the admin database for MongoDB
+
+Default value: 'admin'
+
+##### `mongo_username`
+
+Data type: `String`
+
+Name of the admin user on the admin database
+
+Default value: 'admin'
+
+##### `mongo_password`
+
+Data type: `String`
+
+Password of the admin user on the admin database
+
+##### `mongo_packages`
+
+Data type: `Array[String]`
+
+List of MongoDB packages that will be upgraded
+
+Default value: ['mongodb-org-server', 'mongodb-org-shell', 'mongodb-org-tools']
+
+##### `upgrade_version_start`
+
+Data type: `String`
+
+Version of MongoDB that the database is currently on, ie. where we are starting from.
+
+Default value: '3.4'
+
+##### `upgrade_version_path`
+
+Data type: `Array[String]`
+
+List of versions that we will upgrade through along our path to success!
+
+Default value: ['3.6', '4.0']
 
