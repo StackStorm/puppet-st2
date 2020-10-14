@@ -16,8 +16,8 @@
 #
 class st2::repo (
   Enum['present', 'absent'] $ensure = 'present',
-  St2::Repository $repository = 'stable',
-) {
+  St2::Repository $repository = $st2::repository,
+) inherits st2 {
   case $facts['os']['family'] {
     'RedHat': {
       # RedHat distros need EPEL

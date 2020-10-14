@@ -37,6 +37,10 @@
    - `nginx_ssl_port`
    - `nginx_ssl_protocols`
   Contributed by @nmaludy
+  
+- Added a new plan `st2::upgrade_mongodb` that can be used to upgrade a standalone MongoDB
+  database between versions. (Feature)
+  Contributed by @nmaludy
 
 ## 1.7.0 (Jun 26, 2020)
 
