@@ -2,9 +2,12 @@
 
 ## Development
 
+- Fixed issue with upgrade mongodb bolt plan to handle passwords with special characters. (Bugfix)
+  Contributed by @bishopbm
+
 - Drop support for CentOS 6 #304 (Enhancement)
   Contributed by @nmaludy
-  
+
 - Drop support for Mistral and PostgreSQL #312 (Enhancement)
   Contributed by @nmaludy
 
@@ -19,11 +22,11 @@
   and private key in `/etc/ssl/st2/st2.key`. There is a future improvement to allow
   these paths to be configurable. (Enhancement)
   Contributed by @nmaludy
-  
+
 - Add support for using MongoDB `4.0` when installing latest StackStorn (`>= 3.3.0`)
   #298 (Enhancement)
   Contributed by @nmaludy
-  
+
 - Add dependency to `yumrepo_core` to this module that was missed when adding
   repo support previously. (Bugfix)
   Contributed by @nmaludy
@@ -37,7 +40,7 @@
    - `nginx_ssl_port`
    - `nginx_ssl_protocols`
   Contributed by @nmaludy
-  
+
 - Added a new plan `st2::upgrade_mongodb` that can be used to upgrade a standalone MongoDB
   database between versions. (Feature)
   Contributed by @nmaludy
