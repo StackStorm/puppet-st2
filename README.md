@@ -1,6 +1,6 @@
 # puppet-st2
 
-[![Build Status](https://travis-ci.org/StackStorm/puppet-st2.svg?branch=master)](https://travis-ci.org/StackStorm/puppet-st2?branch=master)
+[![Build Status](https://github.com/StackStorm/puppet-st2/workflows/build/badge.svg?branch=master)](https://github.com/StackStorm/puppet-st2/actions)
 [![Coverage Status](https://coveralls.io/repos/StackStorm/puppet-st2/badge.svg?branch=master&service=github)](https://coveralls.io/github/StackStorm/puppet-st2?branch=master)
 [![Puppet Forge Endorsement](https://img.shields.io/puppetforge/e/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)
 [![Puppet Forge Version](https://img.shields.io/puppetforge/v/stackstorm/st2.svg)](https://forge.puppet.com/stackstorm/st2)

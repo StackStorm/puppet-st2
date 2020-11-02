@@ -66,9 +66,15 @@ Puppet::Type.type(:st2_pack).provide(:default) do
     # of this function where when any option is passed in it sets failonfail: false and
     # combine: false for some terrible reason. We want both of those set to true like
     # they are when no options are specified, so we set them explicitly.
+    # note: We are forcing en_US.UTF-8 under the hood here so we have a consistent
+    #       locale set that is expected by StackStorm. This does NOT affect the user.
     Puppet::Util::Execution.execute(command_str,
                                     override_locale: false,
                                     failonfail: true,
-                                    combine: true)
+                                    combine: true,
+                                    custom_environment: {
+                                      'LANG' => 'en_US.UTF-8',
+                                      'LC_ALL' => 'en_US.UTF-8',
+                                    })
   end
 end
