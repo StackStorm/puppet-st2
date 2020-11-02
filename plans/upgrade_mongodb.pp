@@ -64,7 +64,7 @@ plan st2::upgrade_mongodb (
   # stop stackstorm
   run_command('st2ctl stop', $targets)
 
-  $mongo_cmd = "mongo ${mongo_admin_db} --username ${mongo_username} --password ${mongo_password} --quiet"
+  $mongo_cmd = "mongo ${mongo_admin_db} --username ${mongo_username} --password '${mongo_password}' --quiet"
 
   # set MongoDB feature compatibility to 3.4
   $start_ver = $upgrade_version_start
