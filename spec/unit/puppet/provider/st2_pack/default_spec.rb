@@ -115,7 +115,11 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
         .with('/usr/bin/st2 auth someuser -t -p blah',
               override_locale: false,
               failonfail: true,
-              combine: true)
+              combine: true,
+              custom_environment: {
+                'LANG' => 'en_US.UTF-8',
+                'LC_ALL' => 'en_US.UTF-8',
+              })
       provider.send(:exec_st2, 'auth', 'someuser', '-t', '-p', 'blah')
     end
 
@@ -124,7 +128,11 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
         .with('/usr/bin/st2 pack search arg\ with\ spaces \"\ blah\" \)\( \#',
               override_locale: false,
               failonfail: true,
-              combine: true)
+              combine: true,
+              custom_environment: {
+                'LANG' => 'en_US.UTF-8',
+                'LC_ALL' => 'en_US.UTF-8',
+              })
       provider.send(:exec_st2,
                     'pack', 'search',
                     'arg with spaces',
