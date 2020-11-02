@@ -76,7 +76,6 @@ jobs:
 
   unit-python:
     name: '${{matrix.name}} - python (${{matrix.python}})'
-    needs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -111,6 +110,7 @@ jobs:
 
   integration:
     name: '${{matrix.name}} - puppet (${{matrix.puppet}})'
+    needs:
       - unit
       - unit-python
     runs-on: ubuntu-latest

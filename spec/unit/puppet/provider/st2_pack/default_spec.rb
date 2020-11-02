@@ -117,8 +117,8 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
               failonfail: true,
               combine: true,
               custom_environment: {
-                'LANG'=>'en_US.UTF-8',
-                'LC_ALL'=>'en_US.UTF-8'
+                'LANG' => 'en_US.UTF-8',
+                'LC_ALL' => 'en_US.UTF-8',
               })
       provider.send(:exec_st2, 'auth', 'someuser', '-t', '-p', 'blah')
     end
@@ -130,8 +130,8 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
               failonfail: true,
               combine: true,
               custom_environment: {
-                'LANG'=>'en_US.UTF-8',
-                'LC_ALL'=>'en_US.UTF-8'
+                'LANG' => 'en_US.UTF-8',
+                'LC_ALL' => 'en_US.UTF-8',
               })
       provider.send(:exec_st2,
                     'pack', 'search',
