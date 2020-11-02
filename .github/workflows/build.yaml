@@ -13,7 +13,7 @@ on:
 
 jobs:
   unit:
-    name: '${{matrix.name}} - puppet (${{matrix.puppet}})'
+    name: 'unit - ${{matrix.name}} - puppet (${{matrix.puppet}})'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -75,7 +75,7 @@ jobs:
           bundle exec rake $CHECK
 
   unit-python:
-    name: '${{matrix.name}} - python (${{matrix.python}})'
+    name: 'unit - ${{matrix.name}} - python (${{matrix.python}})'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -109,7 +109,7 @@ jobs:
           make ${{ matrix.make_target }}
 
   integration:
-    name: '${{matrix.name}} - puppet (${{matrix.puppet}})'
+    name: 'integration - ${{matrix.name}}'
     needs:
       - unit
       - unit-python
@@ -151,6 +151,7 @@ jobs:
           [ -z "$RUBYGEMS_VERSION" ] || (yes || true) | gem update --system $RUBYGEMS_VERSION
           gem --version
           bundle -v
+          # note: this path is relative to the Gemfile path below
           bundle config path vendor/bundle
           bundle config without 'system_tests'
           # note: using custom gemfile for kitchen tests
@@ -159,10 +160,11 @@ jobs:
         # restore cache AFTER doing 'bundle lock' so that Gemfile.lock exists
       - uses: actions/cache@v2
         with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-${{ matrix.name }}-${{ matrix.ruby }}-gems-integration-${{ hashFiles('**/Gemfile.lock') }}
+          # note: this path is the Gemfile + path from above, so it's different than the base level Gemfile cache
+          path: build/kitchen/vendor/bundle
+          key: ${{ runner.os }}-${{ matrix.name }}-${{ matrix.ruby }}-gems-integration-v3-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.name }}-${{ matrix.ruby }}-gems-integration-
+            ${{ runner.os }}-${{ matrix.name }}-${{ matrix.ruby }}-gems-integration-v3-
       - name: Bundle install
         run: |
           bundle install --jobs $(nproc) --retry 3 
@@ -171,7 +173,7 @@ jobs:
           bundle exec kitchen test --debug ${{ matrix.name }}
 
   deploy:
-    name: 'deploy to forge'
+    name: 'deploy - forge'
     needs:
       - unit
       - unit-python
@@ -211,19 +213,22 @@ jobs:
         # restore cache AFTER doing 'bundle lock' so that Gemfile.lock exists
       - uses: actions/cache@v2
         with:
+          # note: we are using the gems-unit cache here since it's the same and can take
+          #       advantage for the cache we already have from the previous 'unit' job
           path: vendor/bundle
-          key: ${{ runner.os }}-${{ matrix.puppet }}-${{ matrix.ruby }}-gems-test-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-${{ matrix.puppet }}-${{ matrix.ruby }}-gems-unit-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.puppet }}-${{ matrix.ruby }}-gems-test-
+            ${{ runner.os }}-${{ matrix.puppet }}-${{ matrix.ruby }}-gems-unit-
       - name: Bundle install
         run: |
           bundle install --jobs $(nproc) --retry 3
       - name: Build and Deploy
         env:
-          # TODO configure secrets here:
+          # configure secrets here:
           #  https://docs.github.com/en/free-pro-team@latest/actions/reference/encrypted-secrets
           BLACKSMITH_FORGE_USERNAME: '${{ secrets.PUPPET_FORGE_USERNAME }}'
           BLACKSMITH_FORGE_PASSWORD: '${{ secrets.PUPPET_FORGE_PASSWORD }}'
+          # use puppet-blacksmith rake tasks to build and deploy the module
         run: |
           bundle exec rake module:build
           bundle exec rake module:push
