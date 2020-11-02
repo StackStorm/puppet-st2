@@ -47,7 +47,9 @@ mod 'ghoneycutt-facter'
 mod 'jamtur01-httpauth'
 mod 'npwalker-recursive_file_permissions'
 mod 'puppet-epel'
-mod 'puppet-mongodb'
+mod 'puppet-mongodb',
+    :git => 'https://github.com/voxpupuli/puppet-mongodb.git',
+    :branch => 'master'
 mod 'puppet-nginx'
 mod 'puppetlabs-concat'    # dependency of puppet-nginx'
 mod 'puppet-nodejs'
