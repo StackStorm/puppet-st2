@@ -7,6 +7,7 @@ describe 'st2::profile::web' do
     let(:add_header) do
       {
         'Front-End-Https' => 'on',
+        'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
         'X-Content-Type-Options' => 'nosniff',
       }
     end
