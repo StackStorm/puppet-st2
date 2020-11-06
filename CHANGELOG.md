@@ -2,6 +2,10 @@
 
 ## Development
 
+- Added `Strict-Transport-Security' SSL header (HSTS) and set max-age to 1 year for nginx server
+  resource. This will force browsers to always use https connections to the server.
+  Contributed by @paxri01
+
 - Fixed issue with upgrade mongodb bolt plan to handle passwords with special characters. (Bugfix)
   Contributed by @bishopbm
 
