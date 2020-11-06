@@ -107,8 +107,9 @@ class st2::profile::web(
 
   # http redirect to https
   $add_header = {
-    'Front-End-Https'        => 'on',
-    'X-Content-Type-Options' => 'nosniff',
+    'Front-End-Https'           => 'on',
+    'Strict-Transport-Security' => 'max-age=31536000; includeSubDomains',
+    'X-Content-Type-Options'    => 'nosniff',
   }
   nginx::resource::server { 'st2webui':
     ensure       => present,
