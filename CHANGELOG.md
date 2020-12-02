@@ -2,7 +2,7 @@
 
 ## Development
 
-- Removed tags for auth system development dependencies (PAM and LDAP) that caused isseus
+- Removed tags for auth system development dependencies (PAM and LDAP) that caused issues
   when declaring packages such as `gcc`. (Bug Fix)
   Contributed by @nmaludy
 
