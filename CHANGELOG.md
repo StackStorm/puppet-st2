@@ -2,6 +2,10 @@
 
 ## Development
 
+- Removed tags for auth system development dependencies (PAM and LDAP) that caused issues
+  when declaring packages such as `gcc`. (Bug Fix)
+  Contributed by @nmaludy
+
 - Added `Strict-Transport-Security' SSL header (HSTS) and set max-age to 1 year for nginx server
   resource. This will force browsers to always use https connections to the server.
   Contributed by @paxri01
