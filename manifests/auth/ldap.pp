@@ -141,7 +141,6 @@ class st2::auth::ldap (
   ensure_packages($_dep_pkgs,
                   {
                     'ensure' => 'present',
-                    'tag'    => 'st2::auth::ldap',
                   })
 
   # install the backend package
