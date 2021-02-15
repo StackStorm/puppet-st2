@@ -12,9 +12,16 @@
 #   To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
 #
 # @param python_enable_unsafe_repo
-#   On Ubuntu 16.04 python 3.6 is not available in any of the stock repos.
-#   To install this package the unsafe deadsnakes PPA needs to be enabled.
-#   This module can handle enabling this repo for you, but you must set this parameter to `true`.
+#   The python3.6 package is a required dependency for the StackStorm `st2` package
+#   but that is not installable from any of the default Ubuntu 16.04 repositories.
+#   We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for
+#   Ubuntu 16.04 will be removed with future StackStorm versions.
+#   Alternatively the Puppet will try to add python3.6 from the 3rd party 'deadsnakes' repository: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa.
+#   Only set to true, if you are aware of the support and security risks associated
+#   with using unofficial 3rd party PPA repository, and you understand that StackStorm
+#   does NOT provide ANY support for python3.6 packages on Ubuntu 16.04.
+#   The unsafe PPA `'ppa:deadsnakes/ppa'` https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+#   can be enabled if you specify `true` for this parameter. (default: `false`)
 #
 # @param [St2::Repository] repository
 #   Release repository to enable. 'stable', 'unstable'
