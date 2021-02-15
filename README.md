@@ -67,12 +67,12 @@ forge. We manage the module dependenies using a `Puppetfile` for each OS we supp
 These `Puppetfile` can be used both with [r10k](https://github.com/puppetlabs/r10k)
 and [librarian-puppet](http://librarian-puppet.com/).
 
- * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
- * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 7 - [build/centos7-puppet7/Puppetfile](build/centos7-puppet7/Puppetfile)
  * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
- * Ubuntu 18.04 - Puppet 5 - [build/ubuntu18-puppet5/Puppetfile](build/ubuntu18-puppet5/Puppetfile)
+ * Ubuntu 16.04 - Puppet 7 - [build/ubuntu16-puppet7/Puppetfile](build/ubuntu16-puppet7/Puppetfile)
  * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
+ * Ubuntu 18.04 - Puppet 7 - [build/ubuntu18-puppet7/Puppetfile](build/ubuntu18-puppet7/Puppetfile)
  
 ### Beginning with st2
 
@@ -419,8 +419,8 @@ $res = run_task('st2::key_get', $stackstorm_target,
 
 ### Supported Puppet versions
 
-* Puppet 5
 * Puppet 6
+* Puppet 7
 
 #### :warning: End-of-Support Notice - Mistral
 
@@ -435,6 +435,15 @@ Support for CentOS 6 has been dropped as of StackStorm `3.3.0`.
 
 As of version `1.8` this module no longer supports CentOS 6, so changes will not be tested against this platform.
 
+#### :warning: Deprecation Notice - Puppet 5
+
+Puppet 5 reaches End of Life on 2021-12-31. As of version `2.0` use of Puppet 5 with this module
+is officially deprecated.
+
+* This module no longer tests against Puppet 5 in its build matrix.
+* The next major release of the module will drop support for Puppet 5 by adjusting the
+  minimum supported Puppet version in `metadata.json`.
+  
 #### :warning: Deprecation Notice - Puppet 4
 
 Puppet 4 reached End of Life on 2018-12-31. As of version `1.4` use of Puppet 4 with this module
