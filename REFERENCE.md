@@ -129,6 +129,19 @@ class { 'st2':
 }
 ```
 
+##### Install with python 3.6 (if not default on your system)
+
+```puppet
+$st2_python_version = $facts['os']['family'] ? {
+  'RedHat' => '3.6',
+  'Debian' => 'python3.6',
+}
+class { 'st2':
+  python_version            => $st2_python_version,
+  python_enable_unsafe_repo => true,
+}
+```
+
 #### Parameters
 
 The following parameters are available in the `st2` class.
@@ -142,6 +155,34 @@ See the package 'ensure' property:
 https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
 
 Default value: 'present'
+
+##### `python_version`
+
+Data type: `String`
+
+Version of Python to install. Default is 'system' meaning the system version
+of Python will be used.
+To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
+To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
+
+Default value: 'system'
+
+##### `python_enable_unsafe_repo`
+
+Data type: `Boolean`
+
+The python3.6 package is a required dependency for the StackStorm `st2` package
+but that is not installable from any of the default Ubuntu 16.04 repositories.
+We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for
+Ubuntu 16.04 will be removed with future StackStorm versions.
+Alternatively the Puppet will try to add python3.6 from the 3rd party 'deadsnakes' repository: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa.
+Only set to true, if you are aware of the support and security risks associated
+with using unofficial 3rd party PPA repository, and you understand that StackStorm
+does NOT provide ANY support for python3.6 packages on Ubuntu 16.04.
+The unsafe PPA `'ppa:deadsnakes/ppa'` https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+can be enabled if you specify `true` for this parameter. (default: `false`)
+
+Default value: `false`
 
 ##### `repository`
 
@@ -1984,7 +2025,7 @@ Default value: $::st2::nodejs_version
 
 ### st2::profile::python
 
-StackStorm compatable installation of Python and dependencies.
+include st2::profile::python
 
 #### Examples
 
@@ -1993,6 +2034,51 @@ StackStorm compatable installation of Python and dependencies.
 ```puppet
 include st2::profile::python
 ```
+
+##### Install with python 3.6 (if not default on your system)
+
+```puppet
+$st2_python_version = $facts['os']['family'] ? {
+  'RedHat' => '3.6',
+  'Debian' => 'python3.6',
+}
+class { 'st2':
+  python_version            => $st2_python_version,
+  python_enable_unsafe_repo => true,
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `st2::profile::python` class.
+
+##### `version`
+
+Data type: `String`
+
+Version of Python to install. Default is 'system' meaning the system version
+of Python will be used.
+To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
+To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
+
+Default value: $st2::python_version
+
+##### `enable_unsafe_repo`
+
+Data type: `Boolean`
+
+The python3.6 package is a required dependency for the StackStorm `st2` package
+but that is not installable from any of the default Ubuntu 16.04 repositories.
+We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for
+Ubuntu 16.04 will be removed with future StackStorm versions.
+Alternatively the Puppet will try to add python3.6 from the 3rd party 'deadsnakes' repository: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa.
+Only set to true, if you are aware of the support and security risks associated
+with using unofficial 3rd party PPA repository, and you understand that StackStorm
+does NOT provide ANY support for python3.6 packages on Ubuntu 16.04.
+The unsafe PPA `'ppa:deadsnakes/ppa'` https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+can be enabled if you specify `true` for this parameter. (default: `false`)
+
+Default value: $st2::python_enable_unsafe_repo
 
 ### st2::profile::rabbitmq
 
@@ -3672,11 +3758,11 @@ High level steps:
 - stop stackstorm
 ## https://docs.mongodb.com/manual/release-notes/3.6-upgrade-standalone/
 - set MongoDB feature compatibility to 3.4
-- change Yum repo to 3.6
+- change package repo to 3.6
 - upgrade packages
 - set MongoDB feature compatibility to 3.6
 ## https://docs.mongodb.com/manual/release-notes/4.0-upgrade-standalone/
-- change Yum repo to 4.0
+- change package repo to 4.0
 - upgrade packages
 - set MongoDB feature compatibility to 4.0
 - start stackstorm

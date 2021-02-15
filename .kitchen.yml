@@ -61,6 +61,18 @@ platforms:
     provisioner:
       puppetfile_path: build/centos7-puppet6/Puppetfile
 
+  # CentOS7 with Systemd - Puppet 6 - Python 3.6
+  - name: centos7-puppet6-python36
+    driver:
+      platform: centos
+      dockerfile: build/centos7-puppet6/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos7-puppet6/Puppetfile
+      manifest: test/fullinstall_python36.pp
+
   # Ubuntu Xenial with Systemd - Puppet 5
   - name: ubuntu16-puppet5
     driver:
@@ -82,6 +94,18 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/ubuntu16-puppet6/Puppetfile
+
+  # Ubuntu Xenial with Systemd - Puppet 6
+  - name: ubuntu16-puppet6-python36
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu16-puppet6/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/ubuntu16-puppet6/Puppetfile
+      manifest: test/fullinstall_python36.pp
 
   # Ubuntu Bionic with Systemd - Puppet 5
   - name: ubuntu18-puppet5

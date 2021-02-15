@@ -84,8 +84,6 @@ puppet module install stackstorm-st2
 puppet apply -e "include st2::profile::fullinstall"
 ```
 
-
-
 ## Usage
 
 ### Reference Documentation
@@ -113,6 +111,39 @@ Hiera data bindings. A few notable parameters to take note of:
   **Note** Setting this to `latest` is NOT recommended. It will cause the 
   StackStorm packages to be automatically updated without the proper upgrade steps
   being taken (proper steps detailed here: https://docs.stackstorm.com/install/upgrades.html)
+* `st2::python_version` - Version to Python to use. The default is `'system'` and the 
+  system `python` package will be installed, whatever version that is for your OS.
+  To explicitly install Python 3.6 specify `'3.6'` if on RHEL/CentOS 7.
+  If on Ubuntu 16.04 specify `'python3.6'`.
+  **Notes** 
+    * RHEL 7 - The Red Hat subscription repo `'rhel-7-server-optional-rpms'`
+      will need to be enabled prior to running this module.
+    * :warning: Ubuntu 16.04 -
+      The python3.6 package is a required dependency for the StackStorm `st2` package 
+      but that is not installable from any of the default Ubuntu 16.04 repositories.
+      We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for 
+      Ubuntu 16.04 will be removed with future StackStorm versions. 
+      Alternatively the Puppet will try to add python3.6 from the 3rd party 'deadsnakes' repository: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa.
+      Only set to true, if you are aware of the support and security risks associated
+      with using unofficial 3rd party PPA repository, and you understand that StackStorm
+      does NOT provide ANY support for python3.6 packages on Ubuntu 16.04.
+      The unsafe PPA `'ppa:deadsnakes/ppa'` https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+      can be enabled if you specify the `st2::python_enable_unsafe_repo: true` (default: `false`)
+
+  ```puppet
+  # CentOS/RHEL 7
+  class { 'st2': 
+    python_version => '3.6',
+  }
+
+  # Ubuntu 16.04 (unsafe deadsnakes PPA will be enabled because of boolean flag)
+  class { 'st2': 
+    python_version            => 'python3.6',
+    python_enable_unsafe_repo => true,
+  }
+
+  contain st2::profile::fullinstall
+  ```
 
 All other classes are documented with Puppetdoc. Please refer to specific
 classes for use and configuration.

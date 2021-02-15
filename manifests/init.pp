@@ -4,6 +4,25 @@
 #   Version of StackStorm package to install (default = 'present')
 #   See the package 'ensure' property:
 #   https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
+#
+# @param [String] python_version
+#   Version of Python to install. Default is 'system' meaning the system version
+#   of Python will be used.
+#   To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
+#   To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
+#
+# @param [Boolean] python_enable_unsafe_repo
+#   The python3.6 package is a required dependency for the StackStorm `st2` package
+#   but that is not installable from any of the default Ubuntu 16.04 repositories.
+#   We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for
+#   Ubuntu 16.04 will be removed with future StackStorm versions.
+#   Alternatively the Puppet will try to add python3.6 from the 3rd party 'deadsnakes' repository: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa.
+#   Only set to true, if you are aware of the support and security risks associated
+#   with using unofficial 3rd party PPA repository, and you understand that StackStorm
+#   does NOT provide ANY support for python3.6 packages on Ubuntu 16.04.
+#   The unsafe PPA `'ppa:deadsnakes/ppa'` https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+#   can be enabled if you specify `true` for this parameter. (default: `false`)
+#
 # @param [St2::Repository] repository
 #   Release repository to enable. 'stable', 'unstable'
 #   (default = 'stable')
@@ -225,8 +244,19 @@
 #     rabbitmq_password   => '@!fsdf0#45',
 #   }
 #
+# @example Install with python 3.6 (if not default on your system)
+#   $st2_python_version = $facts['os']['family'] ? {
+#     'RedHat' => '3.6',
+#     'Debian' => 'python3.6',
+#   }
+#   class { 'st2':
+#     python_version            => $st2_python_version,
+#     python_enable_unsafe_repo => true,
+#   }
 class st2(
   $version                  = 'present',
+  String  $python_version           = 'system',
+  Boolean $python_enable_unsafe_repo = false,
   St2::Repository $repository = $::st2::params::repository,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
