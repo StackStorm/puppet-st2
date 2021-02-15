@@ -1,5 +1,5 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-puppet6 -f build/puppet6/Dockerfile.kitchen .
+# docker build -t stackstorm/puppet-st2-puppet7 -f build/puppet7/Dockerfile.kitchen .
 
 FROM stackstorm/packagingtest:centos7-systemd
 
@@ -32,6 +32,6 @@ RUN ln -s /opt/puppetlabs/bin/hiera /usr/bin/
 RUN ln -s /opt/puppetlabs/bin/mco /usr/bin/
 RUN ln -s /opt/puppetlabs/bin/puppet /usr/bin/
 
-# print versions (ruby 2.5.x, puppet 6.x)
+# print versions (ruby 2.5.x, puppet 7.x)
 RUN puppet --version
 RUN sudo -E puppet --version

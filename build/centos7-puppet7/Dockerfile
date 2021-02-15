@@ -1,5 +1,5 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-puppet6 -f build/puppet6/Dockerfile .
+# docker build -t stackstorm/puppet-st2-puppet7 -f build/puppet7/Dockerfile .
 
 FROM stackstorm/packagingtest:centos7-systemd
 
@@ -30,7 +30,7 @@ WORKDIR $APP_HOME
 COPY . $APP_HOME
 
 # use bundler to install our gems
-ENV PUPPET_GEM_VERSION "~> 6.0"
+ENV PUPPET_GEM_VERSION "~> 7.0"
 ENV BUNDLE_GEMFILE=$APP_HOME/Gemfile \
   BUNDLE_JOBS=2 \
   BUNDLE_PATH=/bundle
