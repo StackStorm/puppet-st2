@@ -113,6 +113,12 @@ Hiera data bindings. A few notable parameters to take note of:
   **Note** Setting this to `latest` is NOT recommended. It will cause the 
   StackStorm packages to be automatically updated without the proper upgrade steps
   being taken (proper steps detailed here: https://docs.stackstorm.com/install/upgrades.html)
+* `st2::python_version` - Version to Python to use. The default is `'system'` and the 
+  system `python` package will be installed, whatever version that is for your OS.
+  To explicitly install Python 3.6 specify `'3.6'`.
+  **Note** If you're running RHEL we automatically install the EPEL repo for you.
+  If you're on Ubuntu 16.04, you'll need to enable the PPA that provides the Python 3.6 package
+  
 
 All other classes are documented with Puppetdoc. Please refer to specific
 classes for use and configuration.

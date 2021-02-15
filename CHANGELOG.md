@@ -2,6 +2,13 @@
 
 ## Development
 
+- Added new parameter `st2::python_version` that controls the version of python to install.
+  This was added so that OSes that don't come with Python 3 by default, can install Python 3.
+  The default is `'system'` and the system `python` package will be installed, 
+  whatever version that is for your OS.
+  To explicitly install Python 3.x specify `'3'` or `'3.6'`. (Feature)
+  Contributed by @nmaludy
+
 - Removed tags for auth system development dependencies (PAM and LDAP) that caused issues
   when declaring packages such as `gcc`. (Bug Fix)
   Contributed by @nmaludy

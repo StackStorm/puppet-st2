@@ -225,8 +225,14 @@
 #     rabbitmq_password   => '@!fsdf0#45',
 #   }
 #
+# @example Install with python 3.6 (if not default on your system)
+#   class { 'st2':
+#     python_version => '3.6',
+#   }
+#
 class st2(
   $version                  = 'present',
+  $python_version           = 'system',
   St2::Repository $repository = $::st2::params::repository,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",
