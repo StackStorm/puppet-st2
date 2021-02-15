@@ -118,14 +118,20 @@ Hiera data bindings. A few notable parameters to take note of:
   **Notes** 
     * RHEL 7 - The Red Hat subscription repo `'rhel-7-server-optional-rpms'`
       will need to be enabled prior to running this module.
-    * Ubuntu 16.04 - We install the `'ppa:deadsnakes/ppa'` PPA if specifying any 
-      `st2::python_version`  that is not `'system'`: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+    * Ubuntu 16.04 - The unsafe PPA `'ppa:deadsnakes/ppa'` https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+      can be enabled if you specify the `st2::python_enable_unsafe_repo: true` (default: `false`)
+
   ```puppet
   # CentOS/RHEL 7
-  class { 'st2': python_version => '3.6' }
+  class { 'st2': 
+    python_version => '3.6',
+  }
 
-  # Ubuntu 16.04 (deadsnakes PPA will be installed automatically)
-  class { 'st2': python_version => 'python3.6' }
+  # Ubuntu 16.04 (unsafe deadsnakes PPA will be enabled because of boolean flag)
+  class { 'st2': 
+    python_version            => 'python3.6',
+    python_enable_unsafe_repo => true,
+  }
 
   contain st2::profile::fullinstall
   ```

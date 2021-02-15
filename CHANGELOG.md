@@ -6,7 +6,10 @@
   This was added so that OSes that don't come with Python 3 by default, can install Python 3.
   The default is `'system'` and the system `python` package will be installed, 
   whatever version that is for your OS.
-  To explicitly install Python 3.x specify `'3'` or `'3.6'`. (Feature)
+  To explicitly install Python 3.6 on CentOS 7, pass in `'3.6'`.
+  To install Python 3.6 on Ubuntu 16.04 pass in `'python3.6'`. On Ubuntu 16.04 you'll
+  also need to pass in `st2::python_enable_unsafe_repo: true` in order to enable the deadsnakes
+  PPA (Feature)
   Contributed by @nmaludy
 
 - Removed tags for auth system development dependencies (PAM and LDAP) that caused issues

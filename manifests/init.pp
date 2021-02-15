@@ -4,6 +4,18 @@
 #   Version of StackStorm package to install (default = 'present')
 #   See the package 'ensure' property:
 #   https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
+#
+# @param python_version
+#   Version of Python to install. Default is 'system' meaning the system version
+#   of Python will be used.
+#   To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
+#   To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
+#
+# @param python_enable_unsafe_repo
+#   On Ubuntu 16.04 python 3.6 is not available in any of the stock repos.
+#   To install this package the unsafe deadsnakes PPA needs to be enabled.
+#   This module can handle enabling this repo for you, but you must set this parameter to `true`.
+#
 # @param [St2::Repository] repository
 #   Release repository to enable. 'stable', 'unstable'
 #   (default = 'stable')
@@ -232,7 +244,8 @@
 #
 class st2(
   $version                  = 'present',
-  $python_version           = 'system',
+  String  $python_version           = 'system',
+  Boolean $python_enable_unsafe_repo = false,
   St2::Repository $repository = $::st2::params::repository,
   $conf_dir                 = $::st2::params::conf_dir,
   $conf_file                = "${::st2::params::conf_dir}/st2.conf",

@@ -10,17 +10,14 @@
 #  include st2::profile::python
 #
 class st2::profile::python (
-  $version = $st2::python_version,
+  String  $version            = $st2::python_version,
+  Boolean $enable_unsafe_repo = $st2::python_enable_unsafe_repo,
 ) inherits st2 {
   notice("Python version: ${version}")
   if !defined(Class['python']) {
     # if we're installing a custom version of Python on Ubuntu, then install the deadsnakes PPA
-    if $version != 'system' and $facts['os']['family'] == 'Debian'{
-      $msg = "Passing in st2::python_version: ${version} automatically enables the deadsnakes PPA."
-      # server-side warning
-      notice($msg)
-      # client-side warning
-      notify { $msg: }
+    # but only if the user explicitly specified st2::python_enable_unsafe_repo: true
+    if $version != 'system' and $facts['os']['family'] == 'Debian' and $enable_unsafe_repo {
       # enable the PPA
       apt::ppa { 'ppa:deadsnakes/ppa':
         before => Class['python'],
