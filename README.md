@@ -67,12 +67,12 @@ forge. We manage the module dependenies using a `Puppetfile` for each OS we supp
 These `Puppetfile` can be used both with [r10k](https://github.com/puppetlabs/r10k)
 and [librarian-puppet](http://librarian-puppet.com/).
 
- * RHEL/CentOS 7 - Puppet 5 - [build/centos7-puppet5/Puppetfile](build/centos7-puppet5/Puppetfile)
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
- * Ubuntu 16.04 - Puppet 5 - [build/ubuntu16-puppet5/Puppetfile](build/ubuntu16-puppet5/Puppetfile)
+ * RHEL/CentOS 7 - Puppet 7 - [build/centos7-puppet7/Puppetfile](build/centos7-puppet7/Puppetfile)
  * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
- * Ubuntu 18.04 - Puppet 5 - [build/ubuntu18-puppet5/Puppetfile](build/ubuntu18-puppet5/Puppetfile)
+ * Ubuntu 16.04 - Puppet 7 - [build/ubuntu16-puppet7/Puppetfile](build/ubuntu16-puppet7/Puppetfile)
  * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
+ * Ubuntu 18.04 - Puppet 7 - [build/ubuntu18-puppet7/Puppetfile](build/ubuntu18-puppet7/Puppetfile)
  
 ### Beginning with st2
 
