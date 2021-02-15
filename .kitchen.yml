@@ -96,7 +96,7 @@ platforms:
       puppetfile_path: build/ubuntu16-puppet6/Puppetfile
 
   # Ubuntu Xenial with Systemd - Puppet 6
-  - name: ubuntu16-puppet6
+  - name: ubuntu16-puppet6-python36
     driver:
       platform: ubuntu
       dockerfile: build/ubuntu16-puppet6/Dockerfile.kitchen
