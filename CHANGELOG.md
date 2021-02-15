@@ -66,6 +66,9 @@
 - PDK Sync to 1.18.1 (Enhancement)
   Contributed by @nmaludy
 
+- Added support for Puppet 7 (Enhancement)
+  Contributed by @nmaludy
+
 ## 1.7.0 (Jun 26, 2020)
 
 - Refactored the system StackStorm repository handling. This replaces the `PackageCloud`
