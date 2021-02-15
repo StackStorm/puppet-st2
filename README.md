@@ -84,8 +84,6 @@ puppet module install stackstorm-st2
 puppet apply -e "include st2::profile::fullinstall"
 ```
 
-
-
 ## Usage
 
 ### Reference Documentation
@@ -115,15 +113,22 @@ Hiera data bindings. A few notable parameters to take note of:
   being taken (proper steps detailed here: https://docs.stackstorm.com/install/upgrades.html)
 * `st2::python_version` - Version to Python to use. The default is `'system'` and the 
   system `python` package will be installed, whatever version that is for your OS.
-  To explicitly install Python 3.6 specify `'3.6'`.
-  **Note** If you're running RHEL we automatically install the EPEL repo for you.
-  If you're on Ubuntu 16.04, we install the `'ppa:deadsnakes/ppa'` PPA:
-  https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+  To explicitly install Python 3.6 specify `'3.6'` if on RHEL/CentOS 7.
+  If on Ubuntu 16.04 specify `'python3.6'`.
+  **Notes** 
+    * RHEL 7 - The Red Hat subscription repo `'rhel-7-server-optional-rpms'`
+      will need to be enabled prior to running this module.
+    * Ubuntu 16.04 - We install the `'ppa:deadsnakes/ppa'` PPA if specifying any 
+      `st2::python_version`  that is not `'system'`: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
   ```puppet
+  # CentOS/RHEL 7
   class { 'st2': python_version => '3.6' }
+
+  # Ubuntu 16.04 (deadsnakes PPA will be installed automatically)
+  class { 'st2': python_version => 'python3.6' }
+
   contain st2::profile::fullinstall
   ```
-  
 
 All other classes are documented with Puppetdoc. Please refer to specific
 classes for use and configuration.
