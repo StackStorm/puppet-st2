@@ -5,13 +5,13 @@
 #   See the package 'ensure' property:
 #   https://puppet.com/docs/puppet/5.5/types/package.html#package-attribute-ensure
 #
-# @param python_version
+# @param [String] python_version
 #   Version of Python to install. Default is 'system' meaning the system version
 #   of Python will be used.
 #   To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
 #   To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
 #
-# @param python_enable_unsafe_repo
+# @param [Boolean] python_enable_unsafe_repo
 #   The python3.6 package is a required dependency for the StackStorm `st2` package
 #   but that is not installable from any of the default Ubuntu 16.04 repositories.
 #   We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for
@@ -245,10 +245,14 @@
 #   }
 #
 # @example Install with python 3.6 (if not default on your system)
-#   class { 'st2':
-#     python_version => '3.6',
+#   $st2_python_version = $facts['os']['family'] ? {
+#     'RedHat' => '3.6',
+#     'Debian' => 'python3.6',
 #   }
-#
+#   class { 'st2':
+#     python_version            => $st2_python_version,
+#     python_enable_unsafe_repo => true,
+#   }
 class st2(
   $version                  = 'present',
   String  $python_version           = 'system',
