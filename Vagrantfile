@@ -31,6 +31,7 @@
 #
 #       # Python 3 testing
 #       echo -e "class { 'st2': python_version => '3.6' }\n include st2::profile::fullinstall" > apply.pp
+#
 #       chmod 440 -R /etc/sudoers.d; puppet apply apply.pp; chmod 755 -R /etc/sudoers.d
 #
 #   - Keep editing files locally and re-running puppet with the command above
@@ -57,10 +58,10 @@ provider   = provider.to_sym
 #  - centos/7
 #  - generic/ubuntu1604
 #  - generic/ubuntu1804
-box        = ENV['BOX'] ? ENV['BOX'] : 'centos/7'
+#box        = ENV['BOX'] ? ENV['BOX'] : 'centos/7'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'centos/8stream'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/centos8'
-#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1604'
+box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1604'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1804'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!

@@ -117,7 +117,12 @@ Hiera data bindings. A few notable parameters to take note of:
   system `python` package will be installed, whatever version that is for your OS.
   To explicitly install Python 3.6 specify `'3.6'`.
   **Note** If you're running RHEL we automatically install the EPEL repo for you.
-  If you're on Ubuntu 16.04, you'll need to enable the PPA that provides the Python 3.6 package
+  If you're on Ubuntu 16.04, we install the `'ppa:deadsnakes/ppa'` PPA:
+  https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
+  ```puppet
+  class { 'st2': python_version => '3.6' }
+  contain st2::profile::fullinstall
+  ```
   
 
 All other classes are documented with Puppetdoc. Please refer to specific

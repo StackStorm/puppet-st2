@@ -14,6 +14,14 @@ class st2::profile::python (
 ) inherits st2 {
   notice("Python version: ${version}")
   if !defined(Class['python']) {
+    # if we're installing a custom version of Python on Ubuntu, then install the deadsnakes PPA
+    if $version != 'system' and $facts['os']['family'] == 'Debian'{
+      apt::ppa { 'ppa:deadsnakes/ppa':
+        before => Class['python'],
+      }
+    }
+
+    # intall python, pip, virtualenv
     class { 'python':
       version    => $version,
       pip        => present,
