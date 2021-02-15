@@ -24,10 +24,6 @@ jobs:
             puppet: "7.0"
             check: "check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
             name: 'static'
-          - ruby: '2.4'
-            puppet: "5.0"
-            check: "parallel_spec"
-            name: 'spec'
           - ruby: '2.5'
             puppet: "6.0"
             check: "parallel_spec"
@@ -121,23 +117,17 @@ jobs:
         include:
           # note: actions/setup-ruby only allows using a major.minor release of ruby
           - ruby: '2.7'
-            name: 'centos7-puppet5'
-          - ruby: '2.7'
             name: 'centos7-puppet6'
           - ruby: '2.7'
             name: 'centos7-puppet7'
           - ruby: '2.7'
             name: 'centos7-puppet7-python36'
           - ruby: '2.7'
-            name: 'ubuntu16-puppet5'
-          - ruby: '2.7'
             name: 'ubuntu16-puppet6'
           - ruby: '2.7'
             name: 'ubuntu16-puppet7'
           - ruby: '2.7'
             name: 'ubuntu16-puppet7-python36'
-          - ruby: '2.7'
-            name: 'ubuntu18-puppet5'
           - ruby: '2.7'
             name: 'ubuntu18-puppet6'
           - ruby: '2.7'

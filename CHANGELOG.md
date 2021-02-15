@@ -68,6 +68,9 @@
 
 - Added support for Puppet 7 (Enhancement)
   Contributed by @nmaludy
+  
+- Deprecated Puppet 5. Removed Puppet 5 from build matrix (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.7.0 (Jun 26, 2020)
 
