@@ -1,5 +1,5 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-ubuntu18-puppet7 -f build/ubuntu18-puppet6/Dockerfile.kitchen .
+# docker build -t stackstorm/puppet-st2-ubuntu18-puppet7 -f build/ubuntu18-puppet7/Dockerfile.kitchen .
 
 FROM stackstorm/packagingtest:bionic-systemd
 
