@@ -2,6 +2,8 @@
 
 ## Development
 
+## 2.0.0 (Feb 15, 2020)
+
 - Added new parameter `st2::python_version` that controls the version of python to install.
   This was added so that OSes that don't come with Python 3 by default, can install Python 3.
   The default is `'system'` and the system `python` package will be installed, 
