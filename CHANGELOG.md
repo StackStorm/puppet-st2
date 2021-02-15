@@ -59,6 +59,9 @@
 - Added a new plan `st2::upgrade_mongodb` that can be used to upgrade a standalone MongoDB
   database between versions. (Feature)
   Contributed by @nmaludy
+  
+- PDK Sync to 1.18.1 (Enhancement)
+  Contributed by @nmaludy
 
 ## 1.7.0 (Jun 26, 2020)
 
