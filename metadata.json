@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "1.7.0",
+  "version": "2.0.0",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache-2.0",
@@ -87,7 +87,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 8.0.0"
+      "version_requirement": ">= 5.0.0 < 8.0.0"
     }
   ],
   "pdk-version": "1.19.0.pre (102)",
