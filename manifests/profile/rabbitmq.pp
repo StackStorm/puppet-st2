@@ -30,7 +30,7 @@ class st2::profile::rabbitmq (
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
-  if ($::osfamily == 'RedHat') and ($facts['os']['release']['major'] = '8') {
+  if ($::osfamily == 'RedHat') and ($facts['os']['release']['major'] == '8') {
     $repos_ensure = true
   }
   else {
