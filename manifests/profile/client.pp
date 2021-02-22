@@ -1,22 +1,29 @@
-# == Class: st2::profile::client
+# @summary Profile to install, configure and manage all client libraries for st2
 #
-#  Profile to install all client libraries for st2
+# @param auth
+#    Is auth enabled or not.
+# @param api_url
+#    URL of the StackStorm API service
+# @param auth_url
+#    URL of the StackStorm Auth service
+# @param base_url
+#    Base URL for other StackStorm services
+# @param username
+#    Username for auth on the CLI
+# @param password
+#    Password for auth on the CLI
+# @param api_version
+#    Version of the StackStorm API
+# @param cacert
+#    Path to the SSL CA certficate for the StackStorm services
+# @param debug
+#    Enable debug mode
+# @param cache_token
+#    Enable cacheing authentication tokens until they expire
+# @param silence_ssl_warnings
+#    Enable silencing SSL warnings for self-signed certs
 #
-# === Parameters
-#
-#  [*version*]              - Version of StackStorm to install
-#  [*base_url*]             - CLI config - Base URL lives
-#  [*api_version*]          - CLI config - API Version
-#  [*debug*]                - CLI config - Enable/Disable Debug
-#  [*cache_token*]          - CLI config - True to cache auth token until it expires
-#  [*silence_ssl_warnings*] - CLI Config - True to silence any SSL related warnings emitted by the client.
-#  [*username*]             - CLI config - Auth Username
-#  [*password*]             - CLI config - Auth Password
-#  [*api_url*]              - CLI config - API URL
-#  [*auth_url*]             - CLI config - Auth URL
-#
-# === Examples
-#
+# @example Basic Usage
 #  include st2::profile::client
 #
 class st2::profile::client (
@@ -31,8 +38,7 @@ class st2::profile::client (
   $debug                = $::st2::cli_debug,
   $cache_token          = $::st2::cli_cache_token,
   $silence_ssl_warnings = $::st2::cli_silence_ssl_warnings,
-  $global_env           = $::st2::global_env,
-) inherits ::st2 {
+) inherits st2 {
 
   # Setup st2client settings for Root user by default
   st2::client::settings { 'root':
@@ -51,13 +57,11 @@ class st2::profile::client (
   }
 
   # Setup global environment variables:
-  if $global_env {
-    file { '/etc/profile.d/st2.sh':
-      ensure  => file,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      content => template('st2/etc/profile.d/st2.sh.erb'),
-    }
+  file { '/etc/profile.d/st2.sh':
+    ensure  => file,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    content => template('st2/etc/profile.d/st2.sh.erb'),
   }
 }

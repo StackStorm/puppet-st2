@@ -1,18 +1,41 @@
-# Definition: st2::client::settings
+# @summary Generates a configuration file for the st2 CLI (st2client)
 #
-#  This defined type generates a configuration file for the
-#  st2client CLI to know where to access StackStorm
+# @param name
+#    OS-level username. Used to determine where the config file will be placed.
+# @param user
+#    See name
+# @param homedir
+#    Path to home directory of the user.
+# @param auth
+#    Is auth enabled or not.
+# @param api_url
+#    URL of the StackStorm API service
+# @param auth_url
+#    URL of the StackStorm Auth service
+# @param base_url
+#    Base URL for other StackStorm services
+# @param username
+#    Username for auth on the CLI
+# @param password
+#    Password for auth on the CLI
+# @param disable_credentials
+#    Prevents credentials (username, password) from being written to the config file
+# @param api_version
+#    Version of the StackStorm API
+# @param cacert
+#    Path to the SSL CA certficate for the StackStorm services
+# @param debug
+#    Enable debug mode
+# @param cache_token
+#    Enable cacheing authentication tokens until they expire
+# @param silence_ssl_warnings
+#    Enable silencing SSL warnings for self-signed certs
 #
-# Variables
-#
-#  [*base_url*]    - CLI config - Base URL lives
-#  [*api_version*] - CLI config - API Version
-#  [*debug*]       - CLI config - Enable/Disable Debug
-#  [*cache_token*] - CLI config - True to cache auth token until expries
-#  [*username*]    - CLI config - Auth Username
-#  [*password*]    - CLI config - Auth Password
-#  [*api_url*]     - CLI config - API URL
-#  [*auth_url*]    - CLI config - Auth URL
+# @example Basic usage
+#   st2::client::settings { 'john':
+#     username => 'st2_john',
+#     password => 'xyz123',
+#   }
 #
 define st2::client::settings(
   $user                 = $name,

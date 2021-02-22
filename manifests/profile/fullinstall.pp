@@ -1,17 +1,22 @@
-# == Class: st2::profile::fullinstall
+# @summary This class performs a full default install of StackStorm and all its components on a single node.
 #
-# This class performs a default install of StackStorm on a single node
-# including all st2 components and full installs of all components.
-#
+# Components:
 #  * RabbitMQ
 #  * Python
 #  * MongoDB
 #  * NodeJS
-#  * Mistral+PostgreSQL
+#  * nginx
 #
-# === Examples
+# @example Basic Usage
+#   include st2::profile::fullinstall
 #
-#  include st2::profile::fullinstall
+# @example Customizing parameters
+#   # Customizations are done via the main st2 class
+#   class { 'st2':
+#     # ... assign custom parameters
+#   }
+#
+#   include st2::profile::fullinstall
 #
 class st2::profile::fullinstall inherits st2 {
 
@@ -23,25 +28,24 @@ class st2::profile::fullinstall inherits st2 {
 
   Anchor['st2::begin']
   -> Anchor['st2::bootstrap']
-  -> class { '::st2::profile::facter': }
-  -> class { '::st2::profile::repos': }
-  -> class { '::st2::profile::selinux': }
+  -> class { 'st2::profile::facter': }
+  -> class { 'st2::repo': }
+  -> class { 'st2::profile::selinux': }
   -> Anchor['st2::pre_reqs']
-  -> class { '::st2::profile::nodejs': }
-  -> class { '::st2::profile::postgresql': }
-  -> class { '::st2::profile::rabbitmq': }
-  -> class { '::st2::profile::mongodb': }
+  -> class { 'st2::profile::python': }
+  -> class { 'st2::profile::nodejs': }
+  -> class { 'st2::profile::rabbitmq': }
+  -> class { 'st2::profile::mongodb': }
   -> Anchor['st2::main']
-  -> class { '::st2::profile::mistral': }
-  -> class { '::st2::profile::client': }
-  -> class { '::st2::profile::server': }
-  -> class { '::st2::profile::web': }
-  -> class { '::st2::profile::chatops': }
+  -> class { 'st2::profile::client': }
+  -> class { 'st2::profile::server': }
+  -> class { 'st2::profile::web': }
+  -> class { 'st2::profile::chatops': }
   -> Anchor['st2::end']
 
-  include ::st2::auth::standalone
-  include ::st2::packs
-  include ::st2::kvs
+  include st2::auth
+  include st2::packs
+  include st2::kvs
 
   # If user has not defined a pack "st2", install it from the Exchange.
   if ! defined(St2::Pack['st2']) {

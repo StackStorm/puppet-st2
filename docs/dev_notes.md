@@ -88,7 +88,7 @@ gem install puppet_forge:2.2.6 r10k
 r10k puppetfile install -v --moduledir=./modules --puppetfile=./docs/Puppetfile
 
 # run StackStorm full install using puppet
-puppet apply --modulepath=./modules -e "include ::st2::profile::fullinstall"
+puppet apply --modulepath=./modules -e "include st2::profile::fullinstall"
 
 ```
 
@@ -114,3 +114,4 @@ PUPPET_VERSION="~> 4.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lo
 PUPPET_VERSION="~> 5.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet5
 
 ```
+

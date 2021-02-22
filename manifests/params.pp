@@ -1,71 +1,53 @@
-# == Class: st2::params
+# @summary Main parameters to manage the st2 module
 #
-#  Main parameters to manage the st2 module
+# @param packs_group_name
+#   The name of the group created to hold the st2 admin user
+# @param hostname
+#   Hostname of the StackStorm box. This is used as the default to drive a lot of
+#   other parameters in the st2 class such as auth URL, MongoDB host, RabbitMQ host, etc.
+# @param admin_username
+#   Username of the StackStorm admin user. Best practice is to change this to a unique username.
+# @param admin_password
+#   Password of the StackStorm admin user. Best practice is to change this to a unique password.
 #
-# === Parameters
-#  [*packs_group_name*] - The name of the group created to hold the st2 admin user
+# @example Best Practice
+#   class { 'st2::params':
+#     admin_username => 'myuser',
+#     admin_password => 'SuperSecret!',
+#   }
+#   include st2::profile::fullinstall
 #
-# === Variables
-#  [*repo_env*] - Specify the environment of package repo (production, staging)
-#  [*conf_dir*] - The local directory where st2 config is stored
-#  [*subsystems*] - Different executable subsystems within StackStorm
-#  [*component_map*] - Hash table of mappings of Subsystems -> Components
-#  [*st2_server_packages*] - A list of all upstream server packages to grab from upstream package server
-#  [*st2_client_packages*] - A list of all upstream client packages to grab from upstream package server
-#  [*debian_dependencies*] - Any dependencies needed to successfully run st2 server on the Debian OS Family
-#  [*debian_client_dependencies*] - Any dependencies needed to successfully run st2 client on the Debian OS Family
-#  [*debian_mongodb_dependencies*] - MongoDB Dependencies (if installed via this module)
-#  [*redhat_dependencies*] - Any dependencies needed to successfully run st2 server on the RedHat OS Family
-#  [*redhat_client_dependencies*] - Any dependencies needed to successfully run st2 client on the RedHat OS Family
-#
-# === Examples
-#
-#  include st2::params
-#
-#  class { 'st2::params':
-#
-#  }
-#
-
 class st2::params(
   $packs_group_name = 'st2packs',
+  $hostname         = '127.0.0.1',
+  ## StackStorm default credentials (change these!)
+  $admin_username   = 'st2admin',
+  $admin_password   = 'Ch@ngeMe',
 ) {
-  $subsystems = [
-    'actionrunner', 'api', 'sensorcontainer',
-    'rulesengine', 'garbagecollector', 'resultstracker', 'notifier',
-    'auth',
-  ]
 
-  $component_map = {
-    actionrunner        => 'st2actions',
-    api                 => 'st2api',
-    auth                => 'st2auth',
-    notifier            => 'st2actions',
-    resultstracker      => 'st2actions',
-    rulesengine         => 'st2reactor',
-    sensorcontainer     => 'st2reactor',
-    garbagecollector    => 'st2reactor',
-    web                 => 'st2common',
-
-    st2actionrunner     => 'st2actions',
-    st2api              => 'st2api',
-    st2auth             => 'st2auth',
-    st2notifier         => 'st2actions',
-    st2resultstracker   => 'st2actions',
-    st2rulesengine      => 'st2reactor',
-    st2sensorcontainer  => 'st2reactor',
-    st2garbagecollector => 'st2reactor',
-    st2web              => 'st2common',
-  }
-
-  $repo_base = 'https://downloads.stackstorm.net'
-  $repo_env = 'production'
+  # SSL settings
+  $use_ssl  = false
+  $ssl_dir  = '/etc/ssl/st2'
+  $ssl_cert = '/etc/ssl/st2/st2.crt'
+  $ssl_key  = '/etc/ssl/st2/st2.key'
 
   # Auth settings
   $auth_mode = standalone
-  $auth_backend = pam
+  $auth_backend = flat_file
+  $auth_htpasswd_file = '/etc/st2/htpasswd'
+  $auth_backend_config = {
+    htpasswd_file => $auth_htpasswd_file,
+  }
+  $auth_port = 9100
+
+  # API settings
+  $api_port = 9101
+
+  # stream settings
+  $stream_port = 9102
 
   # Non-user configurable parameters
+  $repository = 'stable'
   $conf_dir = '/etc/st2'
   $datstore_keys_dir = "${conf_dir}/keys"
 
@@ -74,9 +56,6 @@ class st2::params(
   ]
   $st2_chatops_packages = [
     'st2chatops',
-  ]
-  $st2_mistral_packages = [
-    'st2mistral',
   ]
   $st2_web_packages = [
     'st2web',
@@ -120,31 +99,59 @@ class st2::params(
     'st2chatops',
   ]
 
-  ## nginx default config
-  $nginx_default_conf = $::osfamily ? {
-    'Debian' => '/etc/nginx/conf.d/default.conf',
-    'RedHat' => $::operatingsystemmajrelease ? {
-      '6'     => '/etc/nginx/conf.d/default.conf',
-      default => '/etc/nginx/nginx.conf',
-    }
-  }
-  ## nginx conf.d directory in /etc
-  $nginx_conf_d = $::osfamily ? {
-    'Debian' => '/etc/nginx/conf.d',
-    'RedHat' => '/etc/nginx/conf.d',
-  }
-  # nginx config for StackStorm (installed with the st2 packages)
-  $nginx_st2_conf = '/usr/share/doc/st2/conf/nginx/st2.conf'
+  ## StackStorm Workflow Engine (Orchestra)
+  $workflowengine_services = [
+    'st2workflowengine',
+  ]
 
-  # st2web certs
-  $st2web_ssl_dir = '/etc/ssl/st2'
-  $st2web_ssl_cert = "${st2web_ssl_dir}/st2.crt"
-  $st2web_ssl_key = "${st2web_ssl_dir}/st2.key"
+  ## StackStorm Timers Engine
+  $timersengine_services = [
+    'st2timersengine',
+  ]
+  $timersengine_enabled = true
+  $timersengine_timezone = 'America/Los_Angeles'
+
+  ## StackStorm Scheduler
+  $scheduler_services = [
+    'st2scheduler',
+  ]
+  $scheduler_sleep_interval = 0.1
+  $scheduler_gc_interval = 10
+  $scheduler_pool_size = 10
+
+  ## nginx
+  $nginx_ssl_port = 443
+  $nginx_ssl_protocols = [
+    'TLSv1.2',
+    'TLSv1.3',
+  ]
+  $nginx_ssl_ciphers = [
+    # TLSv1.3
+    'TLS_AES_128_GCM_SHA256',
+    'TLS_AES_256_GCM_SHA384',
+    'TLS_CHACHA20_POLY1305_SHA256',
+    # TLSv1.2
+    'ECDHE-ECDSA-AES128-GCM-SHA256',
+    'ECDHE-ECDSA-AES128-SHA256',
+    'ECDHE-ECDSA-AES256-GCM-SHA384',
+    'ECDHE-ECDSA-AES256-SHA384',
+    'ECDHE-ECDSA-CHACHA20-POLY1305',
+    'ECDHE-RSA-AES128-GCM-SHA256',
+    'ECDHE-RSA-AES128-SHA256',
+    'ECDHE-RSA-AES256-GCM-SHA384',
+    'ECDHE-RSA-AES256-SHA384',
+    'ECDHE-RSA-CHACHA20-POLY1305',
+  ]
+  # no max on the body size for large workflow support
+  $nginx_client_max_body_size = '0'
+
+  # st2web
+  $web_root = '/opt/stackstorm/static/webui/'
 
   ## MongoDB Data
   $mongodb_admin_username = 'admin'
 
-  $mongodb_port = '27017'
+  $mongodb_port = 27017
   $mongodb_bind_ips = ['127.0.0.1']
 
   $mongodb_st2_db = 'st2'
@@ -152,17 +159,34 @@ class st2::params(
   $mongodb_st2_roles = ['readWrite']
 
   ## RabbitMQ
-  $rabbitmq_port = 25672
-  $rabbitmq_protocol = 'tcp'
-  $rabbitmq_selinux_type = 'amqp_port_t'
+  $rabbitmq_username = $admin_username
+  $rabbitmq_password = $admin_password
+  $rabbitmq_hostname = '127.0.0.1'
+  $rabbitmq_port = 5672
+  $rabbitmq_bind_ip = '127.0.0.1'
+  $rabbitmq_vhost = '/'
+
+  ## actionrunner config
+  $actionrunner_workers = 10
+  $actionrunner_global_env_file = $::osfamily ? {
+    'Debian' => '/etc/default/st2actionrunner',
+    'RedHat' => '/etc/sysconfig/st2actionrunner',
+  }
 
   ## chatops default config
+  $st2_chatops_dir  = '/opt/stackstorm/chatops'
+  $st2_chatops_global_env_file = $::osfamily ? {
+    'Debian' => '/etc/default/st2chatops',
+    'RedHat' => '/etc/sysconfig/st2chatops',
+  }
+
   $hubot_log_level = 'debug'
   $hubot_express_port = '8081'
   $tls_cert_reject_unauthorized = '0'
-  $hubot_name = 'hubot'
+  $hubot_name = '"hubot"'
+  $hubot_alias = "'!'"
   $chatops_adapter = {}
-  $chatops_adapter_conf = {}
-
-
+  $chatops_adapter_conf = {
+    'HUBOT_ADAPTER' => 'slack',
+  }
 }

@@ -1,19 +1,29 @@
-# == Class: st2::stanley
+# @summary Installs the default admin user for st2 (stanley).
 #
-#  Installs the default admin user for st2 (stanley). Will install
-#  insecure keys by default to allow testing, but also allows override of
-#  values.
+# @note Will install auto-generate SSH keys of none are provided.
 #
-# === Parameters
-#  [*ssh_public_key*]  - SSH Public Key without leading key-type and end email
-#  [*ssh_key_type*]    - Type of SSH Key (ssh-dsa/ssh-rsa)
-#  [*ssh_private_key*] - Private key
-#  [*client*]          - Allow incoming connections from the defined user (default: true)
-#  [*server*]          - Server where connection requests originate (usually st2 server) (default: false)
+# @param username
+#    Name of the stanley user
+# @param ssh_public_key
+#    SSH Public Key without leading key-type and end email
+# @param ssh_key_type
+#    Type of SSH Key (ssh-dsa/ssh-rsa)
+# @param ssh_private_key
+#    Private key
+# @param client
+#    Allow incoming connections from the defined user
+# @param server
+#    Server where connection requests originate (usually st2 server)
 #
-# === Examples
+# @example Basic Usage
+#  include st2::stanley
 #
-#  include ::st2::stanley
+# @example Custom SSH keys
+#  class { 'st2::stanley':
+#    ssh_key_type => 'ssh-rsa',
+#    ssh_public_key => 'AAAAAWESOMEKEY==',
+#    ssh_private_key => '----- BEGIN RSA PRIVATE KEY -----\nDEADBEEF\n----- END RSA PRIVATE KEY -----',
+#  }
 #
 class st2::stanley (
   $username        = 'stanley',

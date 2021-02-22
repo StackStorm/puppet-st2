@@ -1,27 +1,28 @@
 # TODO List for this project
 
-- Install and configure st2chatops
 - Reorganization effort
   - Migrate to a "modern" puppet model like: https://github.com/puppetlabs/puppetlabs-postgresql
   - All things in st2::profiles::xxx move to st2
   - Create sub folders for each "profile" (server, client, etc)
   - Decompose each "profile" into its parts (config, repo, install, service, etc)
   - Decompose "server" profile into each st2 component (st2actionrunner, st2api, etc)
-- Ability to install different st2 versions
-- Test existing alternate auth backends
-  - mongodb
-  - pam
-  - proxy
-- Support additional alternate auth backends
-  - LDAP
-  - Keystone
 - Remove unused code
   - Tiller
   - Unused variables in this like st2::params
-  - Unused class level parameters in things like ::st2
+  - Unused class level parameters in things like st2
 - Cleanup class level comments
 - More unit tests
 - InSpec integration verification tests for kitchen
 - Play around with Beaker testing (in an effort to get this to be an "Approved" module)
 - More developer docs
 - More documentation for end users and a complete "Getting Started" guide
+  - end-to-end documentation 
+  - setup r10k
+  - download modules
+  - install puppet
+  - puppet apply
+- For PAM auth backend, configure `st2auth` service to run as root
+- Bolt Task for upgrading StackStorm
+- Tasks for various CLI commands
+- Proper provider implementation for key/value pairs
+- StackStorm facts

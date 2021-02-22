@@ -1,0 +1,37 @@
+{
+  "description": "Install a list of packs",
+  "parameters": {
+    "packs": {
+      "type": "Array[String]",
+      "description": "List of packs to install. This can either be the name of a pack to install from the exchange, a URL to a pack to install from git://user@domain/pack.git or https://github.com/org/pack.git, or the path to a local git repo file:///path/to/local/pack"
+    },
+    "api_key": {
+      "description": "StackStorm API key to use for authentication (prefer this over username/password).",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "auth_token": {
+      "description": "StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "username": {
+      "description": "Username to use for StackStorm authentication.",
+      "type": "Optional[String]"
+    },
+    "password": {
+      "description": "Password to use for StackStorm authentication.",
+      "type": "Optional[String]",
+      "sensitive": true
+    }
+  },
+  "implementations": [
+    {
+      "name": "pack_install.py",
+      "files": [
+        "python_task_helper/files/task_helper.py",
+        "st2/files/st2_task_base.py"
+      ]
+    }
+  ]
+}

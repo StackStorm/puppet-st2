@@ -1,0 +1,49 @@
+{
+  "description": "Retrieve the value for a key from the StackStorm datastore",
+  "parameters": {
+    "key": {
+      "type": "String[1]",
+      "description": "Key to get"
+    },
+    "scope": {
+      "type": "Optional[String]",
+      "description": "Scope to retrieve the data from. Default = 'system'"
+    },
+    "decrypt": {
+      "type": "Optional[Boolean]",
+      "description": "Decrypt secret if encrypted. Default = false"
+    },
+    "convert": {
+      "type": "Optional[Boolean]",
+      "description": "Attempt to convert the string into a hash, array, etc by parsing it as JSON. If an error occurs the string data will be returned. Default = true"
+    },
+    "api_key": {
+      "description": "StackStorm API key to use for authentication (prefer this over username/password).",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "auth_token": {
+      "description": "StackStorm auth token. Use this if username/password auth has already been established in a previous task and auth token is being passed around.",
+      "type": "Optional[String]",
+      "sensitive": true
+    },
+    "username": {
+      "description": "Username to use for StackStorm authentication.",
+      "type": "Optional[String]"
+    },
+    "password": {
+      "description": "Password to use for StackStorm authentication.",
+      "type": "Optional[String]",
+      "sensitive": true
+    }
+  },
+  "implementations": [
+    {
+      "name": "key_get.py",
+      "files": [
+        "python_task_helper/files/task_helper.py",
+        "st2/files/st2_task_base.py"
+      ]
+    }
+  ]
+}
