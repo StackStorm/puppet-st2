@@ -69,50 +69,25 @@
 #
 class st2::auth::ldap (
   $conf_file       = $::st2::conf_file,
-  $ldap_uri        = '',
+  $ldap_host       = '',
   $use_tls         = false,
+  $ldap_use_ssl    = false,
+  $ldap_port       = 389,
   $bind_dn         = '',
   $bind_pw         = '',
-  $user            = undef,
-  $group           = undef,
+  $base_dn         = '',
+  $group_dns       = undef,
   $chase_referrals = true,
-  $ref_hop_limit   = 0,
 ) inherits st2 {
   include st2::auth::common
 
   $_use_tls = bool2str($use_tls)
+  $_use_ssl = bool2str($ldap_use_ssl)
   $_chase_refs = bool2str($chase_referrals)
-
-  if $user != undef and $group != undef {
-    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, \
-      \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
-      \"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, \
-      \"user\": {\"base_dn\": \"${user['base_dn']}\", \
-      \"search_filter\": \"${user['search_filter']}\", \
-      \"scope\": \"${user['scope']}\"}, \
-      \"group\": {\"base_dn\": \"${group['base_dn']}\", \
-      \"search_filter\": \"${group['search_filter']}\", \
-      \"scope\": \"${group['scope']}\"}}"
-  }
-  elsif $user != undef {
-    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, \
-      \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
-      \"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, \
-      \"user\": {\"base_dn\": \"${user['base_dn']}\", \
-      \"search_filter\": \"${user['search_filter']}\", \
-      \"scope\": \"${user['scope']}\"}}"
-  }
-  elsif $group != undef {
-    $_kwargs = "{\"ldap_uri\": \"${ldap_uri}\", \"use_tls\": ${_use_tls}, \
-      \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
-      \"chase_referrals\": ${_chase_refs}, \"ref_hop_limit\": ${ref_hop_limit}, \
-      \"group\": {\"base_dn\": \"${group['base_dn']}\", \
-      \"search_filter\": \"${group['search_filter']}\", \
-      \"scope\": \"${group['scope']}\"}}"
-  }
-  else {
-    fail('[st2::auth::ldap] You must specify either "user" or "group"')
-  }
+  $_kwargs = "{\"host\": \"${ldap_host}\", \"use_tls\": ${_use_tls}, \
+    \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
+    \"chase_referrals\": ${_chase_refs}, \"base_ou\": ${base_dn}\
+    \"group_dns\": ${group_dns}, \"use_ssl\": ${_use_ssl}, \"port\": ${ldap_port}}"
 
   # config
   ini_setting { 'auth_backend':
@@ -143,19 +118,8 @@ class st2::auth::ldap (
                     'ensure' => 'present',
                   })
 
-  # install the backend package
-  python::pip { 'st2-auth-backend-ldap':
-    ensure     => present,
-    pkgname    => 'st2-auth-backend-ldap',
-    url        => 'git+https://github.com/StackStorm/st2-auth-backend-ldap.git@master#egg=st2_auth_backend_ldap',
-    owner      => 'root',
-    virtualenv => '/opt/stackstorm/st2',
-    timeout    => 1800,
-  }
-
   # dependencies
   Package<| tag == 'st2::server::packages' |>
   -> Package[$_dep_pkgs]
-  -> Python::Pip['st2-auth-backend-ldap']
   ~> Service['st2auth']
 }
