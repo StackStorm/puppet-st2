@@ -90,9 +90,9 @@ class st2::auth::ldap (
   $_kwargs = "{\"host\": \"${ldap_host}\", \"use_tls\": ${_use_tls}, \
     \"bind_dn\": \"${bind_dn}\", \"bind_password\": \"${bind_pw}\", \
     \"chase_referrals\": ${_chase_refs}, \"base_ou\": \"${base_dn}\", \
-    \"group_dns\": ${group_dns}, \"use_ssl\": ${_use_ssl}, \"port\": ${port}}, \
+    \"group_dns\": ${group_dns}, \"use_ssl\": ${_use_ssl}, \"port\": ${port}, \
     \"scope\": \"${scope}\", \"id_attr\": \"${id_attr}\", \
-    \"account_pattern\": \"${account_pattern}\""
+    \"account_pattern\": \"${account_pattern}\"}"
 
   # config
   ini_setting { 'auth_backend':
