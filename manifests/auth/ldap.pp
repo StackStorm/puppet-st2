@@ -78,9 +78,9 @@ class st2::auth::ldap (
   $base_dn         = '',
   $group_dns       = undef,
   $chase_referrals = true,
-  $scope           = 'subtree'
-  $id_attr         = 'uid'
-  $account_pattern  = undef
+  $scope           = 'subtree',
+  $id_attr         = 'uid',
+  $account_pattern  = undef,
 ) inherits st2 {
   include st2::auth::common
 
