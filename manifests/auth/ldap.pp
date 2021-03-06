@@ -71,23 +71,28 @@ class st2::auth::ldap (
   $conf_file       = $::st2::conf_file,
   $ldap_host       = '',
   $use_tls         = false,
-  $ldap_use_ssl    = false,
-  $ldap_port       = 389,
+  $use_ssl         = false,
+  $port            = 389,
   $bind_dn         = '',
   $bind_pw         = '',
   $base_dn         = '',
   $group_dns       = undef,
   $chase_referrals = true,
+  $scope           = 'subtree'
+  $id_attr         = 'uid'
+  $account_pattern  = undef
 ) inherits st2 {
   include st2::auth::common
 
   $_use_tls = bool2str($use_tls)
-  $_use_ssl = bool2str($ldap_use_ssl)
+  $_use_ssl = bool2str($use_ssl)
   $_chase_refs = bool2str($chase_referrals)
   $_kwargs = "{\"host\": \"${ldap_host}\", \"use_tls\": ${_use_tls}, \
-    \"bind_dn\": \"${bind_dn}\", \"bind_pw\": \"${bind_pw}\", \
-    \"chase_referrals\": ${_chase_refs}, \"base_ou\": ${base_dn}\
-    \"group_dns\": ${group_dns}, \"use_ssl\": ${_use_ssl}, \"port\": ${ldap_port}}"
+    \"bind_dn\": \"${bind_dn}\", \"bind_password\": \"${bind_pw}\", \
+    \"chase_referrals\": ${_chase_refs}, \"base_ou\": \"${base_dn}\", \
+    \"group_dns\": ${group_dns}, \"use_ssl\": ${_use_ssl}, \"port\": ${port}}, \
+    \"scope\": \"${scope}\", \"id_attr\": \"${id_attr}\", \
+    \"account_pattern\": \"${account_pattern}\""
 
   # config
   ini_setting { 'auth_backend':
