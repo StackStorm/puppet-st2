@@ -2,11 +2,22 @@
 
 ## Development
 
+## 2.1.0 (Mar 6, 2021)
+  Note: This version only supports the 'integrated' LDAP plugin.
+
+- Added the RabbitMQ repo manage flag to the RabbitMQ install because it no longer exists in
+  EPEL for CentOS/Rhel 8
+- Stackstorm 3.4 change the way they process LDAP and moved the pip install into
+  the requirements file so we do not need to install the extra module. Also updated
+  the ldap backend config to be consistent with new structure.
+- Stackstorm 3.4 removed resultstracker so we took that out of the services list and all tests and configs.
+  Contributed by @bishopbm1
+
 ## 2.0.0 (Feb 15, 2020)
 
 - Added new parameter `st2::python_version` that controls the version of python to install.
   This was added so that OSes that don't come with Python 3 by default, can install Python 3.
-  The default is `'system'` and the system `python` package will be installed, 
+  The default is `'system'` and the system `python` package will be installed,
   whatever version that is for your OS.
   To explicitly install Python 3.6 on CentOS 7, pass in `'3.6'`.
   To install Python 3.6 on Ubuntu 16.04 pass in `'python3.6'`. On Ubuntu 16.04 you'll
@@ -64,13 +75,13 @@
 - Added a new plan `st2::upgrade_mongodb` that can be used to upgrade a standalone MongoDB
   database between versions. (Feature)
   Contributed by @nmaludy
-  
+
 - PDK Sync to 1.18.1 (Enhancement)
   Contributed by @nmaludy
 
 - Added support for Puppet 7 (Enhancement)
   Contributed by @nmaludy
-  
+
 - Deprecated Puppet 5. Removed Puppet 5 from build matrix (Enhancement)
   Contributed by @nmaludy
 

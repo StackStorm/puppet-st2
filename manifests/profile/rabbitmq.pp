@@ -29,10 +29,19 @@ class st2::profile::rabbitmq (
   $vhost    = $::st2::rabbitmq_vhost,
 ) inherits st2 {
 
+  # RHEL 8 Requires another repo in addition to epel to be installed
+  if ($::osfamily == 'RedHat') and ($facts['os']['release']['major'] == '8') {
+    $repos_ensure = true
+  }
+  else {
+    $repos_ensure = false
+  }
+
   # In new versions of the RabbitMQ module we need to explicitly turn off
   # the ranch TCP settings so that Kombu can connect via AMQP
   class { 'rabbitmq' :
     config_ranch          => false,
+    repos_ensure          => $repos_ensure,
     delete_guest_user     => true,
     port                  => $port,
     environment_variables => {

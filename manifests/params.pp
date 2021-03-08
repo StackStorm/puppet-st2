@@ -88,7 +88,6 @@ class st2::params(
     'st2auth',
     'st2garbagecollector',
     'st2notifier',
-    'st2resultstracker',
     'st2rulesengine',
     'st2sensorcontainer',
     'st2stream',

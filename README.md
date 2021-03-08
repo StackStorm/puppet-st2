@@ -73,7 +73,7 @@ and [librarian-puppet](http://librarian-puppet.com/).
  * Ubuntu 16.04 - Puppet 7 - [build/ubuntu16-puppet7/Puppetfile](build/ubuntu16-puppet7/Puppetfile)
  * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
  * Ubuntu 18.04 - Puppet 7 - [build/ubuntu18-puppet7/Puppetfile](build/ubuntu18-puppet7/Puppetfile)
- 
+
 ### Beginning with st2
 
 For a full installation on a single node, a profile already exists to
@@ -108,21 +108,21 @@ Hiera data bindings. A few notable parameters to take note of:
   value on the `st2` packages. The default is `present` resulting in the most
   up to date packages being installed initially. If you would like to hard code
   to an older version you can specify that here (ex: `2.6.0`).
-  **Note** Setting this to `latest` is NOT recommended. It will cause the 
+  **Note** Setting this to `latest` is NOT recommended. It will cause the
   StackStorm packages to be automatically updated without the proper upgrade steps
   being taken (proper steps detailed here: https://docs.stackstorm.com/install/upgrades.html)
-* `st2::python_version` - Version to Python to use. The default is `'system'` and the 
+* `st2::python_version` - Version to Python to use. The default is `'system'` and the
   system `python` package will be installed, whatever version that is for your OS.
   To explicitly install Python 3.6 specify `'3.6'` if on RHEL/CentOS 7.
   If on Ubuntu 16.04 specify `'python3.6'`.
-  **Notes** 
+  **Notes**
     * RHEL 7 - The Red Hat subscription repo `'rhel-7-server-optional-rpms'`
       will need to be enabled prior to running this module.
     * :warning: Ubuntu 16.04 -
-      The python3.6 package is a required dependency for the StackStorm `st2` package 
+      The python3.6 package is a required dependency for the StackStorm `st2` package
       but that is not installable from any of the default Ubuntu 16.04 repositories.
-      We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for 
-      Ubuntu 16.04 will be removed with future StackStorm versions. 
+      We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for
+      Ubuntu 16.04 will be removed with future StackStorm versions.
       Alternatively the Puppet will try to add python3.6 from the 3rd party 'deadsnakes' repository: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa.
       Only set to true, if you are aware of the support and security risks associated
       with using unofficial 3rd party PPA repository, and you understand that StackStorm
@@ -132,12 +132,12 @@ Hiera data bindings. A few notable parameters to take note of:
 
   ```puppet
   # CentOS/RHEL 7
-  class { 'st2': 
+  class { 'st2':
     python_version => '3.6',
   }
 
   # Ubuntu 16.04 (unsafe deadsnakes PPA will be enabled because of boolean flag)
-  class { 'st2': 
+  class { 'st2':
     python_version            => 'python3.6',
     python_enable_unsafe_repo => true,
   }
@@ -171,12 +171,12 @@ Installation/Configuration via modules:
 ```ruby
   # install pack from the exchange
   st2::pack { 'linux': }
-  
+
   # install pack from a git URL
   st2::pack { 'private':
     repo_url => 'https://private.domain.tld/git/stackstorm-private.git',
   }
-  
+
   # install pack and apply configuration
   st2::pack { 'slack':
     config   => {
@@ -216,8 +216,8 @@ The following backends are currently available:
 
 * `flat_file` - Authenticates against an htpasswd file (default) [link](https://github.com/StackStorm/st2-auth-backend-flat-file)
 * `keystone` - Authenticates against an OpenStack Keystone service [link](https://github.com/StackStorm/st2-auth-backend-keystone)
-* `ldap` - Authenticates against an LDAP server such as OpenLDAP or Active Directory 
-          [link](https://github.com/StackStorm/st2-auth-backend-ldap)
+* `ldap` - Authenticates against an LDAP server such as OpenLDAP or Active Directory
+          [link](https://docs.stackstorm.com/authentication.html#ldap)
 * `mongodb` - Authenticates against a collection named `users` in MongoDB [link](https://github.com/StackStorm/st2-auth-backend-mongodb)
 * `pam` - Authenticates against the PAM Linux service [link](https://github.com/StackStorm/st2-auth-backend-pam)
 
@@ -249,15 +249,14 @@ the `::st2` class in a manifest file:
 class { 'st2':
   auth_backend        => 'ldap',
   auth_backend_config => {
-    ldap_uri      => 'ldaps://ldap.domain.tld',
-    bind_dn       => 'cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld',
-    bind_pw       => 'some_password',
-    ref_hop_limit => 100,
-    user          => {
-      base_dn       => 'ou=domain_users,dc=domain,dc=tld',
-      search_filter => '(&(objectClass=user)(sAMAccountName={username})(memberOf=cn=stackstorm_users,ou=groups,dc=domain,dc=tld))',
-      scope         => 'subtree'
-    },
+    host            => 'ldap.domain.tld',
+    bind_dn         => 'cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld',
+    base_dn         => 'dc=domain,dc=tld',
+    scope           => 'subtree',
+    id_attr         => 'username',
+    bind_pw         => 'some_password',
+    group_dns       => ['"cn=stackstorm_users,ou=groups,dc=domain,dc=tld"'],
+    account_pattern => 'userPrincipalName={username}',
   },
 }
 ```
@@ -265,16 +264,21 @@ class { 'st2':
 Or in Hiera:
 
 ``` yaml
-st2::auth_backend: ldap
+st2::auth_backend: "ldap"
 st2::auth_backend_config:
-  ldap_uri: "ldaps://ldap.domain.tld"
-  bind_dn: "cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld"
-  bind_pw: "some_password"
-  ref_hop_limit: 100
-  user:
-    base_dn: "ou=domain_users,dc=domain,dc=tld"
-    search_filter: "(&(objectClass=user)(sAMAccountName={username})(memberOf=cn=stackstorm_users,ou=groups,dc=domain,dc=tld))"
-    scope: "subtree"
+  host: "ldaps.domain.tld"
+  use_tls: false
+  use_ssl: true
+  port: 636
+  bind_dn: 'cn=ldap_stackstorm,ou=service accounts,dc=domain,dc=tld'
+  bind_pw: 'some_password'
+  chase_referrals: false
+  base_dn: 'dc=domain,dc=tld'
+  group_dns:
+    - '"cn=stackstorm_users,ou=groups,dc=domain,dc=tld"'
+  scope: "subtree"
+  id_attr: "username"
+  account_pattern: "userPrincipalName={username}"
 ```
 
 
@@ -286,16 +290,16 @@ Configuration via Hiera:
   # character to trigger the bot that the message is a command
   # example: !help
   st2::chatops_hubot_alias: "'!'"
-  
+
   # name of the bot in chat, sometimes requires special characters like @
   st2::chatops_hubot_name: '"@RosieRobot"'
-  
+
   # API key generated by: st2 apikey create
   st2::chatops_api_key: '"xxxxyyyyy123abc"'
- 
+
   # Public URL used by ChatOps to offer links to execution details via the WebUI.
   st2::chatops_web_url: '"stackstorm.domain.tld"'
-  
+
   # install and configure hubot adapter (rocketchat, nodejs module installed by nodejs)
   st2::chatops_adapter:
     hubot-adapter:
@@ -313,7 +317,7 @@ Configuration via Hiera:
     ROCKETCHAT_AUTH: password
     RESPOND_TO_DM: true
 ```
- 
+
 ### Tasks
 
 This module provides several tasks for interacting with StackStorm. These tasks
@@ -426,7 +430,7 @@ $res = run_task('st2::key_get', $stackstorm_target,
 
 Support for Mistral has been dropped as of StackStorm `3.3.0`.
 
-As of version `1.8` this module no longer supports Mistral (and subsequently PostgreSQL) 
+As of version `1.8` this module no longer supports Mistral (and subsequently PostgreSQL)
 Neither Mistral nor Postgresql will be installed or managed by this module.
 
 #### :warning: End-of-Support Notice - CentOS 6
@@ -443,7 +447,7 @@ is officially deprecated.
 * This module no longer tests against Puppet 5 in its build matrix.
 * The next major release of the module will drop support for Puppet 5 by adjusting the
   minimum supported Puppet version in `metadata.json`.
-  
+
 #### :warning: Deprecation Notice - Puppet 4
 
 Puppet 4 reached End of Life on 2018-12-31. As of version `1.4` use of Puppet 4 with this module
@@ -459,23 +463,23 @@ is officially deprecated.
 
 ### Upgrading StackStorm
 
-By default this module does NOT handle upgrades of StackStorm. It is the 
-responsiblity of the end user to upgrade StackStorm according to the 
+By default this module does NOT handle upgrades of StackStorm. It is the
+responsiblity of the end user to upgrade StackStorm according to the
 [upgrade documenation](https://docs.stackstorm.com/install/upgrades.html).
 
-In a future release a Puppet task may be included to perform these update 
+In a future release a Puppet task may be included to perform these update
 on demand using [bolt](https://github.com/puppetlabs/bolt).
 
 ## Development
 
 Contributions to this module are more than welcome! If you have a problem with the module or
-would like to see a new feature, please raise an [issue](https://github.com/StackStorm/puppet-st2/issues). 
+would like to see a new feature, please raise an [issue](https://github.com/StackStorm/puppet-st2/issues).
 If you are amazing, find a bug or implement a new feature and want to add it to the module,
 please submit a [Pull Request](https://github.com/StackStorm/puppet-st2/pulls).
 
 ### Maintainers
 
-* Nick Maludy 
+* Nick Maludy
   * GitHub - [@nmaludy](https://github.com/nmaludy)
 * StackStorm <info@stackstorm.com>
 * James Fryman
