@@ -42,7 +42,7 @@ class St2TaskBase(TaskHelper):
             print(cmd)
             stdout = subprocess.check_output(cmd)
             print(stdout)
-            self.env['ST2_AUTH_TOKEN'] = stdout.rstrip()
+            self.env['ST2_AUTH_TOKEN'] = stdout.decode("utf-8").rstrip()
         # else
         #    assume auth token is written in client config for this user.
         #    don't worry, if there is no auth we'll get an error
