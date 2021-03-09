@@ -64,7 +64,7 @@ class St2TaskBase(TaskHelper):
                                              stderr=subprocess.STDOUT,
                                              env=self.env)
             print(stdout)
-            result.update(self.parse_output(stdout.decode("utf-8")))
+            result.update(self.parse_output(stdout.decode("utf-8").rstrip()))
         except subprocess.CalledProcessError as e:
             tb = traceback.format_exc()
             raise TaskError(("Could not {}: {} \n {}\n {}".
