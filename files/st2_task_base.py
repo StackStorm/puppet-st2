@@ -48,7 +48,7 @@ class St2TaskBase(TaskHelper):
     def parse_output(self, stdout):
         try:
             # try to parse stdout as JSON and return the parse result
-            return {'result': json.loads(stdout)}
+            return {'result': json.loads(stdout.decode("utf-8"))}
         except ValueError:
             # JSON parsing failed, return the raw stdout string
             return {'result': stdout}
