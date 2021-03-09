@@ -39,9 +39,7 @@ class St2TaskBase(TaskHelper):
         elif self.username and self.password:
             # auth on the command line with username/password
             cmd = ['st2', 'auth', '--only-token', '-p', self.password, self.username]
-            print(cmd)
             stdout = subprocess.check_output(cmd)
-            print(stdout)
             self.env['ST2_AUTH_TOKEN'] = stdout.decode("utf-8").rstrip()
         # else
         #    assume auth token is written in client config for this user.
