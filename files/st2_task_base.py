@@ -56,9 +56,13 @@ class St2TaskBase(TaskHelper):
     def exec_cmd(self, cmd, error_msg):
         result = {}
         try:
+            print(cmd)
+            print(subprocess.STDOUT)
+            print(self.env)
             stdout = subprocess.check_output(cmd,
                                              stderr=subprocess.STDOUT,
                                              env=self.env)
+            print(stdout)
             result.update(self.parse_output(stdout))
         except subprocess.CalledProcessError as e:
             tb = traceback.format_exc()
