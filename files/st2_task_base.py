@@ -47,7 +47,8 @@ class St2TaskBase(TaskHelper):
 
     def parse_output(self, stdout):
         try:
-            print(stdout)
+            if isinstance(stdout, bytes):
+                stdout = stdout.decode("utf-8")
             # try to parse stdout as JSON and return the parse result
             return {'result': json.loads(stdout)}
         except ValueError:
@@ -57,14 +58,14 @@ class St2TaskBase(TaskHelper):
     def exec_cmd(self, cmd, error_msg):
         result = {}
         try:
-            print(cmd)
-            print(subprocess.STDOUT)
-            print(self.env)
+            # print(cmd)
+            # print(subprocess.STDOUT)
+            # print(self.env)
             stdout = subprocess.check_output(cmd,
                                              stderr=subprocess.STDOUT,
                                              env=self.env)
-            print(stdout)
-            result.update(self.parse_output(stdout.decode("utf-8").rstrip()))
+            # print(stdout)
+            result.update(self.parse_output(stdout))
         except subprocess.CalledProcessError as e:
             tb = traceback.format_exc()
             raise TaskError(("Could not {}: {} \n {}\n {}".
