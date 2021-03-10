@@ -39,16 +39,21 @@ class St2TaskBase(TaskHelper):
         elif self.username and self.password:
             # auth on the command line with username/password
             cmd = ['st2', 'auth', '--only-token', '-p', self.password, self.username]
-            stdout = subprocess.check_output(cmd)
-            self.env['ST2_AUTH_TOKEN'] = stdout.decode("utf-8").rstrip()
+            stdout = self.check_byte_strig(subprocess.check_output(cmd))
+            self.env['ST2_AUTH_TOKEN'] = stdout.rstrip()
         # else
         #    assume auth token is written in client config for this user.
         #    don't worry, if there is no auth we'll get an error
 
+    def check_byte_strig(self, string):
+        if isinstance(string, bytes):
+            string = string.decode("utf-8")
+
+        return string
+
     def parse_output(self, stdout):
         try:
-            if isinstance(stdout, bytes):
-                stdout = stdout.decode("utf-8")
+            stdout = self.check_byte_strig(stdout)
             # try to parse stdout as JSON and return the parse result
             return {'result': json.loads(stdout)}
         except ValueError:
@@ -58,13 +63,9 @@ class St2TaskBase(TaskHelper):
     def exec_cmd(self, cmd, error_msg):
         result = {}
         try:
-            # print(cmd)
-            # print(subprocess.STDOUT)
-            # print(self.env)
             stdout = subprocess.check_output(cmd,
                                              stderr=subprocess.STDOUT,
                                              env=self.env)
-            # print(stdout)
             result.update(self.parse_output(stdout))
         except subprocess.CalledProcessError as e:
             tb = traceback.format_exc()
