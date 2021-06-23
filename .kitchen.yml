@@ -73,6 +73,18 @@ platforms:
       puppetfile_path: build/centos7-puppet7/Puppetfile
       manifest: test/fullinstall_python36.pp
 
+  # CentOS7 with Systemd - Puppet 7 - Unstable
+  - name: centos7-puppet7-unstable
+    driver:
+      platform: centos
+      dockerfile: build/centos7-puppet7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/centos7-puppet7/Puppetfile
+      manifest: test/fullinstall_unstable.pp
+
   # Ubuntu Bionic with Systemd - Puppet 6
   - name: ubuntu18-puppet6
     driver:
@@ -119,27 +131,28 @@ platforms:
       puppetfile_path: build/ubuntu18-puppet7/Puppetfile
       manifest: test/fullinstall_unstable.pp
 
-  # Ubuntu Focal with Systemd - Puppet 6
-  - name: ubuntu20-puppet6
-    driver:
-      platform: ubuntu
-      dockerfile: build/ubuntu20-puppet6/Dockerfile.kitchen
-      run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    provisioner:
-      puppetfile_path: build/ubuntu20-puppet6/Puppetfile
+  # TODO: Uncomment after stable 3.5 has been released for focal
+  # # Ubuntu Focal with Systemd - Puppet 6
+  # - name: ubuntu20-puppet6
+  #   driver:
+  #     platform: ubuntu
+  #     dockerfile: build/ubuntu20-puppet6/Dockerfile.kitchen
+  #     run_command: /sbin/init
+  #     volume:
+  #       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #   provisioner:
+  #     puppetfile_path: build/ubuntu20-puppet6/Puppetfile
 
-  # Ubuntu Focal with Systemd - Puppet 7
-  - name: ubuntu20-puppet7
-    driver:
-      platform: ubuntu
-      dockerfile: build/ubuntu20-puppet7/Dockerfile.kitchen
-      run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    provisioner:
-      puppetfile_path: build/ubuntu20-puppet7/Puppetfile
+  # # Ubuntu Focal with Systemd - Puppet 7
+  # - name: ubuntu20-puppet7
+  #   driver:
+  #     platform: ubuntu
+  #     dockerfile: build/ubuntu20-puppet7/Dockerfile.kitchen
+  #     run_command: /sbin/init
+  #     volume:
+  #       - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #   provisioner:
+  #     puppetfile_path: build/ubuntu20-puppet7/Puppetfile
   
   # Ubuntu Focal with Systemd - Puppet 7 - Unstable repo
   - name: ubuntu20-puppet7-unstable
