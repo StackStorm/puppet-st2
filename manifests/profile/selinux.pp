@@ -5,7 +5,7 @@
 #
 class st2::profile::selinux inherits st2::params {
   # note: the selinux module downcases the mode in the fact
-  if ($::osfamily == 'RedHat') and ($::selinux_current_mode == 'enforcing') {
+  if ( ($facts['os']['family'] == 'RedHat') and ($facts['os']['selinux']['current_mode'] == 'enforcing')) {
     if !defined(Package['policycoreutils-python']) {
       package { 'policycoreutils-python':
         ensure => present,
