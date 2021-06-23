@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'st2::profile::mongodb' do
-  let(:latest_version) { '4.0' }
+  let(:latest_version) { '4.4' }
 
   on_supported_os.each do |os, os_facts|
     let(:facts) { os_facts }
