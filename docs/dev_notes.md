@@ -13,26 +13,28 @@ The build system has been recently revamped. Please see details in the file
 
 ### Unit Testing (rspec, puppet-lint, etc)
 
-| OS           | Ruby  | Puppet |
-|--------------|-------|--------|
-| RHEL 6       | 1.8.7 | 3.8.7  |
-| RHEL 7       | 2.0.0 | 3.8.7  |
-| Ubuntu 14.04 | 1.9.3 | 3.8.7  |
-| Ubuntu 16.06 | 2.3.1 | 3.8.5  |
+| OS            | Ruby  | Puppet |
+|-------------- |-------|--------|
+| Ubuntu 20.04 | 2.5   | 6      |
+| Ubuntu 20.04 | 2.7   | 7      |
 
 
 ### Integration Testing (test-kitchen)
 
-Note: "Base" specs are for the Travis CI container that test-kitchen is
+Note: "Base" specs are for the Github Action container that test-kitchen is
 being run on. All other columns are details about the guest OS that is 
 created by test-kitchen that puppet-st2 is run against.
 
-| Base OS (travis) | Base Ruby | Guest OS     | Guest Ruby | Guest Puppet |
-|------------------|-----------|--------------|------------|--------------|
-| Ubuntu 14.04     | 2.4       | RHEL 6       | 1.8.7      | 3.8.7        |
-| Ubuntu 14.04     | 2.4       | RHEL 7       | 2.0.0      | 3.8.7        |
-| Ubuntu 14.04     | 2.4       | Ubuntu 14.04 | 1.9.3      | 3.8.7        |
-| Ubuntu 14.04     | 2.4       | Ubuntu 16.06 | 2.3.1      | 3.8.5        |
+| Base OS (Github) | Base Ruby | Guest OS     | Guest Ruby | Guest Puppet | Guest Python |
+|------------------|-----------|--------------|------------|--------------|--------------|
+| Ubuntu 20.04     | 2.7       | RHEL 7       | 2.7        | 6            | system       |
+| Ubuntu 20.04     | 2.7       | RHEL 7       | 2.7        | 7            | system       |
+| Ubuntu 20.04     | 2.7       | RHEL 7       | 2.7        | 7            | 3.6          |
+| Ubuntu 20.04     | 2.7       | Ubuntu 16.04 | 2.7        | 6            | system       |
+| Ubuntu 20.04     | 2.7       | Ubuntu 16.04 | 2.7        | 7            | system       |
+| Ubuntu 20.04     | 2.7       | Ubuntu 16.04 | 2.7        | 7            | 3.6          |
+| Ubuntu 20.04     | 2.7       | Ubuntu 18.04 | 2.7        | 6            | system       |
+| Ubuntu 20.04     | 2.7       | Ubuntu 18.04 | 2.7        | 7            | system       |
 
 ## Dev Notes
 
@@ -100,18 +102,10 @@ information from the build output, then updating the `build/<env>/Gemfile.lock`.
 
 ``` shell
 gem install bundler
-# ruby 1.8.7
-PUPPET_VERSION="~> 3.0" TEST_KITCHEN_ENABLED=false R10K_VERSION="~> 1.0" PUPPETLABS_SPEC_HELPER_VERSION="~> 1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel6
-# ruby 2.0.0
-PUPPET_VERSION="~> 3.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.rhel7
-# ruby 1.9.3
-PUPPET_VERSION="~> 3.0" KITCHEN_SYNC_VERSION="2.1.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.ubuntu14
-# ruby 2.3.1
-PUPPET_VERSION="~> 4.0" bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.ubuntu16
-# ruby 2.1.x
-PUPPET_VERSION="~> 4.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet4
-# ruby 2.4.x
-PUPPET_VERSION="~> 5.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet5
+# ruby 2.5.x
+PUPPET_VERSION="~> 6.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet5
+# ruby 2.7.x
+PUPPET_VERSION="~> 7.0" TEST_KITCHEN_ENABLED=false bundle package; mv Gemfile.lock .travis-gemfile/Gemfile.lock.puppet5
 
 ```
 

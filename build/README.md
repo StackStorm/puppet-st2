@@ -93,6 +93,14 @@ After the environment is boot strapped we execute the following tests:
  * Linting of manifest files (*.pp) using `puppet-lint`
  * Unit testing using `rspec` and `puppet-rspec`
 
+Unit testing consists of the following steps currently
+  * rubocop syntax lint metadata_lint checks (ruby 2.7 + puppet 7)
+  * unit tests for puppet 6 (ruby 2.5 + puppet 6)
+  * unit tests for puppet 7 (ruby 2.7 + puppet 7)
+  * documentation check (ruby 2.7 + puppet 7)
+
+The environment (ruby and puppet) is defined the in matrix and setup in the build steps based on those values.
+
 All of these tests happen inside the runner container.
 
 
