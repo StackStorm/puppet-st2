@@ -106,6 +106,18 @@ platforms:
     provisioner:
       puppetfile_path: build/ubuntu18-puppet7/Puppetfile
       manifest: test/fullinstall_python36.pp
+      
+  # Ubuntu Focal with Systemd - Puppet 7 - Unstable repo
+  - name: ubuntu18-puppet7-unstable
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu18-puppet7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/ubuntu18-puppet7/Puppetfile
+      manifest: test/fullinstall_unstable.pp
 
   # Ubuntu Focal with Systemd - Puppet 6
   - name: ubuntu20-puppet6
