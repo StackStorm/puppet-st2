@@ -2,6 +2,16 @@
 
 ## Development
 
+- Update build docs. Contributed by @rush-skills
+
+- Change old style fact reference in selinux profile. Contributed by @rush-skills
+
+- Cleaned up old style `::` references. Contributed by @rush-skills
+
+- Removed travis references after switch to GitHub Actions. Contributed by @rush-skills
+
+- Removed `files/etc/st2/st2.conf` as the template was no longer used. Contributed by @rush-skills
+
 - Removed `manage_virtualenv_package` in Python profile to fix integration tests. Contributed by @rush-skills
 
 ## 2.1.0 (Mar 6, 2021)
