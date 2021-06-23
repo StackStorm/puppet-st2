@@ -2,6 +2,8 @@
 
 ## Development
 
+- Removed `manage_virtualenv_package` in Python profile to fix integration tests. Contributed by @rush-skills
+
 ## 2.1.0 (Mar 6, 2021)
   Note: This version only supports the 'integrated' LDAP plugin.
 
