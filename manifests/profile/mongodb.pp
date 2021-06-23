@@ -39,10 +39,14 @@ class st2::profile::mongodb (
   $manage_repo = $st2::mongodb_manage_repo,
   $auth        = $st2::mongodb_auth,
 ) inherits st2 {
+  # if the StackStorm version is > 3.4.0 then MongoDB 4.4
   # if the StackStorm version is > 3.3.0 then MongoDB 4.0
   # if the StackStorm version is > 2.4.0 then MongoDB 3.4
   # else use MongoDB 3.2
-  if st2::version_ge('3.3.0') {
+  if st2::version_ge('3.4.0') {
+    $_mongodb_version_default = '4.4'
+  }
+  elsif st2::version_ge('3.3.0') {
     $_mongodb_version_default = '4.0'
   }
   elsif st2::version_ge('2.4.0') {
