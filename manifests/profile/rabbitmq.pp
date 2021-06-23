@@ -22,11 +22,11 @@
 #   include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq (
-  $username = $::st2::rabbitmq_username,
-  $password = $::st2::rabbitmq_password,
-  $port     = $::st2::rabbitmq_port,
-  $bind_ip  = $::st2::rabbitmq_bind_ip,
-  $vhost    = $::st2::rabbitmq_vhost,
+  $username = $st2::rabbitmq_username,
+  $password = $st2::rabbitmq_password,
+  $port     = $st2::rabbitmq_port,
+  $bind_ip  = $st2::rabbitmq_bind_ip,
+  $vhost    = $st2::rabbitmq_vhost,
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
@@ -45,7 +45,7 @@ class st2::profile::rabbitmq (
     delete_guest_user     => true,
     port                  => $port,
     environment_variables => {
-      'RABBITMQ_NODE_IP_ADDRESS' => $::st2::rabbitmq_bind_ip,
+      'RABBITMQ_NODE_IP_ADDRESS' => $st2::rabbitmq_bind_ip,
     },
   }
   contain 'rabbitmq'

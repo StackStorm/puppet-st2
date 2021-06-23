@@ -36,13 +36,13 @@
 #    db_name: "myauthdb"
 #
 class st2::auth::mongodb (
-  $conf_file   = $::st2::conf_file,
-  $db_host     = $::st2::db_host,
-  $db_port     = $::st2::db_port,
+  $conf_file   = $st2::conf_file,
+  $db_host     = $st2::db_host,
+  $db_port     = $st2::db_port,
   $db_name     = 'st2auth',
-  $db_auth     = $::st2::mongodb_auth,
-  $db_username = $::st2::db_username,
-  $db_password = $::st2::db_password,
+  $db_auth     = $st2::mongodb_auth,
+  $db_username = $st2::db_username,
+  $db_password = $st2::db_password,
 ) inherits st2 {
   include st2::auth::common
 

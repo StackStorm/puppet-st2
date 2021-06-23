@@ -24,15 +24,15 @@
 #   The size of the pool used by the scheduler for scheduling executions.
 #
 class st2::scheduler (
-  $sleep_interval = $::st2::scheduler_sleep_interval,
-  $gc_interval    = $::st2::scheduler_gc_interval,
-  $pool_size      = $::st2::scheduler_pool_size,
+  $sleep_interval = $st2::scheduler_sleep_interval,
+  $gc_interval    = $st2::scheduler_gc_interval,
+  $pool_size      = $st2::scheduler_pool_size,
 ) inherits st2 {
 
   # st2scheduler was introduced in 2.10.0
   if st2::version_ge('2.10.0') {
 
-    $_logger_config = $::st2::syslog ? {
+    $_logger_config = $st2::syslog ? {
       true    => 'syslog',
       default => 'logging',
     }
@@ -50,7 +50,7 @@ class st2::scheduler (
 
     ########################################
     ## Services
-    service { $::st2::params::scheduler_services:
+    service { $st2::params::scheduler_services:
       ensure => 'running',
       enable => true,
       tag    => 'st2::service',

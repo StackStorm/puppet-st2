@@ -26,7 +26,7 @@
 #    keystone_version: "3"
 #
 class st2::auth::keystone (
-  $conf_file        = $::st2::conf_file,
+  $conf_file        = $st2::conf_file,
   $keystone_url     = 'http://127.0.0.1:5000',
   $keystone_version = '2',
 ) inherits st2 {

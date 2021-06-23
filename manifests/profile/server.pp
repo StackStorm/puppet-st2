@@ -41,31 +41,31 @@
 #  include st2::profile::server
 #
 class st2::profile::server (
-  $version                = $::st2::version,
-  $conf_dir               = $::st2::conf_dir,
-  $conf_file              = $::st2::conf_file,
-  $auth                   = $::st2::auth,
-  $actionrunner_workers   = $::st2::actionrunner_workers,
-  $syslog                 = $::st2::syslog,
-  $syslog_host            = $::st2::syslog_host,
-  $syslog_port            = $::st2::syslog_port,
-  $syslog_facility        = $::st2::syslog_facility,
-  $syslog_protocol        = $::st2::syslog_protocol,
+  $version                = $st2::version,
+  $conf_dir               = $st2::conf_dir,
+  $conf_file              = $st2::conf_file,
+  $auth                   = $st2::auth,
+  $actionrunner_workers   = $st2::actionrunner_workers,
+  $syslog                 = $st2::syslog,
+  $syslog_host            = $st2::syslog_host,
+  $syslog_port            = $st2::syslog_port,
+  $syslog_facility        = $st2::syslog_facility,
+  $syslog_protocol        = $st2::syslog_protocol,
   $st2api_listen_ip       = '0.0.0.0',
   $st2api_listen_port     = '9101',
   $st2auth_listen_ip      = '0.0.0.0',
   $st2auth_listen_port    = '9100',
-  $ssh_key_location       = $::st2::ssh_key_location,
-  $ng_init                = $::st2::ng_init,
-  $db_username            = $::st2::db_username,
-  $db_password            = $::st2::db_password,
-  $rabbitmq_username      = $::st2::rabbitmq_username,
-  $rabbitmq_password      = $::st2::rabbitmq_password,
-  $rabbitmq_hostname      = $::st2::rabbitmq_hostname,
-  $rabbitmq_port          = $::st2::rabbitmq_port,
-  $rabbitmq_vhost         = $::st2::rabbitmq_vhost,
-  $index_url              = $::st2::index_url,
-  $packs_group            = $::st2::packs_group_name,
+  $ssh_key_location       = $st2::ssh_key_location,
+  $ng_init                = $st2::ng_init,
+  $db_username            = $st2::db_username,
+  $db_password            = $st2::db_password,
+  $rabbitmq_username      = $st2::rabbitmq_username,
+  $rabbitmq_password      = $st2::rabbitmq_password,
+  $rabbitmq_hostname      = $st2::rabbitmq_hostname,
+  $rabbitmq_port          = $st2::rabbitmq_port,
+  $rabbitmq_vhost         = $st2::rabbitmq_vhost,
+  $index_url              = $st2::index_url,
+  $packs_group            = $st2::packs_group_name,
 ) inherits st2 {
   include st2::notices
   include st2::params
@@ -81,7 +81,7 @@ class st2::profile::server (
 
   ########################################
   ## Packages
-  package { $::st2::params::st2_server_packages:
+  package { $st2::params::st2_server_packages:
     ensure => $version,
     tag    => ['st2::packages', 'st2::server::packages'],
   }
@@ -160,7 +160,7 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
-  file { $::st2::params::actionrunner_global_env_file:
+  file { $st2::params::actionrunner_global_env_file:
     ensure  => file,
     owner   => 'root',
     group   => 'root',
@@ -377,7 +377,7 @@ class st2::profile::server (
 
   ########################################
   ## Services
-  service { $::st2::params::st2_services:
+  service { $st2::params::st2_services:
     ensure => 'running',
     enable => true,
     tag    => 'st2::service',

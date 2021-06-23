@@ -23,10 +23,10 @@
 #    htpasswd_file: "/etc/something/htpasswd"
 #
 class st2::auth::flat_file(
-  $cli_username  = $::st2::cli_username,
-  $cli_password  = $::st2::cli_password,
-  $conf_file     = $::st2::conf_file,
-  $htpasswd_file = $::st2::params::auth_htpasswd_file,
+  $cli_username  = $st2::cli_username,
+  $cli_password  = $st2::cli_password,
+  $conf_file     = $st2::conf_file,
+  $htpasswd_file = $st2::params::auth_htpasswd_file,
 ) inherits st2 {
   include st2::auth::common
 
