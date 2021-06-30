@@ -65,8 +65,8 @@ provider   = provider.to_sym
 box        = ENV['BOX'] ? ENV['BOX'] : 'centos/7'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'centos/8stream'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/centos8'
-#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1604'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1804'
+#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu2004'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
