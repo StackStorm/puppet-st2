@@ -26,3 +26,4 @@
 - Tasks for various CLI commands
 - Proper provider implementation for key/value pairs
 - StackStorm facts
+- Remove anchors: https://blog.mayflower.de/4573-The-Puppet-Anchor-Pattern-in-Practice.html
