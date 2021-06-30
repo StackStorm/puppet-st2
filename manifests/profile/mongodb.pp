@@ -54,7 +54,7 @@ class st2::profile::mongodb (
 
 
   # if Ubuntu is 20.04 then MongoDB 4.4
-  if facts['os']['family'] == 'Debian' and facts['os']['distro']['release']['major'] == '20' {
+  if $facts['os']['family'] == 'Debian' and $facts['os']['distro']['release']['major'] == '20' {
     $_mongodb_version_default = '4.4'
   }
 
