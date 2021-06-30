@@ -22,10 +22,14 @@ class st2::profile::nodejs(
   $version     = $::st2::nodejs_version,
 ) inherits st2 {
 
+  # if the StackStorm version is >=3.5.0 then use NodeJS 14.x
   # if the StackStorm version is >= 2.10.0 then use NodeJS 10.x
   # if the StackStorm version is 2.10.0 < and >= 2.4.0 then use NodeJS 6.x
   # else use NodeJS 4.x
-  if st2::version_ge('2.10.0') {
+  if st2::version_ge('3.5.0') {
+    $nodejs_version_default = '14.x'
+  }
+  elsif st2::version_ge('2.10.0') {
     $nodejs_version_default = '10.x'
   }
   elsif st2::version_ge('2.4.0') {
