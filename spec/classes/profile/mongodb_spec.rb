@@ -5,9 +5,9 @@ describe 'st2::profile::mongodb' do
 
   on_supported_os.each do |os, os_facts|
     let(:facts) { os_facts }
-    if os == "ubuntu-20.04-x86_64" {
+    if os == "ubuntu-20.04-x86_64" 
       let(:latest_version) { '4.4' }
-    }
+    end
     context "on #{os}" do
       context 'with default options' do
         it { is_expected.to compile.with_all_deps }
