@@ -40,16 +40,21 @@
 #   List of versions that we will upgrade through along our path to success!
 #
 # @example Basic usage
-#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx"}'
+#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params \
+#   '{"mongo_password": "xxx"}'
 #
 # @example Upgrading enterprise packages
-#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "mongo_packages": ["mongodb-enterprise-server", "mongodb-enterprise-shell", "mongodb-enterprise-tools"], "mongo_edition": "enterprise"}'
+#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params \
+#   '{"mongo_password": "xxx", "mongo_packages": ["mongodb-enterprise-server", \
+#   "mongodb-enterprise-shell", "mongodb-enterprise-tools"], "mongo_edition": "enterprise"}'
 #
 # @example Upgrading from 3.6 to 4.0
-#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.6", "upgrade_version_path": ["4.0"]}'
+#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params \
+#   '{"mongo_password": "xxx", "upgrade_version_start": "3.6", "upgrade_version_path": ["4.0"]}'
 #
 # @example Upgrading from 3.4 to 3.6 to 4.0
-#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.4", "upgrade_version_path": ["3.6", "4.0"]}'
+#   bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params \
+#   '{"mongo_password": "xxx", "upgrade_version_start": "3.4", "upgrade_version_path": ["3.6", "4.0"]}'
 #
 plan st2::upgrade_mongodb (
   String $mongo_admin_db = 'admin',
