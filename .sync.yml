@@ -13,6 +13,8 @@
 .gitlab-ci.yml:
   # we don't use GitLab
   unmanaged: true
+.travis.yml:
+  unmanaged: true
 .vscode/extensions.json:
   # we don't use VSCode
   unmanaged: true
