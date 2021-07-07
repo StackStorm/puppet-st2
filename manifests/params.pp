@@ -164,6 +164,7 @@ class st2::params(
   $rabbitmq_port = 5672
   $rabbitmq_bind_ip = '127.0.0.1'
   $rabbitmq_vhost = '/'
+  $redis_bind_ip = '127.0.0.1'
 
   ## actionrunner config
   $actionrunner_workers = 10
