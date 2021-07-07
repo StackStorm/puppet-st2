@@ -67,6 +67,10 @@
     {
       "name": "npwalker/recursive_file_permissions",
       "version_requirement": ">= 0.6.0 < 1.0.0"
+    },
+    {
+      "name": "puppet/redis",
+      "version_requirement": "> 6.1.0 <= 7.0.0"
     }
   ],
   "operatingsystem_support": [

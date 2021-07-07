@@ -212,6 +212,8 @@
 # @param nodejs_manage_repo
 #   Set this to false when you have your own repositories
 #   for NodeJS (default: true)
+# @param redis_bind_ip
+#   Bind IP of the Redis server. Default is 127.0.0.1
 #
 #
 # @example Basic Usage
@@ -314,6 +316,7 @@ class st2(
   $rabbitmq_port            = $::st2::params::rabbitmq_port,
   $rabbitmq_bind_ip         = $::st2::params::rabbitmq_bind_ip,
   $rabbitmq_vhost           = $::st2::params::rabbitmq_vhost,
+  $redis_bind_ip            = $::st2::params::redis_bind_ip,
   $timersengine_enabled     = $::st2::params::timersengine_enabled,
   $timersengine_timezone    = $::st2::params::timersengine_timezone,
   $scheduler_sleep_interval = $::st2::params::scheduler_sleep_interval,
