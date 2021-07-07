@@ -2,6 +2,9 @@
 
 ## Development
 
+- Added the Redis configuration for a Coordination backend
+  Contributed by @bishopbm1
+
 ## 2.1.0 (Mar 6, 2021)
   Note: This version only supports the 'integrated' LDAP plugin.
 
