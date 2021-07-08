@@ -22,7 +22,7 @@ class st2::rulesengine (
 
   ########################################
   ## Config
-  ini_setting { 'workflow_engine_logging':
+  ini_setting { 'rulesengine_logging':
     ensure  => present,
     path    => '/etc/st2/st2.conf',
     section => 'rulesengine',
