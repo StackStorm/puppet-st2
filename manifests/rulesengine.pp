@@ -34,24 +34,40 @@ class st2::rulesengine (
   if ($rulesengine_num > 1) {
     $additional_services = range("2", "$rulesengine_num").reduce([]) |$memo, $number| {
       $rulesengine_name = "st2rulesengine${number}"
-
       case $facts['os']['family'] {
         'RedHat': {
           $file_path = '/usr/lib/systemd/system/'
-          file { "${file_path}${rulesengine_name}.service":
-            ensure => present,
-            source => "${file_path}st2rulesengine.service",
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            # notify => Exec['Reload Daemon'],
-            notify => Class['st2::service_reload'],
-          }
         }
         default: {
           fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
         }
       }
+
+      systemd::unit_file { "${rulesengine_name}.service":
+        path => $file_path,
+        source => "${file_path}st2rulesengine.service",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
+
+      # case $facts['os']['family'] {
+      #   'RedHat': {
+      #     $file_path = '/usr/lib/systemd/system/'
+      #     file { "${file_path}${rulesengine_name}.service":
+      #       ensure => present,
+      #       source => "${file_path}st2rulesengine.service",
+      #       owner  => 'root',
+      #       group  => 'root',
+      #       mode   => '0644',
+      #       # notify => Exec['Reload Daemon'],
+      #       notify => Class['st2::service_reload'],
+      #     }
+      #   }
+      #   default: {
+      #     fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+      #   }
+      # }
 
       $memo + [$rulesengine_name]
     }

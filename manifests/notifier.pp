@@ -34,24 +34,40 @@ class st2::notifier (
   if ($notifier_num > 1) {
     $additional_services = range("2", "$notifier_num").reduce([]) |$memo, $number| {
       $notifier_name = "st2notifier${number}"
-
       case $facts['os']['family'] {
         'RedHat': {
           $file_path = '/usr/lib/systemd/system/'
-          file { "${file_path}${notifier_name}.service":
-            ensure => present,
-            source => "${file_path}st2notifier.service",
-            owner  => 'root',
-            group  => 'root',
-            mode   => '0644',
-            # notify => Exec['Reload Daemon'],
-            notify => Class['st2::service_reload'],
-          }
         }
         default: {
           fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
         }
       }
+
+      systemd::unit_file { "${notifier_name}.service":
+        path => $file_path,
+        source => "${file_path}st2notifier.service",
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
+
+      # case $facts['os']['family'] {
+      #   'RedHat': {
+      #     $file_path = '/usr/lib/systemd/system/'
+      #     file { "${file_path}${notifier_name}.service":
+      #       ensure => present,
+      #       source => "${file_path}st2notifier.service",
+      #       owner  => 'root',
+      #       group  => 'root',
+      #       mode   => '0644',
+      #       # notify => Exec['Reload Daemon'],
+      #       notify => Class['st2::service_reload'],
+      #     }
+      #   }
+      #   default: {
+      #     fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+      #   }
+      # }
 
       $memo + [$notifier_name]
     }

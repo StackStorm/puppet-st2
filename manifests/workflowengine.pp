@@ -37,24 +37,40 @@ class st2::workflowengine (
     if ($workflowengine_num > 1) {
       $additional_services = range("2", "$workflowengine_num").reduce([]) |$memo, $number| {
         $workflowengine_name = "st2workflowengine${number}"
-
         case $facts['os']['family'] {
           'RedHat': {
             $file_path = '/usr/lib/systemd/system/'
-            file { "${file_path}${workflowengine_name}.service":
-              ensure => present,
-              source => "${file_path}st2workflowengine.service",
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0644',
-              # notify => Exec['Reload Daemon'],
-              notify => Class['st2::service_reload'],
-            }
           }
           default: {
             fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
           }
         }
+
+        systemd::unit_file { "${workflowengine_name}.service":
+          path => $file_path,
+          source => "${file_path}st2workflowengine.service",
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        }
+
+        # case $facts['os']['family'] {
+        #   'RedHat': {
+        #     $file_path = '/usr/lib/systemd/system/'
+        #     file { "${file_path}${workflowengine_name}.service":
+        #       ensure => present,
+        #       source => "${file_path}st2workflowengine.service",
+        #       owner  => 'root',
+        #       group  => 'root',
+        #       mode   => '0644',
+        #       # notify => Exec['Reload Daemon'],
+        #       notify => Class['st2::service_reload'],
+        #     }
+        #   }
+        #   default: {
+        #     fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+        #   }
+        # }
 
         $memo + [$workflowengine_name]
       }

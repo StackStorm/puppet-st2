@@ -53,24 +53,40 @@ class st2::scheduler (
     if ($scheduler_num > 1) {
       $additional_services = range("2", "$scheduler_num").reduce([]) |$memo, $number| {
         $schedule_name = "st2scheduler${number}"
-
         case $facts['os']['family'] {
           'RedHat': {
             $file_path = '/usr/lib/systemd/system/'
-            file { "${file_path}${schedule_name}.service":
-              ensure => present,
-              source => "${file_path}st2scheduler.service",
-              owner  => 'root',
-              group  => 'root',
-              mode   => '0644',
-              # notify => Exec['Reload Daemon'],
-              notify => Class['st2::service_reload'],
-            }
           }
           default: {
             fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
           }
         }
+
+        systemd::unit_file { "${schedule_name}.service":
+          path => $file_path,
+          source => "${file_path}st2scheduler.service",
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        }
+
+        # case $facts['os']['family'] {
+        #   'RedHat': {
+        #     $file_path = '/usr/lib/systemd/system/'
+        #     file { "${file_path}${schedule_name}.service":
+        #       ensure => present,
+        #       source => "${file_path}st2scheduler.service",
+        #       owner  => 'root',
+        #       group  => 'root',
+        #       mode   => '0644',
+        #       # notify => Exec['Reload Daemon'],
+        #       notify => Class['st2::service_reload'],
+        #     }
+        #   }
+        #   default: {
+        #     fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+        #   }
+        # }
 
         $memo + [$schedule_name]
       }
