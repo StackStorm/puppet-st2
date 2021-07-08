@@ -10,8 +10,10 @@
 # @example Basic usage
 #   include st2::workflowengine
 #
-class st2::workflowengine {
-  include st2
+class st2::workflowengine (
+  $workflowengine_num      = $st2::workflowengine_num,
+  $workflowengine_services = $st2::params::workflowengine_services,
+) inherits st2 {
 
   # st2workflowengine was introduced in 2.8.0
   if st2::version_ge('2.8.0') {
@@ -32,8 +34,8 @@ class st2::workflowengine {
       tag     => 'st2::config',
     }
 
-    if ($::st2::params::workflowengine_num > 1) {
-      $additional_services = range("2", "$::st2::params::workflowengine_num").reduce |$memo, $number| {
+    if ($workflowengine_num > 1) {
+      $additional_services = range("2", "$workflowengine_num").reduce |$memo, $number| {
         $workflowengine_name = "${file_path}${number}"
 
         case $facts['os']['family'] {
@@ -55,7 +57,7 @@ class st2::workflowengine {
         $memo = [$memo] + [$workflowengine_name]
       }
 
-      $_workflowengine_services = $::st2::params::workflowengine_services + $additional_services
+      $_workflowengine_services = $workflowengine_services + $additional_services
 
       case $facts['os']['family'] {
         'RedHat': {
@@ -70,7 +72,7 @@ class st2::workflowengine {
       }
 
     } else {
-      $_workflowengine_services = $::st2::params::workflowengine_services
+      $_workflowengine_services = $workflowengine_services
     }
 
     ########################################
