@@ -63,7 +63,8 @@ class st2::scheduler (
               owner  => 'root',
               group  => 'root',
               mode   => '0644',
-              notify => Exec['Reload Daemon'],
+              # notify => Exec['Reload Daemon'],
+              notify => Class['st2::service_reload'],
             }
           }
           default: {
@@ -76,18 +77,18 @@ class st2::scheduler (
 
       $_scheduler_services = $scheduler_services + $additional_services
 
-      case $facts['os']['family'] {
-        'RedHat': {
-          exec { 'Reload Daemon':
-            command => 'systemctl daemon-reload',
-            path    => '/usr/bin',
-            refreshonly => true,
-          }
-        }
-        default: {
-          fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
-        }
-      }
+      # case $facts['os']['family'] {
+      #   'RedHat': {
+      #     exec { 'Reload Daemon':
+      #       command => 'systemctl daemon-reload',
+      #       path    => '/usr/bin',
+      #       refreshonly => true,
+      #     }
+      #   }
+      #   default: {
+      #     fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+      #   }
+      # }
 
     } else {
       $_scheduler_services = $scheduler_services
