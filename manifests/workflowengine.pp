@@ -47,6 +47,7 @@ class st2::workflowengine (
               owner  => 'root',
               group  => 'root',
               mode   => '0644',
+              notify => Exec['Reload Daemon'],
             }
           }
           default: {
@@ -62,8 +63,9 @@ class st2::workflowengine (
       case $facts['os']['family'] {
         'RedHat': {
           exec { 'Reload Daemon':
-            command => 'systemctl daemon-reload',
-            path    => '/usr/bin',
+            command     => 'systemctl daemon-reload',
+            path        => '/usr/bin',
+            refreshonly => true,
           }
         }
         default: {

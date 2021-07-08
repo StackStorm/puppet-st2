@@ -93,7 +93,7 @@ class st2::scheduler (
 
     ########################################
     ## Services
-    service { $_scheduler_services
+    service { $_scheduler_services:
       ensure => 'running',
       enable => true,
       tag    => 'st2::service',
