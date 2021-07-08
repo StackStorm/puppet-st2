@@ -33,7 +33,7 @@ class st2::notifier (
 
   if ($notifier_num > 1) {
     $additional_services = range("2", "$notifier_num").reduce([]) |$memo, $number| {
-      $notifier_name = "${file_path}${number}"
+      $notifier_name = "st2notifier${number}"
 
       case $facts['os']['family'] {
         'RedHat': {

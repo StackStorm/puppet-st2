@@ -52,7 +52,7 @@ class st2::scheduler (
 
     if ($scheduler_num > 1) {
       $additional_services = range("2", "$scheduler_num").reduce([]) |$memo, $number| {
-        $schedule_name = "${file_path}${number}"
+        $schedule_name = "st2scheduler${number}"
 
         case $facts['os']['family'] {
           'RedHat': {

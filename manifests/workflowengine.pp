@@ -36,7 +36,7 @@ class st2::workflowengine (
 
     if ($workflowengine_num > 1) {
       $additional_services = range("2", "$workflowengine_num").reduce([]) |$memo, $number| {
-        $workflowengine_name = "${file_path}${number}"
+        $workflowengine_name = "st2workflowengine${number}"
 
         case $facts['os']['family'] {
           'RedHat': {
