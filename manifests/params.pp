@@ -144,6 +144,9 @@ class st2::params(
   # no max on the body size for large workflow support
   $nginx_client_max_body_size = '0'
 
+  # Number of workflow engines
+  $workflowengine_num = 1
+
   # st2web
   $web_root = '/opt/stackstorm/static/webui/'
 

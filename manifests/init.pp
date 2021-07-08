@@ -336,6 +336,7 @@ class st2(
   $chatops_web_url                      = undef,
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
+  $workflowengine_num       = $::st2::params::workflowengine_num,
 ) inherits st2::params {
 
   ########################################

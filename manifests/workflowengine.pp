@@ -32,9 +32,50 @@ class st2::workflowengine {
       tag     => 'st2::config',
     }
 
+    if ($::st2::params::workflowengine_num > 1) {
+      $additional_services = range("2", "$::st2::params::workflowengine_num").reduce |$memo, $number| {
+        $workflowengine_name = "${file_path}${number}"
+
+        case $facts['os']['family'] {
+          'RedHat': {
+            $file_path = '/usr/lib/systemd/system/'
+            file { "${file_path}${workflowengine_name}.service":
+              ensure => present,
+              source => "${file_path}st2workflowengine.service",
+              owner  => 'root',
+              group  => 'root',
+              mode   => '0644',
+            }
+          }
+          default: {
+            fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+          }
+        }
+
+        $memo = [$memo] + [$workflowengine_name]
+      }
+
+      $_workflowengine_services = $::st2::params::workflowengine_services + $additional_services
+
+      case $facts['os']['family'] {
+        'RedHat': {
+          exec { 'Reload Daemon':
+            command => 'systemctl daemon-reload',
+            path    => '/usr/bin',
+          }
+        }
+        default: {
+          fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+        }
+      }
+
+    } else {
+      $_workflowengine_services = $::st2::params::workflowengine_services
+    }
+
     ########################################
     ## Services
-    service { $::st2::params::workflowengine_services:
+    service { $_workflowengine_services:
       ensure => 'running',
       enable => true,
       tag    => 'st2::service',
