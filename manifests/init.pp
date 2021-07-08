@@ -337,6 +337,9 @@ class st2(
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
   $workflowengine_num       = $::st2::params::workflowengine_num,
+  $scheduler_num            = $::st2::params::scheduler_num,
+  $rulesengine_num          = $::st2::params::rulesengine_num,
+  $notifier_num             = $::st2::params::notifier_num,
 ) inherits st2::params {
 
   ########################################
