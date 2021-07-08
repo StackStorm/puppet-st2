@@ -44,6 +44,7 @@ class st2::rulesengine (
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
+            notify => Exec['Reload Daemon'],
           }
         }
         default: {
@@ -61,6 +62,7 @@ class st2::rulesengine (
         exec { 'Reload Daemon':
           command => 'systemctl daemon-reload',
           path    => '/usr/bin',
+          refreshonly => true,
         }
       }
       default: {

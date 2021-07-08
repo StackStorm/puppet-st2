@@ -44,6 +44,7 @@ class st2::notifier (
             owner  => 'root',
             group  => 'root',
             mode   => '0644',
+            notify => Exec['Reload Daemon'],
           }
         }
         default: {
@@ -61,6 +62,7 @@ class st2::notifier (
         exec { 'Reload Daemon':
           command => 'systemctl daemon-reload',
           path    => '/usr/bin',
+          refreshonly => true,
         }
       }
       default: {
