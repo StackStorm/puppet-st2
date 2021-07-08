@@ -35,7 +35,7 @@ class st2::workflowengine (
     }
 
     if ($workflowengine_num > 1) {
-      $additional_services = range("2", "$workflowengine_num").reduce |$memo, $number| {
+      $additional_services = range("2", "$workflowengine_num").reduce([]) |$memo, $number| {
         $workflowengine_name = "${file_path}${number}"
 
         case $facts['os']['family'] {
@@ -54,7 +54,7 @@ class st2::workflowengine (
           }
         }
 
-        $memo = [$memo] + [$workflowengine_name]
+        $memo + [$workflowengine_name]
       }
 
       $_workflowengine_services = $workflowengine_services + $additional_services
