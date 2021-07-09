@@ -2,6 +2,9 @@
 
 ## Development
 
+- Added the ability to scale out workflowengine, scheduler, rulesengine, and notifier processes
+  so that they run in an active-active configuration
+  Contributed by @bishopbm1
 - Added the Redis configuration for a Coordination backend
   Contributed by @bishopbm1
 

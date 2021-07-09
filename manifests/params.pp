@@ -87,10 +87,18 @@ class st2::params(
     'st2api',
     'st2auth',
     'st2garbagecollector',
-    'st2notifier',
-    'st2rulesengine',
     'st2sensorcontainer',
     'st2stream',
+  ]
+
+  ## StackStorm Workflow Engine (Orchestra)
+  $rulesengine_services = [
+    'st2rulesengine',
+  ]
+
+  ## StackStorm Workflow Engine (Orchestra)
+  $notifier_services = [
+    'st2notifier',
   ]
 
   ## StackStorm ChatOps services
@@ -143,6 +151,18 @@ class st2::params(
   ]
   # no max on the body size for large workflow support
   $nginx_client_max_body_size = '0'
+
+  # Number of workflow engines to run
+  $workflowengine_num = 1
+
+  # Number of schedulers to run
+  $scheduler_num = 1
+
+  # Number of rules engines to run
+  $rulesengine_num = 1
+
+  # Number of notifiers to run
+  $notifier_num = 1
 
   # st2web
   $web_root = '/opt/stackstorm/static/webui/'

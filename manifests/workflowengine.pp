@@ -10,8 +10,15 @@
 # @example Basic usage
 #   include st2::workflowengine
 #
-class st2::workflowengine {
-  include st2
+# @param workflowengine_num
+#   The number of workflowengines to have in an active active state
+# @param workflowengine_services
+#   Name of all the workflowengine services.
+#
+class st2::workflowengine (
+  $workflowengine_num      = $st2::workflowengine_num,
+  $workflowengine_services = $st2::params::workflowengine_services,
+) inherits st2 {
 
   # st2workflowengine was introduced in 2.8.0
   if st2::version_ge('2.8.0') {
@@ -32,9 +39,41 @@ class st2::workflowengine {
       tag     => 'st2::config',
     }
 
+    if ($workflowengine_num > 1) {
+      $additional_services = range("2", "$workflowengine_num").reduce([]) |$memo, $number| {
+        $workflowengine_name = "st2workflowengine${number}"
+        case $facts['os']['family'] {
+          'RedHat': {
+            $file_path = '/usr/lib/systemd/system/'
+          }
+          'Debian': {
+            $file_path = '/lib/systemd/system/'
+          }
+          default: {
+            fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+          }
+        }
+
+        systemd::unit_file { "${workflowengine_name}.service":
+          path => $file_path,
+          source => "${file_path}st2workflowengine.service",
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        }
+
+        $memo + [$workflowengine_name]
+      }
+
+      $_workflowengine_services = $workflowengine_services + $additional_services
+
+    } else {
+      $_workflowengine_services = $workflowengine_services
+    }
+
     ########################################
     ## Services
-    service { $::st2::params::workflowengine_services:
+    service { $_workflowengine_services:
       ensure => 'running',
       enable => true,
       tag    => 'st2::service',

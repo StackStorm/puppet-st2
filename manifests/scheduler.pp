@@ -22,11 +22,17 @@
 #   How often (in seconds) to look for zombie execution requests before rescheduling them.
 # @param pool_size
 #   The size of the pool used by the scheduler for scheduling executions.
+# @param scheduler_num
+#   The number of schedulers to have in an active active state
+# @param scheduler_services
+#   Name of all the scheduler services.
 #
 class st2::scheduler (
-  $sleep_interval = $::st2::scheduler_sleep_interval,
-  $gc_interval    = $::st2::scheduler_gc_interval,
-  $pool_size      = $::st2::scheduler_pool_size,
+  $sleep_interval     = $::st2::scheduler_sleep_interval,
+  $gc_interval        = $::st2::scheduler_gc_interval,
+  $pool_size          = $::st2::scheduler_pool_size,
+  $scheduler_num      = $st2::scheduler_num,
+  $scheduler_services = $st2::params::scheduler_services
 ) inherits st2 {
 
   # st2scheduler was introduced in 2.10.0
@@ -48,9 +54,41 @@ class st2::scheduler (
       tag     => 'st2::config',
     }
 
+    if ($scheduler_num > 1) {
+      $additional_services = range("2", "$scheduler_num").reduce([]) |$memo, $number| {
+        $schedule_name = "st2scheduler${number}"
+        case $facts['os']['family'] {
+          'RedHat': {
+            $file_path = '/usr/lib/systemd/system/'
+          }
+          'Debian': {
+            $file_path = '/lib/systemd/system/'
+          }
+          default: {
+            fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
+          }
+        }
+
+        systemd::unit_file { "${schedule_name}.service":
+          path => $file_path,
+          source => "${file_path}st2scheduler.service",
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644',
+        }
+
+        $memo + [$schedule_name]
+      }
+
+      $_scheduler_services = $scheduler_services + $additional_services
+
+    } else {
+      $_scheduler_services = $scheduler_services
+    }
+
     ########################################
     ## Services
-    service { $::st2::params::scheduler_services:
+    service { $_scheduler_services:
       ensure => 'running',
       enable => true,
       tag    => 'st2::service',
