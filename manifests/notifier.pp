@@ -38,6 +38,9 @@ class st2::notifier (
         'RedHat': {
           $file_path = '/usr/lib/systemd/system/'
         }
+        'Debian': {
+          $file_path = '/lib/systemd/system/'
+        }
         default: {
           fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
         }
