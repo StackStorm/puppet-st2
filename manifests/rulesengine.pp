@@ -10,6 +10,11 @@
 # @example Basic usage
 #   include st2::rulesengine
 #
+# @param rulesengine_num
+#   The number of rulesengines to have in an active active state
+# @param rulesengine_services
+#   Name of all the rulesengine services
+#
 class st2::rulesengine (
   $rulesengine_num      = $st2::rulesengine_num,
   $rulesengine_services = $st2::params::rulesengine_services,

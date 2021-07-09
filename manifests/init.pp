@@ -214,6 +214,14 @@
 #   for NodeJS (default: true)
 # @param redis_bind_ip
 #   Bind IP of the Redis server. Default is 127.0.0.1
+# @param workflowengine_num
+#   The number of workflowengines to have in an active active state (default: 1)
+# @param scheduler_num
+#   The number of schedulers to have in an active active state (default: 1)
+# @param rulesengine_num
+#   The number of rulesengines to have in an active active state (default: 1)
+# @param notifier_num
+#   The number of notifiers to have in an active active state (default: 1)
 #
 #
 # @example Basic Usage

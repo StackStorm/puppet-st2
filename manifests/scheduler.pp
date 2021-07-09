@@ -22,6 +22,10 @@
 #   How often (in seconds) to look for zombie execution requests before rescheduling them.
 # @param pool_size
 #   The size of the pool used by the scheduler for scheduling executions.
+# @param scheduler_num
+#   The number of schedulers to have in an active active state
+# @param scheduler_services
+#   Name of all the scheduler services.
 #
 class st2::scheduler (
   $sleep_interval     = $::st2::scheduler_sleep_interval,

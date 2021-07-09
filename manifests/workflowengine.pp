@@ -10,6 +10,11 @@
 # @example Basic usage
 #   include st2::workflowengine
 #
+# @param workflowengine_num
+#   The number of workflowengines to have in an active active state
+# @param workflowengine_services
+#   Name of all the workflowengine services.
+#
 class st2::workflowengine (
   $workflowengine_num      = $st2::workflowengine_num,
   $workflowengine_services = $st2::params::workflowengine_services,

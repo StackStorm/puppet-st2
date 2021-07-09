@@ -10,6 +10,11 @@
 # @example Basic usage
 #   include st2::notifier
 #
+# @param notifier_num
+#   The number of notifiers to have in an active active state
+# @param notifier_services
+#   Name of all the notifier services
+#
 class st2::notifier (
   $notifier_num      = $st2::notifier_num,
   $notifier_services = $st2::params::notifier_services,
