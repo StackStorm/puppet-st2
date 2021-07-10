@@ -31,6 +31,7 @@
 #   │ └── puppetlabs-concat (v6.2.0)
 #   ├── puppet-nodejs (v7.0.1)
 #   ├── puppet-python (v4.1.1)
+#   ├── puppet-redis (v7.0.0)
 #   ├─┬ puppet-rabbitmq (v10.1.1)
 #   │ ├── camptocamp-systemd (v2.9.0)
 #   │ └── puppet-archive (v4.5.0)
@@ -53,7 +54,7 @@ mod 'puppet-mongodb',
 mod 'puppet-nginx'
 mod 'puppetlabs-concat'    # dependency of puppet-nginx'
 mod 'puppet-nodejs'
-mod 'puppet-python'
+mod 'puppet-python', '4.1.1'
 mod 'puppet-rabbitmq'
 mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'puppet-archive'       # dependency of puppet-rabbitmq
