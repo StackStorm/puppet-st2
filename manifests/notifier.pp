@@ -37,7 +37,7 @@ class st2::notifier (
   }
 
   if ($notifier_num > 1) {
-    $additional_services = range("2", "$notifier_num").reduce([]) |$memo, $number| {
+    $additional_services = range("2", "${notifier_num}").reduce([]) |$memo, $number| {
       $notifier_name = "st2notifier${number}"
       case $facts['os']['family'] {
         'RedHat': {
@@ -52,7 +52,7 @@ class st2::notifier (
       }
 
       systemd::unit_file { "${notifier_name}.service":
-        path => $file_path,
+        path   => $file_path,
         source => "${file_path}st2notifier.service",
         owner  => 'root',
         group  => 'root',

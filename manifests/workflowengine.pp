@@ -40,7 +40,7 @@ class st2::workflowengine (
     }
 
     if ($workflowengine_num > 1) {
-      $additional_services = range("2", "$workflowengine_num").reduce([]) |$memo, $number| {
+      $additional_services = range("2", "${workflowengine_num}").reduce([]) |$memo, $number| {
         $workflowengine_name = "st2workflowengine${number}"
         case $facts['os']['family'] {
           'RedHat': {
@@ -55,7 +55,7 @@ class st2::workflowengine (
         }
 
         systemd::unit_file { "${workflowengine_name}.service":
-          path => $file_path,
+          path   => $file_path,
           source => "${file_path}st2workflowengine.service",
           owner  => 'root',
           group  => 'root',

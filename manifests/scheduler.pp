@@ -55,7 +55,7 @@ class st2::scheduler (
     }
 
     if ($scheduler_num > 1) {
-      $additional_services = range("2", "$scheduler_num").reduce([]) |$memo, $number| {
+      $additional_services = range("2", "${scheduler_num}").reduce([]) |$memo, $number| {
         $schedule_name = "st2scheduler${number}"
         case $facts['os']['family'] {
           'RedHat': {
@@ -70,7 +70,7 @@ class st2::scheduler (
         }
 
         systemd::unit_file { "${schedule_name}.service":
-          path => $file_path,
+          path   => $file_path,
           source => "${file_path}st2scheduler.service",
           owner  => 'root',
           group  => 'root',
