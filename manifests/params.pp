@@ -184,7 +184,7 @@ class st2::params(
   $rabbitmq_port = 5672
   $rabbitmq_bind_ip = '127.0.0.1'
   $rabbitmq_vhost = '/'
-  $erlang_url = 'https://packagecloud.io/rabbitmq/erlang/el/${facts[\'os\'][release][major]}/\$basearch'
+  $erlang_url = "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch"
   $erlang_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
   $redis_bind_ip = '127.0.0.1'
 
