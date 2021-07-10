@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache-2.0",
@@ -70,18 +70,19 @@
     },
     {
       "name": "puppet/redis",
-      "version_requirement": "> 6.1.0 <= 7.0.0"
+      "version_requirement": ">= 7.0.0"
     },
     {
       "name": "camptocamp/systemd",
-      "version_requirement": ">= 3.0.0
+      "version_requirement": ">= 3.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {
