@@ -44,7 +44,7 @@ class st2::profile::rabbitmq (
       gpgkey   => $erlang_key,
       enabled  => 1,
       gpgcheck => 1,
-      before   => Class['rabbitmq'],
+      before   => Class['rabbitmq::repo::rhel'],
     }
   }
   else {
