@@ -222,6 +222,10 @@
 #   The number of rulesengines to have in an active active state (default: 1)
 # @param notifier_num
 #   The number of notifiers to have in an active active state (default: 1)
+# @param erlang_url
+#   The url for the erlang repositiory to be used for rabbitmq
+# @param erlang_key
+#   The gpg key for the erlang repositiory to be used for rabbitmq
 #
 #
 # @example Basic Usage
@@ -324,6 +328,8 @@ class st2(
   $rabbitmq_port            = $::st2::params::rabbitmq_port,
   $rabbitmq_bind_ip         = $::st2::params::rabbitmq_bind_ip,
   $rabbitmq_vhost           = $::st2::params::rabbitmq_vhost,
+  $erlang_url               = $::st2::params::erlang_url,
+  $erlang_key               = $::st2::params::erlang_key,
   $redis_bind_ip            = $::st2::params::redis_bind_ip,
   $timersengine_enabled     = $::st2::params::timersengine_enabled,
   $timersengine_timezone    = $::st2::params::timersengine_timezone,

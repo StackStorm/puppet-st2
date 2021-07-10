@@ -37,7 +37,7 @@ class st2::rulesengine (
   }
 
   if ($rulesengine_num > 1) {
-    $additional_services = range("2", "${notifier_num}").reduce([]) |$memo, $number| {
+    $additional_services = range('2', $rulesengine_num).reduce([]) |$memo, $number| {
       $rulesengine_name = "st2rulesengine${number}"
       case $facts['os']['family'] {
         'RedHat': {
