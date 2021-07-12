@@ -269,16 +269,6 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
-  ## Notifier Settings
-  ini_setting { 'notifier_logging':
-    ensure  => present,
-    path    => $conf_file,
-    section => 'notifier',
-    setting => 'logging',
-    value   => "/etc/st2/${_logger_config}.notifier.conf",
-    tag     => 'st2::config',
-  }
-
   ## Resultstracker Settings
   ini_setting { 'resultstracker_logging':
     ensure  => present,
@@ -286,16 +276,6 @@ class st2::profile::server (
     section => 'resultstracker',
     setting => 'logging',
     value   => "/etc/st2/${_logger_config}.resultstracker.conf",
-    tag     => 'st2::config',
-  }
-
-  ## Rules Engine Settings
-  ini_setting { 'rulesengine_logging':
-    ensure  => present,
-    path    => $conf_file,
-    section => 'rulesengine',
-    setting => 'logging',
-    value   => "/etc/st2/${_logger_config}.rulesengine.conf",
     tag     => 'st2::config',
   }
 
@@ -383,6 +363,8 @@ class st2::profile::server (
     tag    => 'st2::service',
   }
 
+  contain st2::notifier
+  contain st2::rulesengine
   contain st2::scheduler
   contain st2::timersengine
   contain st2::workflowengine

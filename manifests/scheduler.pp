@@ -22,11 +22,17 @@
 #   How often (in seconds) to look for zombie execution requests before rescheduling them.
 # @param pool_size
 #   The size of the pool used by the scheduler for scheduling executions.
+# @param scheduler_num
+#   The number of schedulers to have in an active active state
+# @param scheduler_services
+#   Name of all the scheduler services.
 #
 class st2::scheduler (
-  $sleep_interval = $::st2::scheduler_sleep_interval,
-  $gc_interval    = $::st2::scheduler_gc_interval,
-  $pool_size      = $::st2::scheduler_pool_size,
+  $sleep_interval     = $::st2::scheduler_sleep_interval,
+  $gc_interval        = $::st2::scheduler_gc_interval,
+  $pool_size          = $::st2::scheduler_pool_size,
+  $scheduler_num      = $st2::scheduler_num,
+  $scheduler_services = $st2::params::scheduler_services
 ) inherits st2 {
 
   # st2scheduler was introduced in 2.10.0
@@ -48,12 +54,10 @@ class st2::scheduler (
       tag     => 'st2::config',
     }
 
-    ########################################
-    ## Services
-    service { $::st2::params::scheduler_services:
-      ensure => 'running',
-      enable => true,
-      tag    => 'st2::service',
+    st2::service { 'st2scheduler':
+      service_name      => 'st2scheduler',
+      service_num       => $scheduler_num,
+      existing_services => $scheduler_services,
     }
   }
 }

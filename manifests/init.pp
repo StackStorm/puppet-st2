@@ -212,6 +212,20 @@
 # @param nodejs_manage_repo
 #   Set this to false when you have your own repositories
 #   for NodeJS (default: true)
+# @param redis_bind_ip
+#   Bind IP of the Redis server. Default is 127.0.0.1
+# @param workflowengine_num
+#   The number of workflowengines to have in an active active state (default: 1)
+# @param scheduler_num
+#   The number of schedulers to have in an active active state (default: 1)
+# @param rulesengine_num
+#   The number of rulesengines to have in an active active state (default: 1)
+# @param notifier_num
+#   The number of notifiers to have in an active active state (default: 1)
+# @param erlang_url
+#   The url for the erlang repositiory to be used for rabbitmq
+# @param erlang_key
+#   The gpg key for the erlang repositiory to be used for rabbitmq
 #
 #
 # @example Basic Usage
@@ -314,6 +328,9 @@ class st2(
   $rabbitmq_port            = $::st2::params::rabbitmq_port,
   $rabbitmq_bind_ip         = $::st2::params::rabbitmq_bind_ip,
   $rabbitmq_vhost           = $::st2::params::rabbitmq_vhost,
+  $erlang_url               = $::st2::params::erlang_url,
+  $erlang_key               = $::st2::params::erlang_key,
+  $redis_bind_ip            = $::st2::params::redis_bind_ip,
   $timersengine_enabled     = $::st2::params::timersengine_enabled,
   $timersengine_timezone    = $::st2::params::timersengine_timezone,
   $scheduler_sleep_interval = $::st2::params::scheduler_sleep_interval,
@@ -333,6 +350,10 @@ class st2(
   $chatops_web_url                      = undef,
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
+  $workflowengine_num       = $::st2::params::workflowengine_num,
+  $scheduler_num            = $::st2::params::scheduler_num,
+  $rulesengine_num          = $::st2::params::rulesengine_num,
+  $notifier_num             = $::st2::params::notifier_num,
 ) inherits st2::params {
 
   ########################################

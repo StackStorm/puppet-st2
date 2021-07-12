@@ -10,8 +10,15 @@
 # @example Basic usage
 #   include st2::workflowengine
 #
-class st2::workflowengine {
-  include st2
+# @param workflowengine_num
+#   The number of workflowengines to have in an active active state
+# @param workflowengine_services
+#   Name of all the workflowengine services.
+#
+class st2::workflowengine (
+  $workflowengine_num      = $st2::workflowengine_num,
+  $workflowengine_services = $st2::params::workflowengine_services,
+) inherits st2 {
 
   # st2workflowengine was introduced in 2.8.0
   if st2::version_ge('2.8.0') {
@@ -32,12 +39,10 @@ class st2::workflowengine {
       tag     => 'st2::config',
     }
 
-    ########################################
-    ## Services
-    service { $::st2::params::workflowengine_services:
-      ensure => 'running',
-      enable => true,
-      tag    => 'st2::service',
+    st2::service { 'st2workflowengine':
+      service_name      => 'st2workflowengine',
+      service_num       => $workflowengine_num,
+      existing_services => $workflowengine_services,
     }
   }
 }

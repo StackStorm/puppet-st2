@@ -2,6 +2,14 @@
 
 ## Development
 
+- Added the ability to scale out workflowengine, scheduler, rulesengine, and notifier services
+  so that they run in an active-active configuration
+  Contributed by @bishopbm1
+- Added the Redis configuration for a Coordination backend
+  Contributed by @bishopbm1
+- Added neccessary erlang package required for RHEL 8 rabbitmq
+  Contributed by @bishopbm1
+
 ## 2.1.0 (Mar 6, 2021)
   Note: This version only supports the 'integrated' LDAP plugin.
 

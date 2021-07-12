@@ -1,6 +1,6 @@
 {
   "name": "stackstorm-st2",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "stackstorm",
   "summary": "Puppet module to manage/configure StackStorm",
   "license": "Apache-2.0",
@@ -34,7 +34,7 @@
     },
     {
       "name": "puppet/python",
-      "version_requirement": ">= 1.10.0 < 5.0.0"
+      "version_requirement": ">= 5.0.0 < 7.0.0"
     },
     {
       "name": "puppetlabs/inifile",
@@ -67,13 +67,22 @@
     {
       "name": "npwalker/recursive_file_permissions",
       "version_requirement": ">= 0.6.0 < 1.0.0"
+    },
+    {
+      "name": "puppet/redis",
+      "version_requirement": ">= 7.0.0 < 8.0.0"
+    },
+    {
+      "name": "camptocamp/systemd",
+      "version_requirement": ">= 3.0.0 < 4.0.0"
     }
   ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "7"
+        "7",
+        "8"
       ]
     },
     {

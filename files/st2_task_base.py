@@ -39,14 +39,21 @@ class St2TaskBase(TaskHelper):
         elif self.username and self.password:
             # auth on the command line with username/password
             cmd = ['st2', 'auth', '--only-token', '-p', self.password, self.username]
-            stdout = subprocess.check_output(cmd)
+            stdout = self.bytes_to_string(subprocess.check_output(cmd))
             self.env['ST2_AUTH_TOKEN'] = stdout.rstrip()
         # else
         #    assume auth token is written in client config for this user.
         #    don't worry, if there is no auth we'll get an error
 
+    def bytes_to_string(self, string):
+        if isinstance(string, bytes):
+            string = string.decode("utf-8")
+
+        return string
+
     def parse_output(self, stdout):
         try:
+            stdout = self.bytes_to_string(stdout)
             # try to parse stdout as JSON and return the parse result
             return {'result': json.loads(stdout)}
         except ValueError:

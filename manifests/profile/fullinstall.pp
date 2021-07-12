@@ -32,6 +32,7 @@ class st2::profile::fullinstall inherits st2 {
   -> class { 'st2::repo': }
   -> class { 'st2::profile::selinux': }
   -> Anchor['st2::pre_reqs']
+  -> class { 'st2::profile::redis': }
   -> class { 'st2::profile::python': }
   -> class { 'st2::profile::nodejs': }
   -> class { 'st2::profile::rabbitmq': }
