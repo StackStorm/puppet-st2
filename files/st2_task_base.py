@@ -52,11 +52,13 @@ class St2TaskBase(TaskHelper):
         return string
 
     def parse_output(self, stdout):
+        print(stdout)
         try:
             stdout = self.bytes_to_string(stdout)
+            print(stdout)
             # try to parse stdout as JSON and return the parse result
             return {'result': json.loads(stdout)}
-        except ValueError:
+        except (ValueError, TypeError):
             # JSON parsing failed, return the raw stdout string
             return {'result': stdout}
 
