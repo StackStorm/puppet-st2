@@ -52,7 +52,6 @@ class st2::profile::python (
       version                   => $version,
       dev                       => present,
       manage_pip_package        => false,
-      manage_virtualenv_package => false,
     }
   }
 }

@@ -54,7 +54,7 @@ mod 'puppet-mongodb',
 mod 'puppet-nginx'
 mod 'puppetlabs-concat'    # dependency of puppet-nginx'
 mod 'puppet-nodejs'
-mod 'puppet-python', '4.1.1'
+mod 'puppet-python'
 mod 'puppet-rabbitmq'
 mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'puppet-archive'       # dependency of puppet-rabbitmq

@@ -36,43 +36,9 @@ class st2::notifier (
     tag     => 'st2::config',
   }
 
-  if ($notifier_num > 1) {
-    $additional_services = range('2', $notifier_num).reduce([]) |$memo, $number| {
-      $notifier_name = "st2notifier${number}"
-      case $facts['os']['family'] {
-        'RedHat': {
-          $file_path = '/usr/lib/systemd/system/'
-        }
-        'Debian': {
-          $file_path = '/lib/systemd/system/'
-        }
-        default: {
-          fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
-        }
-      }
-
-      systemd::unit_file { "${notifier_name}.service":
-        path   => $file_path,
-        source => "${file_path}st2notifier.service",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-      }
-
-      $memo + [$notifier_name]
-    }
-
-    $_notifier_services = $notifier_services + $additional_services
-
-  } else {
-    $_notifier_services = $notifier_services
-  }
-
-  ########################################
-  ## Services
-  service { $_notifier_services:
-    ensure => 'running',
-    enable => true,
-    tag    => 'st2::service',
+  st2::process { 'st2notifier':
+    process_name     => 'st2notifier',
+    process_num      => $workflowengine_num,
+    process_services => $workflowengine_services,
   }
 }
