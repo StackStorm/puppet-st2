@@ -157,6 +157,7 @@ classes for use and configuration.
 * `st2::profile::nodejs` - st2 configured NodeJS installation
 * `st2::profile::python` - Python installed and configured for st2
 * `st2::profile::rabbitmq` - st2 configured RabbitMQ installation
+* `st2::profile::redis` - st2 configured Redis installation
 * `st2::proflle::server` - st2 server components
 * `st2::profile::web` - st2 web components
 * `st2::profile::chatops` - st2 chatops components
@@ -316,6 +317,33 @@ Configuration via Hiera:
     ROCKETCHAT_PASSWORD: secret123
     ROCKETCHAT_AUTH: password
     RESPOND_TO_DM: true
+```
+
+#### Scaling out services
+
+This module supports scaling out workflowengine, scheduler, rulesengine, and notifier services
+per the [ST2 Documentation](https://docs.stackstorm.com/reference/ha.html).
+
+This would be something that you might consider doing if you have alot of rules running or if you
+have alot of workflows running in parrallel and/or you have alot of nested workflows and have a server
+that can be higher on CPU and Memory to allow more processes to run at the same time.
+
+Configuration all services:
+```ruby
+class { 'st2':
+  python_version     => '3.6',
+  workflowengine_num => 4,
+  scheduler_num      => 2,
+  rulesengine_num    => 1,
+  notifier_num       => 1,
+}
+```
+
+Or configure individual:
+```ruby
+class { 'st2::workflowengine':
+  workflowengine_num => 4,
+}
 ```
 
 ### Tasks
@@ -484,6 +512,8 @@ please submit a [Pull Request](https://github.com/StackStorm/puppet-st2/pulls).
 * StackStorm <info@stackstorm.com>
 * James Fryman
 * Patrick Hoolboom
+* Bradley Bishop
+  * GitHub - [@nmaludy](https://github.com/bishopbm1)
 
 ### Help
 

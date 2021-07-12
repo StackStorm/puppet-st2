@@ -54,10 +54,10 @@ class st2::scheduler (
       tag     => 'st2::config',
     }
 
-    st2::process { 'st2scheduler':
-      process_name     => 'st2scheduler',
-      process_num      => $scheduler_num,
-      process_services => $scheduler_services,
+    st2::service { 'st2scheduler':
+      service_name      => 'st2scheduler',
+      service_num       => $scheduler_num,
+      existing_services => $scheduler_services,
     }
   }
 }

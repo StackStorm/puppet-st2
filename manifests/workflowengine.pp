@@ -39,10 +39,10 @@ class st2::workflowengine (
       tag     => 'st2::config',
     }
 
-    st2::process { 'st2workflowengine':
-      process_name     => 'st2workflowengine',
-      process_num      => $workflowengine_num,
-      process_services => $workflowengine_services,
+    st2::service { 'st2workflowengine':
+      service_name      => 'st2workflowengine',
+      service_num       => $workflowengine_num,
+      existing_services => $workflowengine_services,
     }
   }
 }

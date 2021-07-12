@@ -36,9 +36,9 @@ class st2::notifier (
     tag     => 'st2::config',
   }
 
-  st2::process { 'st2notifier':
-    process_name     => 'st2notifier',
-    process_num      => $notifier_num,
-    process_services => $notifier_services,
+  st2::service { 'st2notifier':
+    service_name      => 'st2notifier',
+    service_num       => $notifier_num,
+    existing_services => $notifier_services,
   }
 }

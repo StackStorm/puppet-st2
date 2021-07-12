@@ -36,9 +36,9 @@ class st2::rulesengine (
     tag     => 'st2::config',
   }
 
-  st2::process { 'st2rulesengine':
-    process_name     => 'st2rulesengine',
-    process_num      => $rulesengine_num,
-    process_services => $rulesengine_services,
+  st2::service { 'st2rulesengine':
+    service_name      => 'st2rulesengine',
+    service_num       => $rulesengine_num,
+    existing_services => $rulesengine_services,
   }
 }
