@@ -58,7 +58,7 @@ class St2TaskBase(TaskHelper):
             print(stdout)
             # try to parse stdout as JSON and return the parse result
             return {'result': json.loads(stdout)}
-        except (ValueError, TypeError):
+        except ValueError:
             # JSON parsing failed, return the raw stdout string
             return {'result': stdout}
 
@@ -66,7 +66,7 @@ class St2TaskBase(TaskHelper):
         result = {}
         try:
             stdout = subprocess.check_output(cmd,
-                                             stderr=self.parse_output(subprocess.STDOUT),
+                                             stderr=subprocess.STDOUT,
                                              env=self.env)
             result.update(self.parse_output(stdout))
         except subprocess.CalledProcessError as e:
