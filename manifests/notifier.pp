@@ -38,7 +38,7 @@ class st2::notifier (
 
   st2::process { 'st2notifier':
     process_name     => 'st2notifier',
-    process_num      => $workflowengine_num,
-    process_services => $workflowengine_services,
+    process_num      => $notifier_num,
+    process_services => $notifier_services,
   }
 }

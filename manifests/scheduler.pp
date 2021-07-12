@@ -56,8 +56,8 @@ class st2::scheduler (
 
     st2::process { 'st2scheduler':
       process_name     => 'st2scheduler',
-      process_num      => $workflowengine_num,
-      process_services => $workflowengine_services,
+      process_num      => $scheduler_num,
+      process_services => $scheduler_services,
     }
   }
 }

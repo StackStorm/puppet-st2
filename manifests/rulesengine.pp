@@ -38,7 +38,7 @@ class st2::rulesengine (
 
   st2::process { 'st2rulesengine':
     process_name     => 'st2rulesengine',
-    process_num      => $workflowengine_num,
-    process_services => $workflowengine_services,
+    process_num      => $rulesengine_num,
+    process_services => $rulesengine_services,
   }
 }
