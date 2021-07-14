@@ -2,6 +2,9 @@
 
 ## Development
 
+
+## 2.2.0 (Jul 14, 2021)
+
 - Added the ability to scale out workflowengine, scheduler, rulesengine, and notifier services
   so that they run in an active-active configuration
   Contributed by @bishopbm1
