@@ -49,10 +49,9 @@ class st2::profile::python (
 
     # intall python and python-devel / python-dev
     class { 'python':
-      version                   => $version,
-      dev                       => present,
-      manage_pip_package        => false,
-      manage_virtualenv_package => false,
+      version            => $version,
+      dev                => present,
+      manage_pip_package => false,
     }
   }
 }

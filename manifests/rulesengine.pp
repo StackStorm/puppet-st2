@@ -36,43 +36,9 @@ class st2::rulesengine (
     tag     => 'st2::config',
   }
 
-  if ($rulesengine_num > 1) {
-    $additional_services = range("2", "$rulesengine_num").reduce([]) |$memo, $number| {
-      $rulesengine_name = "st2rulesengine${number}"
-      case $facts['os']['family'] {
-        'RedHat': {
-          $file_path = '/usr/lib/systemd/system/'
-        }
-        'Debian': {
-          $file_path = '/lib/systemd/system/'
-        }
-        default: {
-          fail("Unsupported managed repository for osfamily: ${facts['os']['family']}, operatingsystem: ${facts['os']['name']}")
-        }
-      }
-
-      systemd::unit_file { "${rulesengine_name}.service":
-        path => $file_path,
-        source => "${file_path}st2rulesengine.service",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-      }
-
-      $memo + [$rulesengine_name]
-    }
-
-    $_rulesengine_services = $rulesengine_services + $additional_services
-
-  } else {
-    $_rulesengine_services = $rulesengine_services
-  }
-
-  ########################################
-  ## Services
-  service { $_rulesengine_services:
-    ensure => 'running',
-    enable => true,
-    tag    => 'st2::service',
+  st2::service { 'st2rulesengine':
+    service_name      => 'st2rulesengine',
+    service_num       => $rulesengine_num,
+    existing_services => $rulesengine_services,
   }
 }

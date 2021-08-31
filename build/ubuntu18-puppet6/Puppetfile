@@ -31,6 +31,7 @@
 #   │ └── puppetlabs-concat (v6.2.0)
 #   ├── puppet-nodejs (v7.0.1)
 #   ├── puppet-python (v4.1.1)
+#   ├── puppet-redis (v7.0.0)
 #   ├─┬ puppet-rabbitmq (v10.1.1)
 #   │ ├── camptocamp-systemd (v2.9.0)
 #   │ └── puppet-archive (v4.5.0)
@@ -64,3 +65,4 @@ mod 'puppetlabs-inifile'
 mod 'puppetlabs-stdlib'
 mod 'puppetlabs-yumrepo_core'
 mod 'saz-sudo'
+mod 'puppet/redis'
