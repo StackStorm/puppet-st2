@@ -1,6 +1,6 @@
 # Build System
 
-The build system is based on Docker and is executed in two phases: unit testing 
+The build system is based on Docker and is executed in two phases: unit testing
 and integration testing.
 
 Unit testing and integration testing occur in their own separate containers.
@@ -10,7 +10,6 @@ avoid cross-dependency issues. Example: there may be a dependency limit in
 some component of the unit testing system that affects the integration testing
 system. These types of conflicts plauged us previously and this new model
 has made the testing system much more robust and less painful.
-
 
 ## Directory Structure
 
@@ -38,10 +37,10 @@ build/scripts/install_puppet.sh
 # below are the test environments we currently use
 build/centos7-puppet6   # Files needed for the RHEL/CentOS 7 test environemnt on puppet 6
 build/centos7-puppet7   # Files needed for the RHEL/CentOS 7 test environemnt on puppet 7
-build/ubuntu16-puppet6   # Files needed for the Ubuntu 16.04 test environemnt on puppet 6
-build/ubuntu16-puppet7   # Files needed for the Ubuntu 16.04 test environemnt on puppet 7
 build/ubuntu18-puppet6  # Files needed for the Ubuntu 18.04 test environemnt on puppet 6
 build/ubuntu18-puppet7  # Files needed for the Ubuntu 18.04 test environemnt on puppet 7
+build/ubuntu20-puppet6   # Files needed for the Ubuntu 20.04 test environemnt on puppet 6
+build/ubuntu20-puppet7   # Files needed for the Ubuntu 20.04 test environemnt on puppet 7
 # below are files in each of the environments above
 build/<env>/Dockerfile         # Dockerfile for unit testing
 build/<env>/Dockerfile,kitchen # Dockerfile for test-kitchen integration testing
@@ -55,10 +54,11 @@ This file details how to setup the test machine (see `matrix` section) and
 which tests to run (see `script`) section.
 
 We have two requirements for the testing environment:
- * Docker must be running, which is handled by Github Actions
- * Ruby must be installed on step "Setup Ruby" so we can setup `test-kitchen` - we use 2.5 for puppet 6 and 2.7 for other testing
- 
-For each build in the matrix we tell CI which version of Ruby to use. 
+
+* Docker must be running, which is handled by Github Actions
+* Ruby must be installed on step "Setup Ruby" so we can setup `test-kitchen` - we use 2.5 for puppet 6 and 2.7 for other testing
+
+For each build in the matrix we tell CI which version of Ruby to use.
 Since the unit testing is done in a container, we use the same version for all
 builds. We also specify a Gemfile and CI is smart enough to take this
 and use bundler to install all of the gems.
@@ -76,11 +76,11 @@ Up next we'll detail what's going on in our build script.
 ## Build Script
 
 The build script is pretty straight forward, performing the following steps:
- * Build the docker container using Dockerfile: `build/<env>/Dockerfile`
- * Run the docker container
- * Execute unit tests in the container
- * Execute integration tests in another container
 
+* Build the docker container using Dockerfile: `build/<env>/Dockerfile`
+* Run the docker container
+* Execute unit tests in the container
+* Execute integration tests in another container
 
 ## Unit Testing
 
@@ -89,48 +89,49 @@ This Dockerfile installs an isolated Ruby environment, gems from `build/<env>/Ge
 along with Puppet from various sources depending on the environment.
 
 After the environment is boot strapped we execute the following tests:
- * Validation of erb and metadata file using `puppet-lint` and `metadata-json-lint`
- * Linting of manifest files (*.pp) using `puppet-lint`
- * Unit testing using `rspec` and `puppet-rspec`
+
+* Validation of erb and metadata file using `puppet-lint` and `metadata-json-lint`
+* Linting of manifest files (*.pp) using `puppet-lint`
+* Unit testing using `rspec` and `puppet-rspec`
 
 Unit testing consists of the following steps currently
-  * rubocop syntax lint metadata_lint checks (ruby 2.7 + puppet 7)
-  * unit tests for puppet 6 (ruby 2.5 + puppet 6)
-  * unit tests for puppet 7 (ruby 2.7 + puppet 7)
-  * documentation check (ruby 2.7 + puppet 7)
+
+* rubocop syntax lint metadata_lint checks (ruby 2.7 + puppet 7)
+* unit tests for puppet 6 (ruby 2.5 + puppet 6)
+* unit tests for puppet 7 (ruby 2.7 + puppet 7)
+* documentation check (ruby 2.7 + puppet 7)
 
 The environment (ruby and puppet) is defined the in matrix and setup in the build steps based on those values.
 
 All of these tests happen inside the runner container.
 
-
 ## Integration Testing
 
 Integration testing is performed by the `test-kitchen` (aka `kitchen`) system.
 The testing environment setup requirements are:
-  * Install Ruby (we use 2.7)
-  * Install the gems in `build/kitchen/Gemfile`
-  * Install Docker and have the daemon running
+
+* Install Ruby (we use 2.7)
+* Install the gems in `build/kitchen/Gemfile`
+* Install Docker and have the daemon running
   
 Once the environment is bootstrapped `kitchen` is executed from within the
 `build/scripts/ci_docker_unit.sh` with the bundler command.
 The `kitchen` configuration can be found in the `.kitchen.yml` file.
-`kitchen` has its own terminology (reference: 
+`kitchen` has its own terminology (reference:
 [https://docs.chef.io/config_yml_kitchen.html](https://docs.chef.io/config_yml_kitchen.html) ) :
 
- * `driver` : What will be used to create a resource to test in our case this
+* `driver` : What will be used to create a resource to test in our case this
    is `docker` that creates a new Docker container.
- * `transport` : What method will be used to copy files into the resource
+* `transport` : What method will be used to copy files into the resource
    created by the `driver`. In our case we use `sftp` (faster than default `transport`).
- * `provisioner` : This executes the test from within the `driver` resource. In our
-   case this is the `puppet_apply` provisioner which executes `puppet apply` within 
+* `provisioner` : This executes the test from within the `driver` resource. In our
+   case this is the `puppet_apply` provisioner which executes `puppet apply` within
    the container.
- * `platforms` : This is the test matrix. It enumerates the different OS's we're
+* `platforms` : This is the test matrix. It enumerates the different OS's we're
    going to test, what Dockerfile to use for each OS, along with which `Puppetfile`
    to use for that OS. The `Puppetfile` is different for each OS because different
    modules versions are required for different old versions of `puppet` and `ruby`.
- * `suites` : Our test suite. In our case this is just `default`
-
+* `suites` : Our test suite. In our case this is just `default`
 
 ## Testing environment setup
 
@@ -155,4 +156,15 @@ rbenv install 2.7
 
 # set the version of ruby in the current shell
 rbenv shell 2.7
+```
+
+## Running tests locally
+
+It is possible to run the kitchen test suite locally once all the dependencies have been installed.
+Please note that kitchen will require (sudo-less) access to docker to run the tests on your machine.
+
+```shell
+export BUNDLE_GEMFILE=build/kitchen/Gemfilebundle config --local path /tmp/puppet-st2/build/kitchen/vendor/cache
+bundle install
+bundle exec kitchen test --debug
 ```

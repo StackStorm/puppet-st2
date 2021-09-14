@@ -30,11 +30,11 @@ created by test-kitchen that puppet-st2 is run against.
 | Ubuntu 20.04     | 2.7       | RHEL 7       | 2.7        | 6            | system       |
 | Ubuntu 20.04     | 2.7       | RHEL 7       | 2.7        | 7            | system       |
 | Ubuntu 20.04     | 2.7       | RHEL 7       | 2.7        | 7            | 3.6          |
-| Ubuntu 20.04     | 2.7       | Ubuntu 16.04 | 2.7        | 6            | system       |
-| Ubuntu 20.04     | 2.7       | Ubuntu 16.04 | 2.7        | 7            | system       |
-| Ubuntu 20.04     | 2.7       | Ubuntu 16.04 | 2.7        | 7            | 3.6          |
 | Ubuntu 20.04     | 2.7       | Ubuntu 18.04 | 2.7        | 6            | system       |
 | Ubuntu 20.04     | 2.7       | Ubuntu 18.04 | 2.7        | 7            | system       |
+| Ubuntu 20.04     | 2.7       | Ubuntu 18.04 | 2.7        | 7            | 3.6          |
+| Ubuntu 20.04     | 2.7       | Ubuntu 20.04 | 2.7        | 6            | system       |
+| Ubuntu 20.04     | 2.7       | Ubuntu 20.04 | 2.7        | 7            | system       |
 
 ## Dev Notes
 
