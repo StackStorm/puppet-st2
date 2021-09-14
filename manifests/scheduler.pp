@@ -38,7 +38,7 @@ class st2::scheduler (
   # st2scheduler was introduced in 2.10.0
   if st2::version_ge('2.10.0') {
 
-    $_logger_config = $::st2::syslog ? {
+    $_logger_config = $st2::syslog ? {
       true    => 'syslog',
       default => 'logging',
     }

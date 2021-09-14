@@ -15,11 +15,11 @@
 # @param manage_repo
 #   Set this to false when you have your own repositories for NodeJS.
 # @param version
-#   Version of NodeJS to install. If not provided it will be auto-calcuated based on $::st2::version
+#   Version of NodeJS to install. If not provided it will be auto-calcuated based on $st2::version
 #
 class st2::profile::nodejs(
-  $manage_repo = $::st2::nodejs_manage_repo,
-  $version     = $::st2::nodejs_version,
+  $manage_repo = $st2::nodejs_manage_repo,
+  $version     = $st2::nodejs_version,
 ) inherits st2 {
 
   $use_rhel7_builtin = false

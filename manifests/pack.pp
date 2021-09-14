@@ -22,8 +22,8 @@ define st2::pack (
   $config   = undef,
 ) {
   include st2
-  $_cli_username = $::st2::cli_username
-  $_cli_password = $::st2::cli_password
+  $_cli_username = $st2::cli_username
+  $_cli_password = $st2::cli_password
 
   st2_pack { $pack:
     ensure   => $ensure,

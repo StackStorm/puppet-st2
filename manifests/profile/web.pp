@@ -61,16 +61,16 @@
 #   }
 #
 class st2::profile::web(
-  Variant[Array[String], String] $nginx_ssl_ciphers   = $::st2::nginx_ssl_ciphers,
-  Variant[Array[String], String] $nginx_ssl_protocols = $::st2::nginx_ssl_protocols,
-  Stdlib::Port $nginx_ssl_port                        = $::st2::nginx_ssl_port,
-  String $nginx_client_max_body_size                  = $::st2::nginx_client_max_body_size,
-  Boolean $ssl_cert_manage                            = $::st2::ssl_cert_manage,
-  Stdlib::Absolutepath $ssl_dir                       = $::st2::ssl_dir,
-  String $ssl_cert                                    = $::st2::ssl_cert,
-  String $ssl_key                                     = $::st2::ssl_key,
-  String $version                                     = $::st2::version,
-  String $web_root                                    = $::st2::web_root,
+  Variant[Array[String], String] $nginx_ssl_ciphers   = $st2::nginx_ssl_ciphers,
+  Variant[Array[String], String] $nginx_ssl_protocols = $st2::nginx_ssl_protocols,
+  Stdlib::Port $nginx_ssl_port                        = $st2::nginx_ssl_port,
+  String $nginx_client_max_body_size                  = $st2::nginx_client_max_body_size,
+  Boolean $ssl_cert_manage                            = $st2::ssl_cert_manage,
+  Stdlib::Absolutepath $ssl_dir                       = $st2::ssl_dir,
+  String $ssl_cert                                    = $st2::ssl_cert,
+  String $ssl_key                                     = $st2::ssl_key,
+  String $version                                     = $st2::version,
+  String $web_root                                    = $st2::web_root,
 ) inherits st2 {
   # include nginx here only
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
@@ -80,7 +80,7 @@ class st2::profile::web(
   include st2::params
 
   ## Install the packages
-  package { $::st2::params::st2_web_packages:
+  package { $st2::params::st2_web_packages:
     ensure  => $version,
     tag     => ['st2::packages', 'st2::web::packages'],
     require => Package['nginx'],

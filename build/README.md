@@ -19,40 +19,48 @@ From the root of this repo:
 ``` shell
 .fixtures.yml   # file contains modules for puppet_spec_helper used during unit testing
 .kitchen.yml    # test-kitchen file describing our integration testing setups
-.travis.yml     # details our travis build matrix, this configures the "base" system
 build/          # contains all build files
 build/README.md # this file
 build/kitchen   # Files needed to setup the build environment for test-kitchen
 build/kitchen/Gemfile # Gems that need to be installed for our test-kitchen build
 build/scripts   # directory containing scripts that execute the tests
+# below are the scripts used in our build environment
+build/scripts/ci_docker_clean_all.sh 
+build/scripts/ci_docker_clean.sh
+build/scripts/ci_docker_integration.sh
 build/scripts/ci_docker_unit.sh  # Executes our unit tests and integration test in Docker
-build/centos6   # Files needed for the RHEL/CentOS 6 test environemnt
-build/centos7   # Files needed for the RHEL/CentOS 7 test environemnt
-build/puppet4   # Files needed for the Puppet 4 test environemnt
-build/puppet5   # Files needed for the Puppet 5 test environemnt
-build/ubuntu14  # Files needed for the Ubuntu 14.04 test environemnt
-build/ubuntu15  # Files needed for the Ubuntu 16.06 test environemnt
+build/scripts/ci_docker.sh
+build/scripts/ci_docs_generate.sh
+build/scripts/ci_install.sh
+build/scripts/ci_pdk_unit.sh
+build/scripts/ci.sh
+build/scripts/install_puppet.sh
+# below are the test environments we currently use
+build/centos7-puppet6   # Files needed for the RHEL/CentOS 7 test environemnt on puppet 6
+build/centos7-puppet7   # Files needed for the RHEL/CentOS 7 test environemnt on puppet 7
+build/ubuntu16-puppet6   # Files needed for the Ubuntu 16.04 test environemnt on puppet 6
+build/ubuntu16-puppet7   # Files needed for the Ubuntu 16.04 test environemnt on puppet 7
+build/ubuntu18-puppet6  # Files needed for the Ubuntu 18.04 test environemnt on puppet 6
+build/ubuntu18-puppet7  # Files needed for the Ubuntu 18.04 test environemnt on puppet 7
 # below are files in each of the environments above
 build/<env>/Dockerfile         # Dockerfile for unit testing
 build/<env>/Dockerfile,kitchen # Dockerfile for test-kitchen integration testing
-build/<env>/Gemfile            # Gems to install in the Docker container for unit testing
-build/<env>/Gemfile.lock       # Bundler Gemfile.lock of the last "known good" run
 build/<env>/Puppetfile         # Puppet modules to install for test-kitchen integration testing
 ```
 
-## Travis
+## Github Actions
 
-The travis build checks out the `puppet-st2` repo and reads the file `.travis.yml`.
+The current CI/CD pipeline is setup with Github Actions in `.github/workflows/build.yaml`
 This file details how to setup the test machine (see `matrix` section) and
-which tests to run (see `script` section.
+which tests to run (see `script`) section.
 
 We have two requirements for the testing environment:
- * Docker must be running, so we specify `services: docker`
- * Ruby must be installed so we can setup `test-kitchen`
+ * Docker must be running, which is handled by Github Actions
+ * Ruby must be installed on step "Setup Ruby" so we can setup `test-kitchen` - we use 2.5 for puppet 6 and 2.7 for other testing
  
-For each build in the matrix we tell Travis which version of Ruby to use. 
+For each build in the matrix we tell CI which version of Ruby to use. 
 Since the unit testing is done in a container, we use the same version for all
-builds. We also specify a Gemfile and Travis is smart enough to take this
+builds. We also specify a Gemfile and CI is smart enough to take this
 and use bundler to install all of the gems.
 
 Even though our builds run in containers this Gemfile step is required because
@@ -61,12 +69,9 @@ machine.
 
 After the machine is setup the `script:` is executed: `build/scripts/ci_docker_unit.sh`.
 We have several commands we run for our testing. Instead of specify them in
-the list for `script:` in the `.travis.yml` we moved them into the shell script.
-We do this because Travis will not stop on failures if you specify more than
-one option in the `script:` list.
+the list for `script:` in the config file we moved them into the shell script.
 
 Up next we'll detail what's going on in our build script.
-
 
 ## Build Script
 
@@ -88,14 +93,22 @@ After the environment is boot strapped we execute the following tests:
  * Linting of manifest files (*.pp) using `puppet-lint`
  * Unit testing using `rspec` and `puppet-rspec`
 
-All of these tests happen inside the container.
+Unit testing consists of the following steps currently
+  * rubocop syntax lint metadata_lint checks (ruby 2.7 + puppet 7)
+  * unit tests for puppet 6 (ruby 2.5 + puppet 6)
+  * unit tests for puppet 7 (ruby 2.7 + puppet 7)
+  * documentation check (ruby 2.7 + puppet 7)
+
+The environment (ruby and puppet) is defined the in matrix and setup in the build steps based on those values.
+
+All of these tests happen inside the runner container.
 
 
 ## Integration Testing
 
 Integration testing is performed by the `test-kitchen` (aka `kitchen`) system.
 The testing environment setup requirements are:
-  * Install Ruby (we use 2.4)
+  * Install Ruby (we use 2.7)
   * Install the gems in `build/kitchen/Gemfile`
   * Install Docker and have the daemon running
   
@@ -121,7 +134,7 @@ The `kitchen` configuration can be found in the `.kitchen.yml` file.
 
 ## Testing environment setup
 
-The following will install ruby 2.4 for testing purposes, then execute
+The following will install ruby 2.7 for testing purposes, then execute
 all of the unit tests (rspec), execution tests (kitchen) and integration tests
 (InSpec).
 
@@ -138,8 +151,8 @@ mkdir -p "$(rbenv root)"/plugins
 git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
 
 # install a modern version of ruby
-rbenv install 2.4.4
+rbenv install 2.7
 
 # set the version of ruby in the current shell
-rbenv shell 2.4.4
+rbenv shell 2.7
 ```

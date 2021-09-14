@@ -18,7 +18,7 @@
 #  st2::auth_backend_config: {}
 #
 class st2::auth::pam(
-  $conf_file = $::st2::conf_file,
+  $conf_file = $st2::conf_file,
 ) inherits st2 {
   include st2::auth::common
 

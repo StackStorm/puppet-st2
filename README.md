@@ -224,7 +224,7 @@ The following backends are currently available:
 
 
 By default the `flat_file` backend is used. To change this you can configure it
-when instantiating the `::st2` class in a manifest file:
+when instantiating the `st2` class in a manifest file:
 
 ``` ruby
 class { 'st2':
@@ -244,7 +244,7 @@ found by looking at the backend class in the `manifests/st2/auth/` directory.
 These parameters map 1-for-1 to the configuration options defined in each
 backends GitHub page (links above). Backend configurations are passed in as a hash
 using the `auth_backend_config` option. This option can be changed when instantiating
-the `::st2` class in a manifest file:
+the `st2` class in a manifest file:
 
 ``` ruby
 class { 'st2':

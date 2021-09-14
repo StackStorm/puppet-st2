@@ -80,7 +80,7 @@ class st2::profile::mongodb (
         auth           => true,
         create_admin   => true,
         store_creds    => true,
-        admin_username => $::st2::params::mongodb_admin_username,
+        admin_username => $st2::params::mongodb_admin_username,
         admin_password => $db_password,
       }
 
