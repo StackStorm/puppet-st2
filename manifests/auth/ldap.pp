@@ -71,7 +71,7 @@
 #    account_pattern: "userPrincipalName={username}"
 #
 class st2::auth::ldap (
-  $conf_file       = $::st2::conf_file,
+  $conf_file       = $st2::conf_file,
   $host            = '',
   $use_tls         = false,
   $use_ssl         = false,

@@ -1,6 +1,7 @@
 name: build
 
 on:
+  workflow_dispatch:
   push:
     branches: ['*']
     tags:
@@ -123,15 +124,15 @@ jobs:
           - ruby: '2.7'
             name: 'centos7-puppet7-python36'
           - ruby: '2.7'
-            name: 'ubuntu16-puppet6'
-          - ruby: '2.7'
-            name: 'ubuntu16-puppet7'
-          - ruby: '2.7'
-            name: 'ubuntu16-puppet7-python36'
-          - ruby: '2.7'
             name: 'ubuntu18-puppet6'
           - ruby: '2.7'
             name: 'ubuntu18-puppet7'
+          - ruby: '2.7'
+            name: 'ubuntu18-puppet7-python36'
+          - ruby: '2.7'
+            name: 'ubuntu20-puppet6'
+          - ruby: '2.7'
+            name: 'ubuntu20-puppet7'
     env:
       CHECK: '${{ matrix.check }}'
     steps:

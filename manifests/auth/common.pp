@@ -18,13 +18,13 @@
 #  Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
 #
 class st2::auth::common (
-  $api_url   = $::st2::auth_api_url,
-  $conf_file = $::st2::conf_file,
-  $debug     = $::st2::auth_debug,
-  $mode      = $::st2::auth_mode,
-  $use_ssl   = $::st2::use_ssl,
-  $ssl_cert  = $::st2::ssl_cert,
-  $ssl_key   = $::st2::ssl_key,
+  $api_url   = $st2::auth_api_url,
+  $conf_file = $st2::conf_file,
+  $debug     = $st2::auth_debug,
+  $mode      = $st2::auth_mode,
+  $use_ssl   = $st2::use_ssl,
+  $ssl_cert  = $st2::ssl_cert,
+  $ssl_key   = $st2::ssl_key,
 ) inherits st2 {
 
   $_debug = $debug ? {

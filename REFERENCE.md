@@ -191,7 +191,7 @@ Data type: `St2::Repository`
 Release repository to enable. 'stable', 'unstable'
 (default = 'stable')
 
-Default value: $::st2::params::repository
+Default value: $st2::params::repository
 
 ##### `conf_dir`
 
@@ -199,7 +199,7 @@ Data type: `Any`
 
 The directory where st2 configs are stored
 
-Default value: $::st2::params::conf_dir
+Default value: $st2::params::conf_dir
 
 ##### `conf_file`
 
@@ -207,7 +207,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: "${::st2::params::conf_dir}/st2.conf"
+Default value: "${st2::params::conf_dir}/st2.conf"
 
 ##### `use_ssl`
 
@@ -215,7 +215,7 @@ Data type: `Any`
 
 Enable/Disable SSL for all st2 APIs
 
-Default value: $::st2::params::use_ssl
+Default value: $st2::params::use_ssl
 
 ##### `ssl_cert_manage`
 
@@ -232,7 +232,7 @@ Data type: `Any`
 Directory where st2web will look for its SSL info.
 (default: /etc/ssl/st2)
 
-Default value: $::st2::params::ssl_dir
+Default value: $st2::params::ssl_dir
 
 ##### `ssl_cert`
 
@@ -241,7 +241,7 @@ Data type: `Any`
 Path to the file where the StackStorm SSL cert will
 be generated. (default: /etc/ssl/st2/st2.crt)
 
-Default value: $::st2::params::ssl_cert
+Default value: $st2::params::ssl_cert
 
 ##### `ssl_key`
 
@@ -250,7 +250,7 @@ Data type: `Any`
 Path to the file where the StackStorm SSL key will
 be generated. (default: /etc/ssl/st2/st2.key)
 
-Default value: $::st2::params::ssl_key
+Default value: $st2::params::ssl_key
 
 ##### `auth`
 
@@ -267,7 +267,7 @@ Data type: `Any`
 URL where StackStorm auth service will communicate
 with the StackStorm API service
 
-Default value: "http://${::st2::params::hostname}:${::st2::params::api_port}"
+Default value: "http://${st2::params::hostname}:${st2::params::api_port}"
 
 ##### `auth_debug`
 
@@ -283,7 +283,7 @@ Data type: `Any`
 
 Auth mode, either 'standalone' or 'backend (default: 'standalone')
 
-Default value: $::st2::params::auth_mode
+Default value: $st2::params::auth_mode
 
 ##### `auth_backend`
 
@@ -297,7 +297,7 @@ Available backends:
 - mongodb
 - pam
 
-Default value: $::st2::params::auth_backend
+Default value: $st2::params::auth_backend
 
 ##### `auth_backend_config`
 
@@ -309,7 +309,7 @@ for every backend. Please see the corresponding
 backend class to determine what the config options
 should be.
 
-Default value: $::st2::params::auth_backend_config
+Default value: $st2::params::auth_backend_config
 
 ##### `cli_base_url`
 
@@ -317,7 +317,7 @@ Data type: `Any`
 
 CLI config - Base URL lives
 
-Default value: "http://${::st2::params::hostname}"
+Default value: "http://${st2::params::hostname}"
 
 ##### `cli_api_version`
 
@@ -349,7 +349,7 @@ Data type: `Any`
 
 CLI config - Auth Username
 
-Default value: $::st2::params::admin_username
+Default value: $st2::params::admin_username
 
 ##### `cli_password`
 
@@ -357,7 +357,7 @@ Data type: `Any`
 
 CLI config - Auth Password
 
-Default value: $::st2::params::admin_password
+Default value: $st2::params::admin_password
 
 ##### `cli_api_url`
 
@@ -365,7 +365,7 @@ Data type: `Any`
 
 CLI config - API URL
 
-Default value: "http://${::st2::params::hostname}:${::st2::params::api_port}"
+Default value: "http://${st2::params::hostname}:${st2::params::api_port}"
 
 ##### `cli_auth_url`
 
@@ -373,7 +373,7 @@ Data type: `Any`
 
 CLI config - Auth URL
 
-Default value: "http://${::st2::params::hostname}:${::st2::params::auth_port}"
+Default value: "http://${st2::params::hostname}:${st2::params::auth_port}"
 
 ##### `actionrunner_workers`
 
@@ -381,7 +381,7 @@ Data type: `Any`
 
 Set the number of actionrunner processes to start
 
-Default value: $::st2::params::actionrunner_workers
+Default value: $st2::params::actionrunner_workers
 
 ##### `packs`
 
@@ -397,7 +397,7 @@ Data type: `Any`
 
 Name of the group that will own the /opt/stackstorm/packs directory (default: st2packs)
 
-Default value: $::st2::params::packs_group_name
+Default value: $st2::params::packs_group_name
 
 ##### `index_url`
 
@@ -461,7 +461,7 @@ Data type: `Any`
 
 Hostname to talk to st2 db
 
-Default value: $::st2::params::hostname
+Default value: $st2::params::hostname
 
 ##### `db_port`
 
@@ -469,7 +469,7 @@ Data type: `Any`
 
 Port for db server for st2 to talk to
 
-Default value: $::st2::params::mongodb_port
+Default value: $st2::params::mongodb_port
 
 ##### `db_bind_ips`
 
@@ -477,7 +477,7 @@ Data type: `Any`
 
 Array of bind IP addresses for MongoDB to listen on
 
-Default value: $::st2::params::mongodb_bind_ips
+Default value: $st2::params::mongodb_bind_ips
 
 ##### `db_name`
 
@@ -485,7 +485,7 @@ Data type: `Any`
 
 Name of db to connect to (default: 'st2')
 
-Default value: $::st2::params::mongodb_st2_db
+Default value: $st2::params::mongodb_st2_db
 
 ##### `db_username`
 
@@ -493,7 +493,7 @@ Data type: `Any`
 
 Username to connect to db with (default: 'stackstorm')
 
-Default value: $::st2::params::mongodb_st2_username
+Default value: $st2::params::mongodb_st2_username
 
 ##### `db_password`
 
@@ -502,7 +502,7 @@ Data type: `Any`
 Password for 'admin' and 'stackstorm' users in MongDB.
 If 'undef' then use $cli_password
 
-Default value: $::st2::params::admin_password
+Default value: $st2::params::admin_password
 
 ##### `mongodb_version`
 
@@ -553,7 +553,7 @@ Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 secure ciphers o
       (secure by default). The secure ciphers for each protocol were obtained via:
       @see https://wiki.mozilla.org/Security/Server_Side_TLS
 
-Default value: $::st2::params::nginx_ssl_ciphers
+Default value: $st2::params::nginx_ssl_ciphers
 
 ##### `nginx_ssl_protocols`
 
@@ -563,7 +563,7 @@ String or list of strings of acceptable SSL protocols to configure nginx with.
 @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
 Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 only (secure by default)
 
-Default value: $::st2::params::nginx_ssl_protocols
+Default value: $st2::params::nginx_ssl_protocols
 
 ##### `nginx_ssl_port`
 
@@ -571,7 +571,7 @@ Data type: `Any`
 
 What port should nginx listen on publicly for new connections (default: 443)
 
-Default value: $::st2::params::nginx_ssl_port
+Default value: $st2::params::nginx_ssl_port
 
 ##### `nginx_client_max_body_size`
 
@@ -582,7 +582,7 @@ We default this to '0' to allow for large messages/payloads/inputs/results
 to be passed through nginx as is normal in the StackStorm context.
 @see http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
 
-Default value: $::st2::params::nginx_client_max_body_size
+Default value: $st2::params::nginx_client_max_body_size
 
 ##### `web_root`
 
@@ -590,7 +590,7 @@ Data type: `Any`
 
 Directory where the StackStorm WebUI site lives on the filesystem
 
-Default value: $::st2::params::web_root
+Default value: $st2::params::web_root
 
 ##### `timersengine_enabled`
 
@@ -599,7 +599,7 @@ Data type: `Any`
 Set to true if the st2timersengine service should be enabled
 on this node (default: true)
 
-Default value: $::st2::params::timersengine_enabled
+Default value: $st2::params::timersengine_enabled
 
 ##### `timersengine_timezone`
 
@@ -607,7 +607,7 @@ Data type: `Any`
 
 The local timezone for this node. (default: 'America/Los_Angeles')
 
-Default value: $::st2::params::timersengine_timezone
+Default value: $st2::params::timersengine_timezone
 
 ##### `scheduler_sleep_interval`
 
@@ -616,7 +616,7 @@ Data type: `Any`
 How long (in seconds) to sleep between each action
 scheduler main loop run interval. (default = 0.1)
 
-Default value: $::st2::params::scheduler_sleep_interval
+Default value: $st2::params::scheduler_sleep_interval
 
 ##### `scheduler_gc_interval`
 
@@ -625,7 +625,7 @@ Data type: `Any`
 How often (in seconds) to look for zombie execution requests
 before rescheduling them. (default = 10)
 
-Default value: $::st2::params::scheduler_gc_interval
+Default value: $st2::params::scheduler_gc_interval
 
 ##### `scheduler_pool_size`
 
@@ -634,7 +634,7 @@ Data type: `Any`
 The size of the pool used by the scheduler for scheduling
 executions. (default = 10)
 
-Default value: $::st2::params::scheduler_pool_size
+Default value: $st2::params::scheduler_pool_size
 
 ##### `chatops_adapter`
 
@@ -642,7 +642,7 @@ Data type: `Any`
 
 Adapter package(s) to be installed with npm. List of hashes.
 
-Default value: $::st2::params::chatops_adapter
+Default value: $st2::params::chatops_adapter
 
 ##### `chatops_adapter_conf`
 
@@ -650,7 +650,7 @@ Data type: `Any`
 
 Configuration parameters for Hubot adapter (hash)
 
-Default value: $::st2::params::chatops_adapter_conf
+Default value: $st2::params::chatops_adapter_conf
 
 ##### `chatops_hubot_log_level`
 
@@ -658,7 +658,7 @@ Data type: `Any`
 
 Logging level for hubot (string)
 
-Default value: $::st2::params::hubot_log_level
+Default value: $st2::params::hubot_log_level
 
 ##### `chatops_hubot_express_port`
 
@@ -666,7 +666,7 @@ Data type: `Any`
 
 Port that hubot operates on (integer or string)
 
-Default value: $::st2::params::hubot_express_port
+Default value: $st2::params::hubot_express_port
 
 ##### `chatops_tls_cert_reject_unauthorized`
 
@@ -675,7 +675,7 @@ Data type: `Any`
 Should hubot validate SSL certs
 Set to 1 when using self signed certs
 
-Default value: $::st2::params::tls_cert_reject_unauthorized
+Default value: $st2::params::tls_cert_reject_unauthorized
 
 ##### `chatops_hubot_name`
 
@@ -685,7 +685,7 @@ Name of the bot in chat. Should be
 properly quoted if it has special characters,
 example: '"MyBot!"'
 
-Default value: $::st2::params::hubot_name
+Default value: $st2::params::hubot_name
 
 ##### `chatops_hubot_alias`
 
@@ -696,7 +696,7 @@ beginning of a message. Must be properly
 quoted of it's a special character,
 example: "'!'"
 
-Default value: $::st2::params::hubot_alias
+Default value: $st2::params::hubot_alias
 
 ##### `chatops_api_key`
 
@@ -719,7 +719,7 @@ API and Auth. If unspecified it will
 use the default in /opt/stackstorm/chatops/st2chatops.env
 (default: undef)
 
-Default value: $::st2::params::hostname
+Default value: $st2::params::hostname
 
 ##### `chatops_api_url`
 
@@ -727,7 +727,7 @@ Data type: `Any`
 
 ChatOps config - API URL
 
-Default value: "https://${::st2::params::hostname}/api"
+Default value: "https://${st2::params::hostname}/api"
 
 ##### `chatops_auth_url`
 
@@ -735,7 +735,7 @@ Data type: `Any`
 
 ChatOps config - Auth URL
 
-Default value: "https://${::st2::params::hostname}/auth"
+Default value: "https://${st2::params::hostname}/auth"
 
 ##### `chatops_web_url`
 
@@ -791,7 +791,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::params::datstore_keys_dir
+Default value: $st2::params::datstore_keys_dir
 
 ##### `datastore_key_path`
 
@@ -799,7 +799,7 @@ Data type: `Any`
 
 
 
-Default value: "${::st2::params::datstore_keys_dir}/datastore_key.json"
+Default value: "${st2::params::datstore_keys_dir}/datastore_key.json"
 
 ##### `rabbitmq_username`
 
@@ -807,7 +807,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::params::rabbitmq_username
+Default value: $st2::params::rabbitmq_username
 
 ##### `rabbitmq_password`
 
@@ -815,7 +815,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::params::rabbitmq_password
+Default value: $st2::params::rabbitmq_password
 
 ##### `rabbitmq_hostname`
 
@@ -823,7 +823,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::params::rabbitmq_hostname
+Default value: $st2::params::rabbitmq_hostname
 
 ##### `rabbitmq_port`
 
@@ -831,7 +831,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::params::rabbitmq_port
+Default value: $st2::params::rabbitmq_port
 
 ##### `rabbitmq_bind_ip`
 
@@ -839,7 +839,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::params::rabbitmq_bind_ip
+Default value: $st2::params::rabbitmq_bind_ip
 
 ##### `rabbitmq_vhost`
 
@@ -847,7 +847,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::params::rabbitmq_vhost
+Default value: $st2::params::rabbitmq_vhost
 
 ### st2::auth
 
@@ -914,7 +914,7 @@ Available backends:
   * mongodb
   * pam
 
-Default value: $::st2::auth_backend
+Default value: $st2::auth_backend
 
 ##### `backend_config`
 
@@ -924,7 +924,7 @@ Hash of parameters to pass to the backend class when it's instantiated.
 This will be different for every backend.
 Please see the corresponding backend class to determine what the config options should be.
 
-Default value: $::st2::auth_backend_config
+Default value: $st2::auth_backend_config
 
 ##### `debug`
 
@@ -932,7 +932,7 @@ Data type: `Any`
 
 Enable Debug (default: false)
 
-Default value: $::st2::auth_debug
+Default value: $st2::auth_debug
 
 ##### `mode`
 
@@ -940,7 +940,7 @@ Data type: `Any`
 
 Authentication mode, either 'standalone' or 'proxy' (default: standalone)
 
-Default value: $::st2::auth_mode
+Default value: $st2::auth_mode
 
 ##### `use_ssl`
 
@@ -948,7 +948,7 @@ Data type: `Any`
 
 Enable SSL (default: false)
 
-Default value: $::st2::use_ssl
+Default value: $st2::use_ssl
 
 ##### `ssl_cert`
 
@@ -956,7 +956,7 @@ Data type: `Any`
 
 Path to SSL Certificate file (default: '/etc/ssl/st2/st2.crt')
 
-Default value: $::st2::ssl_cert
+Default value: $st2::ssl_cert
 
 ##### `ssl_key`
 
@@ -964,7 +964,7 @@ Data type: `Any`
 
 Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
 
-Default value: $::st2::ssl_key
+Default value: $st2::ssl_key
 
 ### st2::auth::common
 
@@ -982,7 +982,7 @@ Data type: `Any`
 
 URL to the StackStorm API
 
-Default value: $::st2::auth_api_url
+Default value: $st2::auth_api_url
 
 ##### `conf_file`
 
@@ -990,7 +990,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ##### `debug`
 
@@ -998,7 +998,7 @@ Data type: `Any`
 
 Enable Debug (default: false)
 
-Default value: $::st2::auth_debug
+Default value: $st2::auth_debug
 
 ##### `mode`
 
@@ -1006,7 +1006,7 @@ Data type: `Any`
 
 Authentication mode, either 'standalone' or 'proxy' (default: standalone)
 
-Default value: $::st2::auth_mode
+Default value: $st2::auth_mode
 
 ##### `use_ssl`
 
@@ -1014,7 +1014,7 @@ Data type: `Any`
 
 Enable SSL (default: false)
 
-Default value: $::st2::use_ssl
+Default value: $st2::use_ssl
 
 ##### `ssl_cert`
 
@@ -1022,7 +1022,7 @@ Data type: `Any`
 
 Path to SSL Certificate file (default: '/etc/ssl/st2/st2.crt')
 
-Default value: $::st2::ssl_cert
+Default value: $st2::ssl_cert
 
 ##### `ssl_key`
 
@@ -1030,7 +1030,7 @@ Data type: `Any`
 
 Path to SSL Key file (default: '/etc/ssl/st2/st2.key')
 
-Default value: $::st2::ssl_key
+Default value: $st2::ssl_key
 
 ### st2::auth::flat_file
 
@@ -1067,7 +1067,7 @@ Data type: `Any`
 
 CLI config - Auth Username
 
-Default value: $::st2::cli_username
+Default value: $st2::cli_username
 
 ##### `cli_password`
 
@@ -1075,7 +1075,7 @@ Data type: `Any`
 
 CLI config - Auth Password
 
-Default value: $::st2::cli_password
+Default value: $st2::cli_password
 
 ##### `conf_file`
 
@@ -1083,7 +1083,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ##### `htpasswd_file`
 
@@ -1091,7 +1091,7 @@ Data type: `Any`
 
 Path to htpasswd file (default: /etc/st2/htpasswd)
 
-Default value: $::st2::params::auth_htpasswd_file
+Default value: $st2::params::auth_htpasswd_file
 
 ### st2::auth::keystone
 
@@ -1131,7 +1131,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ##### `keystone_url`
 
@@ -1200,7 +1200,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ##### `ldap_uri`
 
@@ -1322,7 +1322,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ##### `db_host`
 
@@ -1330,7 +1330,7 @@ Data type: `Any`
 
 Hostname for the MongoDB server (default: 127.0.0.1)
 
-Default value: $::st2::db_host
+Default value: $st2::db_host
 
 ##### `db_port`
 
@@ -1338,7 +1338,7 @@ Data type: `Any`
 
 Port for the MongoDB server (default: 27017)
 
-Default value: $::st2::db_port
+Default value: $st2::db_port
 
 ##### `db_name`
 
@@ -1354,7 +1354,7 @@ Data type: `Any`
 
 Enable authentication with MongoDB (required for MongoDB installs with auth enabled)
 
-Default value: $::st2::mongodb_auth
+Default value: $st2::mongodb_auth
 
 ##### `db_username`
 
@@ -1362,7 +1362,7 @@ Data type: `Any`
 
 Username for MongoDB login (default: st2auth)
 
-Default value: $::st2::db_username
+Default value: $st2::db_username
 
 ##### `db_password`
 
@@ -1370,7 +1370,7 @@ Data type: `Any`
 
 Password for MongoDB login (default: st2auth)
 
-Default value: $::st2::db_password
+Default value: $st2::db_password
 
 ### st2::auth::pam
 
@@ -1408,7 +1408,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ### st2::kvs
 
@@ -1493,7 +1493,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::packs
+Default value: $st2::packs
 
 ### st2::params
 
@@ -1553,7 +1553,7 @@ Default value: 'Ch@ngeMe'
 Profile to install and configure chatops for st2
 
 * **Note** This class doesn't need to be invoked directly, instead it's best to customize
-it through the main +::st2+ class
+it through the main +st2+ class
 
 #### Examples
 
@@ -1592,7 +1592,7 @@ Data type: `Any`
 
 Version of the st2chatops package to install
 
-Default value: $::st2::version
+Default value: $st2::version
 
 ##### `hubot_log_level`
 
@@ -1600,7 +1600,7 @@ Data type: `Any`
 
 Hubot log level
 
-Default value: $::st2::chatops_hubot_log_level
+Default value: $st2::chatops_hubot_log_level
 
 ##### `hubot_express_port`
 
@@ -1608,7 +1608,7 @@ Data type: `Any`
 
 Express port hubot listens to
 
-Default value: $::st2::chatops_hubot_express_port
+Default value: $st2::chatops_hubot_express_port
 
 ##### `tls_cert_reject_unauthorized`
 
@@ -1616,7 +1616,7 @@ Data type: `Any`
 
 Set to 1 when using self signed certs
 
-Default value: $::st2::chatops_tls_cert_reject_unauthorized
+Default value: $st2::chatops_tls_cert_reject_unauthorized
 
 ##### `hubot_name`
 
@@ -1625,7 +1625,7 @@ Data type: `Any`
 Name of the bot in chat. Should be properly quoted if it has special characters,
 example: '"MyBot!"'
 
-Default value: $::st2::chatops_hubot_name
+Default value: $st2::chatops_hubot_name
 
 ##### `hubot_alias`
 
@@ -1634,7 +1634,7 @@ Data type: `Any`
 Character to trigger the bot at the beginning of a message. Must be properly
 quoted of it's a special character, example: "'!'"
 
-Default value: $::st2::chatops_hubot_alias
+Default value: $st2::chatops_hubot_alias
 
 ##### `npm_packages`
 
@@ -1642,7 +1642,7 @@ Data type: `Any`
 
 NodeJS packages to be installed (usually a hubot adapter)
 
-Default value: $::st2::chatops_adapter
+Default value: $st2::chatops_adapter
 
 ##### `adapter_config`
 
@@ -1650,7 +1650,7 @@ Data type: `Any`
 
 Configuration parameters for Hubot adapter (hash)
 
-Default value: $::st2::chatops_adapter_conf
+Default value: $st2::chatops_adapter_conf
 
 ##### `api_key`
 
@@ -1659,7 +1659,7 @@ Data type: `Any`
 API key generated by <code>st2 apikey create</code> that hubot will use to post data back
 to StackStorm.
 
-Default value: $::st2::chatops_api_key
+Default value: $st2::chatops_api_key
 
 ##### `st2_hostname`
 
@@ -1668,7 +1668,7 @@ Data type: `Any`
 Hostname of the StackStorm instance that chatops will connect to for API and Auth.
 If unspecified it will use the default in <code>/opt/stackstorm/chatops/st2chatops.env</code>
 
-Default value: $::st2::chatops_st2_hostname
+Default value: $st2::chatops_st2_hostname
 
 ##### `web_url`
 
@@ -1677,7 +1677,7 @@ Data type: `Any`
 Public URL of StackStorm instance. Used by chatops to offer links to execution details in a chat.
 If unspecified it will use the default in <code>/opt/stackstorm/chatops/st2chatops.env</code>
 
-Default value: $::st2::chatops_web_url
+Default value: $st2::chatops_web_url
 
 ##### `api_url`
 
@@ -1685,7 +1685,7 @@ Data type: `Any`
 
 URL of the StackStorm API service
 
-Default value: $::st2::chatops_api_url
+Default value: $st2::chatops_api_url
 
 ##### `auth_url`
 
@@ -1693,7 +1693,7 @@ Data type: `Any`
 
 URL of the StackStorm Auth service
 
-Default value: $::st2::chatops_auth_url
+Default value: $st2::chatops_auth_url
 
 ##### `auth_username`
 
@@ -1702,7 +1702,7 @@ Data type: `Any`
 StackStorm auth Username for ChatOps to communicate back with StackStorm.
 Used if +api_key+ is not specified (optional)
 
-Default value: $::st2::cli_username
+Default value: $st2::cli_username
 
 ##### `auth_password`
 
@@ -1711,7 +1711,7 @@ Data type: `Any`
 StackStorm auth Password for ChatOps to communicate back with StackStorm.
 Used if +api_key+ is not specified (optional)
 
-Default value: $::st2::cli_password
+Default value: $st2::cli_password
 
 ### st2::profile::client
 
@@ -1735,7 +1735,7 @@ Data type: `Any`
 
 Is auth enabled or not.
 
-Default value: $::st2::auth
+Default value: $st2::auth
 
 ##### `api_url`
 
@@ -1743,7 +1743,7 @@ Data type: `Any`
 
 URL of the StackStorm API service
 
-Default value: $::st2::cli_api_url
+Default value: $st2::cli_api_url
 
 ##### `auth_url`
 
@@ -1751,7 +1751,7 @@ Data type: `Any`
 
 URL of the StackStorm Auth service
 
-Default value: $::st2::cli_auth_url
+Default value: $st2::cli_auth_url
 
 ##### `base_url`
 
@@ -1759,7 +1759,7 @@ Data type: `Any`
 
 Base URL for other StackStorm services
 
-Default value: $::st2::cli_base_url
+Default value: $st2::cli_base_url
 
 ##### `username`
 
@@ -1767,7 +1767,7 @@ Data type: `Any`
 
 Username for auth on the CLI
 
-Default value: $::st2::cli_username
+Default value: $st2::cli_username
 
 ##### `password`
 
@@ -1775,7 +1775,7 @@ Data type: `Any`
 
 Password for auth on the CLI
 
-Default value: $::st2::cli_password
+Default value: $st2::cli_password
 
 ##### `api_version`
 
@@ -1783,7 +1783,7 @@ Data type: `Any`
 
 Version of the StackStorm API
 
-Default value: $::st2::cli_api_version
+Default value: $st2::cli_api_version
 
 ##### `cacert`
 
@@ -1791,7 +1791,7 @@ Data type: `Any`
 
 Path to the SSL CA certficate for the StackStorm services
 
-Default value: $::st2::cli_cacert
+Default value: $st2::cli_cacert
 
 ##### `debug`
 
@@ -1799,7 +1799,7 @@ Data type: `Any`
 
 Enable debug mode
 
-Default value: $::st2::cli_debug
+Default value: $st2::cli_debug
 
 ##### `cache_token`
 
@@ -1807,7 +1807,7 @@ Data type: `Any`
 
 Enable cacheing authentication tokens until they expire
 
-Default value: $::st2::cli_cache_token
+Default value: $st2::cli_cache_token
 
 ##### `silence_ssl_warnings`
 
@@ -1815,7 +1815,7 @@ Data type: `Any`
 
 Enable silencing SSL warnings for self-signed certs
 
-Default value: $::st2::cli_silence_ssl_warnings
+Default value: $st2::cli_silence_ssl_warnings
 
 ### st2::profile::facter
 
@@ -1979,7 +1979,7 @@ Data type: `Any`
 
 Set this to false when you have your own repository for nginx
 
-Default value: $::st2::nginx_manage_repo
+Default value: $st2::nginx_manage_repo
 
 ### st2::profile::nodejs
 
@@ -2013,15 +2013,15 @@ Data type: `Any`
 
 Set this to false when you have your own repositories for NodeJS.
 
-Default value: $::st2::nodejs_manage_repo
+Default value: $st2::nodejs_manage_repo
 
 ##### `version`
 
 Data type: `Any`
 
-Version of NodeJS to install. If not provided it will be auto-calcuated based on $::st2::version
+Version of NodeJS to install. If not provided it will be auto-calcuated based on $st2::version
 
-Default value: $::st2::nodejs_version
+Default value: $st2::nodejs_version
 
 ### st2::profile::python
 
@@ -2112,7 +2112,7 @@ Data type: `Any`
 
 User to create within RabbitMQ for authentication.
 
-Default value: $::st2::rabbitmq_username
+Default value: $st2::rabbitmq_username
 
 ##### `password`
 
@@ -2120,7 +2120,7 @@ Data type: `Any`
 
 Password of +username+ for RabbitMQ authentication.
 
-Default value: $::st2::rabbitmq_password
+Default value: $st2::rabbitmq_password
 
 ##### `port`
 
@@ -2128,7 +2128,7 @@ Data type: `Any`
 
 Port to bind to for the RabbitMQ server
 
-Default value: $::st2::rabbitmq_port
+Default value: $st2::rabbitmq_port
 
 ##### `bind_ip`
 
@@ -2136,7 +2136,7 @@ Data type: `Any`
 
 IP address to bind to for the RabbitMQ server
 
-Default value: $::st2::rabbitmq_bind_ip
+Default value: $st2::rabbitmq_bind_ip
 
 ##### `vhost`
 
@@ -2144,7 +2144,7 @@ Data type: `Any`
 
 RabbitMQ virtual host to create for StackStorm
 
-Default value: $::st2::rabbitmq_vhost
+Default value: $st2::rabbitmq_vhost
 
 ### st2::profile::selinux
 
@@ -2180,7 +2180,7 @@ Data type: `Any`
 
 Version of StackStorm to install
 
-Default value: $::st2::version
+Default value: $st2::version
 
 ##### `conf_dir`
 
@@ -2188,7 +2188,7 @@ Data type: `Any`
 
 The directory where st2 configs are stored
 
-Default value: $::st2::conf_dir
+Default value: $st2::conf_dir
 
 ##### `conf_file`
 
@@ -2196,7 +2196,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ##### `auth`
 
@@ -2204,7 +2204,7 @@ Data type: `Any`
 
 Toggle Auth
 
-Default value: $::st2::auth
+Default value: $st2::auth
 
 ##### `actionrunner_workers`
 
@@ -2212,7 +2212,7 @@ Data type: `Any`
 
 Set the number of actionrunner processes to start
 
-Default value: $::st2::actionrunner_workers
+Default value: $st2::actionrunner_workers
 
 ##### `st2api_listen_ip`
 
@@ -2252,7 +2252,7 @@ Data type: `Any`
 
 Routes all log messages to syslog
 
-Default value: $::st2::syslog
+Default value: $st2::syslog
 
 ##### `syslog_host`
 
@@ -2260,7 +2260,7 @@ Data type: `Any`
 
 Syslog host.
 
-Default value: $::st2::syslog_host
+Default value: $st2::syslog_host
 
 ##### `syslog_protocol`
 
@@ -2268,7 +2268,7 @@ Data type: `Any`
 
 Syslog protocol.
 
-Default value: $::st2::syslog_protocol
+Default value: $st2::syslog_protocol
 
 ##### `syslog_port`
 
@@ -2276,7 +2276,7 @@ Data type: `Any`
 
 Syslog port.
 
-Default value: $::st2::syslog_port
+Default value: $st2::syslog_port
 
 ##### `syslog_facility`
 
@@ -2284,7 +2284,7 @@ Data type: `Any`
 
 Syslog facility.
 
-Default value: $::st2::syslog_facility
+Default value: $st2::syslog_facility
 
 ##### `ssh_key_location`
 
@@ -2292,7 +2292,7 @@ Data type: `Any`
 
 Location on filesystem of Admin SSH key for remote runner
 
-Default value: $::st2::ssh_key_location
+Default value: $st2::ssh_key_location
 
 ##### `db_username`
 
@@ -2300,7 +2300,7 @@ Data type: `Any`
 
 Username to connect to MongoDB with (default: 'stackstorm')
 
-Default value: $::st2::db_username
+Default value: $st2::db_username
 
 ##### `db_password`
 
@@ -2308,7 +2308,7 @@ Data type: `Any`
 
 Password for 'stackstorm' user in MongDB.
 
-Default value: $::st2::db_password
+Default value: $st2::db_password
 
 ##### `index_url`
 
@@ -2316,7 +2316,7 @@ Data type: `Any`
 
 Url to the StackStorm Exchange index file. (default undef)
 
-Default value: $::st2::index_url
+Default value: $st2::index_url
 
 ##### `ng_init`
 
@@ -2324,7 +2324,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::ng_init
+Default value: $st2::ng_init
 
 ##### `rabbitmq_username`
 
@@ -2332,7 +2332,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::rabbitmq_username
+Default value: $st2::rabbitmq_username
 
 ##### `rabbitmq_password`
 
@@ -2340,7 +2340,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::rabbitmq_password
+Default value: $st2::rabbitmq_password
 
 ##### `rabbitmq_hostname`
 
@@ -2348,7 +2348,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::rabbitmq_hostname
+Default value: $st2::rabbitmq_hostname
 
 ##### `rabbitmq_port`
 
@@ -2356,7 +2356,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::rabbitmq_port
+Default value: $st2::rabbitmq_port
 
 ##### `rabbitmq_vhost`
 
@@ -2364,7 +2364,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::rabbitmq_vhost
+Default value: $st2::rabbitmq_vhost
 
 ##### `packs_group`
 
@@ -2372,7 +2372,7 @@ Data type: `Any`
 
 
 
-Default value: $::st2::packs_group_name
+Default value: $st2::packs_group_name
 
 ### st2::profile::web
 
@@ -2429,7 +2429,7 @@ Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 secure ciphers o
       (secure by default). The secure ciphers for each protocol were obtained via:
       @see https://wiki.mozilla.org/Security/Server_Side_TLS
 
-Default value: $::st2::nginx_ssl_ciphers
+Default value: $st2::nginx_ssl_ciphers
 
 ##### `nginx_ssl_protocols`
 
@@ -2439,7 +2439,7 @@ String or list of strings of acceptable SSL protocols to configure nginx with.
 @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
 Note: the defaults are setup to restrict to TLSv1.2 and TLSv1.3 only (secure by default)
 
-Default value: $::st2::nginx_ssl_protocols
+Default value: $st2::nginx_ssl_protocols
 
 ##### `nginx_ssl_port`
 
@@ -2447,7 +2447,7 @@ Data type: `Stdlib::Port`
 
 What port should nginx listen on publicly for new connections (default: 443)
 
-Default value: $::st2::nginx_ssl_port
+Default value: $st2::nginx_ssl_port
 
 ##### `nginx_client_max_body_size`
 
@@ -2458,7 +2458,7 @@ We default this to '0' to allow for large messages/payloads/inputs/results
 to be passed through nginx as is normal in the StackStorm context.
 @see http://nginx.org/en/docs/http/ngx_http_core_module.html#client_max_body_size
 
-Default value: $::st2::nginx_client_max_body_size
+Default value: $st2::nginx_client_max_body_size
 
 ##### `ssl_cert_manage`
 
@@ -2466,7 +2466,7 @@ Data type: `Boolean`
 
 Boolean to determine if this module should manage the SSL certificate used by nginx.
 
-Default value: $::st2::ssl_cert_manage
+Default value: $st2::ssl_cert_manage
 
 ##### `ssl_dir`
 
@@ -2475,7 +2475,7 @@ Data type: `Stdlib::Absolutepath`
 Directory where st2web will look for its SSL info.
 (default: /etc/ssl/st2)
 
-Default value: $::st2::ssl_dir
+Default value: $st2::ssl_dir
 
 ##### `ssl_cert`
 
@@ -2484,7 +2484,7 @@ Data type: `String`
 Path to the file where the StackStorm SSL cert will
 be generated. (default: /etc/ssl/st2/st2.crt)
 
-Default value: $::st2::ssl_cert
+Default value: $st2::ssl_cert
 
 ##### `ssl_key`
 
@@ -2493,7 +2493,7 @@ Data type: `String`
 Path to the file where the StackStorm SSL key will
 be generated. (default: /etc/ssl/st2/st2.key)
 
-Default value: $::st2::ssl_key
+Default value: $st2::ssl_key
 
 ##### `version`
 
@@ -2501,7 +2501,7 @@ Data type: `String`
 
 Version of StackStorm WebUI to install
 
-Default value: $::st2::version
+Default value: $st2::version
 
 ##### `web_root`
 
@@ -2509,7 +2509,7 @@ Data type: `String`
 
 Directory where the StackStorm WebUI site lives on the filesystem
 
-Default value: $::st2::web_root
+Default value: $st2::web_root
 
 ### st2::repo
 
@@ -2596,7 +2596,7 @@ Data type: `Any`
 
 How long (in seconds) to sleep between each action scheduler main loop run interval.
 
-Default value: $::st2::scheduler_sleep_interval
+Default value: $st2::scheduler_sleep_interval
 
 ##### `gc_interval`
 
@@ -2604,7 +2604,7 @@ Data type: `Any`
 
 How often (in seconds) to look for zombie execution requests before rescheduling them.
 
-Default value: $::st2::scheduler_gc_interval
+Default value: $st2::scheduler_gc_interval
 
 ##### `pool_size`
 
@@ -2612,7 +2612,7 @@ Data type: `Any`
 
 The size of the pool used by the scheduler for scheduling executions.
 
-Default value: $::st2::scheduler_pool_size
+Default value: $st2::scheduler_pool_size
 
 ### st2::server::datastore_keys
 
@@ -2645,7 +2645,7 @@ Data type: `Any`
 
 The path where st2 config is stored
 
-Default value: $::st2::conf_file
+Default value: $st2::conf_file
 
 ##### `keys_dir`
 
@@ -2653,7 +2653,7 @@ Data type: `Any`
 
 The directory where the datastore keys will be stored
 
-Default value: $::st2::datastore_keys_dir
+Default value: $st2::datastore_keys_dir
 
 ##### `key_path`
 
@@ -2661,7 +2661,7 @@ Data type: `Any`
 
 Path to the key file
 
-Default value: $::st2::datastore_key_path
+Default value: $st2::datastore_key_path
 
 ### st2::stanley
 
@@ -2776,7 +2776,7 @@ Data type: `Any`
 
 Specify to enable timer service.
 
-Default value: $::st2::timersengine_enabled
+Default value: $st2::timersengine_enabled
 
 ##### `timezone`
 
@@ -2784,7 +2784,7 @@ Data type: `Any`
 
 Timezone pertaining to the location where st2 is run.
 
-Default value: $::st2::timersengine_timezone
+Default value: $st2::timersengine_timezone
 
 ### st2::workflowengine
 
@@ -2889,7 +2889,7 @@ Data type: `Any`
 
 Is auth enabled or not.
 
-Default value: $::st2::auth
+Default value: $st2::auth
 
 ##### `api_url`
 
@@ -2897,7 +2897,7 @@ Data type: `Any`
 
 URL of the StackStorm API service
 
-Default value: $::st2::cli_api_url
+Default value: $st2::cli_api_url
 
 ##### `auth_url`
 
@@ -2905,7 +2905,7 @@ Data type: `Any`
 
 URL of the StackStorm Auth service
 
-Default value: $::st2::cli_auth_url
+Default value: $st2::cli_auth_url
 
 ##### `base_url`
 
@@ -2913,7 +2913,7 @@ Data type: `Any`
 
 Base URL for other StackStorm services
 
-Default value: $::st2::cli_base_url
+Default value: $st2::cli_base_url
 
 ##### `username`
 
@@ -2921,7 +2921,7 @@ Data type: `Any`
 
 Username for auth on the CLI
 
-Default value: $::st2::cli_username
+Default value: $st2::cli_username
 
 ##### `password`
 
@@ -2929,7 +2929,7 @@ Data type: `Any`
 
 Password for auth on the CLI
 
-Default value: $::st2::cli_password
+Default value: $st2::cli_password
 
 ##### `disable_credentials`
 
@@ -2945,7 +2945,7 @@ Data type: `Any`
 
 Version of the StackStorm API
 
-Default value: $::st2::cli_api_version
+Default value: $st2::cli_api_version
 
 ##### `cacert`
 
@@ -2953,7 +2953,7 @@ Data type: `Any`
 
 Path to the SSL CA certficate for the StackStorm services
 
-Default value: $::st2::cli_cacert
+Default value: $st2::cli_cacert
 
 ##### `debug`
 
@@ -2961,7 +2961,7 @@ Data type: `Any`
 
 Enable debug mode
 
-Default value: $::st2::cli_debug
+Default value: $st2::cli_debug
 
 ##### `cache_token`
 
@@ -2969,7 +2969,7 @@ Data type: `Any`
 
 Enable cacheing authentication tokens until they expire
 
-Default value: $::st2::cli_cache_token
+Default value: $st2::cli_cache_token
 
 ##### `silence_ssl_warnings`
 
@@ -2977,7 +2977,7 @@ Data type: `Any`
 
 Enable silencing SSL warnings for self-signed certs
 
-Default value: $::st2::cli_silence_ssl_warnings
+Default value: $st2::cli_silence_ssl_warnings
 
 ### st2::kv
 
@@ -3296,15 +3296,15 @@ Raw URL data to encode
 Type: Puppet Language
 
 Determines if the StackStorm version installed on the system <code>$facts['st2_version']</code>
-or the version requested by the user <code>$::st2::version</code> is greater than or equal
+or the version requested by the user <code>$st2::version</code> is greater than or equal
 to <code>$version</code>.
 
 This is used to determine if this Puppet module should enable features for managing
 specific versions of StackStorm. Older versions of StackStorm will not have new features
 and we don't want this module to try and manage them if they're not present on the system.
 
-Users who have old version of StackStorm installed may have <code>$::st2::version = 'present'</code>
-or <code>$::st2::version = 'installed'</code>. In this case, we don't want to assume the user
+Users who have old version of StackStorm installed may have <code>$st2::version = 'present'</code>
+or <code>$st2::version = 'installed'</code>. In this case, we don't want to assume the user
 has a new version of StackStorm or wants to upgrade. Instead, we should assume that
 this the installed version of StackStorm is the version we should be using to compare.
 
@@ -3321,19 +3321,19 @@ if st2::version_ge('2.4.0') {
 #### `st2::version_ge(String $version)`
 
 Determines if the StackStorm version installed on the system <code>$facts['st2_version']</code>
-or the version requested by the user <code>$::st2::version</code> is greater than or equal
+or the version requested by the user <code>$st2::version</code> is greater than or equal
 to <code>$version</code>.
 
 This is used to determine if this Puppet module should enable features for managing
 specific versions of StackStorm. Older versions of StackStorm will not have new features
 and we don't want this module to try and manage them if they're not present on the system.
 
-Users who have old version of StackStorm installed may have <code>$::st2::version = 'present'</code>
-or <code>$::st2::version = 'installed'</code>. In this case, we don't want to assume the user
+Users who have old version of StackStorm installed may have <code>$st2::version = 'present'</code>
+or <code>$st2::version = 'installed'</code>. In this case, we don't want to assume the user
 has a new version of StackStorm or wants to upgrade. Instead, we should assume that
 this the installed version of StackStorm is the version we should be using to compare.
 
-Returns: `Boolean` True if the StackStorm version on the system or $::st2::version is
+Returns: `Boolean` True if the StackStorm version on the system or $st2::version is
 >= to the +version+ parameter.
 
 ##### Examples

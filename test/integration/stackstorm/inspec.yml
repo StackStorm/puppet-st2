@@ -13,6 +13,6 @@ supports:
   - os-name: centos
     release: 7.*
   - os-name: ubuntu
-    release: 16.04
-  - os-name: ubuntu
     release: 18.04
+  - os-name: ubuntu
+    release: 20.04

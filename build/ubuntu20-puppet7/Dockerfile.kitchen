@@ -1,7 +1,7 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-ubuntu16-puppet6 -f build/ubuntu16-puppet6/Dockerfile.kitchen .
+# docker build -t stackstorm/puppet-st2-ubuntu18-puppet7 -f build/ubuntu18-puppet7/Dockerfile.kitchen .
 
-FROM stackstorm/packagingtest:xenial-systemd
+FROM stackstorm/packagingtest:focal-systemd
 
 # kitchen setup
 RUN mkdir -p /var/run/sshd
@@ -18,10 +18,13 @@ RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/auth
 # update OS
 RUN sudo apt-get -y update
 
+# Install utilities to add apt repos
+RUN sudo apt-get -y install software-properties-common
+
 # install puppet
-# https://puppet.com/docs/puppet/6.0/puppet_platform.html
-RUN wget https://apt.puppetlabs.com/puppet6-release-xenial.deb
-RUN sudo dpkg -i puppet6-release-xenial.deb
+# https://puppet.com/docs/puppet/7.0/puppet_platform.html
+RUN wget https://apt.puppetlabs.com/puppet7-release-focal.deb
+RUN sudo dpkg -i puppet7-release-focal.deb
 RUN sudo apt-get -y update
 RUN sudo apt-get -y install puppet-agent
 
@@ -32,6 +35,6 @@ RUN ln -s /opt/puppetlabs/bin/hiera /usr/bin/
 RUN ln -s /opt/puppetlabs/bin/mco /usr/bin/
 RUN ln -s /opt/puppetlabs/bin/puppet /usr/bin/
 
-# print versions (ruby 2.5.x, puppet 6.x)
+# print versions (ruby 2.5.x, puppet 7.x)
 RUN puppet --version
 RUN sudo -E puppet --version

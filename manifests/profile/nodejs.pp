@@ -15,17 +15,23 @@
 # @param manage_repo
 #   Set this to false when you have your own repositories for NodeJS.
 # @param version
-#   Version of NodeJS to install. If not provided it will be auto-calcuated based on $::st2::version
+#   Version of NodeJS to install. If not provided it will be auto-calcuated based on $st2::version
 #
 class st2::profile::nodejs(
-  $manage_repo = $::st2::nodejs_manage_repo,
-  $version     = $::st2::nodejs_version,
+  $manage_repo = $st2::nodejs_manage_repo,
+  $version     = $st2::nodejs_version,
 ) inherits st2 {
 
+  $use_rhel7_builtin = false
+
+  # if the StackStorm version is >= 3.5.0 then use NodeJS 14.x
   # if the StackStorm version is >= 2.10.0 then use NodeJS 10.x
   # if the StackStorm version is 2.10.0 < and >= 2.4.0 then use NodeJS 6.x
   # else use NodeJS 4.x
-  if st2::version_ge('2.10.0') {
+  if st2::version_ge('3.5.0') {
+    $nodejs_version_default = '14.x'
+  }
+  elsif st2::version_ge('2.10.0') {
     $nodejs_version_default = '10.x'
   }
   elsif st2::version_ge('2.4.0') {
