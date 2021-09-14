@@ -95,7 +95,8 @@ class st2::profile::web(
   ## optionally manage the SSL certificate used by nginx
   if $ssl_cert_manage {
     ## Generate SSL certificates
-    $_ssl_subj = "/C=US/ST=California/L=Palo Alto/O=StackStorm/OU=Information Technology/CN=${$trusted['certname']}"
+    $_truncated_certname = $trusted['certname'][0..63]
+    $_ssl_subj = "/C=US/ST=California/L=Palo Alto/O=StackStorm/OU=Information Technology/CN=${_truncated_certname}"
     exec { "generate ssl cert ${ssl_cert}":
       command => "openssl req -x509 -newkey rsa:2048 -keyout ${ssl_key} -out ${ssl_cert} -days 365 -nodes -subj \"${_ssl_subj}\"",
       creates => $ssl_cert,
