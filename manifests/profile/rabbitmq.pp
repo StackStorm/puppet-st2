@@ -61,6 +61,7 @@ class st2::profile::rabbitmq (
     environment_variables => {
       'RABBITMQ_NODE_IP_ADDRESS' => $::st2::rabbitmq_bind_ip,
     },
+    manage_python         => false,
   }
   contain 'rabbitmq'
 
