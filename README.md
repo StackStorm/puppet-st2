@@ -49,6 +49,7 @@ The `st2` module configures the existing into a complete and dedicated StackStor
  * MongoDB
  * Postgres
  * RabbitMQ
+ * Redis
  * Nginx
  * NodeJS
 
@@ -69,10 +70,10 @@ and [librarian-puppet](http://librarian-puppet.com/).
 
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
  * RHEL/CentOS 7 - Puppet 7 - [build/centos7-puppet7/Puppetfile](build/centos7-puppet7/Puppetfile)
- * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
- * Ubuntu 16.04 - Puppet 7 - [build/ubuntu16-puppet7/Puppetfile](build/ubuntu16-puppet7/Puppetfile)
  * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
  * Ubuntu 18.04 - Puppet 7 - [build/ubuntu18-puppet7/Puppetfile](build/ubuntu18-puppet7/Puppetfile)
+ * Ubuntu 20.04 - Puppet 6 - [build/ubuntu20-puppet6/Puppetfile](build/ubuntu20-puppet6/Puppetfile)
+ * Ubuntu 20.04 - Puppet 7 - [build/ubuntu20-puppet7/Puppetfile](build/ubuntu20-puppet7/Puppetfile)
 
 ### Beginning with st2
 
@@ -136,7 +137,7 @@ Hiera data bindings. A few notable parameters to take note of:
     python_version => '3.6',
   }
 
-  # Ubuntu 16.04 (unsafe deadsnakes PPA will be enabled because of boolean flag)
+  # Ubuntu 18.04 (unsafe deadsnakes PPA will be enabled because of boolean flag)
   class { 'st2':
     python_version            => 'python3.6',
     python_enable_unsafe_repo => true,
@@ -445,8 +446,8 @@ $res = run_task('st2::key_get', $stackstorm_target,
 
 ### Supported platforms
 
-* Ubuntu 16.04
 * Ubuntu 18.04
+* Ubuntu 20.04
 * RHEL/CentOS 7
 
 ### Supported Puppet versions
@@ -460,6 +461,12 @@ Support for Mistral has been dropped as of StackStorm `3.3.0`.
 
 As of version `1.8` this module no longer supports Mistral (and subsequently PostgreSQL)
 Neither Mistral nor Postgresql will be installed or managed by this module.
+
+#### :warning: End-of-Support Notice - Ubuntu 16.04
+
+Support for Ubuntu 16.04 has been dropped as of StackStorm `3.5.0`
+
+As of version `2.3` this module no longer supports Ubuntu 16.04
 
 #### :warning: End-of-Support Notice - CentOS 6
 
