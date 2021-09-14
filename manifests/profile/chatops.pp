@@ -82,8 +82,8 @@ class st2::profile::chatops (
 ) inherits st2 {
   include 'st2::params'
 
-  $_chatops_packages = $st2::params::st2_chatops_packages
-  $_chatops_dir = $st2::params::st2_chatops_dir
+  $_chatops_packages = $st2::paramsst2_chatops_packages
+  $_chatops_dir = $st2::paramsst2_chatops_dir
   $_chatops_env_file = "${_chatops_dir}/st2chatops.env"
 
   ########################################
@@ -104,7 +104,7 @@ class st2::profile::chatops (
     tag     => 'st2::chatops::config',
   }
 
-  file { $st2::params::st2_chatops_global_env_file:
+  file { $st2::paramsst2_chatops_global_env_file:
     ensure  => file,
     owner   => 'root',
     group   => 'root',
@@ -129,7 +129,7 @@ class st2::profile::chatops (
 
   ########################################
   ## Services
-  service { $st2::params::st2_chatops_services:
+  service { $st2::paramsst2_chatops_services:
     ensure => 'running',
     enable => true,
     tag    => 'st2::chatops::service',

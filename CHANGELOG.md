@@ -23,6 +23,15 @@
   Contributed by @bishopbm1
 - Added neccessary erlang package required for RHEL 8 rabbitmq
   Contributed by @bishopbm1
+
+## 2.1.0 (Mar 6, 2021)
+  Note: This version only supports the 'integrated' LDAP plugin.
+
+- Added the RabbitMQ repo manage flag to the RabbitMQ install because it no longer exists in
+  EPEL for CentOS/Rhel 8
+- Stackstorm 3.4 change the way they process LDAP and moved the pip install into
+  the requirements file so we do not need to install the extra module. Also updated
+  the ldap backend config to be consistent with new structure.
 - Stackstorm 3.4 removed resultstracker so we took that out of the services list and all tests and configs.
   Contributed by @bishopbm1
 
