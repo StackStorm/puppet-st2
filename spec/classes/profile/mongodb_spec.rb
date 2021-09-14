@@ -44,13 +44,23 @@ describe 'st2::profile::mongodb' do
 
       context 'with st2_version == 3.3.0' do
         let(:facts) { os_facts.merge('st2_version' => '3.3.0') }
-
+        
         it do
-          is_expected.to contain_class('mongodb::globals')
+          if os == "ubuntu-20.04-x86_64"
+            is_expected.to contain_class('mongodb::globals')
+            .with('manage_package' => true,
+                  'manage_package_repo' => true,
+                  'version' => '4.4',
+                  'manage_pidfile' => false)
+      
+          else
+            is_expected.to contain_class('mongodb::globals')
             .with('manage_package' => true,
                   'manage_package_repo' => true,
                   'version' => '4.0',
                   'manage_pidfile' => false)
+      
+          end
         end
       end
 
