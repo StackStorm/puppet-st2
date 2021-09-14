@@ -6,7 +6,7 @@ describe 'st2::profile::mongodb' do
   on_supported_os.each do |os, os_facts|
     let(:facts) { os_facts }
 
-    if os == "ubuntu-20.04-x86_64"
+    if os == 'ubuntu-20.04-x86_64'
       let(:latest_version) { '4.4' }
 
     else
@@ -46,20 +46,18 @@ describe 'st2::profile::mongodb' do
         let(:facts) { os_facts.merge('st2_version' => '3.3.0') }
         
         it do
-          if os == "ubuntu-20.04-x86_64"
+          if os == 'ubuntu-20.04-x86_64'
             is_expected.to contain_class('mongodb::globals')
-            .with('manage_package' => true,
-                  'manage_package_repo' => true,
-                  'version' => '4.4',
-                  'manage_pidfile' => false)
-      
+              .with('manage_package' => true,
+                    'manage_package_repo' => true,
+                    'version' => '4.4',
+                    'manage_pidfile' => false)
           else
             is_expected.to contain_class('mongodb::globals')
-            .with('manage_package' => true,
-                  'manage_package_repo' => true,
-                  'version' => '4.0',
-                  'manage_pidfile' => false)
-      
+              .with('manage_package' => true,
+                    'manage_package_repo' => true,
+                    'version' => '4.0',
+                    'manage_pidfile' => false)
           end
         end
       end
