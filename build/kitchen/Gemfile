@@ -14,7 +14,7 @@ gem 'mixlib-shellout'
 gem 'nokogiri'
 gem 'public_suffix'
 gem 'puppet'
-gem 'r10k'
+gem 'r10k', '~> 3.9.0'
 gem 'semverse'
 gem 'test-kitchen'
 # hard code to 3.2.0 because sudo bugs: https://github.com/inspec/train/issues/548
