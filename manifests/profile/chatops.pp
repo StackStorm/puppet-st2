@@ -113,7 +113,6 @@ class st2::profile::chatops (
     tag     => 'st2::chatops::config',
   }
 
-
   ########################################
   ## Additional nodejs packages
   include st2::profile::nodejs

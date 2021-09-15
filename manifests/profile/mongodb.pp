@@ -100,9 +100,9 @@ class st2::profile::mongodb (
         # unfortinately there is no way to synchronously force a service restart
         # in Puppet, so we have to revert to exec... sorry
         include mongodb::params
-        $_mongodb_stop_cmd = "systemctl stop ${::mongodb::params::service_name}"
-        $_mongodb_start_cmd = "systemctl start ${::mongodb::params::service_name}"
-        $_mongodb_restart_cmd = "systemctl restart ${::mongodb::params::service_name}"
+        $_mongodb_stop_cmd = "systemctl stop ${mongodb::params::service_name}"
+        $_mongodb_start_cmd = "systemctl start ${mongodb::params::service_name}"
+        $_mongodb_restart_cmd = "systemctl restart ${mongodb::params::service_name}"
         $_mongodb_exec_path = ['/usr/sbin', '/usr/bin', '/sbin', '/bin']
 
         # stop mongodb; disable auth
