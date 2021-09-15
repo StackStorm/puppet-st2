@@ -5,6 +5,5 @@ $st2_python_version = $facts['os']['family'] ? {
 }
 class { 'st2':
   python_version            => $st2_python_version,
-  python_enable_unsafe_repo => true,
 }
 include st2::profile::fullinstall

@@ -2,6 +2,8 @@
 
 ## Development
 
+- Remove tests for Ubuntu 18.04 and Python3.6, since it's already default. Contributed by @rush-skills.
+
 - Drop support for ubuntu 16.04 and add support for ubuntu 20.04. Contributed by @rush-skills
 
 - Update build docs. Contributed by @rush-skills

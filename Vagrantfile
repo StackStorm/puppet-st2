@@ -32,8 +32,8 @@
 #       # Python 3 testing
 #       # CentOS/RHEL
 #       echo -e "class { 'st2': python_version => '3.6' }\n include st2::profile::fullinstall" > apply.pp
-#       # Ubuntu 16.04
-#       echo -e "class { 'st2': python_version => 'python3.6', python_enable_unsafe_repo => true }\n include st2::profile::fullinstall" > apply.pp
+#       # Ubuntu 18.04 +
+#       echo -e "class { 'st2': python_version => 'python3.6' }\n include st2::profile::fullinstall" > apply.pp
 #
 #       chmod 440 -R /etc/sudoers.d; puppet apply apply.pp; chmod 755 -R /etc/sudoers.d
 #
