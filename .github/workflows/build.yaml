@@ -128,8 +128,6 @@ jobs:
           - ruby: '2.7'
             name: 'ubuntu18-puppet7'
           - ruby: '2.7'
-            name: 'ubuntu18-puppet7-python36'
-          - ruby: '2.7'
             name: 'ubuntu20-puppet6'
           - ruby: '2.7'
             name: 'ubuntu20-puppet7'
