@@ -23,7 +23,7 @@ class st2::workflowengine (
   # st2workflowengine was introduced in 2.8.0
   if st2::version_ge('2.8.0') {
 
-    $_logger_config = $::st2::syslog ? {
+    $_logger_config = $st2::syslog ? {
       true    => 'syslog',
       default => 'logging',
     }

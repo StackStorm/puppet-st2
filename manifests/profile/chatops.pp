@@ -1,7 +1,7 @@
 # @summary Profile to install and configure chatops for st2
 #
 # @note This class doesn't need to be invoked directly, instead it's best to customize
-#       it through the main +::st2+ class
+#       it through the main +st2+ class
 #
 # @param version
 #    Version of the st2chatops package to install
@@ -64,26 +64,26 @@
 #   }
 #
 class st2::profile::chatops (
-  $version                      = $::st2::version,
-  $hubot_log_level              = $::st2::chatops_hubot_log_level,
-  $hubot_express_port           = $::st2::chatops_hubot_express_port,
-  $tls_cert_reject_unauthorized = $::st2::chatops_tls_cert_reject_unauthorized,
-  $hubot_name                   = $::st2::chatops_hubot_name,
-  $hubot_alias                  = $::st2::chatops_hubot_alias,
-  $npm_packages                 = $::st2::chatops_adapter,
-  $adapter_config               = $::st2::chatops_adapter_conf,
-  $api_key                      = $::st2::chatops_api_key,
-  $st2_hostname                 = $::st2::chatops_st2_hostname,
-  $web_url                      = $::st2::chatops_web_url,
-  $api_url                      = $::st2::chatops_api_url,
-  $auth_url                     = $::st2::chatops_auth_url,
-  $auth_username                = $::st2::cli_username,
-  $auth_password                = $::st2::cli_password,
+  $version                      = $st2::version,
+  $hubot_log_level              = $st2::chatops_hubot_log_level,
+  $hubot_express_port           = $st2::chatops_hubot_express_port,
+  $tls_cert_reject_unauthorized = $st2::chatops_tls_cert_reject_unauthorized,
+  $hubot_name                   = $st2::chatops_hubot_name,
+  $hubot_alias                  = $st2::chatops_hubot_alias,
+  $npm_packages                 = $st2::chatops_adapter,
+  $adapter_config               = $st2::chatops_adapter_conf,
+  $api_key                      = $st2::chatops_api_key,
+  $st2_hostname                 = $st2::chatops_st2_hostname,
+  $web_url                      = $st2::chatops_web_url,
+  $api_url                      = $st2::chatops_api_url,
+  $auth_url                     = $st2::chatops_auth_url,
+  $auth_username                = $st2::cli_username,
+  $auth_password                = $st2::cli_password,
 ) inherits st2 {
   include 'st2::params'
 
-  $_chatops_packages = $::st2::params::st2_chatops_packages
-  $_chatops_dir = $::st2::params::st2_chatops_dir
+  $_chatops_packages = $st2::params::st2_chatops_packages
+  $_chatops_dir = $st2::params::st2_chatops_dir
   $_chatops_env_file = "${_chatops_dir}/st2chatops.env"
 
   ########################################
@@ -104,7 +104,7 @@ class st2::profile::chatops (
     tag     => 'st2::chatops::config',
   }
 
-  file { $::st2::params::st2_chatops_global_env_file:
+  file { $st2::params::st2_chatops_global_env_file:
     ensure  => file,
     owner   => 'root',
     group   => 'root',
@@ -112,7 +112,6 @@ class st2::profile::chatops (
     content => template('st2/etc/sysconfig/st2chatops.erb'),
     tag     => 'st2::chatops::config',
   }
-
 
   ########################################
   ## Additional nodejs packages
@@ -129,7 +128,7 @@ class st2::profile::chatops (
 
   ########################################
   ## Services
-  service { $::st2::params::st2_chatops_services:
+  service { $st2::params::st2_chatops_services:
     ensure => 'running',
     enable => true,
     tag    => 'st2::chatops::service',

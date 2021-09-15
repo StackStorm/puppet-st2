@@ -32,8 +32,8 @@
 #       # Python 3 testing
 #       # CentOS/RHEL
 #       echo -e "class { 'st2': python_version => '3.6' }\n include st2::profile::fullinstall" > apply.pp
-#       # Ubuntu 16.04
-#       echo -e "class { 'st2': python_version => 'python3.6', python_enable_unsafe_repo => true }\n include st2::profile::fullinstall" > apply.pp
+#       # Ubuntu 18.04 +
+#       echo -e "class { 'st2': python_version => 'python3.6' }\n include st2::profile::fullinstall" > apply.pp
 #
 #       chmod 440 -R /etc/sudoers.d; puppet apply apply.pp; chmod 755 -R /etc/sudoers.d
 #
@@ -45,6 +45,7 @@
 # vagrant ssh
 # sudo su -
 # vi /etc/puppetlabs/code/modules/mongodb/manifests/repo.pp
+#           '4.4'   => '20691EEC35216C63CAF66CE1656408E390CFB1F5',
 #           '4.2'   => 'E162F504A20CDF15827F718D4B7C549A058F8B6B',
 #           '4.0'   => '9DA31620334BD75D9DCB49F368818C72E52529D4',
 #
@@ -64,8 +65,8 @@ provider   = provider.to_sym
 box        = ENV['BOX'] ? ENV['BOX'] : 'centos/7'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'centos/8stream'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/centos8'
-#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1604'
 #box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu1804'
+#box        = ENV['BOX'] ? ENV['BOX'] : 'generic/ubuntu2004'
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"

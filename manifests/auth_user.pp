@@ -17,7 +17,7 @@ define st2::auth_user(
   $password = undef,
 ) {
   include st2::auth::flat_file
-  $_htpasswd_file = $::st2::auth::flat_file::htpasswd_file
+  $_htpasswd_file = $st2::auth::flat_file::htpasswd_file
 
   httpauth { $name:
     ensure    => $ensure,

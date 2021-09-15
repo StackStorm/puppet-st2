@@ -73,40 +73,6 @@ platforms:
       puppetfile_path: build/centos7-puppet7/Puppetfile
       manifest: test/fullinstall_python36.pp
 
-  # Ubuntu Xenial with Systemd - Puppet 6
-  - name: ubuntu16-puppet6
-    driver:
-      platform: ubuntu
-      dockerfile: build/ubuntu16-puppet6/Dockerfile.kitchen
-      run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    provisioner:
-      puppetfile_path: build/ubuntu16-puppet6/Puppetfile
-
-  # Ubuntu Xenial with Systemd - Puppet 7
-  - name: ubuntu16-puppet7
-    driver:
-      platform: ubuntu
-      dockerfile: build/ubuntu16-puppet7/Dockerfile.kitchen
-      run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    provisioner:
-      puppetfile_path: build/ubuntu16-puppet7/Puppetfile
-
-  # Ubuntu Xenial with Systemd - Puppet 7 - Python 3.6
-  - name: ubuntu16-puppet7-python36
-    driver:
-      platform: ubuntu
-      dockerfile: build/ubuntu16-puppet7/Dockerfile.kitchen
-      run_command: /sbin/init
-      volume:
-        - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    provisioner:
-      puppetfile_path: build/ubuntu16-puppet7/Puppetfile
-      manifest: test/fullinstall_python36.pp
-
   # Ubuntu Bionic with Systemd - Puppet 6
   - name: ubuntu18-puppet6
     driver:
@@ -128,6 +94,28 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/ubuntu18-puppet7/Puppetfile
+
+  # Ubuntu Focal with Systemd - Puppet 6
+  - name: ubuntu20-puppet6
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu20-puppet6/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/ubuntu20-puppet6/Puppetfile
+
+  # Ubuntu Focal with Systemd - Puppet 7
+  - name: ubuntu20-puppet7
+    driver:
+      platform: ubuntu
+      dockerfile: build/ubuntu20-puppet7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/ubuntu20-puppet7/Puppetfile
 
 suites:
   - name: default

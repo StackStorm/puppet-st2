@@ -21,7 +21,7 @@
 #        server => 'influxdb.domain.tld'
 #
 class st2::packs (
-  $packs = $::st2::packs,
+  $packs = $st2::packs,
 ) inherits st2 {
   create_resources('st2::pack', $packs)
 }

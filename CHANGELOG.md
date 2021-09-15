@@ -2,6 +2,19 @@
 
 ## Development
 
+- Remove tests for Ubuntu 18.04 and Python3.6, since it's already default. Contributed by @rush-skills.
+
+- Drop support for ubuntu 16.04 and add support for ubuntu 20.04. Contributed by @rush-skills
+
+- Update build docs. Contributed by @rush-skills
+
+- Change old style fact reference in selinux profile. Contributed by @rush-skills
+
+- Cleaned up old style `::` references. Contributed by @rush-skills
+
+- Removed travis references after switch to GitHub Actions. Contributed by @rush-skills
+
+- Removed `files/etc/st2/st2.conf` as the template was no longer used. Contributed by @rush-skills
 
 ## 2.2.0 (Jul 14, 2021)
 

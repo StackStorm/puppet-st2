@@ -1,7 +1,7 @@
 # usage (from the root of the puppet-st2/ directory):
-# docker build -t stackstorm/puppet-st2-ubuntu16-puppet7 -f build/ubuntu16-puppet7/Dockerfile.kitchen .
+# docker build -t stackstorm/puppet-st2-ubuntu20-puppet7 -f build/ubuntu20-puppet7/Dockerfile.kitchen .
 
-FROM stackstorm/packagingtest:xenial-systemd
+FROM stackstorm/packagingtest:focal-systemd
 
 # kitchen setup
 RUN mkdir -p /var/run/sshd
@@ -18,10 +18,13 @@ RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/auth
 # update OS
 RUN sudo apt-get -y update
 
+# Install utilities to add apt repos
+RUN sudo apt-get -y install software-properties-common
+
 # install puppet
 # https://puppet.com/docs/puppet/7.0/puppet_platform.html
-RUN wget https://apt.puppetlabs.com/puppet7-release-xenial.deb
-RUN sudo dpkg -i puppet7-release-xenial.deb
+RUN wget https://apt.puppetlabs.com/puppet7-release-focal.deb
+RUN sudo dpkg -i puppet7-release-focal.deb
 RUN sudo apt-get -y update
 RUN sudo apt-get -y install puppet-agent
 
