@@ -186,7 +186,13 @@ class st2::params(
   $rabbitmq_vhost = '/'
   $erlang_url = "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch"
   $erlang_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
+
+  ## Redis
   $redis_bind_ip = '127.0.0.1'
+  $redis_hostname = '127.0.0.1'
+  $redis_port = 6379
+  $redis_password = ''
+
 
   ## actionrunner config
   $actionrunner_workers = 10
