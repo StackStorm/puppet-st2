@@ -32,7 +32,7 @@ class st2::profile::rabbitmq (
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
-  if ($::osfamily == 'RedHat') and ($facts['os']['release']['major'] == '8') {
+  if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '8') {
     $repos_ensure = true
 
     # This is required because when using the latest version of rabbitmq because the latest version in EPEL
@@ -81,7 +81,7 @@ class st2::profile::rabbitmq (
   }
 
   # RHEL needs EPEL installed prior to rabbitmq
-  if $::osfamily == 'RedHat' {
+  if $facts['os']['family'] == 'RedHat' {
     Class['epel']
     -> Class['rabbitmq']
 
