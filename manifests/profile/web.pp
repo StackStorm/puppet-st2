@@ -94,12 +94,13 @@ class st2::profile::web(
 
   ## optionally manage the SSL certificate used by nginx
   if $ssl_cert_manage {
-    ## Generate SSL certificates
+    # openssl only allows CNs with max length of 64, so we truncate to 64 chars
     $_truncated_certname = $trusted['certname'].length > 64 ? {
       true => $trusted['certname'][0,64],
       default => $trusted['certname'],
     }
     $_ssl_subj = "/C=US/ST=California/L=Palo Alto/O=StackStorm/OU=Information Technology/CN=${_truncated_certname}"
+    ## Generate SSL certificates
     exec { "generate ssl cert ${ssl_cert}":
       command => "openssl req -x509 -newkey rsa:2048 -keyout ${ssl_key} -out ${ssl_cert} -days 365 -nodes -subj \"${_ssl_subj}\"",
       creates => $ssl_cert,
