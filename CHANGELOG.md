@@ -2,6 +2,7 @@
 
 ## Development
 
+- Add configuration for redis based coordination and remove old style `$::osfamily` references. Contributed by @rush-skills
 
 ## 2.3.0 (Sep 15, 2021)
 

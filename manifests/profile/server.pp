@@ -64,6 +64,9 @@ class st2::profile::server (
   $rabbitmq_hostname      = $st2::rabbitmq_hostname,
   $rabbitmq_port          = $st2::rabbitmq_port,
   $rabbitmq_vhost         = $st2::rabbitmq_vhost,
+  $redis_hostname         = $st2::redis_hostname,
+  $redis_port             = $st2::redis_port,
+  $redis_password         = $st2::redis_password,
   $index_url              = $st2::index_url,
   $packs_group            = $st2::packs_group_name,
 ) inherits st2 {
@@ -266,6 +269,17 @@ class st2::profile::server (
     section => 'messaging',
     setting => 'url',
     value   => "amqp://${rabbitmq_username}:${_rabbitmq_pass}@${rabbitmq_hostname}:${rabbitmq_port}/${rabbitmq_vhost}",
+    tag     => 'st2::config',
+  }
+
+  ## Coordination Settings (Redis)
+
+  $_redis_url  = "redis://:${redis_password}@${redis_hostname}:${redis_port}/"
+  ini_setting { 'coordination_url':
+    path    => '/etc/st2/st2.conf',
+    section => 'coordination',
+    setting => 'url',
+    value   => $_redis_url,
     tag     => 'st2::config',
   }
 
