@@ -17,11 +17,14 @@
 class st2::repo (
   Enum['present', 'absent'] $ensure = 'present',
   St2::Repository $repository = $st2::repository,
+  Boolean $manage_epel_repo = true
 ) inherits st2 {
   case $facts['os']['family'] {
     'RedHat': {
-      # RedHat distros need EPEL
-      require epel
+      # RedHat distros need EPEL, $manage_epel_repo can be set to false if not needed
+      if $manage_epel_repo {
+        require epel
+      }
 
       $dist_version = $facts['os']['release']['major']
       $baseurl = "https://packagecloud.io/StackStorm/${repository}/el/${dist_version}/\$basearch"
