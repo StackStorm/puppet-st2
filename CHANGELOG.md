@@ -2,6 +2,12 @@
 
 ## Development
 
+- Add validate_output_schema flag. Contributed by @rush-skills
+
+- Add a flag for managing epel repos. Contributed by @rush-skills
+
+- Rework LDAP kwargs to use docstring and look cleaner. Contributed by @rush-skills
+
 - Add configuration for redis based coordination and remove old style `$::osfamily` references. Contributed by @rush-skills
 
 ## 2.3.0 (Sep 15, 2021)
