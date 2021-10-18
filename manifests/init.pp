@@ -343,6 +343,7 @@ class st2(
   $scheduler_num            = $st2::params::scheduler_num,
   $rulesengine_num          = $st2::params::rulesengine_num,
   $notifier_num             = $st2::params::notifier_num,
+  $validate_output_schema   = $st2::params::validate_output_schema,
 ) inherits st2::params {
 
   ########################################

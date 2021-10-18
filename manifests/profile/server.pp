@@ -69,11 +69,16 @@ class st2::profile::server (
   $redis_password         = $st2::redis_password,
   $index_url              = $st2::index_url,
   $packs_group            = $st2::packs_group_name,
+  $validate_output_schema = $st2::validate_output_schema,
 ) inherits st2 {
   include st2::notices
   include st2::params
 
   $_enable_auth = $auth ? {
+    true    => 'True',
+    default => 'False',
+  }
+  $_validate_output_schema = $validate_output_schema ? {
     true    => 'True',
     default => 'False',
   }
@@ -354,6 +359,16 @@ class st2::profile::server (
     section => 'syslog',
     setting => 'facility',
     value   => $syslog_facility,
+    tag     => 'st2::config',
+  }
+
+  ## System Settings
+  ini_setting { 'validate_output_schema':
+    ensure  => present,
+    path    => $conf_file,
+    section => 'system',
+    setting => 'validate_output_schema',
+    value   => $_validate_output_schema,
     tag     => 'st2::config',
   }
 
