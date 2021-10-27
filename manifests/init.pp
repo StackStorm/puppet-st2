@@ -343,6 +343,10 @@ class st2(
   $scheduler_num            = $st2::params::scheduler_num,
   $rulesengine_num          = $st2::params::rulesengine_num,
   $notifier_num             = $st2::params::notifier_num,
+  $metrics_include          = $st2::params::metrics_include,
+  $metric_driver            = $st2::params::metric_driver,
+  $metric_host              = $st2::params::metric_host,
+  $metric_port              = $st2::params::metric_port,
 ) inherits st2::params {
 
   ########################################
