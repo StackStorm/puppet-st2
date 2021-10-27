@@ -49,6 +49,7 @@ The `st2` module configures the existing into a complete and dedicated StackStor
  * MongoDB
  * Postgres
  * RabbitMQ
+ * Redis
  * Nginx
  * NodeJS
 
@@ -69,10 +70,10 @@ and [librarian-puppet](http://librarian-puppet.com/).
 
  * RHEL/CentOS 7 - Puppet 6 - [build/centos7-puppet6/Puppetfile](build/centos7-puppet6/Puppetfile)
  * RHEL/CentOS 7 - Puppet 7 - [build/centos7-puppet7/Puppetfile](build/centos7-puppet7/Puppetfile)
- * Ubuntu 16.04 - Puppet 6 - [build/ubuntu16-puppet6/Puppetfile](build/ubuntu16-puppet6/Puppetfile)
- * Ubuntu 16.04 - Puppet 7 - [build/ubuntu16-puppet7/Puppetfile](build/ubuntu16-puppet7/Puppetfile)
  * Ubuntu 18.04 - Puppet 6 - [build/ubuntu18-puppet6/Puppetfile](build/ubuntu18-puppet6/Puppetfile)
  * Ubuntu 18.04 - Puppet 7 - [build/ubuntu18-puppet7/Puppetfile](build/ubuntu18-puppet7/Puppetfile)
+ * Ubuntu 20.04 - Puppet 6 - [build/ubuntu20-puppet6/Puppetfile](build/ubuntu20-puppet6/Puppetfile)
+ * Ubuntu 20.04 - Puppet 7 - [build/ubuntu20-puppet7/Puppetfile](build/ubuntu20-puppet7/Puppetfile)
 
 ### Beginning with st2
 
@@ -118,17 +119,6 @@ Hiera data bindings. A few notable parameters to take note of:
   **Notes**
     * RHEL 7 - The Red Hat subscription repo `'rhel-7-server-optional-rpms'`
       will need to be enabled prior to running this module.
-    * :warning: Ubuntu 16.04 -
-      The python3.6 package is a required dependency for the StackStorm `st2` package
-      but that is not installable from any of the default Ubuntu 16.04 repositories.
-      We recommend switching to Ubuntu 18.04 LTS (Bionic) as a base OS. Support for
-      Ubuntu 16.04 will be removed with future StackStorm versions.
-      Alternatively the Puppet will try to add python3.6 from the 3rd party 'deadsnakes' repository: https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa.
-      Only set to true, if you are aware of the support and security risks associated
-      with using unofficial 3rd party PPA repository, and you understand that StackStorm
-      does NOT provide ANY support for python3.6 packages on Ubuntu 16.04.
-      The unsafe PPA `'ppa:deadsnakes/ppa'` https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa
-      can be enabled if you specify the `st2::python_enable_unsafe_repo: true` (default: `false`)
 
   ```puppet
   # CentOS/RHEL 7
@@ -136,10 +126,9 @@ Hiera data bindings. A few notable parameters to take note of:
     python_version => '3.6',
   }
 
-  # Ubuntu 16.04 (unsafe deadsnakes PPA will be enabled because of boolean flag)
+  # Ubuntu 18.04/20.04
   class { 'st2':
     python_version            => 'python3.6',
-    python_enable_unsafe_repo => true,
   }
 
   contain st2::profile::fullinstall
@@ -224,7 +213,7 @@ The following backends are currently available:
 
 
 By default the `flat_file` backend is used. To change this you can configure it
-when instantiating the `::st2` class in a manifest file:
+when instantiating the `st2` class in a manifest file:
 
 ``` ruby
 class { 'st2':
@@ -244,7 +233,7 @@ found by looking at the backend class in the `manifests/st2/auth/` directory.
 These parameters map 1-for-1 to the configuration options defined in each
 backends GitHub page (links above). Backend configurations are passed in as a hash
 using the `auth_backend_config` option. This option can be changed when instantiating
-the `::st2` class in a manifest file:
+the `st2` class in a manifest file:
 
 ``` ruby
 class { 'st2':
@@ -445,8 +434,8 @@ $res = run_task('st2::key_get', $stackstorm_target,
 
 ### Supported platforms
 
-* Ubuntu 16.04
 * Ubuntu 18.04
+* Ubuntu 20.04
 * RHEL/CentOS 7
 
 ### Supported Puppet versions
@@ -460,6 +449,12 @@ Support for Mistral has been dropped as of StackStorm `3.3.0`.
 
 As of version `1.8` this module no longer supports Mistral (and subsequently PostgreSQL)
 Neither Mistral nor Postgresql will be installed or managed by this module.
+
+#### :warning: End-of-Support Notice - Ubuntu 16.04
+
+Support for Ubuntu 16.04 has been dropped as of StackStorm `3.5.0`
+
+As of version `2.3` this module no longer supports Ubuntu 16.04
 
 #### :warning: End-of-Support Notice - CentOS 6
 

@@ -60,7 +60,7 @@ class st2::params(
   $st2_web_packages = [
     'st2web',
   ]
-  case $::osfamily {
+  case $facts['os']['family'] {
     'Debian': {
       $st2_client_packages = [
         'python-st2client',
@@ -186,18 +186,24 @@ class st2::params(
   $rabbitmq_vhost = '/'
   $erlang_url = "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch"
   $erlang_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
+
+  ## Redis
   $redis_bind_ip = '127.0.0.1'
+  $redis_hostname = '127.0.0.1'
+  $redis_port = 6379
+  $redis_password = ''
+
 
   ## actionrunner config
   $actionrunner_workers = 10
-  $actionrunner_global_env_file = $::osfamily ? {
+  $actionrunner_global_env_file = $facts['os']['family'] ? {
     'Debian' => '/etc/default/st2actionrunner',
     'RedHat' => '/etc/sysconfig/st2actionrunner',
   }
 
   ## chatops default config
   $st2_chatops_dir  = '/opt/stackstorm/chatops'
-  $st2_chatops_global_env_file = $::osfamily ? {
+  $st2_chatops_global_env_file = $facts['os']['family'] ? {
     'Debian' => '/etc/default/st2chatops',
     'RedHat' => '/etc/sysconfig/st2chatops',
   }

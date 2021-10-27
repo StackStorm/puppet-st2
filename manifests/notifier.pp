@@ -20,7 +20,7 @@ class st2::notifier (
   $notifier_services = $st2::params::notifier_services,
 ) inherits st2 {
 
-  $_logger_config = $::st2::syslog ? {
+  $_logger_config = $st2::syslog ? {
     true    => 'syslog',
     default => 'logging',
   }

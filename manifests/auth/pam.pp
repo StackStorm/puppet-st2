@@ -18,7 +18,7 @@
 #  st2::auth_backend_config: {}
 #
 class st2::auth::pam(
-  $conf_file = $::st2::conf_file,
+  $conf_file = $st2::conf_file,
 ) inherits st2 {
   include st2::auth::common
 
@@ -41,7 +41,7 @@ class st2::auth::pam(
   }
 
   # install package dependency
-  $_dep_pkgs = $::osfamily ? {
+  $_dep_pkgs = $facts['os']['family'] ? {
     'Debian' => 'libpam0g',
     'RedHat' => 'pam-devel',
     default  => undef,

@@ -57,13 +57,13 @@
 #  }
 #
 class st2::auth (
-  $backend        = $::st2::auth_backend,
-  $backend_config = $::st2::auth_backend_config,
-  $debug          = $::st2::auth_debug,
-  $mode           = $::st2::auth_mode,
-  $use_ssl        = $::st2::use_ssl,
-  $ssl_cert       = $::st2::ssl_cert,
-  $ssl_key        = $::st2::ssl_key,
+  $backend        = $st2::auth_backend,
+  $backend_config = $st2::auth_backend_config,
+  $debug          = $st2::auth_debug,
+  $mode           = $st2::auth_mode,
+  $use_ssl        = $st2::use_ssl,
+  $ssl_cert       = $st2::ssl_cert,
+  $ssl_key        = $st2::ssl_key,
 ) inherits st2 {
 
   if !defined(Class['st2::auth::common']) {

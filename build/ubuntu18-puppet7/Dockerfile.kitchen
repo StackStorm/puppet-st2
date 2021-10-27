@@ -18,6 +18,9 @@ RUN echo '<%= IO.read(@public_key).strip %>' >> /home/<%= @username %>/.ssh/auth
 # update OS
 RUN sudo apt-get -y update
 
+# Install utilities to add apt repos
+RUN sudo apt-get -y install software-properties-common
+
 # install puppet
 # https://puppet.com/docs/puppet/7.0/puppet_platform.html
 RUN wget https://apt.puppetlabs.com/puppet7-release-bionic.deb

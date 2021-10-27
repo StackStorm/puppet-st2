@@ -71,7 +71,7 @@
 #    account_pattern: "userPrincipalName={username}"
 #
 class st2::auth::ldap (
-  $conf_file       = $::st2::conf_file,
+  $conf_file       = $st2::conf_file,
   $host            = '',
   $use_tls         = false,
   $use_ssl         = false,
@@ -142,7 +142,7 @@ class st2::auth::ldap (
   }
 
   # install package dependency
-  $_dep_pkgs = $::osfamily ? {
+  $_dep_pkgs = $facts['os']['family'] ? {
     'Debian' => ['gcc', 'libldap2-dev'],
     'RedHat' => ['gcc', 'openldap-devel'],
     default  => undef,

@@ -22,17 +22,17 @@
 #   include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq (
-  $username   = $::st2::rabbitmq_username,
-  $password   = $::st2::rabbitmq_password,
-  $port       = $::st2::rabbitmq_port,
-  $bind_ip    = $::st2::rabbitmq_bind_ip,
-  $vhost      = $::st2::rabbitmq_vhost,
-  $erlang_url = $::st2::erlang_url,
-  $erlang_key = $::st2::erlang_key
+  $username   = $st2::rabbitmq_username,
+  $password   = $st2::rabbitmq_password,
+  $port       = $st2::rabbitmq_port,
+  $bind_ip    = $st2::rabbitmq_bind_ip,
+  $vhost      = $st2::rabbitmq_vhost,
+  $erlang_url = $st2::erlang_url,
+  $erlang_key = $st2::erlang_key
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
-  if ($::osfamily == 'RedHat') and ($facts['os']['release']['major'] == '8') {
+  if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '8') {
     $repos_ensure = true
 
     # This is required because when using the latest version of rabbitmq because the latest version in EPEL
@@ -59,8 +59,9 @@ class st2::profile::rabbitmq (
     delete_guest_user     => true,
     port                  => $port,
     environment_variables => {
-      'RABBITMQ_NODE_IP_ADDRESS' => $::st2::rabbitmq_bind_ip,
+      'RABBITMQ_NODE_IP_ADDRESS' => $st2::rabbitmq_bind_ip,
     },
+    manage_python         => false,
   }
   contain 'rabbitmq'
 
@@ -80,7 +81,7 @@ class st2::profile::rabbitmq (
   }
 
   # RHEL needs EPEL installed prior to rabbitmq
-  if $::osfamily == 'RedHat' {
+  if $facts['os']['family'] == 'RedHat' {
     Class['epel']
     -> Class['rabbitmq']
 

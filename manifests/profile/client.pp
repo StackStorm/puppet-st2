@@ -27,17 +27,17 @@
 #  include st2::profile::client
 #
 class st2::profile::client (
-  $auth                 = $::st2::auth,
-  $api_url              = $::st2::cli_api_url,
-  $auth_url             = $::st2::cli_auth_url,
-  $base_url             = $::st2::cli_base_url,
-  $username             = $::st2::cli_username,
-  $password             = $::st2::cli_password,
-  $api_version          = $::st2::cli_api_version,
-  $cacert               = $::st2::cli_cacert,
-  $debug                = $::st2::cli_debug,
-  $cache_token          = $::st2::cli_cache_token,
-  $silence_ssl_warnings = $::st2::cli_silence_ssl_warnings,
+  $auth                 = $st2::auth,
+  $api_url              = $st2::cli_api_url,
+  $auth_url             = $st2::cli_auth_url,
+  $base_url             = $st2::cli_base_url,
+  $username             = $st2::cli_username,
+  $password             = $st2::cli_password,
+  $api_version          = $st2::cli_api_version,
+  $cacert               = $st2::cli_cacert,
+  $debug                = $st2::cli_debug,
+  $cache_token          = $st2::cli_cache_token,
+  $silence_ssl_warnings = $st2::cli_silence_ssl_warnings,
 ) inherits st2 {
 
   # Setup st2client settings for Root user by default
