@@ -237,6 +237,32 @@ class st2::profile::web(
     },
   }
 
+  nginx::resource::location { '@basic_statusError':
+    * => $location_defaults + {
+      add_header          => {
+        'Content-Type' => 'application/json always',
+      },
+      location_cfg_append => {
+        'return' => '503 \'{ "faultstring": "Nginx is unable to reach basic_status. Make sure service is running." }\'',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::basicstatuserror'],
+    },
+  }
+
+  nginx::resource::location { '/basic_status/':
+    * => $proxy_defaults + {
+      rewrite_rules       => [
+        '^/api/(.*)  /$1 break',
+      ],
+      proxy               => "http://127.0.0.1:${st2::params::basicstatus_port}",
+      location_cfg_append => {
+        'error_page'  => '502 = @apiError',
+        'stub_status' => 'on',
+      },
+      tag                 => ['st2', 'st2::backend', 'st2::backend::basic_status'],
+    },
+  }
+
   nginx::resource::location { '@streamError':
     * => $location_defaults + {
       add_header          => {
