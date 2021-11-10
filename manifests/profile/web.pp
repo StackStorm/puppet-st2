@@ -256,7 +256,7 @@ class st2::profile::web(
       ],
       proxy               => "http://127.0.0.1:${st2::params::basicstatus_port}",
       location_cfg_append => {
-        'error_page'  => '502 = @apiError',
+        'error_page'  => '502 = @basic_statusError',
         'stub_status' => 'on',
       },
       tag                 => ['st2', 'st2::backend', 'st2::backend::basic_status'],

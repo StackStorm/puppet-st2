@@ -173,6 +173,7 @@ describe 'st2::profile::web' do
                   index_files: ['index.html'],
                   www_root: '/opt/stackstorm/static/webui/',
                   location_cfg_append: {
+                    'error_page'  => '502 = @basic_statusError',
                     'stub_status' => 'on',
                   },
                   tag: ['st2', 'st2::backend', 'st2::backend::basic_status'])
