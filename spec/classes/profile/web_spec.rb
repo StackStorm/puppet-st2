@@ -173,7 +173,7 @@ describe 'st2::profile::web' do
                   index_files: ['index.html'],
                   www_root: '/opt/stackstorm/static/webui/',
                   location_cfg_append: {
-                    'stub_status'    => 'on',
+                    'stub_status' => 'on',
                   },
                   tag: ['st2', 'st2::backend', 'st2::backend::basic_status'])
         end
