@@ -171,7 +171,6 @@ describe 'st2::profile::web' do
                   ssl: true,
                   ssl_only: true,
                   index_files: [],
-                  www_root: '/opt/stackstorm/static/webui/',
                   location_cfg_append: {
                     'error_page'  => '502 = @basic_statusError',
                     'stub_status' => 'on',
