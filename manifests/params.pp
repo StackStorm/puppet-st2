@@ -46,6 +46,7 @@ class st2::params(
   # stream settings
   $stream_port = 9102
 
+  # nginx basic status port
   $basicstatus_port = 9103
 
   # Non-user configurable parameters
