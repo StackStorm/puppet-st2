@@ -93,41 +93,41 @@ class st2::auth::ldap (
   $_chase_refs = bool2str($chase_referrals)
   if $account_pattern != undef and $group_pattern != undef {
     $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},
-        "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",
-        "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",
-        "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},
-        "scope": "${scope}", "id_attr": "${id_attr}",
-        "account_pattern": "${account_pattern}", "group_pattern": "${group_pattern}"}
+      {"host": "${host}", "use_tls": ${_use_tls},\
+      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
+      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
+      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
+      "scope": "${scope}", "id_attr": "${id_attr}",\
+      "account_pattern": "${account_pattern}", "group_pattern": "${group_pattern}"}
       | - LDAPARGS
   }
   elsif $account_pattern != undef {
     $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},
-        "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",
-        "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",
-        "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},
-        "scope": "${scope}", "id_attr": "${id_attr}",
-        "account_pattern": "${account_pattern}"}
+      {"host": "${host}", "use_tls": ${_use_tls},\
+      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
+      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
+      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
+      "scope": "${scope}", "id_attr": "${id_attr}",\
+      "account_pattern": "${account_pattern}"}
       | - LDAPARGS
   }
   elsif $group_pattern != undef {
     $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},
-        "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",
-        "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",
-        "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},
-        "scope": "${scope}", "id_attr": "${id_attr}",
-        "group_pattern": "${group_pattern}"}
+      {"host": "${host}", "use_tls": ${_use_tls},\
+      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
+      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
+      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
+      "scope": "${scope}", "id_attr": "${id_attr}",\
+      "group_pattern": "${group_pattern}"}
       | - LDAPARGS
   }
   else {
     $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},
-        "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",
-        "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",
-        "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},
-        "scope": "${scope}", "id_attr": "${id_attr}"}
+      {"host": "${host}", "use_tls": ${_use_tls},\
+      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
+      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
+      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
+      "scope": "${scope}", "id_attr": "${id_attr}"}
       | - LDAPARGS
   }
 
