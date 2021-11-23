@@ -7,10 +7,6 @@ class st2::profile::server (
 ) inherits st2 {
 
   class { 'st2::config::common': }
-  -> class { 'st2::config::db': }
-  -> class { 'st2::config::messaging': }
-  -> class { 'st2::config::coordination': }
-
 
   contain st2::component::actionrunner
   contain st2::component::sensorcontainer

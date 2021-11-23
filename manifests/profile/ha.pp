@@ -1,20 +1,12 @@
 # @summary Profile to install, configure and manage all server components for st2
 #
 # @example Basic usage
-#  include st2::profile::ha::api
+#  include st2::profile::ha
 #
-class st2::profile::ha::api (
+class st2::profile::ha (
 ) inherits st2 {
 
-  class { 'st2::config::common': }
-  -> class { 'st2::config::db': }
-  -> class { 'st2::config::messaging': }
-  -> class { 'st2::config::coordination': }
-
-  contain st2::component::web
-  contain st2::component::api
-  contain st2::component::auth
-  contain st2::component::stream
+  contain st2::config::common
 
   ########################################
   ## Dependencies
@@ -23,9 +15,20 @@ class st2::profile::ha::api (
   ~> Service<| tag == 'st2::service' |>
 
   Package<| tag == 'st2::server::packages' |>
+  -> Class['st2::server::datastore_keys']
+  -> Service<| tag == 'st2::service' |>
+
+  Package<| tag == 'st2::server::packages' |>
+  -> Class['st2::stanley']
+  -> Service<| tag == 'st2::service' |>
+
+  Package<| tag == 'st2::server::packages' |>
   -> File<| tag == 'st2::server' |>
   -> Service<| tag == 'st2::service' |>
 
   Service<| tag == 'st2::service' |>
   ~> Exec<| tag == 'st2::reload' |>
+
+  St2_pack<||>
+  ~> Recursive_file_permissions<| tag == 'st2::server' |>
 }
