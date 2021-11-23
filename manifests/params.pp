@@ -46,6 +46,9 @@ class st2::params(
   # stream settings
   $stream_port = 9102
 
+  # nginx basic status port
+  $basicstatus_port = 9103
+
   # Non-user configurable parameters
   $repository = 'stable'
   $conf_dir = '/etc/st2'
@@ -217,4 +220,9 @@ class st2::params(
   $chatops_adapter_conf = {
     'HUBOT_ADAPTER' => 'slack',
   }
+
+  $metrics_include = false
+  $metric_driver = 'statsd'
+  $metric_host = '127.0.0.1'
+  $metric_port = '8125'
 }

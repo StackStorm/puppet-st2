@@ -67,6 +67,10 @@ class st2::profile::server (
   $redis_hostname         = $st2::redis_hostname,
   $redis_port             = $st2::redis_port,
   $redis_password         = $st2::redis_password,
+  $metrics_include        = $st2::metrics_include,
+  $metric_driver          = $st2::metric_driver,
+  $metric_host            = $st2::metric_host,
+  $metric_port            = $st2::metric_port,
   $index_url              = $st2::index_url,
   $packs_group            = $st2::packs_group_name,
 ) inherits st2 {
@@ -282,6 +286,34 @@ class st2::profile::server (
     value   => $_redis_url,
     tag     => 'st2::config',
   }
+
+  ## Metrics Settings
+  if $metrics_include {
+    ini_setting { 'metrics_driver':
+      path    => '/etc/st2/st2.conf',
+      section => 'metrics',
+      setting => 'driver',
+      value   => $metric_driver,
+      tag     => 'st2::config',
+    }
+
+    ini_setting { 'metrics_host':
+      path    => '/etc/st2/st2.conf',
+      section => 'metrics',
+      setting => 'host',
+      value   => $metric_host,
+      tag     => 'st2::config',
+    }
+
+    ini_setting { 'metrics_port':
+      path    => '/etc/st2/st2.conf',
+      section => 'metrics',
+      setting => 'port',
+      value   => $metric_port,
+      tag     => 'st2::config',
+    }
+  }
+
 
   ## Resultstracker Settings
   ini_setting { 'resultstracker_logging':

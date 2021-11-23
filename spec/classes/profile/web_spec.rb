@@ -150,6 +150,34 @@ describe 'st2::profile::web' do
                   tag: ['st2', 'st2::backend', 'st2::backend::api'])
         end
         it do
+          is_expected.to contain_nginx__resource__location('@basic_statusError')
+            .with(ensure: 'present',
+                  server: 'ssl-st2webui',
+                  ssl: true,
+                  ssl_only: true,
+                  index_files: [],
+                  add_header: {
+                    'Content-Type' => 'application/json always',
+                  },
+                  location_cfg_append: {
+                    'return' => '503 \'{ "faultstring": "Nginx is unable to reach basic_status. Make sure service is running." }\'',
+                  },
+                  tag: ['st2', 'st2::backend', 'st2::backend::basicstatuserror'])
+        end
+        it do
+          is_expected.to contain_nginx__resource__location('/basic_status/')
+            .with(ensure: 'present',
+                  server: 'ssl-st2webui',
+                  ssl: true,
+                  ssl_only: true,
+                  index_files: [],
+                  location_cfg_append: {
+                    'error_page'  => '502 = @basic_statusError',
+                    'stub_status' => 'on',
+                  },
+                  tag: ['st2', 'st2::backend', 'st2::backend::basic_status'])
+        end
+        it do
           is_expected.to contain_nginx__resource__location('@streamError')
             .with(ensure: 'present',
                   server: 'ssl-st2webui',

@@ -302,6 +302,7 @@ class st2(
   $ng_init                  = true,
   $datastore_keys_dir       = $st2::params::datstore_keys_dir,
   $datastore_key_path       = "${st2::params::datstore_keys_dir}/datastore_key.json",
+  $nginx_basicstatus_port   = $st2::params::basicstatus_port,
   $nginx_manage_repo        = true,
   $nginx_client_max_body_size = $st2::params::nginx_client_max_body_size,
   $nginx_ssl_ciphers        = $st2::params::nginx_ssl_ciphers,
@@ -343,6 +344,10 @@ class st2(
   $scheduler_num            = $st2::params::scheduler_num,
   $rulesengine_num          = $st2::params::rulesengine_num,
   $notifier_num             = $st2::params::notifier_num,
+  $metrics_include          = $st2::params::metrics_include,
+  $metric_driver            = $st2::params::metric_driver,
+  $metric_host              = $st2::params::metric_host,
+  $metric_port              = $st2::params::metric_port,
 ) inherits st2::params {
 
   ########################################
