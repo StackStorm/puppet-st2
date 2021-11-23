@@ -27,14 +27,14 @@ control 'st2-services' do
   # st2auth
   describe port(9100) do
     it { should be_listening }
-    its('addresses') { should include '127.0.0.1' }
+    its('addresses') { should include '0.0.0.0' }
     its('protocols') { should cmp 'tcp' }
   end
 
   # st2api
   describe port(9101) do
     it { should be_listening }
-    its('addresses') { should include '127.0.0.1' }
+    its('addresses') { should include '0.0.0.0' }
     its('protocols') { should cmp 'tcp' }
   end
 
