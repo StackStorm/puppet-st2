@@ -278,6 +278,7 @@ class st2(
   $cli_silence_ssl_warnings = false,
   $cli_username             = $st2::params::admin_username,
   $cli_password             = $st2::params::admin_password,
+  $cli_apikey               = undef,
   $cli_api_url              = "http://${st2::params::hostname}:${st2::params::api_port}",
   $cli_auth_url             = "http://${st2::params::hostname}:${st2::params::auth_port}",
   $actionrunner_workers     = $st2::params::actionrunner_workers,

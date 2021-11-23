@@ -13,15 +13,21 @@ Puppet::Type.type(:st2_pack).provide(:default) do
     @token = exec_st2('auth', resource[:user], '-t', '-p', resource[:password]).chomp
   end
 
+  def auth_params
+    if @resource[:apikey]
+      ['--api-key', @resource[:apikey]]
+    else
+      ['-t', st2_authenticate]
+    end
+  end
+
   def create
-    token = st2_authenticate
     source = (@resource[:source]) ? @resource[:source] : @resource[:name]
-    exec_st2('pack', 'install', '-t', token, source)
+    exec_st2('pack', 'install', source, *auth_params)
   end
 
   def destroy
-    token = st2_authenticate
-    exec_st2('pack', 'remove', '-t', token, @resource[:name])
+    exec_st2('pack', 'remove', @resource[:name], *auth_params)
   end
 
   def exists?
@@ -29,8 +35,7 @@ Puppet::Type.type(:st2_pack).provide(:default) do
   end
 
   def list_installed_packs
-    token = st2_authenticate
-    output = exec_st2('pack', 'list', '-a', 'ref', '-j', '-t', token)
+    output = exec_st2('pack', 'list', '-a', 'ref', '-j', *auth_params)
     parse_output_json(output)
   end
 

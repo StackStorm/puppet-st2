@@ -24,12 +24,14 @@ define st2::pack (
   include st2
   $_cli_username = $st2::cli_username
   $_cli_password = $st2::cli_password
+  $_cli_apikey = $st2::cli_apikey
 
   st2_pack { $pack:
     ensure   => $ensure,
     name     => $pack,
     user     => $_cli_username,
     password => $_cli_password,
+    apikey   => $_cli_apikey,
     source   => $repo_url,
   }
 
