@@ -63,7 +63,7 @@
 #     },
 #   }
 #
-class st2::profile::chatops (
+class st2::component::chatops (
   $version                      = $st2::version,
   $hubot_log_level              = $st2::chatops_hubot_log_level,
   $hubot_express_port           = $st2::chatops_hubot_express_port,
@@ -115,7 +115,7 @@ class st2::profile::chatops (
 
   ########################################
   ## Additional nodejs packages
-  include st2::profile::nodejs
+  include st2::dependency::nodejs
 
   $npm_package_defaults = {
     ensure  => present,

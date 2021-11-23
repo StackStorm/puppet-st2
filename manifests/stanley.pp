@@ -26,7 +26,7 @@
 #  }
 #
 class st2::stanley (
-  $username        = 'stanley',
+  $username        = $st2::stanley_user,
   $ssh_public_key  = undef,
   $ssh_key_type    = undef,
   $ssh_private_key = undef,

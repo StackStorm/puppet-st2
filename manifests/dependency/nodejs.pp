@@ -6,10 +6,10 @@
 # and manage just the <code>NodeJS</code> installation on a single node.
 #
 # @example Basic Usage
-#  include st2::profile::nodejs
+#  include st2::dependency::nodejs
 #
 # @example Custom Parameters
-#  class { 'st2::profile::nodejs':
+#  class { 'st2::dependency::nodejs':
 #  }
 #
 # @param manage_repo
@@ -17,7 +17,7 @@
 # @param version
 #   Version of NodeJS to install. If not provided it will be auto-calcuated based on $st2::version
 #
-class st2::profile::nodejs(
+class st2::dependency::nodejs(
   $manage_repo = $st2::nodejs_manage_repo,
   $version     = $st2::nodejs_version,
 ) inherits st2 {

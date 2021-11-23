@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'st2::profile::mongodb' do
+describe 'st2::dependency::mongodb' do
   on_supported_os.each do |os, os_facts|
     let(:facts) { os_facts }
 

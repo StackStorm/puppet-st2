@@ -338,6 +338,7 @@ class st2(
   $chatops_api_url                      = "https://${st2::params::hostname}/api",
   $chatops_auth_url                     = "https://${st2::params::hostname}/auth",
   $chatops_web_url                      = undef,
+  $sensor_partition_provider            = $st2::params::sensor_partition_provider,
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,
   $workflowengine_num       = $st2::params::workflowengine_num,
@@ -345,6 +346,8 @@ class st2(
   $rulesengine_num          = $st2::params::rulesengine_num,
   $notifier_num             = $st2::params::notifier_num,
   $validate_output_schema   = $st2::params::validate_output_schema,
+  $manage_nfs_dirs          = true,
+  $stanley_user             = $st2::params::st2_stanley_user,
 ) inherits st2::params {
 
   ########################################

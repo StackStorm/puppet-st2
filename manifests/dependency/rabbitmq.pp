@@ -12,16 +12,16 @@
 #   RabbitMQ virtual host to create for StackStorm
 #
 # @example Basic Usage
-#   include st2::profile::rabbitmq
+#   include st2::dependency::rabbitmq
 #
 # @example Authentication enabled (configured vi st2)
 #   class { 'st2':
 #     rabbitmq_username => 'rabbitst2',
 #     rabbitmq_password => 'secret123',
 #   }
-#   include st2::profile::rabbitmq
+#   include st2::dependency::rabbitmq
 #
-class st2::profile::rabbitmq (
+class st2::dependency::rabbitmq (
   $username   = $st2::rabbitmq_username,
   $password   = $st2::rabbitmq_password,
   $port       = $st2::rabbitmq_port,

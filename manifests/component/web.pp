@@ -34,7 +34,7 @@
 #    Directory where the StackStorm WebUI site lives on the filesystem
 #
 # @example Basic Usage
-#   include st2::profile::web'
+#   include st2::component::web'
 #
 # @example Managing your own certificate
 #   # create your own certificate and key in the correct locations
@@ -46,13 +46,13 @@
 #   }
 #
 #   # instantiate this profile with ssl_cert_manage false
-#   class { 'st2::profile::web':
+#   class { 'st2::component::web':
 #     ssl_cert_manage => false,
 #   }
 #
 #
 # @example Change the SSL protocols and ciphers
-#   class { 'st2::profile::web':
+#   class { 'st2::component::web':
 #     nginx_ssl_protocols => ['TLSv1.2'],
 #     nginx_ssl_ciphers => [
 #       'ECDHE-ECDSA-AES256-GCM-SHA384',
@@ -60,7 +60,7 @@
 #     ],
 #   }
 #
-class st2::profile::web(
+class st2::component::web(
   Variant[Array[String], String] $nginx_ssl_ciphers   = $st2::nginx_ssl_ciphers,
   Variant[Array[String], String] $nginx_ssl_protocols = $st2::nginx_ssl_protocols,
   Stdlib::Port $nginx_ssl_port                        = $st2::nginx_ssl_port,
@@ -76,7 +76,7 @@ class st2::profile::web(
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
   # a dependency cycle is created because we must modify the nginx config
   # in this profile.
-  include st2::profile::nginx
+  include st2::dependency::nginx
   include st2::params
 
   ## Install the packages

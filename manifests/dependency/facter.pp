@@ -1,8 +1,8 @@
 # @summary Setup custom fact locations
 #
 # @example Basic Usage
-#  include st2::profile::facter
+#  include st2::dependency::facter
 #
-class st2::profile::facter {
+class st2::dependency::facter {
   include facter
 }

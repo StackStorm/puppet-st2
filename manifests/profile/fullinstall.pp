@@ -6,6 +6,7 @@
 #  * MongoDB
 #  * NodeJS
 #  * nginx
+#  * redis
 #
 # @example Basic Usage
 #   include st2::profile::fullinstall
@@ -20,27 +21,20 @@
 #
 class st2::profile::fullinstall inherits st2 {
 
-  anchor { 'st2::begin': }
-  -> anchor { 'st2::bootstrap': }
-  -> anchor { 'st2::pre_reqs': }
-  -> anchor { 'st2::main': }
-  -> anchor { 'st2::end': }
-
   Anchor['st2::begin']
   -> Anchor['st2::bootstrap']
-  -> class { 'st2::profile::facter': }
+  -> class { 'st2::dependency::facter': }
   -> class { 'st2::repo': }
-  -> class { 'st2::profile::selinux': }
+  -> class { 'st2::dependency::selinux': }
   -> Anchor['st2::pre_reqs']
-  -> class { 'st2::profile::redis': }
-  -> class { 'st2::profile::python': }
-  -> class { 'st2::profile::nodejs': }
-  -> class { 'st2::profile::rabbitmq': }
-  -> class { 'st2::profile::mongodb': }
+  -> class { 'st2::dependency::redis': }
+  -> class { 'st2::dependency::python': }
+  -> class { 'st2::dependency::nodejs': }
+  -> class { 'st2::dependency::rabbitmq': }
+  -> class { 'st2::dependency::mongodb': }
   -> Anchor['st2::main']
   -> class { 'st2::profile::client': }
   -> class { 'st2::profile::server': }
-  -> class { 'st2::profile::web': }
   -> class { 'st2::profile::chatops': }
   -> Anchor['st2::end']
 

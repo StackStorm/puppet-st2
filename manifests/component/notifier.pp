@@ -8,14 +8,14 @@
 # @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample
 #
 # @example Basic usage
-#   include st2::notifier
+#   include st2::component::notifier
 #
 # @param notifier_num
 #   The number of notifiers to have in an active active state
 # @param notifier_services
 #   Name of all the notifier services
 #
-class st2::notifier (
+class st2::component::notifier (
   $notifier_num      = $st2::notifier_num,
   $notifier_services = $st2::params::notifier_services,
 ) inherits st2 {

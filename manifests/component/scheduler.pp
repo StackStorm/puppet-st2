@@ -8,10 +8,10 @@
 # @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample#L251-L259
 #
 # @example Basic usage
-#   include st2::scheduler
+#   include st2::component::scheduler
 #
 # @example Customizing parameters
-#   class { 'st2::scheduler':
+#   class { 'st2::component::scheduler':
 #     sleep_interval => 60,
 #     gc_interval    => 120,
 #   }
@@ -27,7 +27,7 @@
 # @param scheduler_services
 #   Name of all the scheduler services.
 #
-class st2::scheduler (
+class st2::component::scheduler (
   $sleep_interval     = $st2::scheduler_sleep_interval,
   $gc_interval        = $st2::scheduler_gc_interval,
   $pool_size          = $st2::scheduler_pool_size,

@@ -4,14 +4,14 @@
 #    Set this to false when you have your own repository for nginx
 #
 # @example Basic Usage
-#  include st2::profile::nginx
+#  include st2::dependency::nginx
 #
 # @example Disable managing the nginx repo so you can manage it yourself
-#  class { 'st2::profile::nginx':
+#  class { 'st2::dependency::nginx':
 #    manage_repo => false,
 #  }
 #
-class st2::profile::nginx (
+class st2::dependency::nginx (
   $manage_repo = $st2::nginx_manage_repo
 ) inherits st2 {
   class { 'nginx':
