@@ -2,6 +2,8 @@
 
 ## Development
 
+- Update `policycoreutils-python` package name in CentOS8+ for `st2::profile::selinux` 
+
 - Add validate_output_schema flag. Contributed by @rush-skills
 
 - Add a flag for managing epel repos. Contributed by @rush-skills
