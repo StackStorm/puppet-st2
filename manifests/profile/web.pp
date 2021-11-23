@@ -71,7 +71,7 @@ class st2::profile::web(
   String $ssl_key                                     = $st2::ssl_key,
   String $version                                     = $st2::version,
   String $web_root                                    = $st2::web_root,
-  String $basicstatus_port                            = $st2::nginx_basicstatus_port,
+  Integer $basicstatus_port                            = $st2::nginx_basicstatus_port,
 ) inherits st2 {
   # include nginx here only
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
