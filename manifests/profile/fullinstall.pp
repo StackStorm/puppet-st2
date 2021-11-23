@@ -35,7 +35,7 @@ class st2::profile::fullinstall inherits st2 {
   -> Anchor['st2::main']
   -> class { 'st2::profile::client': }
   -> class { 'st2::profile::server': }
-  -> class { 'st2::profile::chatops': }
+  -> class { 'st2::component::chatops': }
   -> Anchor['st2::end']
 
   include st2::auth
