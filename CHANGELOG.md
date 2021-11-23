@@ -6,8 +6,8 @@
 
 ## 2.4.0 (Nov 17, 2021)
 
-- Added the ability to manage StackStack metrics giving options for the metric driver, host and port number; defined
-  in st2.conf. Contributed by @bishopbm1
+- Added the ability to manage StackStack metrics giving options for the metric driver,
+  host and port number defined in st2.conf. Contributed by @bishopbm1
 
 - Added nginx web route to get basic nginx metrics. Contributed by @asktheaxis
 
