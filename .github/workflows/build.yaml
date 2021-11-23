@@ -117,20 +117,20 @@ jobs:
       matrix:
         include:
           # note: actions/setup-ruby only allows using a major.minor release of ruby
-          - ruby: '2.7'
-            name: 'centos7-puppet6'
-          - ruby: '2.7'
-            name: 'centos7-puppet7'
+          # - ruby: '2.7'
+          #   name: 'centos7-puppet6'
+          # - ruby: '2.7'
+          #   name: 'centos7-puppet7'
           - ruby: '2.7'
             name: 'centos7-puppet7-python36'
-          - ruby: '2.7'
-            name: 'ubuntu18-puppet6'
-          - ruby: '2.7'
-            name: 'ubuntu18-puppet7'
-          - ruby: '2.7'
-            name: 'ubuntu20-puppet6'
-          - ruby: '2.7'
-            name: 'ubuntu20-puppet7'
+          # - ruby: '2.7'
+          #   name: 'ubuntu18-puppet6'
+          # - ruby: '2.7'
+          #   name: 'ubuntu18-puppet7'
+          # - ruby: '2.7'
+          #   name: 'ubuntu20-puppet6'
+          # - ruby: '2.7'
+          #   name: 'ubuntu20-puppet7'
     env:
       CHECK: '${{ matrix.check }}'
     steps:
@@ -232,4 +232,3 @@ jobs:
         run: |
           bundle exec rake module:build
           bundle exec rake module:push
-
