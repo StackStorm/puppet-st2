@@ -71,6 +71,7 @@ class st2::profile::web(
   String $ssl_key                                     = $st2::ssl_key,
   String $version                                     = $st2::version,
   String $web_root                                    = $st2::web_root,
+  String $basicstatus_port                            = $st2::nginx_basicstatus_port,
 ) inherits st2 {
   # include nginx here only
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
@@ -254,7 +255,7 @@ class st2::profile::web(
       rewrite_rules       => [
         '^/api/(.*)  /$1 break',
       ],
-      proxy               => "http://127.0.0.1:${st2::params::basicstatus_port}",
+      proxy               => "http://127.0.0.1:${basicstatus_port}",
       location_cfg_append => {
         'error_page'  => '502 = @basic_statusError',
         'stub_status' => 'on',
