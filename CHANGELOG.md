@@ -2,9 +2,11 @@
 
 ## Development
 
-- Add support for packs to be installed with api_key provided as config instead of using username/password to obtain a token"
+- Add support for k/v to be set with api_key provided as config. Contributed by @rush-skills
 
-- Update `policycoreutils-python` package name in CentOS8+ for `st2::profile::selinux` 
+- Add support for packs to be installed with api_key provided as config instead of using username/password to obtain a token". Contributed by @rush-skills
+
+- Update `policycoreutils-python` package name in CentOS8+ for `st2::profile::selinux`. Contributed by @rush-skills
 
 - Add validate_output_schema flag. Contributed by @rush-skills
 
