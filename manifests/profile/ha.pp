@@ -7,6 +7,7 @@ class st2::profile::ha (
 ) inherits st2 {
 
   contain st2::config::common
+  contain st2::config::runners
 
   ########################################
   ## Dependencies

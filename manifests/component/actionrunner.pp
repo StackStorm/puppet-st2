@@ -52,15 +52,6 @@ class st2::component::actionrunner (
     tag     => 'st2::config',
   }
 
-  file { $st2::params::actionrunner_global_env_file:
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('st2/etc/sysconfig/st2actionrunner.erb'),
-    tag     => 'st2::config',
-  }
-
   ## Resultstracker Settings (Part of Action Runner)
   ini_setting { 'resultstracker_logging':
     ensure  => present,

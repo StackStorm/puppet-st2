@@ -6,7 +6,8 @@
 class st2::profile::server (
 ) inherits st2 {
 
-  class { 'st2::config::common': }
+  contain st2::config::common
+  contain st2::config::runners
 
   contain st2::component::actionrunner
   contain st2::component::sensorcontainer
@@ -24,7 +25,7 @@ class st2::profile::server (
 
   ########################################
   ## st2 user (stanley)
-  class { 'st2::stanley': }
+  contain st2::stanley
 
   ########################################
   ## Dependencies

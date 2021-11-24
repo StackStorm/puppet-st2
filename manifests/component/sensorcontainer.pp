@@ -49,16 +49,6 @@ class st2::component::sensorcontainer (
     tag     => 'st2::config',
   }
 
-  file { $st2::params::sensorcontainer_global_env_file:
-    ensure  => file,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('st2/etc/sysconfig/st2sensorcontainer.erb'),
-    tag     => 'st2::config',
-  }
-
-
   ########################################
   ## Services
   service { $sensorcontainer_services:
