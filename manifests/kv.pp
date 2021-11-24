@@ -19,17 +19,17 @@ define st2::kv (
   include st2
 
   if $apikey {
-    _command = "st2 key set --api-key ${apikey} ${key} ${value}"
-    _unless = "st2 key get --api-key ${apikey} ${key} | grep ${key}"
+    $_command = "st2 key set --api-key ${apikey} ${key} ${value}"
+    $_unless = "st2 key get --api-key ${apikey} ${key} | grep ${key}"
   }
   else {
-    _command = "st2 key set ${key} ${value}"
-    _unless = "st2 key get ${key} | grep ${key}"
+    $_command = "st2 key set ${key} ${value}"
+    $_unless = "st2 key get ${key} | grep ${key}"
   }
 
   exec { "set-st2-key-${key}":
-    command   => _command,
-    unless    => _unless,
+    command   => $_command,
+    unless    => $_unless,
     path      => '/usr/sbin:/usr/bin:/sbin:/bin',
     tries     => '5',
     try_sleep => '10',
