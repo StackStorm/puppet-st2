@@ -14,12 +14,22 @@ define st2::kv (
   $value,
   $ensure = present,
   $key    = $name,
+  $apikey = $st2::cli_apikey,
 ) {
   include st2
 
+  if $apikey {
+    _command = "st2 key set --api-key ${apikey} ${key} ${value}"
+    _unless = "st2 key get --api-key ${apikey} ${key} | grep ${key}"
+  }
+  else {
+    _command = "st2 key set ${key} ${value}"
+    _unless = "st2 key get ${key} | grep ${key}"
+  }
+
   exec { "set-st2-key-${key}":
-    command   => "st2 key set ${key} ${value}",
-    unless    => "st2 key get ${key} | grep ${key}",
+    command   => _command,
+    unless    => _unless,
     path      => '/usr/sbin:/usr/bin:/sbin:/bin',
     tries     => '5',
     try_sleep => '10',
