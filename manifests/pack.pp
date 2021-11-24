@@ -20,6 +20,7 @@ define st2::pack (
   $pack     = $name,
   $repo_url = undef,
   $config   = undef,
+  $version  = undef,
 ) {
   include st2
   $_cli_username = $st2::cli_username
@@ -33,6 +34,7 @@ define st2::pack (
     password => $_cli_password,
     apikey   => $_cli_apikey,
     source   => $repo_url,
+    version  => $version,
   }
 
   if $config {

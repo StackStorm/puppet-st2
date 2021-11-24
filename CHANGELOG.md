@@ -2,6 +2,8 @@
 
 ## Development
 
+- Add support for a specific pack version/tag to be installed
+
 - Add support for k/v to be set with api_key provided as config. Contributed by @rush-skills
 
 - Add support for packs to be installed with api_key provided as config instead of using username/password to obtain a token". Contributed by @rush-skills
