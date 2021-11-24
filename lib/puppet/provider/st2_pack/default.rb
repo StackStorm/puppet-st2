@@ -35,7 +35,7 @@ Puppet::Type.type(:st2_pack).provide(:default) do
 
   def exists?
     if @resource[:version]
-      list_installed_packs_with_versions.include?([@resource[:name],@resource[:version]])
+      list_installed_packs_with_versions.include?([@resource[:name], @resource[:version]])
     else
       list_installed_packs.include?(@resource[:name])
     end
@@ -61,7 +61,7 @@ Puppet::Type.type(:st2_pack).provide(:default) do
     end
     result
   end
-  
+
   # Return list of package names
   def parse_version_output_json(raw)
     result = []
