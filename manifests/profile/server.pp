@@ -7,6 +7,9 @@ class st2::profile::server (
 ) inherits st2 {
 
   contain st2::config::common
+  contain st2::config::db
+  contain st2::config::messaging
+  contain st2::config::coordination
   contain st2::config::runners
 
   contain st2::component::actionrunner

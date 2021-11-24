@@ -45,11 +45,6 @@ class st2::config::common (
   include st2::notices
   include st2::params
 
-  # Include the settings for DB, Redis and RabbitMQ
-  contain st2::config::db
-  contain st2::config::messaging
-  contain st2::config::coordination
-
   $_validate_output_schema = $validate_output_schema ? {
     true    => 'True',
     default => 'False',
