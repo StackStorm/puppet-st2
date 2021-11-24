@@ -23,6 +23,9 @@ Puppet::Type.type(:st2_pack).provide(:default) do
 
   def create
     source = (@resource[:source]) ? @resource[:source] : @resource[:name]
+    if @resource[:version]
+      source = "#{source}=#{@resource[:version]}"
+    end
     exec_st2('pack', 'install', source, *auth_params)
   end
 
@@ -31,12 +34,21 @@ Puppet::Type.type(:st2_pack).provide(:default) do
   end
 
   def exists?
-    list_installed_packs.include?(@resource[:name])
+    if @resource[:version]
+      list_installed_packs_with_versions.include?([@resource[:name],@resource[:version]])
+    else
+      list_installed_packs.include?(@resource[:name])
+    end
   end
 
   def list_installed_packs
     output = exec_st2('pack', 'list', '-a', 'ref', '-j', *auth_params)
     parse_output_json(output)
+  end
+
+  def list_installed_packs_with_versions
+    output = exec_st2('pack', 'list', '-a', 'ref', 'version', '-j', *auth_params)
+    parse_version_output_json(output)
   end
 
   # Return list of package names
@@ -45,6 +57,17 @@ Puppet::Type.type(:st2_pack).provide(:default) do
     if raw && !raw.empty?
       pack_list = JSON.parse(raw)
       result = pack_list.map { |pack| pack['ref'] }
+      debug("Installed packs: #{result}")
+    end
+    result
+  end
+  
+  # Return list of package names
+  def parse_version_output_json(raw)
+    result = []
+    if raw && !raw.empty?
+      pack_list = JSON.parse(raw)
+      result = pack_list.map { |pack| [pack['ref'], pack['version']] }
       debug("Installed packs: #{result}")
     end
     result
