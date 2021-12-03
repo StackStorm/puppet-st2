@@ -66,6 +66,8 @@
 #   CLI config - Auth Username
 # @param cli_password
 #   CLI config - Auth Password
+# @param cli_apikey
+#   CLI config - StackStorm API Key to use for pack and k/v installation, instead of user/pass
 # @param cli_api_url
 #   CLI config - API URL
 # @param cli_auth_url
@@ -214,6 +216,8 @@
 #   The url for the erlang repositiory to be used for rabbitmq
 # @param erlang_key
 #   The gpg key for the erlang repositiory to be used for rabbitmq
+# @param validate_output_schema
+#   Enable/disable output schema validation in StackStorm
 #
 #
 # @example Basic Usage
