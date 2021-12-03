@@ -17,8 +17,6 @@ class st2::profile::selinux inherits st2::params {
         ensure => present,
       }
     }
-      }
-    }
 
     # nginx doesn't so we have to enable this here
     selinux::boolean {'st2 nginx httpd_can_network_connect':
