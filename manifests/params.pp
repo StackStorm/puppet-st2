@@ -164,6 +164,9 @@ class st2::params(
   # Number of notifiers to run
   $notifier_num = 1
 
+  # Should the output schema of actions and workflows be validated
+  $validate_output_schema = false
+
   # st2web
   $web_root = '/opt/stackstorm/static/webui/'
 

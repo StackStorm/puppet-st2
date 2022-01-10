@@ -6,8 +6,14 @@
 class st2::profile::selinux inherits st2::params {
   # note: the selinux module downcases the mode in the fact
   if ( ($facts['os']['family'] == 'RedHat') and ($facts['os']['selinux']['current_mode'] == 'enforcing')) {
-    if !defined(Package['policycoreutils-python']) {
-      package { 'policycoreutils-python':
+    if (Numeric($facts['os']['release']['major']) >= 8) { # package was renamed in el8
+      $package_policycoreutils = 'policycoreutils-python-utils'
+    }
+    else {
+      $package_policycoreutils = 'policycoreutils-python'
+    }
+    if !defined(Package[$package_policycoreutils]) {
+      package { $package_policycoreutils:
         ensure => present,
       }
     }
