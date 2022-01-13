@@ -22,13 +22,16 @@
 #   include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq (
-  $username   = $st2::rabbitmq_username,
-  $password   = $st2::rabbitmq_password,
-  $port       = $st2::rabbitmq_port,
-  $bind_ip    = $st2::rabbitmq_bind_ip,
-  $vhost      = $st2::rabbitmq_vhost,
-  $erlang_url = $st2::erlang_url,
-  $erlang_key = $st2::erlang_key
+  $username          = $st2::rabbitmq_username,
+  $password          = $st2::rabbitmq_password,
+  $port              = $st2::rabbitmq_port,
+  $bind_ip           = $st2::rabbitmq_bind_ip,
+  $vhost             = $st2::rabbitmq_vhost,
+  $erlang_url        = $st2::erlang_url,
+  $erlang_key        = $st2::erlang_key,
+  $erlang_key_id     = $st2::erlang_key_id,
+  $erlang_key_source = $st2::erlang_key_source,
+  $erlang_packages   = $st2::erlang_packages,
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
@@ -49,71 +52,38 @@ class st2::profile::rabbitmq (
   }
   elsif ($facts['os']['family'] == 'Debian') {
     $repos_ensure = true
-    # debian, ubuntu, etc
-    $osname = downcase($facts['os']['name'])
     # trusty, xenial, bionic, etc
     $release = downcase($facts['os']['distro']['codename'])
     $repos = 'main'
 
-    $location_erlang = "https://packagecloud.io/rabbitmq/rabbitmq-erlang/${osname}"
-    $location_rabbitmq = "https://packagecloud.io/rabbitmq/rabbitmq-server/${osname}"
-
-    $erlang_packages = [
-      'erlang-base',
-      'erlang-asn1',
-      'erlang-crypto',
-      'erlang-eldap',
-      'erlang-ftp',
-      'erlang-inets',
-      'erlang-mnesia',
-      'erlang-os-mon',
-      'erlang-parsetools',
-      'erlang-public-key',
-      'erlang-runtime-tools',
-      'erlang-snmp',
-      'erlang-ssl',
-      'erlang-syntax-tools',
-      'erlang-tftp',
-      'erlang-tools',
-      'erlang-xmerl',
-    ]
-
-    $erlang_key_id = '0xf77f1eda57ebb1cc'
-    $erlang_key_source = 'https://keyserver.ubuntu.com'
-
-    $rabbit_key_id = '8C695B0219AFDEB04A058ED8F4E789204D206F89'
-    $rabbit_key_source = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
-
-    $team_key_id = '0A9AF2115F4687BD29803A206B73A36E6026DFCA'
-    $team_key_source = 'hkps://keys.openpgp.org'
-
-    apt::key { 'rabbitmq-team':
-      id     => $team_key_id
-      server => 'https://keys.openpgp.org'
-    }
-
     apt::source { 'erlang':
-      location => $location_erlang,
+      ensure   => 'present',
+      location => $erlang_url,
       release  => $release,
       repos    => $repos,
+      pin      => '1000',
       key      => {
         'id'     => $erlang_key_id,
         'source' => $erlang_key_source,
-    },
-
-    apt::source { 'rabbitmq':
-      location => $location_rabbitmq,
-      release  => $release,
-      repos    => $repos,
-      key      => {
-        'id'     => $rabbit_key_id,
-        'source' => $rabbit_key_source,
       },
+      notify   => Exec['apt-get-clean'],
+      tag      => ['st2::rabbitmq::sources'],
     }
-
+    # rebuild apt cache since we just changed repositories
+    # Executing it manually here to avoid dep cycles
+    exec { 'apt-get-clean':
+      command     => '/usr/bin/apt-get -y clean',
+      refreshonly => true,
+      notify      => Exec['apt-get-update'],
+    }
+    exec { 'apt-get-update':
+      command     => '/usr/bin/apt-get -y update',
+      refreshonly => true,
+    }
     package { $erlang_packages:
-      ensure => 'present',
-      tag    => ['st2::packages', 'st2::rabbitmq::packages'],
+      ensure  => 'present',
+      tag     => ['st2::packages', 'st2::rabbitmq::packages'],
+      require => Exec['apt-get-update'],
     }
   }
   else {
