@@ -9,7 +9,8 @@
     - /cover/
     - /ci/
     - Puppetfile.lock
-    - '*.pyc'
+    - "*.pyc"
+    - .vscode/
 .gitlab-ci.yml:
   # we don't use GitLab
   unmanaged: true
@@ -21,34 +22,34 @@ appveyor.yml:
   unmanaged: true
 Gemfile:
   required:
-    ':development':
-      - gem: 'puppet-lint-absolute_classname-check'
+    ":development":
+      - gem: "puppet-lint-absolute_classname-check"
         # pin to 2.0.0 to comply with new standard which removes the leading ::
-        version: '>= 2.0.0'
-      - gem: 'puppet-lint-absolute_template_path'
-        version: '>= 1.0.1'
-      - gem: 'puppet-lint-alias-check'
-        version: '>= 0.1.1'
-      - gem: 'puppet-lint-classes_and_types_beginning_with_digits-check'
-        version: '>= 0.1.2'
-      - gem: 'puppet-lint-concatenated_template_files-check'
-        version: '>= 0.1.1'
-      - gem: 'puppet-lint-file_ensure-check'
-        version: '>= 0.3.1'
-      - gem: 'puppet-lint-file_source_rights-check'
-        version: '>= 0.1.1'
-      - gem: 'puppet-lint-leading_zero-check'
-        version: '>= 0.1.1'
-      - gem: 'puppet-lint-resource_reference_syntax'
-        version: '>= 1.0.10'
-      - gem: 'puppet-lint-trailing_comma-check'
-        version: '>= 0.3.2'
-      - gem: 'puppet-lint-unquoted_string-check'
-        version: '>= 0.3.0'
-      - gem: 'puppet-lint-version_comparison-check'
-        version: '>= 0.2.1'
+        version: ">= 2.0.0"
+      - gem: "puppet-lint-absolute_template_path"
+        version: ">= 1.0.1"
+      - gem: "puppet-lint-alias-check"
+        version: ">= 0.1.1"
+      - gem: "puppet-lint-classes_and_types_beginning_with_digits-check"
+        version: ">= 0.1.2"
+      - gem: "puppet-lint-concatenated_template_files-check"
+        version: ">= 0.1.1"
+      - gem: "puppet-lint-file_ensure-check"
+        version: ">= 0.3.1"
+      - gem: "puppet-lint-file_source_rights-check"
+        version: ">= 0.1.1"
+      - gem: "puppet-lint-leading_zero-check"
+        version: ">= 0.1.1"
+      - gem: "puppet-lint-resource_reference_syntax"
+        version: ">= 1.0.10"
+      - gem: "puppet-lint-trailing_comma-check"
+        version: ">= 0.3.2"
+      - gem: "puppet-lint-unquoted_string-check"
+        version: ">= 0.3.0"
+      - gem: "puppet-lint-version_comparison-check"
+        version: ">= 0.2.1"
 spec/default_facts.yml:
   extra_facts:
-    root_home: '/root'
+    root_home: "/root"
 spec/spec_helper.rb:
-  mock_with: ':rspec'
+  mock_with: ":rspec"
