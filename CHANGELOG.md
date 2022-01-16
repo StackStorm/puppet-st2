@@ -2,6 +2,8 @@
 
 ## Development
 
+- Update RabbitMQ installer to use latest Erlang from RabbitMQ repos. Contributed by @rush-skills
+
 - Add support for a specific pack version/tag to be installed. Contributed by @rush-skills
 
 - Add support for k/v to be set with api_key provided as config. Contributed by @rush-skills
