@@ -31,6 +31,8 @@
 # @param ssl_key
 #   Path to the file where the StackStorm SSL key will
 #   be generated. (default: /etc/ssl/st2/st2.key)
+# @param hostname
+#   Hostname of the StackStorm instance, used by other services to communicate
 # @param auth
 #   Toggle to enable/disable auth (Default: true)
 # @param auth_api_url
@@ -62,6 +64,8 @@
 #   CLI config - Enable/Disable Debug
 # @param cli_cache_token
 #   CLI config - True to cache auth token until expries
+# @param [boolean] cli_disable_credentials
+#   CLI config - False to setup the admin credentials  (Default: false)
 # @param cli_username
 #   CLI config - Auth Username
 # @param cli_password
@@ -265,22 +269,24 @@ class st2(
   $ssl_dir                  = $st2::params::ssl_dir,
   $ssl_cert                 = $st2::params::ssl_cert,
   $ssl_key                  = $st2::params::ssl_key,
+  $hostname                 = $st2::params::hostname,
   $auth                     = true,
-  $auth_api_url             = "http://${st2::params::hostname}:${st2::params::api_port}",
+  $auth_api_url             = "http://${st2::hostname}:${st2::params::api_port}",
   $auth_debug               = false,
   $auth_mode                = $st2::params::auth_mode,
   $auth_backend             = $st2::params::auth_backend,
   $auth_backend_config      = $st2::params::auth_backend_config,
-  $cli_base_url             = "http://${st2::params::hostname}",
+  $cli_base_url             = "http://${st2::hostname}",
   $cli_api_version          = 'v1',
   $cli_debug                = false,
   $cli_cache_token          = true,
   $cli_silence_ssl_warnings = false,
+  $cli_disable_credentials  = false,
   $cli_username             = $st2::params::admin_username,
   $cli_password             = $st2::params::admin_password,
   $cli_apikey               = undef,
-  $cli_api_url              = "http://${st2::params::hostname}:${st2::params::api_port}",
-  $cli_auth_url             = "http://${st2::params::hostname}:${st2::params::auth_port}",
+  $cli_api_url              = "http://${st2::hostname}/api",
+  $cli_auth_url             = "http://${st2::hostname}/auth",
   $actionrunner_workers     = $st2::params::actionrunner_workers,
   $packs                    = {},
   $packs_group              = $st2::params::packs_group_name,
@@ -291,7 +297,7 @@ class st2(
   $syslog_port              = 514,
   $syslog_facility          = 'local7',
   $ssh_key_location         = '/home/stanley/.ssh/st2_stanley_key',
-  $db_host                  = $st2::params::hostname,
+  $db_host                  = $st2::hostname,
   $db_port                  = $st2::params::mongodb_port,
   $db_bind_ips              = $st2::params::mongodb_bind_ips,
   $db_name                  = $st2::params::mongodb_st2_db,
@@ -334,10 +340,10 @@ class st2(
   $chatops_hubot_name                   = $st2::params::hubot_name,
   $chatops_hubot_alias                  = $st2::params::hubot_alias,
   $chatops_api_key                      = undef,
-  $chatops_st2_hostname                 = $st2::params::hostname,
-  $chatops_api_url                      = "https://${st2::params::hostname}/api",
-  $chatops_auth_url                     = "https://${st2::params::hostname}/auth",
-  $chatops_web_url                      = undef,
+  $chatops_st2_hostname                 = $st2::hostname,
+  $chatops_api_url                      = "https://${st2::hostname}/api",
+  $chatops_auth_url                     = "https://${st2::hostname}/auth",
+  $chatops_web_url                      = "https://${st2::hostname}/",
   $sensor_partition_provider            = $st2::params::sensor_partition_provider,
   $nodejs_version           = undef,
   $nodejs_manage_repo       = true,

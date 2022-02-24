@@ -46,7 +46,7 @@ define st2::client::settings(
   $base_url             = $st2::cli_base_url,
   $username             = $st2::cli_username,
   $password             = $st2::cli_password,
-  $disable_credentials  = false,
+  $disable_credentials  = $st2::cli_disable_credentials,
   $api_version          = $st2::cli_api_version,
   $cacert               = $st2::cli_cacert,
   $debug                = $st2::cli_debug,
