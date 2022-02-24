@@ -88,9 +88,9 @@ class st2::component::web(
   }
 
   ## Create ssl cert directory
-  file { $ssl_dir:
-    ensure  => directory,
-  }
+  # file { $ssl_dir:
+  #   ensure  => directory,
+  # }
 
   ## optionally manage the SSL certificate used by nginx
   if $ssl_cert_manage {
