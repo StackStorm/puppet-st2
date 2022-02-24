@@ -13,3 +13,10 @@ export ST2_AUTH_URL="<%= @auth_url %>"
 <%- else -%>
 # export ST2_AUTH_URL=""
 <%- end -%>
+
+# URL to the StackStorm stream service (st2stream)
+<%- if @stream_url -%>
+export ST2_STREAM_URL="<%= @stream_url %>"
+<%- else -%>
+# export ST2_STREAM_URL=""
+<%- end -%>

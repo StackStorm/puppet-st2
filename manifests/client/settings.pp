@@ -43,6 +43,7 @@ define st2::client::settings(
   $auth                 = $st2::auth,
   $api_url              = $st2::cli_api_url,
   $auth_url             = $st2::cli_auth_url,
+  $stream_url           = $st2::cli_stream_url,
   $base_url             = $st2::cli_base_url,
   $username             = $st2::cli_username,
   $password             = $st2::cli_password,
@@ -69,6 +70,11 @@ define st2::client::settings(
     section => 'api',
     setting => 'url',
     value   => $api_url,
+  }
+  ini_setting { "${user}-st2_cli_stream_url":
+    section => 'stream',
+    setting => 'url',
+    value   => $stream_url,
   }
   ini_setting { "${user}-st2_cli_general_base_url":
     section => 'general',

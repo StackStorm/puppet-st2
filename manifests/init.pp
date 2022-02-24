@@ -74,6 +74,8 @@
 #   CLI config - API URL
 # @param cli_auth_url
 #   CLI config - Auth URL
+# @param cli_stream_url
+#   CLI config - Stream URL
 # @param actionrunner_workers
 #   Set the number of actionrunner processes to start
 # @param packs
@@ -287,6 +289,7 @@ class st2(
   $cli_apikey               = undef,
   $cli_api_url              = "https://${st2::hostname}/api",
   $cli_auth_url             = "https://${st2::hostname}/auth",
+  $cli_stream_url             = "https://${st2::hostname}/stream",
   $actionrunner_workers     = $st2::params::actionrunner_workers,
   $packs                    = {},
   $packs_group              = $st2::params::packs_group_name,
