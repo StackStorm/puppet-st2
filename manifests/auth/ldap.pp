@@ -163,5 +163,5 @@ class st2::auth::ldap (
   # dependencies
   Package<| tag == 'st2::server::packages' |>
   -> Package[$_dep_pkgs]
-  ~> Service['st2auth']
+  ~> Service<| tag == 'st2::service' |>
 }
