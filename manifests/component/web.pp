@@ -32,6 +32,8 @@
 #    Version of StackStorm WebUI to install
 # @param web_root
 #    Directory where the StackStorm WebUI site lives on the filesystem
+# @param [Boolean] manage_ssl_dir
+#   Manage the directory for ssl_dir
 #
 # @example Basic Usage
 #   include st2::component::web'
@@ -71,6 +73,7 @@ class st2::component::web(
   String $ssl_key                                     = $st2::ssl_key,
   String $version                                     = $st2::version,
   String $web_root                                    = $st2::web_root,
+  Boolean $manage_ssl_dir                             = $st2::manage_ssl_dir
 ) inherits st2 {
   # include nginx here only
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
@@ -87,10 +90,12 @@ class st2::component::web(
     notify  => Service['nginx'], # notify to force a refresh if the package is updated
   }
 
-  ## Create ssl cert directory
-  # file { $ssl_dir:
-  #   ensure  => directory,
-  # }
+  ## Create ssl cert directory if needed
+  if $manage_ssl_dir {
+    file { $ssl_dir:
+      ensure  => directory,
+    }
+  }
 
   ## optionally manage the SSL certificate used by nginx
   if $ssl_cert_manage {

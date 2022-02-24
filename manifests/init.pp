@@ -31,6 +31,9 @@
 # @param ssl_key
 #   Path to the file where the StackStorm SSL key will
 #   be generated. (default: /etc/ssl/st2/st2.key)
+# @param [Boolean] manage_ssl_dir
+#   Manage the directory for ssl_dir
+#   (default: True)
 # @param hostname
 #   Hostname of the StackStorm instance, used by other services to communicate
 # @param auth
@@ -271,6 +274,7 @@ class st2(
   $ssl_dir                  = $st2::params::ssl_dir,
   $ssl_cert                 = $st2::params::ssl_cert,
   $ssl_key                  = $st2::params::ssl_key,
+  $manage_ssl_dir           = true,
   $hostname                 = $st2::params::hostname,
   $auth                     = true,
   $auth_api_url             = "http://${st2::params::hostname}:${st2::params::api_port}",
