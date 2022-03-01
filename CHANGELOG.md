@@ -2,6 +2,8 @@
 
 ## Development
 
+## 2.3.1 (Mar 1, 2022)
+
 - Update RabbitMQ installer to use latest Erlang from RabbitMQ repos. Contributed by @rush-skills
 
 - Add support for a specific pack version/tag to be installed. Contributed by @rush-skills
