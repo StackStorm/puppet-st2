@@ -47,7 +47,7 @@
 #     content => 'my privatekey data',
 #   }
 #
-#   # instantiate this profile with ssl_cert_manage false
+#   # instantiate this component with ssl_cert_manage false
 #   class { 'st2::component::web':
 #     ssl_cert_manage => false,
 #   }
