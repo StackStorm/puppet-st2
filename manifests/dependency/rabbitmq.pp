@@ -21,7 +21,7 @@
 #   }
 #   include st2::dependency::rabbitmq
 #
-class st2::profile::rabbitmq (
+class st2::dependency::rabbitmq (
   $username          = $st2::rabbitmq_username,
   $password          = $st2::rabbitmq_password,
   $port              = $st2::rabbitmq_port,
