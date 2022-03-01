@@ -1,6 +1,7 @@
 # @summary Manages the <code>st2sensorcontainer</code> service.
 #
 # Normally this class is instantiated by +st2::profile::fullinstall+.
+# OR +st2::profile::ha::sensor+
 # However, advanced users can instantiate this class directly to configure
 # and manage just the <code>st2sensorcontainer</code> service on a single node.
 # Parameters for this class mirror the parameters in the st2 config.
@@ -18,6 +19,11 @@
 # @param partition_provider
 #   partition_provider for distribution strategy of sensors.
 #   @see https://docs.stackstorm.com/reference/sensor_partitioning.html 
+# @param conf_file
+#   Path to  st2 conf file
+# @param sensorcontainer_services
+#   List of services for sensorcontainer
+#
 #
 class st2::component::sensorcontainer (
   $partition_provider       = $st2::sensor_partition_provider,
