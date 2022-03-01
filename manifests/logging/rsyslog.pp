@@ -6,6 +6,7 @@
 #
 # @example Basic usage
 #  include st2::logging::rsyslog
+#
 class st2::logging::rsyslog {
   file { '/etc/rsyslog.d/10-st2.conf':
     ensure => file,

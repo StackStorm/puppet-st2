@@ -1,4 +1,4 @@
-# @summary Profile to install, configure and manage actionrunner for st2
+# @summary Profile to install, configure and manage sensorcontainer for st2
 #
 # @example Basic usage
 #  include st2::profile::ha::sensor

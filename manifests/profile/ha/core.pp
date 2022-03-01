@@ -1,7 +1,7 @@
-# @summary Profile to install, configure and manage all server components for st2
+# @summary Profile to install, configure and manage all core components for st2
 #
 # @example Basic usage
-#  include st2::profile::server
+#  include st2::profile::ha::core
 #
 class st2::profile::ha::core (
 ) inherits st2::profile::ha {

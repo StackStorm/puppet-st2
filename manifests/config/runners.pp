@@ -1,3 +1,11 @@
+# @summary Runners (Actionrunner and SensorConainer) configuration for st2
+#
+# @note This class doesn't need to be invoked directly, instead it's included 
+# by other installation profiles to setup the configuration properly
+#
+# @param actionrunner_workers
+#   Number of action runners.
+#
 class st2::config::runners (
   $actionrunner_workers = $st2::actionrunner_workers,
 ) inherits st2 {

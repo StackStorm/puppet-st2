@@ -1,4 +1,4 @@
-# @summary Profile to install, configure and manage all server components for st2
+# @summary Profile to install, configure and manage all web and api components for st2
 #
 # @example Basic usage
 #  include st2::profile::ha::web

@@ -1,14 +1,22 @@
-# @summary Common configuration for st2
+# @summary Coordination (Redis) configuration for st2
 #
 # @note This class doesn't need to be invoked directly, instead it's included 
 # by other installation profiles to setup the configuration properly
 #
-# @param version
-#    Version of the st2 package to install
+# @param conf_file
+#   The path where st2 config is stored
+# @param redis_hostname
+#   Hostname of the redis instance to connect
+# @param redis_port
+#   Port of the redis instance to connect
+# @param redis_password
+#   Password of the redis instance to connect
 #
 # @example Basic Usage
 #   class { 'st2':
-#     chatops_hubot_name => '"@RosieRobot"',
+#     redis_hostname => 'myredis.server.tld',
+#     redis_port     => '6379',
+#     redis_password => 'supersecretpassword',
 #   }
 #
 class st2::config::coordination (

@@ -213,6 +213,12 @@
 #   for NodeJS (default: true)
 # @param redis_bind_ip
 #   Bind IP of the Redis server. Default is 127.0.0.1
+# @param redis_hostname
+#   Hostname of the redis instance to connect
+# @param redis_port
+#   Port of the redis instance to connect
+# @param redis_password
+#   Password of the redis instance to connect
 # @param workflowengine_num
 #   The number of workflowengines to have in an active active state (default: 1)
 # @param scheduler_num
@@ -221,12 +227,28 @@
 #   The number of rulesengines to have in an active active state (default: 1)
 # @param notifier_num
 #   The number of notifiers to have in an active active state (default: 1)
+# @param rabbitmq_username
+#   Username for the RabbitMQ connection
+# @param rabbitmq_password
+#   Password for the RabbitMQ connection
+# @param rabbitmq_hostname
+#   Hostname for the RabbitMQ connection
+# @param rabbitmq_port
+#   Port for the RabbitMQ connection
+# @param rabbitmq_vhost
+#  Vhost for the RabbitMQ connection
+# @param rabbitmq_bind_ip
+#   Bind IP for RabbitMQ server
 # @param erlang_url
 #   The url for the erlang repositiory to be used for rabbitmq
 # @param erlang_key
 #   The gpg key for the erlang repositiory to be used for rabbitmq
 # @param validate_output_schema
 #   Enable/disable output schema validation in StackStorm
+# @param manage_nfs_dirs
+#   If directories that might be shared between nodes should be managed by the module
+# @param stanley_user
+#   name of the stackstorm user 
 #
 #
 # @example Basic Usage
@@ -267,6 +289,7 @@
 #   class { 'st2':
 #     python_version            => $st2_python_version,
 #   }
+#
 class st2(
   $version                  = 'present',
   String  $python_version           = 'system',
@@ -330,8 +353,8 @@ class st2(
   $rabbitmq_password        = $st2::params::rabbitmq_password,
   $rabbitmq_hostname        = $st2::params::rabbitmq_hostname,
   $rabbitmq_port            = $st2::params::rabbitmq_port,
-  $rabbitmq_bind_ip         = $st2::params::rabbitmq_bind_ip,
   $rabbitmq_vhost           = $st2::params::rabbitmq_vhost,
+  $rabbitmq_bind_ip         = $st2::params::rabbitmq_bind_ip,
   $erlang_url               = $st2::params::erlang_url,
   $erlang_key               = $st2::params::erlang_key,
   $erlang_key_id            = $st2::params::erlang_key_id,

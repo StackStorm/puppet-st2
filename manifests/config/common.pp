@@ -5,28 +5,28 @@
 #
 # @param version
 #    Version of the st2 package to install
-#
-# @example Basic Usage
-#   class { 'st2':
-#     chatops_hubot_name => '"@RosieRobot"',
-#     chatops_api_key    => '"xxxxyyyyy123abc"',
-#     chatops_adapter    => {
-#       hubot-adapter => {
-#         package => 'hubot-rocketchat',
-#         source  => 'git+ssh://git@git.company.com:npm/hubot-rocketchat#master',
-#       },
-#     },
-#     chatops_adapter_conf => {
-#       HUBOT_ADAPTER        => 'rocketchat',
-#       ROCKETCHAT_URL       => 'https://chat.company.com',
-#       ROCKETCHAT_ROOM      => 'stackstorm',
-#       LISTEN_ON_ALL_PUBLIC => 'true',
-#       ROCKETCHAT_USER      => 'st2',
-#       ROCKETCHAT_PASSWORD  => 'secret123',
-#       ROCKETCHAT_AUTH      => 'password',
-#       RESPOND_TO_DM        => 'true',
-#     },
-#   }
+# @param conf_dir
+#   The directory where st2 configs are stored
+# @param conf_file
+#   The path where st2 config is stored
+# @param index_url
+#   URL to custom st2 pack exchange
+# @param packs_group
+#   owner group for packs directory
+# @param validate_output_schema
+#   If output schema for actions/workflows should be validated
+# @param manage_nfs_dirs
+#   If directories that might be shared between nodes should be managed by the module
+# @param stanley_user
+#   name of the stackstorm user 
+# @param syslog_host
+#   Syslog host. Default: localhost
+# @param syslog_protocol
+#   Syslog protocol. Default: udp
+# @param syslog_port
+#   Syslog port. Default: 514
+# @param syslog_facility
+#   Syslog facility. Default: local7
 #
 class st2::config::common (
   $version                = $st2::version,

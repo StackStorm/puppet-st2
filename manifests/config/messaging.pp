@@ -1,15 +1,20 @@
-# @summary Common configuration for st2
+# @summary Messaging (RabbitMQ) configuration for st2
 #
 # @note This class doesn't need to be invoked directly, instead it's included 
 # by other installation profiles to setup the configuration properly
 #
-# @param version
-#    Version of the st2 package to install
-#
-# @example Basic Usage
-#   class { 'st2':
-#     chatops_hubot_name => '"@RosieRobot"',
-#   }
+# @param conf_file
+#   The path where st2 config is stored
+# @param rabbitmq_username
+#   Username for the RabbitMQ connection
+# @param rabbitmq_password
+#   Password for the RabbitMQ connection
+# @param rabbitmq_hostname
+#   Hostname for the RabbitMQ connection
+# @param rabbitmq_port
+#   Port for the RabbitMQ connection
+# @param rabbitmq_vhost
+#  Vhost for the RabbitMQ connection
 #
 class st2::config::messaging (
   $conf_file              = $st2::conf_file,

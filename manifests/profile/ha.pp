@@ -1,7 +1,4 @@
-# @summary Profile to install, configure and manage all server components for st2
-#
-# @example Basic usage
-#  include st2::profile::ha
+# @summary Base profile to install and configure HA st2 installation
 #
 class st2::profile::ha (
 ) inherits st2 {

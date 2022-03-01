@@ -1,15 +1,23 @@
-# @summary Common configuration for st2
+# @summary Database (MongoDB) configuration for st2
 #
 # @note This class doesn't need to be invoked directly, instead it's included 
 # by other installation profiles to setup the configuration properly
 #
-# @param version
-#    Version of the st2 package to install
-#
-# @example Basic Usage
-#   class { 'st2':
-#     chatops_hubot_name => '"@RosieRobot"',
-#   }
+# @param conf_file
+#   The path where st2 config is stored
+# @param db_host
+#   Hostname to talk to st2 db
+# @param db_port
+#   Port for db server for st2 to talk to
+# @param db_bind_ips
+#   Array of bind IP addresses for MongoDB to listen on
+# @param db_name
+#   Name of db to connect to (default: 'st2')
+# @param db_username
+#   Username to connect to db with (default: 'stackstorm')
+# @param db_password
+#   Password for 'admin' and 'stackstorm' users in MongDB.
+#   If 'undef' then use $cli_password
 #
 class st2::config::db (
   $conf_file              = $st2::conf_file,
