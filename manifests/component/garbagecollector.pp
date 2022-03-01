@@ -1,6 +1,7 @@
 # @summary Manages the <code>st2garbagecollector</code> service.
 #
 # Normally this class is instantiated by +st2::profile::fullinstall+.
+# OR by +st2::profile::ha::solo+
 # However, advanced users can instantiate this class directly to configure
 # and manage just the <code>st2garbagecollector</code> service on a single node.
 # Parameters for this class mirror the parameters in the st2 config.
@@ -10,14 +11,10 @@
 # @example Basic usage
 #   include st2::component::garbagecollector
 #
-# @example Customizing parameters
-#   class { 'st2::component::garbagecollector':
-#     partition_provider => 'name:hash, hash_ranges:0..1024|2048..3072|2147483648..MAX',
-#   }
-#
-# @param partition_provider
-#   partition_provider for distribution strategy of sensors.
-#   @see https://docs.stackstorm.com/reference/sensor_partitioning.html 
+# @param conf_file
+#   Path to  st2 conf file
+# @param garbagecollector_services
+#   List of services for garbagecollector
 #
 class st2::component::garbagecollector (
   $conf_file          = $st2::conf_file,

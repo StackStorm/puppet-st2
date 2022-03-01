@@ -1,6 +1,7 @@
 # @summary Manages the <code>st2scheduler</code> service.
 #
 # Normally this class is instantiated by <code>st2::profile::fullinstall</code>.
+# OR by +st2::profile::ha::core+
 # However, advanced users can instantiate this class directly to configure
 # and manage just the <code>st2scheduler</code> service on a single node.
 # Parameters for this class mirror the parameters in the st2 config.

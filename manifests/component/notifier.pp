@@ -1,6 +1,7 @@
 # @summary Manages the <code>st2notifier</code> service (Orquesta)
 #
 # Normally this class is instantiated by +st2::profile::fullinstall+.
+# OR by +st2::profile::ha::core+
 # However, advanced users can instantiate this class directly to configure
 # and manage just the <code>st2notifier</code> service on a single node.
 # Parameters for this class mirror the parameters in the st2 config.
