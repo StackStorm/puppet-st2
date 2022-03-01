@@ -4,35 +4,6 @@
 #  include st2::profile::server
 #
 class st2::profile::server (
-  $version                = $st2::version,
-  $conf_dir               = $st2::conf_dir,
-  $conf_file              = $st2::conf_file,
-  $auth                   = $st2::auth,
-  $actionrunner_workers   = $st2::actionrunner_workers,
-  $syslog                 = $st2::syslog,
-  $syslog_host            = $st2::syslog_host,
-  $syslog_port            = $st2::syslog_port,
-  $syslog_facility        = $st2::syslog_facility,
-  $syslog_protocol        = $st2::syslog_protocol,
-  $st2api_listen_ip       = '127.0.0.1',
-  $st2api_listen_port     = '9101',
-  $st2auth_listen_ip      = '127.0.0.1',
-  $st2auth_listen_port    = '9100',
-  $ssh_key_location       = $st2::ssh_key_location,
-  $ng_init                = $st2::ng_init,
-  $db_username            = $st2::db_username,
-  $db_password            = $st2::db_password,
-  $rabbitmq_username      = $st2::rabbitmq_username,
-  $rabbitmq_password      = $st2::rabbitmq_password,
-  $rabbitmq_hostname      = $st2::rabbitmq_hostname,
-  $rabbitmq_port          = $st2::rabbitmq_port,
-  $rabbitmq_vhost         = $st2::rabbitmq_vhost,
-  $redis_hostname         = $st2::redis_hostname,
-  $redis_port             = $st2::redis_port,
-  $redis_password         = $st2::redis_password,
-  $index_url              = $st2::index_url,
-  $packs_group            = $st2::packs_group_name,
-  $validate_output_schema = $st2::validate_output_schema,
 ) inherits st2 {
 
   contain st2::config::common
