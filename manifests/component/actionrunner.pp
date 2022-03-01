@@ -1,6 +1,7 @@
 # @summary Manages the <code>st2actionrunner</code> service.
 #
 # Normally this class is instantiated by +st2::profile::fullinstall+.
+# OR by +st2::profile::ha::runner+
 # However, advanced users can instantiate this class directly to configure
 # and manage just the <code>st2actionrunner</code> service on a single node.
 # Parameters for this class mirror the parameters in the st2 config.
@@ -12,13 +13,18 @@
 #
 # @example Customizing parameters
 #   class { 'st2::component::actionrunner':
+#     actionrunner_workers => 5,
+#     ssh_key_location => '/etc/secrets/my_ssh_key',
 #   }
 #
-# @param enabled
-#   Specify to enable sensor service.
-# @param partition_provider
-#   partition_provider for distribution strategy of sensors.
-#   @see https://docs.stackstorm.com/reference/sensor_partitioning.html 
+# @param actionrunner_workers
+#   Number of action runners.
+# @param ssh_key_location
+#   Path to ssh key for the runner user
+# @param conf_file
+#   Path to  st2 conf file
+# @param actionrunner_services
+#   List of services for actionrunner
 #
 class st2::component::actionrunner (
   $actionrunner_workers   = $st2::actionrunner_workers,
