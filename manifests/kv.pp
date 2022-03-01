@@ -19,14 +19,13 @@ define st2::kv (
   include st2
 
   if $apikey {
-    $_command = "st2 key set --api-key ${apikey} ${key} ${value}"
-    $_unless = "st2 key get --api-key ${apikey} ${key} | grep ${key}"
+    $_cmd_flags = "--api-key ${apikey}"
   }
   else {
-    $_command = "st2 key set ${key} ${value}"
-    $_unless = "st2 key get ${key} | grep ${key}"
+    $_cmd_flags = ''
   }
-
+  $_command = "st2 key set ${_cmd_flags} ${key} ${value}"
+  $_unless = "st2 key get ${_cmd_flags} ${key} | grep ${key}"
   exec { "set-st2-key-${key}":
     command   => $_command,
     unless    => $_unless,
