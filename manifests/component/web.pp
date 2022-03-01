@@ -1,5 +1,7 @@
 # @summary  Profile to install, configure and manage StackStorm web UI (st2web).
 #
+# This component gets installed by +st2::profile::ha::web+
+#
 # @param nginx_ssl_ciphers
 #   String or list of strings of acceptable SSL ciphers to configure nginx with.
 #   @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html

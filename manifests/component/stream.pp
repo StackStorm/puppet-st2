@@ -11,11 +11,6 @@
 # @example Basic usage
 #   include st2::component::stream
 #
-# @example Customizing parameters
-#   class { 'st2::component::stream':
-#     partition_provider => 'name:hash, hash_ranges:0..1024|2048..3072|2147483648..MAX',
-#   }
-#
 # @param conf_file
 #   Path to  st2 conf file
 # @param stream_services
