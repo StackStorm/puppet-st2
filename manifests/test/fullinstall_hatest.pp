@@ -4,7 +4,7 @@ $st2_python_version = $facts['os']['family'] ? {
   'Debian' => 'python3.6',
 }
 class { 'st2':
-  python_version => $st2_python_version,
+  python_version           => $st2_python_version,
   cli_silence_ssl_warnings => true, # needed for clean pack install in tests
 }
 
