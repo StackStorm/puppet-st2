@@ -12,6 +12,8 @@
 #    URL of the StackStorm API service
 # @param auth_url
 #    URL of the StackStorm Auth service
+# @param stream_url
+#    URL of the StackStorm Stream service
 # @param base_url
 #    Base URL for other StackStorm services
 # @param username
