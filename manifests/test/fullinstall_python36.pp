@@ -1,7 +1,7 @@
 # Test for installing standalone StackStorm using Python 3.6
 $st2_python_version = $facts['os']['family'] ? {
-  'RedHat' => '3.6',
-  'Debian' => 'python3.6',
+  'RedHat' => '3.8',
+  'Debian' => 'python3.8',
 }
 class { 'st2':
   python_version            => $st2_python_version,

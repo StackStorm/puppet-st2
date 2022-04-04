@@ -61,17 +61,27 @@ platforms:
     provisioner:
       puppetfile_path: build/centos7-puppet7/Puppetfile
 
-  # CentOS7 with Systemd - Puppet 7 - Python 3.6
-  - name: centos7-puppet7-python36
+  # RockyLinux 8 - Puppet 6
+  - name: rocky8-puppet6
     driver:
-      platform: centos
-      dockerfile: build/centos7-puppet7/Dockerfile.kitchen
+      platform: rockylinux
+      dockerfile: build/rocky8-puppet6/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/centos7-puppet7/Puppetfile
-      manifest: test/fullinstall_python36.pp
+      puppetfile_path: build/rocky8-puppet6/Puppetfile
+
+  # RockyLinux 8 - Puppet 7
+  - name: rocky8-puppet7
+    driver:
+      platform: rockylinux
+      dockerfile: build/rocky8-puppet7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/rocky8-puppet7/Puppetfile
 
   # Ubuntu Bionic with Systemd - Puppet 6
   - name: ubuntu18-puppet6

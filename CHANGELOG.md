@@ -2,6 +2,8 @@
 
 ## Development
 
+- Move CentOS -> RockyLinux and Python 3.6 -> 3.8. Contributed by @rush-skills
+
 ## 2.4.0 (Mar 1, 2022)
 
 - Update RabbitMQ installer to use latest Erlang from RabbitMQ repos. Contributed by @rush-skills
