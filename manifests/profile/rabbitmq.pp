@@ -22,17 +22,20 @@
 #   include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq (
-  $username   = $st2::rabbitmq_username,
-  $password   = $st2::rabbitmq_password,
-  $port       = $st2::rabbitmq_port,
-  $bind_ip    = $st2::rabbitmq_bind_ip,
-  $vhost      = $st2::rabbitmq_vhost,
-  $erlang_url = $st2::erlang_url,
-  $erlang_key = $st2::erlang_key
+  $username          = $st2::rabbitmq_username,
+  $password          = $st2::rabbitmq_password,
+  $port              = $st2::rabbitmq_port,
+  $bind_ip           = $st2::rabbitmq_bind_ip,
+  $vhost             = $st2::rabbitmq_vhost,
+  $erlang_url        = $st2::erlang_url,
+  $erlang_key        = $st2::erlang_key,
+  $erlang_key_id     = $st2::erlang_key_id,
+  $erlang_key_source = $st2::erlang_key_source,
+  $erlang_packages   = $st2::erlang_packages,
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
-  if ($facts['os']['family'] == 'RedHat') and ($facts['os']['release']['major'] == '8') {
+  if ($facts['os']['family'] == 'RedHat') {
     $repos_ensure = true
 
     # This is required because when using the latest version of rabbitmq because the latest version in EPEL
@@ -45,6 +48,42 @@ class st2::profile::rabbitmq (
       enabled  => 1,
       gpgcheck => 1,
       before   => Class['rabbitmq::repo::rhel'],
+    }
+  }
+  elsif ($facts['os']['family'] == 'Debian') {
+    $repos_ensure = true
+    # trusty, xenial, bionic, etc
+    $release = downcase($facts['os']['distro']['codename'])
+    $repos = 'main'
+
+    apt::source { 'erlang':
+      ensure   => 'present',
+      location => $erlang_url,
+      release  => $release,
+      repos    => $repos,
+      pin      => '1000',
+      key      => {
+        'id'     => $erlang_key_id,
+        'source' => $erlang_key_source,
+      },
+      notify   => Exec['apt-get-clean'],
+      tag      => ['st2::rabbitmq::sources'],
+    }
+    # rebuild apt cache since we just changed repositories
+    # Executing it manually here to avoid dep cycles
+    exec { 'apt-get-clean':
+      command     => '/usr/bin/apt-get -y clean',
+      refreshonly => true,
+      notify      => Exec['apt-get-update'],
+    }
+    exec { 'apt-get-update':
+      command     => '/usr/bin/apt-get -y update',
+      refreshonly => true,
+    }
+    package { $erlang_packages:
+      ensure  => 'present',
+      tag     => ['st2::packages', 'st2::rabbitmq::packages'],
+      require => Exec['apt-get-update'],
     }
   }
   else {
@@ -90,5 +129,10 @@ class st2::profile::rabbitmq (
 
     Yumrepo['epel']
     -> Package['rabbitmq-server']
+  }
+  # Debian/Ubuntu needs erlang before rabbitmq
+  elsif $facts['os']['family'] == 'Debian' {
+    Package<| tag == 'st2::rabbitmq::packages' |>
+    -> Class['rabbitmq']
   }
 }

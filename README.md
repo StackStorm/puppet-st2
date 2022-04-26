@@ -10,31 +10,42 @@
 
 #### Table of Contents
 
-1. [Description](#description)
-2. [Setup - The basics of getting started with st2](#setup)
-    * [What st2 affects](#what-st2-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with st2](#beginning-with-st2)
-3. [Usage - Configuration options and additional functionality](#usage)
-    * [Reference Documentation](#reference-documentation)
-    * [Configuration](#configuration)
-        * [Profiles](#profiles)
-        * [Installing and Configuring Packs](#installing-and-configuring-packs)
-        * [Configuring Authentication](#configuring-authentication)
-        * [Configuring ChatOps](#configuring-chatops)
-    * [Tasks](#tasks)
-        * [Task List](#task-list)
-        * [Task Authentication](#task-authentication)
-        * [Using Tasks With API Key](#using-tasks-with-api-key)
-        * [Using Tasks With Auth Tokens](#using-tasks-with-auth-tokens)
-        * [Using Tasks With Username and Password](#using-tasks-with-username-and-password)
-4. [Limitations - OS compatibility, etc.](#limitations)
-    * [Supported Platforms](#supported-platforms)
-    * [Supported Puppet versions](#supported-puppet-versions)
-    * [Upgrading StackStorm](#upgrading-stackstorm)
-5. [Development - Guide for contributing to the module](#development)
-    * [Maintainers](#maintainers)
-    * [Help](#help)
+- [puppet-st2](#puppet-st2)
+      - [Table of Contents](#table-of-contents)
+  - [Description](#description)
+  - [Setup](#setup)
+    - [What st2 Affects](#what-st2-affects)
+    - [Setup Requirements](#setup-requirements)
+      - [Module Dependencies](#module-dependencies)
+    - [Beginning with st2](#beginning-with-st2)
+  - [Usage](#usage)
+    - [Reference Documentation](#reference-documentation)
+    - [Configuration](#configuration)
+      - [Profiles](#profiles)
+      - [Installing and Configuring Packs](#installing-and-configuring-packs)
+      - [Configuring Authentication](#configuring-authentication)
+      - [Configuring ChatOps](#configuring-chatops)
+      - [Scaling out services](#scaling-out-services)
+      - [Using API Key for pack and K/V management](#using-api-key-for-pack-and-kv-management)
+    - [Tasks](#tasks)
+      - [Task List](#task-list)
+      - [Task Authentication](#task-authentication)
+      - [Using Tasks With API Key](#using-tasks-with-api-key)
+      - [Using Tasks With Auth Tokens](#using-tasks-with-auth-tokens)
+      - [Using Tasks With Username and Password](#using-tasks-with-username-and-password)
+  - [Limitations](#limitations)
+    - [Supported platforms](#supported-platforms)
+    - [Supported Puppet versions](#supported-puppet-versions)
+      - [:warning: End-of-Support Notice - Mistral](#warning-end-of-support-notice---mistral)
+      - [:warning: End-of-Support Notice - Ubuntu 16.04](#warning-end-of-support-notice---ubuntu-1604)
+      - [:warning: End-of-Support Notice - CentOS 6](#warning-end-of-support-notice---centos-6)
+      - [:warning: Deprecation Notice - Puppet 5](#warning-deprecation-notice---puppet-5)
+      - [:warning: Deprecation Notice - Puppet 4](#warning-deprecation-notice---puppet-4)
+      - [:warning: Deprecation Notice - Puppet 3](#warning-deprecation-notice---puppet-3)
+    - [Upgrading StackStorm](#upgrading-stackstorm)
+  - [Development](#development)
+    - [Maintainers](#maintainers)
+    - [Help](#help)
 
 ## Description
 
@@ -334,6 +345,31 @@ class { 'st2::workflowengine':
   workflowengine_num => 4,
 }
 ```
+
+#### Using API Key for pack and K/V management
+
+It is now possible to use StackStorm API Keys to authenticate the `st2` commands that are executed during puppet runs, thus replacing the need for username/password and auth token based auth for those commands. 
+To configure, first generate an API key using:
+
+``` shell
+$ st2 apikey create -m '{"used_by": "puppet-st2-cli"}'
+```
+
+Then add the generated API Key to your puppet config:
+
+```ruby 
+class { 'st2':
+  cli_apikey => 'myapikey'
+}
+```
+
+OR in Hiera
+
+```yaml
+st2::cli_apikey: myapikey
+```
+
+Then proceed to using pack and/or k/v functionality normally. When the commands are executed, they will now pass the apikey as auth instead of generated an auth token from the supplied `cli_username` and `cli_password`.
 
 ### Tasks
 

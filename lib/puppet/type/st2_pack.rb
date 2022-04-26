@@ -16,6 +16,14 @@ Puppet::Type.newtype(:st2_pack) do
     desc 'St2 cli password'
   end
 
+  newparam(:apikey) do
+    desc 'St2 apikey'
+  end
+
+  newparam(:version) do
+    desc 'Specific pack version to install'
+  end
+
   newparam(:source) do
     desc 'Git URL for st2 pack'
   end
