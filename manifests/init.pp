@@ -66,6 +66,8 @@
 #   CLI config - Auth Username
 # @param cli_password
 #   CLI config - Auth Password
+# @param cli_apikey
+#   CLI config - StackStorm API Key to use for pack and k/v installation, instead of user/pass
 # @param cli_api_url
 #   CLI config - API URL
 # @param cli_auth_url
@@ -214,6 +216,8 @@
 #   The url for the erlang repositiory to be used for rabbitmq
 # @param erlang_key
 #   The gpg key for the erlang repositiory to be used for rabbitmq
+# @param validate_output_schema
+#   Enable/disable output schema validation in StackStorm
 #
 #
 # @example Basic Usage
@@ -278,6 +282,7 @@ class st2(
   $cli_silence_ssl_warnings = false,
   $cli_username             = $st2::params::admin_username,
   $cli_password             = $st2::params::admin_password,
+  $cli_apikey               = undef,
   $cli_api_url              = "http://${st2::params::hostname}:${st2::params::api_port}",
   $cli_auth_url             = "http://${st2::params::hostname}:${st2::params::auth_port}",
   $actionrunner_workers     = $st2::params::actionrunner_workers,
@@ -317,6 +322,9 @@ class st2(
   $rabbitmq_vhost           = $st2::params::rabbitmq_vhost,
   $erlang_url               = $st2::params::erlang_url,
   $erlang_key               = $st2::params::erlang_key,
+  $erlang_key_id            = $st2::params::erlang_key_id,
+  $erlang_key_source        = $st2::params::erlang_key_source,
+  $erlang_packages          = $st2::params::erlang_packages,
   $redis_bind_ip            = $st2::params::redis_bind_ip,
   $redis_hostname           = $st2::params::redis_hostname,
   $redis_port               = $st2::params::redis_port,
@@ -348,6 +356,7 @@ class st2(
   $metric_driver            = $st2::params::metric_driver,
   $metric_host              = $st2::params::metric_host,
   $metric_port              = $st2::params::metric_port,
+  $validate_output_schema   = $st2::params::validate_output_schema,
 ) inherits st2::params {
 
   ########################################

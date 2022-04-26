@@ -2,6 +2,24 @@
 
 ## Development
 
+## 2.4.0 (Mar 1, 2022)
+
+- Update RabbitMQ installer to use latest Erlang from RabbitMQ repos. Contributed by @rush-skills
+
+- Add support for a specific pack version/tag to be installed. Contributed by @rush-skills
+
+- Add support for k/v to be set with api_key provided as config. Contributed by @rush-skills
+
+- Add support for packs to be installed with api_key provided as config instead of using username/password to obtain a token". Contributed by @rush-skills
+
+- Update `policycoreutils-python` package name in CentOS8+ for `st2::profile::selinux`. Contributed by @rush-skills
+
+- Add validate_output_schema flag. Contributed by @rush-skills
+
+- Add a flag for managing epel repos. Contributed by @rush-skills
+
+- Rework LDAP kwargs to use docstring and look cleaner. Contributed by @rush-skills
+
 - Add configuration for redis based coordination and remove old style `$::osfamily` references. Contributed by @rush-skills
 
 ## 2.4.0 (Nov 17, 2021)

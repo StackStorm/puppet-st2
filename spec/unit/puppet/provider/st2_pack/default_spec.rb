@@ -49,8 +49,8 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
                                                   '-p', 'st2_password')
                                             .and_return('token')
       expect(provider).to receive(:exec_st2).with('pack', 'install',
-                                                  '-t', 'token',
-                                                  'rspec st2_pack test')
+                                                  'rspec st2_pack test',
+                                                  '-t', 'token')
       provider.create
     end
   end
@@ -62,8 +62,33 @@ describe Puppet::Type.type(:st2_pack).provider(:default) do
                                                   '-p', 'st2_password')
                                             .and_return('token')
       expect(provider).to receive(:exec_st2).with('pack', 'remove',
-                                                  '-t', 'token',
-                                                  'rspec st2_pack test')
+                                                  'rspec st2_pack test',
+                                                  '-t', 'token')
+      provider.destroy
+    end
+  end
+
+  describe 'apikey is used' do
+    let(:resource) do
+      Puppet::Type.type(:st2_pack).new(
+        {
+          name: name,
+          provider: :default,
+          apikey: 'apikey',
+        }.merge(attributes),
+      )
+    end
+
+    it 'creates a pack with apikey' do
+      expect(provider).to receive(:exec_st2).with('pack', 'install',
+                                                  'rspec st2_pack test',
+                                                  '--api-key', 'apikey')
+      provider.create
+    end
+    it 'deletes a pack with apikey' do
+      expect(provider).to receive(:exec_st2).with('pack', 'remove',
+                                                  'rspec st2_pack test',
+                                                  '--api-key', 'apikey')
       provider.destroy
     end
   end

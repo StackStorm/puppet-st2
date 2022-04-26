@@ -51,9 +51,9 @@ class st2::profile::server (
   $syslog_port            = $st2::syslog_port,
   $syslog_facility        = $st2::syslog_facility,
   $syslog_protocol        = $st2::syslog_protocol,
-  $st2api_listen_ip       = '0.0.0.0',
+  $st2api_listen_ip       = '127.0.0.1',
   $st2api_listen_port     = '9101',
-  $st2auth_listen_ip      = '0.0.0.0',
+  $st2auth_listen_ip      = '127.0.0.1',
   $st2auth_listen_port    = '9100',
   $ssh_key_location       = $st2::ssh_key_location,
   $ng_init                = $st2::ng_init,
@@ -73,11 +73,16 @@ class st2::profile::server (
   $metric_port            = $st2::metric_port,
   $index_url              = $st2::index_url,
   $packs_group            = $st2::packs_group_name,
+  $validate_output_schema = $st2::validate_output_schema,
 ) inherits st2 {
   include st2::notices
   include st2::params
 
   $_enable_auth = $auth ? {
+    true    => 'True',
+    default => 'False',
+  }
+  $_validate_output_schema = $validate_output_schema ? {
     true    => 'True',
     default => 'False',
   }
@@ -386,6 +391,16 @@ class st2::profile::server (
     section => 'syslog',
     setting => 'facility',
     value   => $syslog_facility,
+    tag     => 'st2::config',
+  }
+
+  ## System Settings
+  ini_setting { 'validate_output_schema':
+    ensure  => present,
+    path    => $conf_file,
+    section => 'system',
+    setting => 'validate_output_schema',
+    value   => $_validate_output_schema,
     tag     => 'st2::config',
   }
 

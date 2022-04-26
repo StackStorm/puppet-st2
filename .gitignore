@@ -34,3 +34,4 @@
 /ci/
 Puppetfile.lock
 *.pyc
+.vscode/

@@ -167,6 +167,9 @@ class st2::params(
   # Number of notifiers to run
   $notifier_num = 1
 
+  # Should the output schema of actions and workflows be validated
+  $validate_output_schema = false
+
   # st2web
   $web_root = '/opt/stackstorm/static/webui/'
 
@@ -187,8 +190,17 @@ class st2::params(
   $rabbitmq_port = 5672
   $rabbitmq_bind_ip = '127.0.0.1'
   $rabbitmq_vhost = '/'
-  $erlang_url = "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch"
+  $osname = downcase($facts['os']['name'])
+  $erlang_url = $facts['os']['family'] ? {
+    'Debian' => "http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/${osname}",
+    'RedHat' => "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch",
+  }
   $erlang_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
+  $erlang_key_id = 'B279943D2A549531E144B875F77F1EDA57EBB1CC'
+  $erlang_key_source = 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc'
+  $erlang_packages = [
+    'erlang',
+  ]
 
   ## Redis
   $redis_bind_ip = '127.0.0.1'

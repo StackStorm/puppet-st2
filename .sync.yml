@@ -10,6 +10,7 @@
     - /ci/
     - Puppetfile.lock
     - '*.pyc'
+    - .vscode/
 .gitlab-ci.yml:
   # we don't use GitLab
   unmanaged: true
