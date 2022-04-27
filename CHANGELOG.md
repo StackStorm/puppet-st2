@@ -2,6 +2,13 @@
 
 ## Development
 
+- Added the ability to manage StackStack metrics giving options for the metric driver,
+  host and port number defined in st2.conf. Contributed by @bishopbm1
+
+- Added nginx web route to get basic nginx metrics. Contributed by @asktheaxis
+
+- Fixed issues with RabbitMQ @bishopbm1
+
 ## 2.4.0 (Mar 1, 2022)
 
 - Update RabbitMQ installer to use latest Erlang from RabbitMQ repos. Contributed by @rush-skills
@@ -21,13 +28,6 @@
 - Rework LDAP kwargs to use docstring and look cleaner. Contributed by @rush-skills
 
 - Add configuration for redis based coordination and remove old style `$::osfamily` references. Contributed by @rush-skills
-
-## 2.4.0 (Nov 17, 2021)
-
-- Added the ability to manage StackStack metrics giving options for the metric driver,
-  host and port number defined in st2.conf. Contributed by @bishopbm1
-
-- Added nginx web route to get basic nginx metrics. Contributed by @asktheaxis
 
 ## 2.3.0 (Sep 15, 2021)
 
