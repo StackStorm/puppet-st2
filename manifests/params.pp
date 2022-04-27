@@ -198,6 +198,10 @@ class st2::params(
   $erlang_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
   $erlang_key_id = 'B279943D2A549531E144B875F77F1EDA57EBB1CC'
   $erlang_key_source = 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc'
+  $erlang_rhel_sslcacert_location = '/etc/pki/tls/certs/ca-bundle.crt'
+  $erlang_rhel_sslverify = 1
+  $erlang_rhel_gpgcheck = 0
+  $erlang_rhel_repo_gpgcheck = 1
   $erlang_packages = [
     'erlang',
   ]
