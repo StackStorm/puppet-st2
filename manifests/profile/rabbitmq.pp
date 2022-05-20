@@ -56,6 +56,18 @@ class st2::profile::rabbitmq (
       sslverify     => $erlang_rhel_sslverify,
       sslcacert     => $erlang_rhel_sslcacert_location,
     }
+
+    if ($facts['os']['release']['major'] == '8') {
+      $erlang_version = '<25'
+    }
+    else {
+      $erlang_version = 'present'
+    }
+    package { $erlang_packages:
+      ensure  => $erlang_version,
+      tag     => ['st2::packages', 'st2::rabbitmq::packages'],
+      require => Yumrepo['erlang'],
+    }
   }
   elsif ($facts['os']['family'] == 'Debian') {
     $repos_ensure = true
