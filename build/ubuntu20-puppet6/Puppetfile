@@ -44,7 +44,8 @@
 #   └── saz-sudo (v6.0.0)
 forge "https://forgeapi.puppetlabs.com"
 
-mod 'ghoneycutt-facter'
+# mod 'ghoneycutt-facter'
+mod 'ghoneycutt/facter', '3.5.0'
 mod 'jamtur01-httpauth'
 mod 'npwalker-recursive_file_permissions'
 mod 'puppet-epel'
@@ -55,7 +56,11 @@ mod 'puppet-nginx'
 mod 'puppetlabs-concat'    # dependency of puppet-nginx'
 mod 'puppet-nodejs'
 mod 'puppet-python'
-mod 'puppet-rabbitmq'
+# mod 'puppet-rabbitmq'
+mod 'puppet/rabbitmq',
+    :git => 'https://github.com/EncoreTechnologies/puppet-rabbitmq.git',
+    :branch => 'feature/fix-yum-repo',
+    :default_branch => 'master'
 mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'puppet-archive'       # dependency of puppet-rabbitmq
 mod 'puppet-selinux'

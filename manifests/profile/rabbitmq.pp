@@ -22,16 +22,20 @@
 #   include st2::profile::rabbitmq
 #
 class st2::profile::rabbitmq (
-  $username          = $st2::rabbitmq_username,
-  $password          = $st2::rabbitmq_password,
-  $port              = $st2::rabbitmq_port,
-  $bind_ip           = $st2::rabbitmq_bind_ip,
-  $vhost             = $st2::rabbitmq_vhost,
-  $erlang_url        = $st2::erlang_url,
-  $erlang_key        = $st2::erlang_key,
-  $erlang_key_id     = $st2::erlang_key_id,
-  $erlang_key_source = $st2::erlang_key_source,
-  $erlang_packages   = $st2::erlang_packages,
+  $username                       = $st2::rabbitmq_username,
+  $password                       = $st2::rabbitmq_password,
+  $port                           = $st2::rabbitmq_port,
+  $bind_ip                        = $st2::rabbitmq_bind_ip,
+  $vhost                          = $st2::rabbitmq_vhost,
+  $erlang_url                     = $st2::erlang_url,
+  $erlang_key                     = $st2::erlang_key,
+  $erlang_key_id                  = $st2::erlang_key_id,
+  $erlang_key_source              = $st2::erlang_key_source,
+  $erlang_packages                = $st2::erlang_packages,
+  $erlang_rhel_sslcacert_location = $st2::erlang_rhel_sslcacert_location,
+  $erlang_rhel_sslverify          = $st2::erlang_rhel_sslverify,
+  $erlang_rhel_gpgcheck           = $st2::erlang_rhel_gpgcheck,
+  $erlang_rhel_repo_gpgcheck      = $st2::erlang_rhel_repo_gpgcheck,
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
@@ -41,13 +45,16 @@ class st2::profile::rabbitmq (
     # This is required because when using the latest version of rabbitmq because the latest version in EPEL
     # for Erlang is 22.0.7 which is not compatible: https://www.rabbitmq.com/which-erlang.html
     yumrepo { 'erlang':
-      ensure   => present,
-      name     => 'rabbitmq_erlang',
-      baseurl  => $erlang_url,
-      gpgkey   => $erlang_key,
-      enabled  => 1,
-      gpgcheck => 1,
-      before   => Class['rabbitmq::repo::rhel'],
+      ensure        => present,
+      name          => 'rabbitmq_erlang',
+      baseurl       => $erlang_url,
+      gpgkey        => $erlang_key,
+      enabled       => 1,
+      gpgcheck      => $erlang_rhel_gpgcheck,
+      repo_gpgcheck => $erlang_rhel_repo_gpgcheck,
+      before        => Class['rabbitmq::repo::rhel'],
+      sslverify     => $erlang_rhel_sslverify,
+      sslcacert     => $erlang_rhel_sslcacert_location,
     }
   }
   elsif ($facts['os']['family'] == 'Debian') {
