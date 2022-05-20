@@ -9,6 +9,8 @@
 
 - Fixed issues with RabbitMQ @bishopbm1
 
+- Fixed and updated all tests @bishopbm1
+
 ## 2.4.0 (Mar 1, 2022)
 
 - Update RabbitMQ installer to use latest Erlang from RabbitMQ repos. Contributed by @rush-skills
