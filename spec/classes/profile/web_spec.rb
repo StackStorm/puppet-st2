@@ -150,6 +150,7 @@ describe 'st2::profile::web' do
                   tag: ['st2', 'st2::backend', 'st2::backend::api'])
         end
         it do
+          let(:params) { { basicstatus_enabled: true } }
           is_expected.to contain_nginx__resource__location('@basic_statusError')
             .with(ensure: 'present',
                   server: 'ssl-st2webui',
@@ -165,6 +166,7 @@ describe 'st2::profile::web' do
                   tag: ['st2', 'st2::backend', 'st2::backend::basicstatuserror'])
         end
         it do
+          let(:params) { { basicstatus_enabled: true } }
           is_expected.to contain_nginx__resource__location('/basic_status/')
             .with(ensure: 'present',
                   server: 'ssl-st2webui',

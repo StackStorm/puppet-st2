@@ -10,7 +10,6 @@ describe 'st2::profile::nginx' do
 
     context "on #{os}" do
       context 'with default options' do
-
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_class('nginx')
