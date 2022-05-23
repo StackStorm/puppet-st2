@@ -10,6 +10,12 @@ describe 'st2::profile::nginx' do
 
     context "on #{os}" do
       context 'with default options' do
+        let(:params) do
+          {
+            nginx_basicstatus_enabled: true,
+          }
+        end
+
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_class('nginx')
@@ -20,6 +26,12 @@ describe 'st2::profile::nginx' do
 
       context 'with manage_repo=false' do
         let(:params) { { manage_repo: false } }
+        let(:params) do
+          {
+            manage_repo: false,
+            nginx_basicstatus_enabled: true,
+          }
+        end
 
         it { is_expected.to compile.with_all_deps }
         it do
