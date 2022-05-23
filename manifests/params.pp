@@ -48,6 +48,7 @@ class st2::params(
 
   # nginx basic status port
   $basicstatus_port = 9103
+  $basicstatus_enabled = false
 
   # Non-user configurable parameters
   $repository = 'stable'
