@@ -307,7 +307,7 @@ class st2(
   $ng_init                    = true,
   $datastore_keys_dir         = $st2::params::datstore_keys_dir,
   $datastore_key_path         = "${st2::params::datstore_keys_dir}/datastore_key.json",
-  $nginx_basicstatus_enabled  = $st2::params::nginx_basicstatus_enabled,
+  $nginx_basicstatus_enabled  = $st2::params::basicstatus_enabled,
   $nginx_basicstatus_port     = $st2::params::basicstatus_port,
   $nginx_manage_repo          = true,
   $nginx_client_max_body_size = $st2::params::nginx_client_max_body_size,
