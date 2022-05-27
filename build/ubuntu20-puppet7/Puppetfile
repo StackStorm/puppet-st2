@@ -57,12 +57,10 @@ mod 'puppet-nginx'
 mod 'puppetlabs-concat'    # dependency of puppet-nginx'
 mod 'puppet-nodejs'
 mod 'puppet-python'
-# Waiting on https://github.com/voxpupuli/puppet-rabbitmq/pull/907 to be
-# merged into upstream repo.
+# Using master branch due to new release on hold pending new tests.
 mod 'puppet/rabbitmq',
-    :git => 'https://github.com/EncoreTechnologies/puppet-rabbitmq.git',
-    :branch => 'feature/fix-yum-repo',
-    :default_branch => 'master'
+    :git => 'https://github.com/voxpupuli/puppet-rabbitmq.git',
+    :branch => 'master'
 mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'puppet-archive'       # dependency of puppet-rabbitmq
 mod 'puppet-selinux'
