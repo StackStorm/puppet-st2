@@ -44,7 +44,9 @@
 #   └── saz-sudo (v6.0.0)
 forge "https://forgeapi.puppetlabs.com"
 
-mod 'ghoneycutt-facter'
+# Current bug: https://github.com/ghoneycutt/puppet-module-facter/issues/70
+# in latest release. Pinning to 3.5 until resolved.
+mod 'ghoneycutt/facter', '3.5.0'
 mod 'jamtur01-httpauth'
 mod 'npwalker-recursive_file_permissions'
 mod 'puppet-epel'
@@ -55,7 +57,10 @@ mod 'puppet-nginx'
 mod 'puppetlabs-concat'    # dependency of puppet-nginx'
 mod 'puppet-nodejs'
 mod 'puppet-python'
-mod 'puppet-rabbitmq'
+# Using master branch due to new release on hold pending new tests.
+mod 'puppet/rabbitmq',
+    :git => 'https://github.com/voxpupuli/puppet-rabbitmq.git',
+    :branch => 'master'
 mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
 mod 'puppet-archive'       # dependency of puppet-rabbitmq
 mod 'puppet-selinux'

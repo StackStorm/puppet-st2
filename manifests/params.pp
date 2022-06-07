@@ -46,6 +46,10 @@ class st2::params(
   # stream settings
   $stream_port = 9102
 
+  # nginx basic status port
+  $basicstatus_port = 9103
+  $basicstatus_enabled = false
+
   # Non-user configurable parameters
   $repository = 'stable'
   $conf_dir = '/etc/st2'
@@ -192,9 +196,13 @@ class st2::params(
     'Debian' => "http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/${osname}",
     'RedHat' => "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch",
   }
-  $erlang_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
+  $erlang_key = 'https://packagecloud.io/rabbitmq/erlang/gpgkey'
   $erlang_key_id = 'B279943D2A549531E144B875F77F1EDA57EBB1CC'
   $erlang_key_source = 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc'
+  $erlang_rhel_sslcacert_location = '/etc/pki/tls/certs/ca-bundle.crt'
+  $erlang_rhel_sslverify = 1
+  $erlang_rhel_gpgcheck = 0
+  $erlang_rhel_repo_gpgcheck = 1
   $erlang_packages = [
     'erlang',
   ]
@@ -229,4 +237,9 @@ class st2::params(
   $chatops_adapter_conf = {
     'HUBOT_ADAPTER' => 'slack',
   }
+
+  $metrics_include = false
+  $metric_driver = 'statsd'
+  $metric_host = '127.0.0.1'
+  $metric_port = '8125'
 }

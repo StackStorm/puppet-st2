@@ -62,7 +62,7 @@ platforms:
       puppetfile_path: build/centos7-puppet7/Puppetfile
 
   # CentOS7 with Systemd - Puppet 7 - Python 3.6
-  - name: centos7-puppet7-python36
+  - name: centos7-puppet7-python38
     driver:
       platform: centos
       dockerfile: build/centos7-puppet7/Dockerfile.kitchen
@@ -71,7 +71,7 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/centos7-puppet7/Puppetfile
-      manifest: test/fullinstall_python36.pp
+      manifest: test/fullinstall_python38.pp
 
   # Ubuntu Bionic with Systemd - Puppet 6
   - name: ubuntu18-puppet6

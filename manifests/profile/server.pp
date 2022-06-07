@@ -288,6 +288,7 @@ class st2::profile::server (
     tag     => 'st2::config',
   }
 
+
   ## Resultstracker Settings
   ini_setting { 'resultstracker_logging':
     ensure  => present,
@@ -327,6 +328,8 @@ class st2::profile::server (
     value   => "/etc/st2/${_logger_config}.stream.gunicorn.conf",
     tag     => 'st2::config',
   }
+
+  class { 'st2::profile::metrics': }
 
   ## Syslog Settings
   ini_setting { 'syslog_host':
