@@ -2,6 +2,8 @@
 
 ## Development
 
+- Move CentOS -> RockyLinux and Python 3.6 -> 3.8. Contributed by @rush-skills
+
 - Added the ability to manage StackStack metrics giving options for the metric driver,
   host and port number defined in st2.conf. Contributed by @bishopbm1
 
