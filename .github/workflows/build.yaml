@@ -96,9 +96,9 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.puppet }}-{{ matrix.python }}-pip-unit-${{ hashFiles('**/requirements*.txt') }}
+          key: ${{ runner.os }}-${{ matrix.python }}-pip-unit-${{ hashFiles('**/requirements*.txt') }}
           restore-keys: |
-            ${{ runner.os }}-${{ matrix.puppet }}-${{ matrix.ruby }}-pip-unit-
+            ${{ runner.os }}-${{ matrix.python }}-pip-unit-
       - name: Python prep
         run: |
           pip install virtualenv
@@ -122,7 +122,9 @@ jobs:
           - ruby: '2.7'
             name: 'centos7-puppet7'
           - ruby: '2.7'
-            name: 'centos7-puppet7-python38'
+            name: 'rocky8-puppet6'
+          - ruby: '2.7'
+            name: 'rocky8-puppet7'
           - ruby: '2.7'
             name: 'ubuntu18-puppet6'
           - ruby: '2.7'

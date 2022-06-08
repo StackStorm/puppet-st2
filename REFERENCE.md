@@ -134,12 +134,12 @@ class { 'st2':
 }
 ```
 
-##### Install with python 3.6 (if not default on your system)
+##### Install with python 3.8 (if not default on your system)
 
 ```puppet
 $st2_python_version = $facts['os']['family'] ? {
-  'RedHat' => '3.6',
-  'Debian' => 'python3.6',
+  'RedHat' => '3.8',
+  'Debian' => 'python3.8',
 }
 class { 'st2':
   python_version            => $st2_python_version,
@@ -257,8 +257,8 @@ Data type: `String`
 
 Version of Python to install. Default is 'system' meaning the system version
 of Python will be used.
-To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
-To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
+To install Python 3.8 on RHEL/CentOS 7 specify '3.8'.
+To install Python 3.8 on Ubuntu 16.05 specify 'python3.8'.
 
 Default value: `'system'`
 
@@ -2383,12 +2383,12 @@ include st2::profile::python
 include st2::profile::python
 ```
 
-##### Install with python 3.6 (if not default on your system)
+##### Install with python 3.8 (if not default on your system)
 
 ```puppet
 $st2_python_version = $facts['os']['family'] ? {
-  'RedHat' => '3.6',
-  'Debian' => 'python3.6',
+  'RedHat' => '3.8',
+  'Debian' => 'python3.8',
 }
 class { 'st2':
   python_version            => $st2_python_version,
@@ -2407,8 +2407,8 @@ Data type: `String`
 
 Version of Python to install. Default is 'system' meaning the system version
 of Python will be used.
-To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
-To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
+To install Python 3.8 on RHEL/CentOS/Rocky 7/8 specify '3.8'.
+To install Python 3.8 on Ubuntu 18.04/20.04 specify 'python3.8'.
 
 Default value: `$st2::python_version`
 
@@ -4456,15 +4456,15 @@ Password to use for StackStorm authentication.
 
 ### <a name="st2upgrade_mongodb"></a>`st2::upgrade_mongodb`
 
-The default upgrade for this plan goes from 3.4 to 3.6 and ultimately to 4.0
+The default upgrade for this plan goes from 3.4 to 3.8 and ultimately to 4.0
 
 High level steps:
 - stop stackstorm
-## https://docs.mongodb.com/manual/release-notes/3.6-upgrade-standalone/
+## https://docs.mongodb.com/manual/release-notes/3.8-upgrade-standalone/
 - set MongoDB feature compatibility to 3.4
-- change package repo to 3.6
+- change package repo to 3.8
 - upgrade packages
-- set MongoDB feature compatibility to 3.6
+- set MongoDB feature compatibility to 3.8
 ## https://docs.mongodb.com/manual/release-notes/4.0-upgrade-standalone/
 - change package repo to 4.0
 - upgrade packages
@@ -4485,16 +4485,16 @@ bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_passwor
 bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "mongo_packages": ["mongodb-enterprise-server", "mongodb-enterprise-shell", "mongodb-enterprise-tools"], "mongo_edition": "enterprise"}'
 ```
 
-##### Upgrading from 3.6 to 4.0
+##### Upgrading from 3.8 to 4.0
 
 ```puppet
-bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.6", "upgrade_version_path": ["4.0"]}'
+bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.8", "upgrade_version_path": ["4.0"]}'
 ```
 
-##### Upgrading from 3.4 to 3.6 to 4.0
+##### Upgrading from 3.4 to 3.8 to 4.0
 
 ```puppet
-bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.4", "upgrade_version_path": ["3.6", "4.0"]}'
+bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.4", "upgrade_version_path": ["3.8", "4.0"]}'
 ```
 
 #### Parameters
@@ -4569,5 +4569,4 @@ Data type: `Array[String]`
 
 List of versions that we will upgrade through along our path to success!
 
-Default value: `['3.6', '4.0']`
-
+Default value: `['3.8', '4.0']`

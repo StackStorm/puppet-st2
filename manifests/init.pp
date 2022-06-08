@@ -8,8 +8,8 @@
 # @param [String] python_version
 #   Version of Python to install. Default is 'system' meaning the system version
 #   of Python will be used.
-#   To install Python 3.6 on RHEL/CentOS 7 specify '3.6'.
-#   To install Python 3.6 on Ubuntu 16.05 specify 'python3.6'.
+#   To install Python 3.8 on RHEL/CentOS 7 specify '3.8'.
+#   To install Python 3.8 on Ubuntu 16.05 specify 'python3.8'.
 #
 # @param [St2::Repository] repository
 #   Release repository to enable. 'stable', 'unstable'
@@ -250,10 +250,10 @@
 #     rabbitmq_password   => '@!fsdf0#45',
 #   }
 #
-# @example Install with python 3.6 (if not default on your system)
+# @example Install with python 3.8 (if not default on your system)
 #   $st2_python_version = $facts['os']['family'] ? {
-#     'RedHat' => '3.6',
-#     'Debian' => 'python3.6',
+#     'RedHat' => '3.8',
+#     'Debian' => 'python3.8',
 #   }
 #   class { 'st2':
 #     python_version            => $st2_python_version,
@@ -351,17 +351,17 @@ class st2(
   $chatops_api_url                      = "https://${st2::params::hostname}/api",
   $chatops_auth_url                     = "https://${st2::params::hostname}/auth",
   $chatops_web_url                      = undef,
-  $nodejs_version             = undef,
-  $nodejs_manage_repo         = true,
-  $workflowengine_num         = $st2::params::workflowengine_num,
-  $scheduler_num              = $st2::params::scheduler_num,
-  $rulesengine_num            = $st2::params::rulesengine_num,
-  $notifier_num               = $st2::params::notifier_num,
-  $metrics_include            = $st2::params::metrics_include,
-  $metric_driver              = $st2::params::metric_driver,
-  $metric_host                = $st2::params::metric_host,
-  $metric_port                = $st2::params::metric_port,
-  $validate_output_schema     = $st2::params::validate_output_schema,
+  $nodejs_version           = undef,
+  $nodejs_manage_repo       = true,
+  $workflowengine_num       = $st2::params::workflowengine_num,
+  $scheduler_num            = $st2::params::scheduler_num,
+  $rulesengine_num          = $st2::params::rulesengine_num,
+  $notifier_num             = $st2::params::notifier_num,
+  $validate_output_schema   = $st2::params::validate_output_schema,
+  $metrics_include          = $st2::params::metrics_include,
+  $metric_driver            = $st2::params::metric_driver,
+  $metric_host              = $st2::params::metric_host,
+  $metric_port              = $st2::params::metric_port,
 ) inherits st2::params {
 
   ########################################
