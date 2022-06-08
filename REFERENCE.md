@@ -4456,11 +4456,11 @@ Password to use for StackStorm authentication.
 
 ### <a name="st2upgrade_mongodb"></a>`st2::upgrade_mongodb`
 
-The default upgrade for this plan goes from 3.4 to 3.8 and ultimately to 4.0
+The default upgrade for this plan goes from 3.4 to 3.6 and ultimately to 4.0
 
 High level steps:
 - stop stackstorm
-## https://docs.mongodb.com/manual/release-notes/3.8-upgrade-standalone/
+## https://docs.mongodb.com/manual/release-notes/3.6-upgrade-standalone/
 - set MongoDB feature compatibility to 3.4
 - change package repo to 3.8
 - upgrade packages
@@ -4485,13 +4485,13 @@ bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_passwor
 bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "mongo_packages": ["mongodb-enterprise-server", "mongodb-enterprise-shell", "mongodb-enterprise-tools"], "mongo_edition": "enterprise"}'
 ```
 
-##### Upgrading from 3.8 to 4.0
+##### Upgrading from 3.6 to 4.0
 
 ```puppet
 bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.8", "upgrade_version_path": ["4.0"]}'
 ```
 
-##### Upgrading from 3.4 to 3.8 to 4.0
+##### Upgrading from 3.4 to 3.6 to 4.0
 
 ```puppet
 bolt plan run st2::upgrade_mongodb --targets ssh_nodes --params '{"mongo_password": "xxx", "upgrade_version_start": "3.4", "upgrade_version_path": ["3.8", "4.0"]}'
@@ -4569,4 +4569,4 @@ Data type: `Array[String]`
 
 List of versions that we will upgrade through along our path to success!
 
-Default value: `['3.8', '4.0']`
+Default value: `['3.6', '4.0']`
