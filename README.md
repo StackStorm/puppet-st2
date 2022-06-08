@@ -125,8 +125,8 @@ Hiera data bindings. A few notable parameters to take note of:
   being taken (proper steps detailed here: https://docs.stackstorm.com/install/upgrades.html)
 * `st2::python_version` - Version to Python to use. The default is `'system'` and the
   system `python` package will be installed, whatever version that is for your OS.
-  To explicitly install Python 3.6 specify `'3.6'` if on RHEL/CentOS 7.
-  If on Ubuntu 16.04 specify `'python3.6'`.
+  To explicitly install Python 3.8 specify `'3.8'` if on RHEL/CentOS 7.
+  If on Ubuntu 16.04 specify `'python3.8'`.
   **Notes**
     * RHEL 7 - The Red Hat subscription repo `'rhel-7-server-optional-rpms'`
       will need to be enabled prior to running this module.
@@ -134,12 +134,12 @@ Hiera data bindings. A few notable parameters to take note of:
   ```puppet
   # CentOS/RHEL 7
   class { 'st2':
-    python_version => '3.6',
+    python_version => '3.8',
   }
 
   # Ubuntu 18.04/20.04
   class { 'st2':
-    python_version            => 'python3.6',
+    python_version            => 'python3.8',
   }
 
   contain st2::profile::fullinstall
@@ -161,6 +161,7 @@ classes for use and configuration.
 * `st2::proflle::server` - st2 server components
 * `st2::profile::web` - st2 web components
 * `st2::profile::chatops` - st2 chatops components
+* `st2::profile::metrics` - st2 set up metrics
 
 #### Installing and Configuring Packs
 
@@ -331,7 +332,7 @@ that can be higher on CPU and Memory to allow more processes to run at the same 
 Configuration all services:
 ```ruby
 class { 'st2':
-  python_version     => '3.6',
+  python_version     => '3.8',
   workflowengine_num => 4,
   scheduler_num      => 2,
   rulesengine_num    => 1,
@@ -465,6 +466,24 @@ $res = run_task('st2::key_get', $stackstorm_target,
                 username => $username,
                 password => $password)
 ```
+
+#### Metrics
+
+This module provides the ability to set up the metrics endpoints to expose different metrics built into StackStorm as documented here:
+https://docs.stackstorm.com/reference/metrics.html
+
+There is also an addition metric that can be auto created which exposes the basic health for NGINX called a basic status page.
+
+```ruby
+class { 'st2':
+  python_version             => '3.8',
+  metrics_include            => true,
+  nginx_basicstatus_enabled  => true,
+}
+```
+
+Once these metrics are setup and enabled it gives the ability to scrape those metrics with an outside source like telegraf
+or prometheus or any other scraping tool.
 
 ## Limitations
 

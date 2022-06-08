@@ -26,6 +26,8 @@ class st2::profile::server (
   contain st2::component::workflowengine
   contain st2::component::garbagecollector
 
+  contain st2::component::metrics
+
   ########################################
   ## st2 user (stanley)
   contain st2::stanley

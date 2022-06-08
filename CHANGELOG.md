@@ -2,6 +2,15 @@
 
 ## Development
 
+- Added the ability to manage StackStack metrics giving options for the metric driver,
+  host and port number defined in st2.conf. Contributed by @bishopbm1
+
+- Added nginx web route to get basic nginx metrics. Contributed by @asktheaxis
+
+- Fixed issues with RabbitMQ @bishopbm1
+
+- Fixed and updated all tests @bishopbm1
+
 ## 2.4.0 (Mar 1, 2022)
 
 - Update RabbitMQ installer to use latest Erlang from RabbitMQ repos. Contributed by @rush-skills

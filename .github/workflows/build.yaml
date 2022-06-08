@@ -83,7 +83,7 @@ jobs:
       matrix:
         include:
           # note: actions/setup-python only allows using a major.minor releases
-          - python: '3.6'
+          - python: '3.8'
             make_target: 'python3'
             name: 'bolt tasks'
     steps:
@@ -122,7 +122,7 @@ jobs:
           - ruby: '2.7'
             name: 'centos7-puppet7'
           - ruby: '2.7'
-            name: 'centos7-puppet7-python36'
+            name: 'centos7-puppet7-python38'
           - ruby: '2.7'
             name: 'ubuntu18-puppet6'
           - ruby: '2.7'
@@ -232,3 +232,25 @@ jobs:
         run: |
           bundle exec rake module:build
           bundle exec rake module:push
+
+  slack-notification:
+    name: Slack notification for failed master builds
+    if: always()
+    needs:
+      - unit
+      - unit-python
+      - integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Workflow conclusion
+        # this step creates an environment variable WORKFLOW_CONCLUSION and is the most reliable way to check the status of previous jobs
+        uses: technote-space/workflow-conclusion-action@v2
+      - name: CI Run Failure Slack Notification
+        if: ${{ env.WORKFLOW_CONCLUSION == 'failure' && github.ref == 'refs/heads/master' }}
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        uses: voxmedia/github-action-slack-notify-build@v1
+        with:
+          channel: puppet
+          status: FAILED
+          color: danger
