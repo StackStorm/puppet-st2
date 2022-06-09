@@ -85,6 +85,18 @@ platforms:
       puppetfile_path: build/rocky8-puppet7/Puppetfile
       manifest: test/fullinstall_python38.pp
 
+  # RockyLinux 8 - Puppet 7
+  - name: rocky8-puppet7-hatest
+    driver:
+      platform: rockylinux
+      dockerfile: build/rocky8-puppet7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/rocky8-puppet7/Puppetfile
+      manifest: test/fullinstall_hatest.pp
+
   # Ubuntu Bionic with Systemd - Puppet 6
   - name: ubuntu18-puppet6
     driver:
