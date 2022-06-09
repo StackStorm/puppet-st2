@@ -220,6 +220,8 @@ class st2::params(
   $rabbitmq_bind_ip = '127.0.0.1'
   $rabbitmq_vhost = '/'
   $osname = downcase($facts['os']['name'])
+  $rabbitmq_signing_key = 'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc'
+  $rabbitmq_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
   $erlang_url = $facts['os']['family'] ? {
     'Debian' => "http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/${osname}",
     'RedHat' => "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch",

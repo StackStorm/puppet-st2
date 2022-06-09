@@ -37,6 +37,8 @@ build/scripts/install_puppet.sh
 # below are the test environments we currently use
 build/centos7-puppet6   # Files needed for the RHEL/CentOS 7 test environemnt on puppet 6
 build/centos7-puppet7   # Files needed for the RHEL/CentOS 7 test environemnt on puppet 7
+build/rocky8-puppet6   # Files needed for the RockyLinux 8 test environemnt on puppet 6
+build/rocky8-puppet7   # Files needed for the RockyLinux 8 test environemnt on puppet 7
 build/ubuntu18-puppet6  # Files needed for the Ubuntu 18.04 test environemnt on puppet 6
 build/ubuntu18-puppet7  # Files needed for the Ubuntu 18.04 test environemnt on puppet 7
 build/ubuntu20-puppet6   # Files needed for the Ubuntu 20.04 test environemnt on puppet 6

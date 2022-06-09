@@ -1,0 +1,73 @@
+# coding: utf-8
+# ################
+# # Instructions #
+# ################
+# yum -y install puppet (or equivalent)
+# gem install r10k
+# # create a new file ./Puppetfile with the contents of this file
+# r10k puppetfile install -v --moduledir=./modules --puppetfile=./Puppetfile
+# # to check the module dependencies here:
+# # puppet module list --tree --modulepath ./modules/
+# puppet apply --modulepath=./modules -e "include st2::profile::fullinstall"
+#
+# #############
+# # DEV Notes #
+# #############
+# # To generate this file i did this, make sure you have this repo cloned:
+# pdk build
+# puppet module install ./pkg/stackstorm-st2-x.y.z.tar.gz
+# puppet module list --tree
+#
+# ######################
+# # Latest Module Tree #
+# ######################
+# └─┬ stackstorm-st2 (v1.7.0)
+#   ├── ghoneycutt-facter (v3.5.0)
+#   ├── jamtur01-httpauth (v0.0.6)
+#   ├── npwalker-recursive_file_permissions (v0.6.0)
+#   ├── puppet-epel (v3.0.1)
+#   ├── puppet-mongodb (v3.1.0)
+#   ├─┬ puppet-nginx (v1.1.0)
+#   │ └── puppetlabs-concat (v6.2.0)
+#   ├── puppet-nodejs (v7.0.1)
+#   ├── puppet-python (v4.1.1)
+#   ├── puppet-redis (v7.0.0)
+#   ├─┬ puppet-rabbitmq (v10.1.1)
+#   │ ├── camptocamp-systemd (v2.9.0)
+#   │ └── puppet-archive (v4.5.0)
+#   ├── puppet-selinux (v3.2.0)
+#   ├─┬ puppetlabs-apt (v7.5.0)
+#   │ └── puppetlabs-translate (v2.2.0)
+#   ├── puppetlabs-inifile (v4.2.0)
+#   ├── puppetlabs-stdlib (v5.2.0)
+#   ├── puppetlabs-yumrepo_core (v1.0.7)
+#   └── saz-sudo (v6.0.0)
+forge "https://forgeapi.puppetlabs.com"
+
+# Current bug: https://github.com/ghoneycutt/puppet-module-facter/issues/70
+# in latest release. Pinning to 3.5 until resolved.
+mod 'ghoneycutt/facter', '3.5.0'
+mod 'jamtur01-httpauth'
+mod 'npwalker-recursive_file_permissions'
+mod 'puppet-epel'
+mod 'puppet-mongodb',
+    :git => 'https://github.com/voxpupuli/puppet-mongodb.git',
+    :branch => 'master'
+mod 'puppet-nginx'
+mod 'puppetlabs-concat'    # dependency of puppet-nginx'
+mod 'puppet-nodejs'
+mod 'puppet-python'
+# Using master branch due to new release on hold pending new tests.
+mod 'puppet/rabbitmq',
+    :git => 'https://github.com/voxpupuli/puppet-rabbitmq.git',
+    :branch => 'master'
+mod 'camptocamp-systemd'   # dependency of puppet-rabbitmq
+mod 'puppet-archive'       # dependency of puppet-rabbitmq
+mod 'puppet-selinux'
+mod 'puppetlabs-apt'
+mod 'puppetlabs-translate' # dependency of puppetlabs-apt
+mod 'puppetlabs-inifile'
+mod 'puppetlabs-stdlib'
+mod 'puppetlabs-yumrepo_core'
+mod 'saz-sudo'
+mod 'puppet/redis'
