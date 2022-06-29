@@ -2,6 +2,8 @@
 
 ## Development
 
+## 2.5.0 (June 29, 2022)
+
 - Move CentOS -> RockyLinux and Python 3.6 -> 3.8. Contributed by @rush-skills
 
 - Added the ability to manage StackStack metrics giving options for the metric driver,
