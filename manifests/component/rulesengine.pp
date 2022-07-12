@@ -1,6 +1,7 @@
 # @summary Manages the <code>st2rulesengine</code> service (Orquesta)
 #
 # Normally this class is instantiated by +st2::profile::fullinstall+.
+# OR by +st2::profile::ha::core+
 # However, advanced users can instantiate this class directly to configure
 # and manage just the <code>st2rulesengine</code> service on a single node.
 # Parameters for this class mirror the parameters in the st2 config.
@@ -8,14 +9,14 @@
 # @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample
 #
 # @example Basic usage
-#   include st2::rulesengine
+#   include st2::component::rulesengine
 #
 # @param rulesengine_num
 #   The number of rulesengines to have in an active active state
 # @param rulesengine_services
 #   Name of all the rulesengine services
 #
-class st2::rulesengine (
+class st2::component::rulesengine (
   $rulesengine_num      = $st2::rulesengine_num,
   $rulesengine_services = $st2::params::rulesengine_services,
 ) inherits st2 {

@@ -8,4 +8,5 @@ $st2_python_version = $facts['os']['family'] ? {
 class { 'st2':
   python_version            => $st2_python_version,
 }
+
 include st2::profile::fullinstall

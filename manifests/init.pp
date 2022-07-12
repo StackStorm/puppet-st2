@@ -31,6 +31,11 @@
 # @param ssl_key
 #   Path to the file where the StackStorm SSL key will
 #   be generated. (default: /etc/ssl/st2/st2.key)
+# @param [Boolean] manage_ssl_dir
+#   Manage the directory for ssl_dir
+#   (default: True)
+# @param hostname
+#   Hostname of the StackStorm instance, used by other services to communicate
 # @param auth
 #   Toggle to enable/disable auth (Default: true)
 # @param auth_api_url
@@ -62,6 +67,8 @@
 #   CLI config - Enable/Disable Debug
 # @param cli_cache_token
 #   CLI config - True to cache auth token until expries
+# @param [boolean] cli_disable_credentials
+#   CLI config - False to setup the admin credentials  (Default: false)
 # @param cli_username
 #   CLI config - Auth Username
 # @param cli_password
@@ -72,6 +79,8 @@
 #   CLI config - API URL
 # @param cli_auth_url
 #   CLI config - Auth URL
+# @param cli_stream_url
+#   CLI config - Stream URL
 # @param actionrunner_workers
 #   Set the number of actionrunner processes to start
 # @param packs
@@ -204,6 +213,12 @@
 #   for NodeJS (default: true)
 # @param redis_bind_ip
 #   Bind IP of the Redis server. Default is 127.0.0.1
+# @param redis_hostname
+#   Hostname of the redis instance to connect
+# @param redis_port
+#   Port of the redis instance to connect
+# @param redis_password
+#   Password of the redis instance to connect
 # @param workflowengine_num
 #   The number of workflowengines to have in an active active state (default: 1)
 # @param scheduler_num
@@ -212,12 +227,28 @@
 #   The number of rulesengines to have in an active active state (default: 1)
 # @param notifier_num
 #   The number of notifiers to have in an active active state (default: 1)
+# @param rabbitmq_username
+#   Username for the RabbitMQ connection
+# @param rabbitmq_password
+#   Password for the RabbitMQ connection
+# @param rabbitmq_hostname
+#   Hostname for the RabbitMQ connection
+# @param rabbitmq_port
+#   Port for the RabbitMQ connection
+# @param rabbitmq_vhost
+#  Vhost for the RabbitMQ connection
+# @param rabbitmq_bind_ip
+#   Bind IP for RabbitMQ server
 # @param erlang_url
 #   The url for the erlang repositiory to be used for rabbitmq
 # @param erlang_key
 #   The gpg key for the erlang repositiory to be used for rabbitmq
 # @param validate_output_schema
 #   Enable/disable output schema validation in StackStorm
+# @param manage_nfs_dirs
+#   If directories that might be shared between nodes should be managed by the module
+# @param stanley_user
+#   name of the stackstorm user 
 #
 #
 # @example Basic Usage
@@ -258,63 +289,68 @@
 #   class { 'st2':
 #     python_version            => $st2_python_version,
 #   }
+#
 class st2(
   $version                    = 'present',
   String  $python_version     = 'system',
   St2::Repository $repository = $st2::params::repository,
-  $conf_dir                   = $st2::params::conf_dir,
-  $conf_file                  = "${st2::params::conf_dir}/st2.conf",
-  $use_ssl                    = $st2::params::use_ssl,
-  $ssl_cert_manage            = true,
-  $ssl_dir                    = $st2::params::ssl_dir,
-  $ssl_cert                   = $st2::params::ssl_cert,
-  $ssl_key                    = $st2::params::ssl_key,
-  $auth                       = true,
-  $auth_api_url               = "http://${st2::params::hostname}:${st2::params::api_port}",
-  $auth_debug                 = false,
-  $auth_mode                  = $st2::params::auth_mode,
-  $auth_backend               = $st2::params::auth_backend,
-  $auth_backend_config        = $st2::params::auth_backend_config,
-  $cli_base_url               = "http://${st2::params::hostname}",
-  $cli_api_version            = 'v1',
-  $cli_debug                  = false,
-  $cli_cache_token            = true,
-  $cli_silence_ssl_warnings   = false,
-  $cli_username               = $st2::params::admin_username,
-  $cli_password               = $st2::params::admin_password,
-  $cli_apikey                 = undef,
-  $cli_api_url                = "http://${st2::params::hostname}:${st2::params::api_port}",
-  $cli_auth_url               = "http://${st2::params::hostname}:${st2::params::auth_port}",
-  $actionrunner_workers       = $st2::params::actionrunner_workers,
-  $packs                      = {},
-  $packs_group                = $st2::params::packs_group_name,
-  $index_url                  = undef,
-  $syslog                     = false,
-  $syslog_host                = 'localhost',
-  $syslog_protocol            = 'udp',
-  $syslog_port                = 514,
-  $syslog_facility            = 'local7',
-  $ssh_key_location           = '/home/stanley/.ssh/st2_stanley_key',
-  $db_host                    = $st2::params::hostname,
-  $db_port                    = $st2::params::mongodb_port,
-  $db_bind_ips                = $st2::params::mongodb_bind_ips,
-  $db_name                    = $st2::params::mongodb_st2_db,
-  $db_username                = $st2::params::mongodb_st2_username,
-  $db_password                = $st2::params::admin_password,
-  $mongodb_version            = undef,
-  $mongodb_manage_repo        = true,
-  $mongodb_auth               = true,
-  $ng_init                    = true,
-  $datastore_keys_dir         = $st2::params::datstore_keys_dir,
-  $datastore_key_path         = "${st2::params::datstore_keys_dir}/datastore_key.json",
-  $nginx_basicstatus_enabled  = $st2::params::basicstatus_enabled,
-  $nginx_basicstatus_port     = $st2::params::basicstatus_port,
-  $nginx_manage_repo          = true,
+  $conf_dir                 = $st2::params::conf_dir,
+  $conf_file                = "${st2::params::conf_dir}/st2.conf",
+  $use_ssl                  = $st2::params::use_ssl,
+  $ssl_cert_manage          = true,
+  $ssl_dir                  = $st2::params::ssl_dir,
+  $ssl_cert                 = $st2::params::ssl_cert,
+  $ssl_key                  = $st2::params::ssl_key,
+  $manage_ssl_dir           = true,
+  $hostname                 = $st2::params::hostname,
+  $auth                     = true,
+  $auth_api_url             = "http://${st2::params::hostname}:${st2::params::api_port}",
+  $auth_debug               = false,
+  $auth_mode                = $st2::params::auth_mode,
+  $auth_backend             = $st2::params::auth_backend,
+  $auth_backend_config      = $st2::params::auth_backend_config,
+  $cli_base_url             = "https://${st2::hostname}",
+  $cli_api_version          = 'v1',
+  $cli_debug                = false,
+  $cli_cache_token          = true,
+  $cli_silence_ssl_warnings = false,
+  $cli_disable_credentials  = false,
+  $cli_username             = $st2::params::admin_username,
+  $cli_password             = $st2::params::admin_password,
+  $cli_apikey               = undef,
+  $cli_api_url              = "https://${st2::hostname}/api",
+  $cli_auth_url             = "https://${st2::hostname}/auth",
+  $cli_stream_url            = "https://${st2::hostname}/stream",
+  $actionrunner_workers     = $st2::params::actionrunner_workers,
+  $packs                    = {},
+  $packs_group              = $st2::params::packs_group_name,
+  $index_url                = undef,
+  $syslog                   = false,
+  $syslog_host              = 'localhost',
+  $syslog_protocol          = 'udp',
+  $syslog_port              = 514,
+  $syslog_facility          = 'local7',
+  $ssh_key_location         = '/home/stanley/.ssh/st2_stanley_key',
+  $db_host                  = $st2::params::hostname,
+  $db_port                  = $st2::params::mongodb_port,
+  $db_bind_ips              = $st2::params::mongodb_bind_ips,
+  $db_name                  = $st2::params::mongodb_st2_db,
+  $db_username              = $st2::params::mongodb_st2_username,
+  $db_password              = $st2::params::admin_password,
+  $mongodb_version          = undef,
+  $mongodb_manage_repo      = true,
+  $mongodb_auth             = true,
+  $ng_init                  = true,
+  $datastore_keys_dir       = $st2::params::datstore_keys_dir,
+  $datastore_key_path       = "${st2::params::datstore_keys_dir}/datastore_key.json",
+  $nginx_basicstatus_enabled = $st2::params::basicstatus_enabled,
+  $nginx_basicstatus_port    = $st2::params::basicstatus_port,
+  $nginx_manage_repo        = true,
   $nginx_client_max_body_size = $st2::params::nginx_client_max_body_size,
-  $nginx_ssl_ciphers          = $st2::params::nginx_ssl_ciphers,
-  $nginx_ssl_port             = $st2::params::nginx_ssl_port,
-  $nginx_ssl_protocols        = $st2::params::nginx_ssl_protocols,
-  $web_root                   = $st2::params::web_root,
+  $nginx_ssl_ciphers        = $st2::params::nginx_ssl_ciphers,
+  $nginx_ssl_port           = $st2::params::nginx_ssl_port,
+  $nginx_ssl_protocols      = $st2::params::nginx_ssl_protocols,
+  $web_root                 = $st2::params::web_root,
   $rabbitmq_username          = $st2::params::rabbitmq_username,
   $rabbitmq_password          = $st2::params::rabbitmq_password,
   $rabbitmq_hostname          = $st2::params::rabbitmq_hostname,
@@ -347,21 +383,24 @@ class st2(
   $chatops_hubot_name                   = $st2::params::hubot_name,
   $chatops_hubot_alias                  = $st2::params::hubot_alias,
   $chatops_api_key                      = undef,
-  $chatops_st2_hostname                 = $st2::params::hostname,
-  $chatops_api_url                      = "https://${st2::params::hostname}/api",
-  $chatops_auth_url                     = "https://${st2::params::hostname}/auth",
-  $chatops_web_url                      = undef,
-  $nodejs_version             = undef,
-  $nodejs_manage_repo         = true,
-  $workflowengine_num         = $st2::params::workflowengine_num,
-  $scheduler_num              = $st2::params::scheduler_num,
-  $rulesengine_num            = $st2::params::rulesengine_num,
-  $notifier_num               = $st2::params::notifier_num,
-  $metrics_include            = $st2::params::metrics_include,
-  $metric_driver              = $st2::params::metric_driver,
-  $metric_host                = $st2::params::metric_host,
-  $metric_port                = $st2::params::metric_port,
-  $validate_output_schema     = $st2::params::validate_output_schema,
+  $chatops_st2_hostname                 = $st2::hostname,
+  $chatops_api_url                      = "https://${st2::chatops_st2_hostname}/api",
+  $chatops_auth_url                     = "https://${st2::chatops_st2_hostname}/auth",
+  $chatops_web_url                      = "https://${st2::chatops_st2_hostname}/",
+  $sensor_partition_provider            = $st2::params::sensor_partition_provider,
+  $nodejs_version           = undef,
+  $nodejs_manage_repo       = true,
+  $workflowengine_num       = $st2::params::workflowengine_num,
+  $scheduler_num            = $st2::params::scheduler_num,
+  $rulesengine_num          = $st2::params::rulesengine_num,
+  $notifier_num             = $st2::params::notifier_num,
+  $metrics_include          = $st2::params::metrics_include,
+  $metric_driver            = $st2::params::metric_driver,
+  $metric_host              = $st2::params::metric_host,
+  $metric_port              = $st2::params::metric_port,
+  $validate_output_schema   = $st2::params::validate_output_schema,
+  $manage_nfs_dirs          = true,
+  $stanley_user             = $st2::params::st2_stanley_user,
 ) inherits st2::params {
 
   ########################################

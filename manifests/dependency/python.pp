@@ -7,7 +7,7 @@
 #   To install Python 3.8 on Ubuntu 16.05 specify 'python3.8'.
 #
 # @example Basic Usage
-#  include st2::profile::python
+#  include st2::dependency::python
 #
 # @example Install with python 3.8 (if not default on your system)
 #   $st2_python_version = $facts['os']['family'] ? {
@@ -17,9 +17,9 @@
 #   class { 'st2':
 #     python_version            => $st2_python_version,
 #   }
-#  include st2::profile::python
+#  include st2::dependency::python
 #
-class st2::profile::python (
+class st2::dependency::python (
   String  $version            = $st2::python_version,
 ) inherits st2 {
   notice("Python version: ${version}")

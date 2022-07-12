@@ -10,7 +10,7 @@
 #    The port for the metrics. Default='8125'
 #
 # @example Basic Usage
-#   include st2::profile::metrics
+#   include st2::component::metrics
 #
 # @example Customize (done via st2)
 #   class { 'st2':
@@ -19,9 +19,9 @@
 #     metric_host     => '127.0.0.1',
 #     metric_port     => '8125',
 #   }
-#   include st2::profile::metrics
+#   include st2::component::metrics
 #
-class st2::profile::metrics (
+class st2::component::metrics (
   $metrics_include = $st2::metrics_include,
   $metric_driver   = $st2::metric_driver,
   $metric_host     = $st2::metric_host,

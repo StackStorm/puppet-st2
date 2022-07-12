@@ -1,5 +1,7 @@
 # @summary  Profile to install, configure and manage StackStorm web UI (st2web).
 #
+# This component gets installed by +st2::profile::ha::web+
+#
 # @param nginx_ssl_ciphers
 #   String or list of strings of acceptable SSL ciphers to configure nginx with.
 #   @see http://nginx.org/en/docs/http/ngx_http_ssl_module.html
@@ -32,9 +34,11 @@
 #    Version of StackStorm WebUI to install
 # @param web_root
 #    Directory where the StackStorm WebUI site lives on the filesystem
+# @param [Boolean] manage_ssl_dir
+#   Manage the directory for ssl_dir
 #
 # @example Basic Usage
-#   include st2::profile::web'
+#   include st2::component::web'
 #
 # @example Managing your own certificate
 #   # create your own certificate and key in the correct locations
@@ -45,14 +49,14 @@
 #     content => 'my privatekey data',
 #   }
 #
-#   # instantiate this profile with ssl_cert_manage false
-#   class { 'st2::profile::web':
+#   # instantiate this component with ssl_cert_manage false
+#   class { 'st2::component::web':
 #     ssl_cert_manage => false,
 #   }
 #
 #
 # @example Change the SSL protocols and ciphers
-#   class { 'st2::profile::web':
+#   class { 'st2::component::web':
 #     nginx_ssl_protocols => ['TLSv1.2'],
 #     nginx_ssl_ciphers => [
 #       'ECDHE-ECDSA-AES256-GCM-SHA384',
@@ -60,7 +64,7 @@
 #     ],
 #   }
 #
-class st2::profile::web(
+class st2::component::web(
   Variant[Array[String], String] $nginx_ssl_ciphers   = $st2::nginx_ssl_ciphers,
   Variant[Array[String], String] $nginx_ssl_protocols = $st2::nginx_ssl_protocols,
   Stdlib::Port $nginx_ssl_port                        = $st2::nginx_ssl_port,
@@ -71,6 +75,7 @@ class st2::profile::web(
   String $ssl_key                                     = $st2::ssl_key,
   String $version                                     = $st2::version,
   String $web_root                                    = $st2::web_root,
+  Boolean $manage_ssl_dir                             = $st2::manage_ssl_dir,
   Integer $basicstatus_port                           = $st2::nginx_basicstatus_port,
   Boolean $basicstatus_enabled                        = $st2::nginx_basicstatus_enabled,
 ) inherits st2 {
@@ -78,7 +83,7 @@ class st2::profile::web(
   # if we include this in st2::profile::fullinstall Anchor['pre_reqs'] then
   # a dependency cycle is created because we must modify the nginx config
   # in this profile.
-  include st2::profile::nginx
+  include st2::dependency::nginx
   include st2::params
 
   ## Install the packages
@@ -89,9 +94,11 @@ class st2::profile::web(
     notify  => Service['nginx'], # notify to force a refresh if the package is updated
   }
 
-  ## Create ssl cert directory
-  file { $ssl_dir:
-    ensure  => directory,
+  ## Create ssl cert directory if needed
+  if $manage_ssl_dir {
+    file { $ssl_dir:
+      ensure  => directory,
+    }
   }
 
   ## optionally manage the SSL certificate used by nginx

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'st2::profile::nginx' do
+describe 'st2::dependency::nginx' do
   on_supported_os.each do |os, os_facts|
     let(:facts) do
       os_facts.merge(
@@ -30,4 +30,4 @@ describe 'st2::profile::nginx' do
       end # context 'with manage_repo=false'
     end # context 'on #{os}'
   end # on_supported_os
-end # describe 'st2::profile::nginx'
+end # describe 'st2::dependency::nginx'

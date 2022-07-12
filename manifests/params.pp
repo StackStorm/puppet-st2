@@ -85,14 +85,42 @@ class st2::params(
     }
   }
 
+  $st2_stanley_user = 'stanley'
+
   ## StackStorm core services
   $st2_services = [
-    'st2actionrunner',
     'st2api',
     'st2auth',
-    'st2garbagecollector',
-    'st2sensorcontainer',
     'st2stream',
+  ]
+
+  ## StackStorm EndPoint Services
+  # StackStorm Auth Services
+  $auth_services = [
+    'st2auth',
+  ]
+  # StackStorm API Services
+  $api_services = [
+    'st2api',
+  ]
+  # StackStorm Stream Services
+  $stream_services = [
+    'st2stream',
+  ]
+
+  ## StackStorm ActionRunner Services
+  $actionrunner_services = [
+    'st2actionrunner',
+  ]
+
+  ## StackStorm Garbage Collector Services
+  $garbagecollector_services = [
+    'st2garbagecollector',
+  ]
+
+  ## StackStorm Sensor Services 
+  $sensorcontainer_services = [
+    'st2sensorcontainer',
   ]
 
   ## StackStorm Workflow Engine (Orchestra)
@@ -222,6 +250,14 @@ class st2::params(
     'Debian' => '/etc/default/st2actionrunner',
     'RedHat' => '/etc/sysconfig/st2actionrunner',
   }
+
+  ## actionrunner config
+  $sensorcontainer_global_env_file = $facts['os']['family'] ? {
+    'Debian' => '/etc/default/st2sensorcontainer',
+    'RedHat' => '/etc/sysconfig/st2sensorcontainer',
+  }
+
+  $sensor_partition_provider = 'name:default'
 
   ## chatops default config
   $st2_chatops_dir  = '/opt/stackstorm/chatops'

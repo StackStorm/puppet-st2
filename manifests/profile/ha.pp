@@ -1,9 +1,6 @@
-# @summary Profile to install, configure and manage all server components for st2
+# @summary Base profile to install and configure HA st2 installation
 #
-# @example Basic usage
-#  include st2::profile::server
-#
-class st2::profile::server (
+class st2::profile::ha (
 ) inherits st2 {
 
   contain st2::config::common
@@ -11,26 +8,6 @@ class st2::profile::server (
   contain st2::config::messaging
   contain st2::config::coordination
   contain st2::config::runners
-
-  contain st2::component::actionrunner
-  contain st2::component::sensorcontainer
-  contain st2::component::web
-  contain st2::component::api
-  contain st2::component::auth
-  contain st2::component::stream
-
-  contain st2::component::notifier
-  contain st2::component::rulesengine
-  contain st2::component::scheduler
-  contain st2::component::timersengine
-  contain st2::component::workflowengine
-  contain st2::component::garbagecollector
-
-  contain st2::component::metrics
-
-  ########################################
-  ## st2 user (stanley)
-  contain st2::stanley
 
   ########################################
   ## Dependencies

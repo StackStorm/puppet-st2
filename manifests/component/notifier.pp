@@ -1,6 +1,7 @@
 # @summary Manages the <code>st2notifier</code> service (Orquesta)
 #
 # Normally this class is instantiated by +st2::profile::fullinstall+.
+# OR by +st2::profile::ha::core+
 # However, advanced users can instantiate this class directly to configure
 # and manage just the <code>st2notifier</code> service on a single node.
 # Parameters for this class mirror the parameters in the st2 config.
@@ -8,14 +9,14 @@
 # @see https://github.com/StackStorm/st2/blob/master/conf/st2.conf.sample
 #
 # @example Basic usage
-#   include st2::notifier
+#   include st2::component::notifier
 #
 # @param notifier_num
 #   The number of notifiers to have in an active active state
 # @param notifier_services
 #   Name of all the notifier services
 #
-class st2::notifier (
+class st2::component::notifier (
   $notifier_num      = $st2::notifier_num,
   $notifier_services = $st2::params::notifier_services,
 ) inherits st2 {

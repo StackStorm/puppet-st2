@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'st2::profile::web' do
+describe 'st2::component::web' do
   on_supported_os.each do |os, os_facts|
     let(:facts) { os_facts }
     let(:ssl_dir) { '/etc/ssl/st2' }
@@ -40,7 +40,7 @@ describe 'st2::profile::web' do
     context "on #{os}" do
       context 'with default options' do
         it { is_expected.to compile.with_all_deps }
-        it { is_expected.to contain_class('st2::profile::nginx') }
+        it { is_expected.to contain_class('st2::dependency::nginx') }
         it do
           is_expected.to contain_package('st2web')
             .with(ensure: 'present',

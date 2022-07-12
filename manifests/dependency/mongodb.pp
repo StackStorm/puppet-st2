@@ -18,7 +18,7 @@
 #    Boolean determining if auth should be enabled for MongoDB.
 #
 # @example Basic Usage
-#   include st2::profile::mongodb
+#   include st2::dependency::mongodb
 #
 # @example Customize (done via st2)
 #   class { 'st2':
@@ -27,9 +27,9 @@
 #     db_password => 'xyz123',
 #     db_port     => 12345,
 #   }
-#   include st2::profile::mongodb
+#   include st2::dependency::mongodb
 #
-class st2::profile::mongodb (
+class st2::dependency::mongodb (
   $db_name     = $st2::db_name,
   $db_username = $st2::db_username,
   $db_password = $st2::db_password,
