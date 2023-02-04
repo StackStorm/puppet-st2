@@ -55,6 +55,8 @@ class st2::params(
   $conf_dir = '/etc/st2'
   $datstore_keys_dir = "${conf_dir}/keys"
 
+  $manage_epel_repo = true
+
   $st2_server_packages = [
     'st2',
   ]

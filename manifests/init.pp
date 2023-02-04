@@ -262,6 +262,7 @@ class st2(
   $version                    = 'present',
   String  $python_version     = 'system',
   St2::Repository $repository = $st2::params::repository,
+  $manage_epel_repo           = $st2::params::manage_epel_repo,
   $conf_dir                   = $st2::params::conf_dir,
   $conf_file                  = "${st2::params::conf_dir}/st2.conf",
   $use_ssl                    = $st2::params::use_ssl,

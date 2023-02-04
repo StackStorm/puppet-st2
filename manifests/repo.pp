@@ -17,7 +17,7 @@
 class st2::repo (
   Enum['present', 'absent'] $ensure = 'present',
   St2::Repository $repository = $st2::repository,
-  Boolean $manage_epel_repo = true,
+  Boolean $manage_epel_repo = $st2::manage_epel_repo,
 ) inherits st2 {
   case $facts['os']['family'] {
     'RedHat': {
