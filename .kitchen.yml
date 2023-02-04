@@ -12,7 +12,7 @@ provisioner:
   # in the container, run: puppet apply
   name: puppet_apply
   # manifest to execute
-  manifest: test/fullinstall.pp
+  manifest: test/fullinstall_python36.pp
   # unused, but required
   modules_path: ./modules
   # don't have kitchen-puppet install chef by default
@@ -61,17 +61,29 @@ platforms:
     provisioner:
       puppetfile_path: build/centos7-puppet7/Puppetfile
 
-  # CentOS7 with Systemd - Puppet 7 - Python 3.6
-  - name: centos7-puppet7-python36
+  # RockyLinux 8 - Puppet 6
+  - name: rocky8-puppet6
     driver:
-      platform: centos
-      dockerfile: build/centos7-puppet7/Dockerfile.kitchen
+      platform: rockylinux
+      dockerfile: build/rocky8-puppet6/Dockerfile.kitchen
       run_command: /sbin/init
       volume:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
-      puppetfile_path: build/centos7-puppet7/Puppetfile
-      manifest: test/fullinstall_python36.pp
+      puppetfile_path: build/rocky8-puppet6/Puppetfile
+      manifest: test/fullinstall_python38.pp
+
+  # RockyLinux 8 - Puppet 7
+  - name: rocky8-puppet7
+    driver:
+      platform: rockylinux
+      dockerfile: build/rocky8-puppet7/Dockerfile.kitchen
+      run_command: /sbin/init
+      volume:
+        - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    provisioner:
+      puppetfile_path: build/rocky8-puppet7/Puppetfile
+      manifest: test/fullinstall_python38.pp
 
   # Ubuntu Bionic with Systemd - Puppet 6
   - name: ubuntu18-puppet6
@@ -105,6 +117,7 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/ubuntu20-puppet6/Puppetfile
+      manifest: test/fullinstall_python38.pp
 
   # Ubuntu Focal with Systemd - Puppet 7
   - name: ubuntu20-puppet7
@@ -116,6 +129,7 @@ platforms:
         - /sys/fs/cgroup:/sys/fs/cgroup:ro
     provisioner:
       puppetfile_path: build/ubuntu20-puppet7/Puppetfile
+      manifest: test/fullinstall_python38.pp
 
 suites:
   - name: default

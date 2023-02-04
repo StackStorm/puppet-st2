@@ -48,6 +48,7 @@ class st2::params(
 
   # nginx basic status port
   $basicstatus_port = 9103
+  $basicstatus_enabled = false
 
   # Non-user configurable parameters
   $repository = 'stable'
@@ -191,13 +192,19 @@ class st2::params(
   $rabbitmq_bind_ip = '127.0.0.1'
   $rabbitmq_vhost = '/'
   $osname = downcase($facts['os']['name'])
+  $rabbitmq_signing_key = 'https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc'
+  $rabbitmq_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
   $erlang_url = $facts['os']['family'] ? {
     'Debian' => "http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/${osname}",
     'RedHat' => "https://packagecloud.io/rabbitmq/erlang/el/${facts['os'][release][major]}/\$basearch",
   }
-  $erlang_key = 'https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey'
+  $erlang_key = 'https://packagecloud.io/rabbitmq/erlang/gpgkey'
   $erlang_key_id = 'B279943D2A549531E144B875F77F1EDA57EBB1CC'
   $erlang_key_source = 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xf77f1eda57ebb1cc'
+  $erlang_rhel_sslcacert_location = '/etc/pki/tls/certs/ca-bundle.crt'
+  $erlang_rhel_sslverify = 1
+  $erlang_rhel_gpgcheck = 0
+  $erlang_rhel_repo_gpgcheck = 1
   $erlang_packages = [
     'erlang',
   ]
