@@ -55,7 +55,14 @@ class st2::params(
   $conf_dir = '/etc/st2'
   $datstore_keys_dir = "${conf_dir}/keys"
 
+  # Datastore
+  $manage_datastore_key = false
+  $datastore_aes_key = ''
+  $datastore_hmac_key = ''
+
   $manage_epel_repo = true
+  $python_use_epel_repo = true
+  $redis_manage_repo = false
 
   $st2_server_packages = [
     'st2',

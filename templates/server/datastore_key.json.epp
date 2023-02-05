@@ -1,0 +1,4 @@
+<%- | String $datastore_hmac_key,
+      String $datastore_aes_key,
+| -%>
+{"hmacKey":{"hmacKeyString":"<%= $datastore_hmac_key %>","size":256},"aesKeyString":"<%= $datastore_aes_key %>","mode":"CBC","size":256}
