@@ -76,8 +76,15 @@ class st2::server::datastore_keys (
     tag     => 'st2::config',
   }
 
-  Package['st2']
-  -> File[$keys_dir]
-  -> Exec["generate datastore key ${key_path}"]
-  -> File[$key_path]
+
+  if $manage_datastore_key {
+    Package['st2']
+    -> File[$keys_dir]
+    -> File[$key_path]
+  } else {
+    Package['st2']
+    -> File[$keys_dir]
+    -> Exec["generate datastore key ${key_path}"]
+    -> File[$key_path]
+  }
 }
