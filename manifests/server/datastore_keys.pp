@@ -21,8 +21,11 @@ class st2::server::datastore_keys (
   $keys_dir             = $st2::datastore_keys_dir,
   $key_path             = $st2::datastore_key_path,
   $manage_datastore_key = $st2::manage_datastore_key,
-  $datastore_aes_key    = $st2::datastore_aes_key,
+  $datastore_hmac_size  = $st2::datastore_hmac_size,
   $datastore_hmac_key   = $st2::datastore_hmac_key,
+  $datastore_aes_key    = $st2::datastore_aes_key,
+  $datastore_aes_mode   = $st2::datastore_aes_mode,
+  $datastore_aes_size   = $st2::datastore_aes_size,
 ) inherits st2 {
   ## Directory
   file { $keys_dir:
@@ -38,8 +41,11 @@ class st2::server::datastore_keys (
       ensure  => file,
       path    => $key_path,
       content => epp('st2/server/datastore_key.json.epp', {
-        datastore_hmac_key => $datastore_hmac_key,
-        datastore_aes_key  => $datastore_aes_key,
+        datastore_hmac_key  => $datastore_hmac_key,
+        datastore_hmac_size => $datastore_hmac_size,
+        datastore_aes_mode  => $datastore_aes_mode,
+        datastore_aes_key   => $datastore_aes_key,
+        datastore_aes_size  => $datastore_aes_size,
       }),
       owner   => 'st2',
       group   => 'st2',

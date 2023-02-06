@@ -59,6 +59,9 @@ class st2::params(
   $manage_datastore_key = false
   $datastore_aes_key = ''
   $datastore_hmac_key = ''
+  $datastore_hmac_size = 256
+  $datastore_aes_mode = 'CBC'
+  $datastore_aes_size = 256
 
   $manage_epel_repo = true
   $python_use_epel_repo = true
