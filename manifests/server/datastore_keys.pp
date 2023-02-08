@@ -17,9 +17,15 @@
 #   }
 #
 class st2::server::datastore_keys (
-  $conf_file = $st2::conf_file,
-  $keys_dir  = $st2::datastore_keys_dir,
-  $key_path  = $st2::datastore_key_path,
+  $conf_file            = $st2::conf_file,
+  $keys_dir             = $st2::datastore_keys_dir,
+  $key_path             = $st2::datastore_key_path,
+  $manage_datastore_key = $st2::manage_datastore_key,
+  $datastore_hmac_size  = $st2::datastore_hmac_size,
+  $datastore_hmac_key   = $st2::datastore_hmac_key,
+  $datastore_aes_key    = $st2::datastore_aes_key,
+  $datastore_aes_mode   = $st2::datastore_aes_mode,
+  $datastore_aes_size   = $st2::datastore_aes_size,
 ) inherits st2 {
   ## Directory
   file { $keys_dir:
@@ -30,21 +36,40 @@ class st2::server::datastore_keys (
     require => Package['st2'],
   }
 
-  ## Generate
-  exec { "generate datastore key ${key_path}":
-    command => "st2-generate-symmetric-crypto-key --key-path ${key_path}",
-    creates => $key_path,
-    path    => ['/opt/stackstorm/st2/bin'],
-    notify  => Service['st2api'],
-  }
+  if $manage_datastore_key {
+    file { $key_path:
+      ensure  => file,
+      path    => $key_path,
+      content => epp('st2/server/datastore_key.json.epp', {
+        datastore_hmac_key  => $datastore_hmac_key,
+        datastore_hmac_size => $datastore_hmac_size,
+        datastore_aes_mode  => $datastore_aes_mode,
+        datastore_aes_key   => $datastore_aes_key,
+        datastore_aes_size  => $datastore_aes_size,
+      }),
+      owner   => 'st2',
+      group   => 'st2',
+      mode    => '0600',
+      notify  => Service['st2api'],
+      require => Package['st2'],
+    }
+  } else {
+    ## Generate
+    exec { "generate datastore key ${key_path}":
+      command => "st2-generate-symmetric-crypto-key --key-path ${key_path}",
+      creates => $key_path,
+      path    => ['/opt/stackstorm/st2/bin'],
+      notify  => Service['st2api'],
+    }
 
-  ## Permissions
-  file { $key_path:
-    ensure  => file,
-    owner   => 'st2',
-    group   => 'st2',
-    mode    => '0600',
-    require => Package['st2'],
+    ## Permissions
+    file { $key_path:
+      ensure  => file,
+      owner   => 'st2',
+      group   => 'st2',
+      mode    => '0600',
+      require => Package['st2'],
+    }
   }
 
   ## Config
@@ -57,8 +82,15 @@ class st2::server::datastore_keys (
     tag     => 'st2::config',
   }
 
-  Package['st2']
-  -> File[$keys_dir]
-  -> Exec["generate datastore key ${key_path}"]
-  -> File[$key_path]
+
+  if $manage_datastore_key {
+    Package['st2']
+    -> File[$keys_dir]
+    -> File[$key_path]
+  } else {
+    Package['st2']
+    -> File[$keys_dir]
+    -> Exec["generate datastore key ${key_path}"]
+    -> File[$key_path]
+  }
 }

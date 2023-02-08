@@ -36,6 +36,7 @@ class st2::profile::rabbitmq (
   $erlang_rhel_sslverify          = $st2::erlang_rhel_sslverify,
   $erlang_rhel_gpgcheck           = $st2::erlang_rhel_gpgcheck,
   $erlang_rhel_repo_gpgcheck      = $st2::erlang_rhel_repo_gpgcheck,
+  $manage_epel_repo               = $st2::manage_epel_repo,
 ) inherits st2 {
 
   # RHEL 8 Requires another repo in addition to epel to be installed
@@ -127,7 +128,7 @@ class st2::profile::rabbitmq (
   }
 
   # RHEL needs EPEL installed prior to rabbitmq
-  if $facts['os']['family'] == 'RedHat' {
+  if (($facts['os']['family'] == 'RedHat') and ($manage_epel_repo == true)) {
     Class['epel']
     -> Class['rabbitmq']
 
