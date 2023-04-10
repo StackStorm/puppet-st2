@@ -18,7 +18,7 @@ class st2::profile::redis (
 
   class { 'redis':
     bind        => $bind_ip,
-    manage_repo => $redis_manage_repo
+    manage_repo => $redis_manage_repo,
   }
 
   contain redis
