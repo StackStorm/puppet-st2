@@ -20,7 +20,8 @@
 #  include st2::profile::python
 #
 class st2::profile::python (
-  String  $version            = $st2::python_version,
+  String  $version              = $st2::python_version,
+  Boolean $python_use_epel_repo = $st2::python_use_epel_repo,
 ) inherits st2 {
   notice("Python version: ${version}")
   if !defined(Class['python']) {
@@ -29,6 +30,7 @@ class st2::profile::python (
       version            => $version,
       dev                => present,
       manage_pip_package => false,
+      use_epel           => $python_use_epel_repo,
     }
   }
 }
