@@ -65,7 +65,7 @@
 #    chase_referrals: false
 #    base_dn: 'dc=domain,dc=tld'
 #    group_dns:
-#      - '"cn=stackstorm_users,ou=groups,dc=domain,dc=tld"'
+#      - 'cn=stackstorm_users,ou=groups,dc=domain,dc=tld'
 #    scope: "subtree"
 #    id_attr: "username"
 #    account_pattern: "userPrincipalName={username}"
@@ -75,6 +75,7 @@ class st2::auth::ldap (
   $host            = '',
   $use_tls         = false,
   $use_ssl         = false,
+  $cacert          = '',
   $port            = 389,
   $bind_dn         = '',
   $bind_pw         = '',
@@ -83,53 +84,31 @@ class st2::auth::ldap (
   $chase_referrals = true,
   $scope           = 'subtree',
   $id_attr         = 'uid',
-  $account_pattern = undef,
-  $group_pattern   = undef,
+  $account_pattern = '',
+  $group_pattern   = '',
+  $group_dns_check = 'and',
 ) inherits st2 {
   include st2::auth::common
 
-  $_use_tls = bool2str($use_tls)
-  $_use_ssl = bool2str($use_ssl)
-  $_chase_refs = bool2str($chase_referrals)
-  if $account_pattern != undef and $group_pattern != undef {
-    $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},\
-      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
-      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
-      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
-      "scope": "${scope}", "id_attr": "${id_attr}",\
-      "account_pattern": "${account_pattern}", "group_pattern": "${group_pattern}"}
-      | - LDAPARGS
+  $backend_kwargs_raw = {
+    'host'            => $host,
+    'use_tls'         => $use_tls,
+    'use_ssl'         => $use_ssl,
+    'cacert'          => $cacert,
+    'port'            => $port,
+    'bind_dn'         => $bind_dn,
+    'bind_password'   => $bind_pw,
+    'base_ou'         => $base_dn,
+    'group_dns'       => $group_dns,
+    'chase_referrals' => $chase_refs,
+    'scope'           => $scope,
+    'id_attr'         => $id_attr,
+    'account_pattern' => $account_pattern,
+    'group_pattern'   => $group_pattern,
+    'group_dns_check' => $group_dns_check,
   }
-  elsif $account_pattern != undef {
-    $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},\
-      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
-      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
-      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
-      "scope": "${scope}", "id_attr": "${id_attr}",\
-      "account_pattern": "${account_pattern}"}
-      | - LDAPARGS
-  }
-  elsif $group_pattern != undef {
-    $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},\
-      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
-      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
-      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
-      "scope": "${scope}", "id_attr": "${id_attr}",\
-      "group_pattern": "${group_pattern}"}
-      | - LDAPARGS
-  }
-  else {
-    $_kwargs = @("LDAPARGS"/L)
-      {"host": "${host}", "use_tls": ${_use_tls},\
-      "bind_dn": "${bind_dn}", "bind_password": "${bind_pw}",\
-      "chase_referrals": ${_chase_refs}, "base_ou": "${base_dn}",\
-      "group_dns": ${group_dns}, "use_ssl": ${_use_ssl}, "port": ${port},\
-      "scope": "${scope}", "id_attr": "${id_attr}"}
-      | - LDAPARGS
-  }
+
+  $_kwargs = to_json($backend_kwargs_raw)
 
   # config
   ini_setting { 'auth_backend':
