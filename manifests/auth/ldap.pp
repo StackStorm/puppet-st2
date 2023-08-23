@@ -86,6 +86,7 @@ class st2::auth::ldap (
   $id_attr         = 'uid',
   $account_pattern = '',
   $group_pattern   = '',
+  $group_dns_check = 'and',
 ) inherits st2 {
   include st2::auth::common
 
@@ -104,6 +105,7 @@ class st2::auth::ldap (
     'id_attr'         => $id_attr,
     'account_pattern' => $account_pattern,
     'group_pattern'   => $group_pattern,
+    'group_dns_check' => $group_dns_check,
   }
 
   $_kwargs = to_json($backend_kwargs_raw)
